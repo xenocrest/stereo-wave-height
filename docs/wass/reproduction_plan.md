@@ -94,6 +94,17 @@ Windows 原生旧说明依赖 Visual Studio 2015、OpenCV、Boost、CLAPACK 和�
 - 视频、图像序列、点云、NetCDF、镜像层和缓存不提交。
 - 只提交小型配置、清单、哈希、指标和图表。
 
+## 实验室 1 cm 适配入口
+
+在环境冻结与相机 I/O 阶段之间增加只使用小样本的“几何与误差预算闸门”：
+
+1. 按 [lab_scale_adaptation.md](lab_scale_adaptation.md) 记录实际工作距离、标定焦距、基线、公共视场和预期视差，证明视差误差分量满足预算后再采集动态序列。
+2. 按 [wass_parameter_mapping.md](wass_parameter_mapping.md) 从 WASS `v_1.5` 默认值建立配置，优先重设视差范围、三角化角、物理边界和网格尺度；扫参只使用固定的小型训练序列。
+3. 按 [static_water_reference_integration.md](static_water_reference_integration.md) 采集独立静水序列，在 WASS 输出后构建 `Z0(x,y)`，不修改 WASS 核心算法。
+4. 按 [one_cm_error_budget.md](one_cm_error_budget.md) 在未参与调参的刚体、静水和动态序列上验收。理论误差条件不能替代端到端测量。
+
+候选设备 MER2-503-36U3C、约 8 mm 镜头、硬触发和可调刚性基线均保持“暂定/候选”状态；镜头型号、同步抖动、目标波频及双 USB3 持续吞吐仍为 **UNKNOWN/TODO**。
+
 ## 来源
 
 - [R1] [official page](https://sites.google.com/unive.it/wass/home)
