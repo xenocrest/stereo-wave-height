@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# IDE and operating system
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs, caches, and temporary files
+*.log
+*.tmp
+*.temp
+*.cache
+cache/
+tmp/
+
+# Raw imagery and video
+*.avi
+*.mp4
+*.mov
+*.mkv
+*.m4v
+*.wmv
+*.flv
+*.webm
+*.raw
+*.tif
+*.tiff
+
+# Large scientific and reconstruction data
+data/
+datasets/
+outputs/
+results/
+*.bin
+*.dat
+*.h5
+*.hdf5
+*.nc
+*.npy
+*.npz
+*.mat
+*.pcd
+*.ply
+*.las
+*.laz
+*.obj
+
+# Local WASS checkout/build products (dependency metadata is retained)
+external/WASS/*
+!external/WASS/README.md
