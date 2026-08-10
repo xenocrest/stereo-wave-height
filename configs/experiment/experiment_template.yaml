@@ -1,0 +1,118 @@
+# Experiment metadata template. No real experiment values are populated.
+schema:
+  name: stereo-wave-height-experiment
+  version: data-interface-v1
+
+experiment_id: null
+experiment_type: null
+environment:
+  type: null
+  location: null
+  conditions: null
+  source: experiment declaration
+  status: UNKNOWN
+
+time:
+  created_at: null
+  timezone: null
+  time_reference: null
+  timestamp_origin: null
+  timestamp_unit: ns
+  status: UNKNOWN
+
+camera:
+  equipment_config: configs/equipment/candidate_system.yaml
+  left:
+    model: null
+    serial_number: null
+    role: left
+    calibration_id: null
+    status: UNKNOWN
+  right:
+    model: null
+    serial_number: null
+    role: right
+    calibration_id: null
+    status: UNKNOWN
+  resolution_px: null
+  pixel_size_um: null
+  pixel_format: null
+  bit_depth_bit: null
+  exposure_time_s: null
+  trigger_source: null
+  sync_offset_ns: null
+  status: UNKNOWN
+
+lens:
+  left_model: null
+  right_model: null
+  focal_length_mm: null
+  aperture: null
+  focus_setting: null
+  source: null
+  status: UNKNOWN
+
+stereo:
+  baseline_m: null
+  baseline_uncertainty_m: null
+  working_distance_m: null
+  transform_direction: null
+  coordinate_system_id: null
+  source: deployment measurement
+  status: UNKNOWN
+
+calibration:
+  calibration_id: null
+  intrinsic_left: null
+  intrinsic_right: null
+  distortion_left: null
+  distortion_right: null
+  extrinsic_rotation: null
+  extrinsic_translation: null
+  length_unit: null
+  reprojection_rmse_px: null
+  reprojection_max_px: null
+  source: calibration run
+  status: UNKNOWN
+
+wass:
+  repository: https://github.com/fbergama/wass
+  version: null
+  commit: null
+  binary_hash: null
+  matcher_config: null
+  stereo_config: null
+  gridding_version: null
+  execution_environment: null
+  status: UNKNOWN
+
+project:
+  repository: https://github.com/xenocrest/stereo-wave-height
+  commit: null
+  configuration_version: null
+  status: UNKNOWN
+
+data:
+  dataset_root: null
+  frame_manifest: null
+  input_manifest: null
+  output_manifest: null
+  checksum_algorithm: sha256
+  status: UNKNOWN
+
+validation:
+  reference: null
+  roi: null
+  sample_count: null
+  rmse_m: null
+  mae_m: null
+  maximum_absolute_error_m: null
+  coverage_ratio: null
+  hole_rate_ratio: null
+  static_plane_rmse_m: null
+  scale_error_ratio: null
+  acceptance_spec: null
+  passed: null
+  status: UNKNOWN
+
+notes: null
