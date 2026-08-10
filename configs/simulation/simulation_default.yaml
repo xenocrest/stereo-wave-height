@@ -1,0 +1,119 @@
+# Hardware-free simulation design defaults. This file is not a calibrated camera record.
+schema_version: 1
+
+equipment_reference:
+  path: configs/equipment/candidate_system.yaml
+  source: project candidate equipment configuration
+  status: confirmed_reference
+
+virtual_camera:
+  model: ideal_pinhole_stereo
+  resolution:
+    width:
+      value: 2448
+      unit: px
+      source: MER2-503-36U3C manufacturer specification via equipment config
+      status: candidate
+    height:
+      value: 2048
+      unit: px
+      source: MER2-503-36U3C manufacturer specification via equipment config
+      status: candidate
+  pixel_size:
+    value: 3.45
+    unit: um/px
+    source: MER2-503-36U3C manufacturer specification via equipment config
+    status: candidate
+  focal_length:
+    value: 8.0
+    unit: mm
+    source: project lens candidate via equipment config
+    status: candidate
+  nominal_focal_length_px:
+    value: 2318.840579710145
+    unit: px
+    source: derived as 8.0 mm / 0.00345 mm-per-pixel
+    status: SIMULATION_NOMINAL
+  principal_point:
+    cx:
+      value: 1223.5
+      unit: px
+      source: simulation assumption (width - 1) / 2 for zero-based pixels
+      status: simulation_assumption
+    cy:
+      value: 1023.5
+      unit: px
+      source: simulation assumption (height - 1) / 2 for zero-based pixels
+      status: simulation_assumption
+  distortion:
+    coefficients:
+      value: [0.0, 0.0, 0.0, 0.0, 0.0]
+      unit: dimensionless
+      source: ideal first-stage pinhole assumption; real device distortion UNKNOWN
+      status: ideal_simulation_assumption
+  baseline:
+    value: null
+    unit: m
+    source: baseline scan configuration
+    status: UNKNOWN
+  working_distance:
+    value: null
+    unit: m
+    source: deployment scan configuration
+    status: UNKNOWN
+
+rendering:
+  radiometry: deterministic_surface_attached_texture
+  output_format: grayscale_png
+  output_bit_depth:
+    value: 8
+    unit: bit
+    source: project synthetic WASS input interface decision
+    status: simulation_interface
+  random_seed:
+    value: null
+    unit: dimensionless
+    source: must be explicitly configured for reproducibility
+    status: UNKNOWN
+  noise_model: none
+  noise_parameters: null
+  noise_source: ideal first-stage assumption; later noise values require explicit provenance
+  noise_status: ideal_simulation_assumption
+
+surface_cases:
+  case_0:
+    model: static_plane
+    height:
+      value: 0.0
+      unit: m
+      source: Case 0 mathematical definition
+      status: simulation_truth
+  case_1:
+    model: known_height_plane
+    delta_height:
+      value: null
+      unit: m
+      source: per-run truth parameter
+      status: UNKNOWN
+  case_2:
+    model: one_dimensional_sinusoid
+    amplitude_m: null
+    wave_number_rad_per_m: null
+    angular_frequency_rad_per_s: null
+    phase_rad: null
+    parameter_source: per-run analytical truth configuration
+    parameter_status: UNKNOWN
+  case_3:
+    model: two_dimensional_crossing_waves
+    components: null
+    component_units: amplitude m; wave-vector rad/m; angular-frequency rad/s; phase rad
+    source: per-run analytical truth configuration
+    status: UNKNOWN
+
+acceptance_target:
+  height_rmse:
+    value: 0.01
+    unit: m
+    source: project simulation numerical target (1 cm definition)
+    status: acceptance_target
+  claim_scope: simulation_software_chain_only

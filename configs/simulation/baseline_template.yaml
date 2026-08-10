@@ -1,0 +1,52 @@
+# Deployment scan template. No final baseline or working distance is selected here.
+schema_version: 1
+
+equipment_reference:
+  path: configs/equipment/candidate_system.yaml
+  source: project equipment registry
+  status: confirmed_reference
+
+scan:
+  baseline_m:
+    values: null
+    unit: m
+    source: deployment design input
+    status: UNKNOWN
+  working_distance_m:
+    values: null
+    unit: m
+    source: deployment design input
+    status: UNKNOWN
+  baseline_distance_ratio:
+    values: null
+    unit: dimensionless
+    source: derived as B / Z for each configured pair
+    status: derived_after_configuration
+
+derived_outputs:
+  disparity_px:
+    formula: d = f_px * B / Z
+    unit: px
+    source: rectified pinhole stereo geometry
+    status: derived_after_configuration
+  ideal_common_fov_width_m:
+    formula: max(0, Z * sensor_width_m / focal_length_m - B)
+    unit: m
+    source: parallel-axis ideal pinhole overlap; ignores distortion and occlusion
+    status: ideal_simulation_assumption
+  disparity_depth_sensitivity_m_per_px:
+    formula: abs(dZ/dd) = Z^2 / (f_px * B)
+    unit: m/px
+    source: first derivative of Z = f_px * B / d
+    status: derived_after_configuration
+  max_disparity_error_for_one_cm_px:
+    formula: sigma_d_max = 0.01 * f_px * B / Z^2
+    unit: px
+    source: inversion of first-order disparity error with 0.01 m full allocation
+    status: theoretical_ceiling_not_system_budget
+
+constraints:
+  final_baseline_selected: false
+  final_working_distance_selected: false
+  water_tank_dimensions_m: null
+  notes: Common field of view must be verified after camera pose and deployment variables are configured.
