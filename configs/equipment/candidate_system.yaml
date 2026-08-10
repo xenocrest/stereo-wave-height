@@ -1,0 +1,33 @@
+# Candidate equipment and deployment parameters.
+# Status vocabulary: UNKNOWN | candidate | confirmed
+
+camera:
+  model: MER2-503-36U3C
+  resolution:
+    width_px: 2448
+    height_px: 2048
+  pixel_size:
+    value_um: 3.45
+    unit: um
+  shutter: global
+  bit_depth:
+    - 8
+    - 10
+  source: https://en.daheng-imaging.com/show-106-1991-1.html
+  status: candidate
+
+lens:
+  focal_length_mm: 8.0
+  source: project candidate specification; manufacturer and exact model UNKNOWN
+  status: candidate
+
+stereo:
+  baseline_m: null
+  working_distance_m: null
+  status: UNKNOWN
+
+deployment:
+  environment: laboratory artificial-wave experiment
+  target_distance: null
+  notes: Water-tank dimensions, field of view, installation geometry, and final equipment selection are UNKNOWN/TODO.
+  status: candidate
