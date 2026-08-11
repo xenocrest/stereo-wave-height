@@ -1,4 +1,4 @@
-"""Fail-fast external-process runner for the locked WASS core pipeline."""
+"""Fail-fast external-process runner for an explicitly bound WASS runtime."""
 
 from __future__ import annotations
 
@@ -8,10 +8,12 @@ from pathlib import Path
 import subprocess
 from typing import Sequence
 
+from .runtime import WassRuntimeBinding
+
 
 @dataclass(frozen=True)
 class WassExecutables:
-    """Explicit paths to the four WASS v1.5 core executables."""
+    """Backward-compatible native paths to the four WASS core executables."""
 
     prepare: Path
     match: Path
@@ -23,6 +25,18 @@ class WassExecutables:
                            ("autocalibrate", self.autocalibrate), ("stereo", self.stereo)):
             if not Path(path).is_file():
                 raise FileNotFoundError(f"WASS {name} executable not found: {path}")
+
+    def as_runtime(self) -> WassRuntimeBinding:
+        """Convert legacy native paths to the explicit runtime model."""
+        return WassRuntimeBinding(
+            environment_type="native",
+            executables={
+                "prepare": str(self.prepare),
+                "match": str(self.match),
+                "autocalibrate": str(self.autocalibrate),
+                "stereo": str(self.stereo),
+            },
+        )
 
 
 class WassStageError(RuntimeError):
@@ -48,8 +62,8 @@ class WassRunResult:
 class WassRunner:
     """Invoke prepare, match, autocalibrate, and stereo without a shell."""
 
-    def __init__(self, executables: WassExecutables) -> None:
-        self.executables = executables
+    def __init__(self, runtime: WassRuntimeBinding | WassExecutables) -> None:
+        self.runtime = runtime.as_runtime() if isinstance(runtime, WassExecutables) else runtime
 
     def _execute(
         self,
@@ -62,19 +76,33 @@ class WassRunner:
         label = f"_{frame_id}" if frame_id is not None else ""
         log_dir = workspace / "logs"
         log_dir.mkdir(parents=True, exist_ok=True)
-        record = {"stage": stage, "frame_id": frame_id, "argv": list(command)}
+        record = {
+            "stage": stage,
+            "frame_id": frame_id,
+            "environment_type": self.runtime.environment_type,
+            "argv": list(command),
+        }
         with (log_dir / "commands.jsonl").open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(record) + "\n")
         completed = subprocess.run(
-            list(command), cwd=workspace, capture_output=True, text=True, check=False, shell=False
+            list(command),
+            cwd=self.runtime.working_directory or workspace,
+            env=self.runtime.process_environment(),
+            capture_output=True,
+            text=True,
+            check=False,
+            shell=False,
         )
         (log_dir / f"{stage}{label}.stdout.log").write_text(completed.stdout, encoding="utf-8")
         (log_dir / f"{stage}{label}.stderr.log").write_text(completed.stderr, encoding="utf-8")
         if completed.returncode != 0:
             raise WassStageError(stage, completed.returncode, frame_id)
 
+    def _command(self, stage: str, arguments: list[str]) -> list[str]:
+        return self.runtime.command(stage, arguments)
+
     def run(self, workspace_root: str | Path) -> WassRunResult:
-        """Run the documented WASS v1.5 sequence for every prepared frame."""
+        """Run the documented WASS sequence for every prepared frame."""
         workspace = Path(workspace_root).resolve()
         manifest_path = workspace / "wass_input_manifest.json"
         if not manifest_path.is_file():
@@ -93,14 +121,15 @@ class WassRunner:
             if workdir.exists():
                 raise FileExistsError(f"prepare workdir already exists: {workdir}")
             self._execute(
-                [str(self.executables.prepare), "--workdir", str(workdir), "--calibdir",
-                 str(calibration_dir), "--c0", str(workspace / frame["cam0"]), "--c1",
-                 str(workspace / frame["cam1"])],
+                self._command("prepare", [
+                    "--workdir", str(workdir), "--calibdir", str(calibration_dir),
+                    "--c0", str(workspace / frame["cam0"]), "--c1", str(workspace / frame["cam1"]),
+                ]),
                 stage="prepare", workspace=workspace, frame_id=frame_id,
             )
         for frame in frames:
             self._execute(
-                [str(self.executables.match), str(matcher_config), str(workspace / frame["workdir"])],
+                self._command("match", [str(matcher_config), str(workspace / frame["workdir"])]),
                 stage="match", workspace=workspace, frame_id=frame["frame_id"],
             )
 
@@ -110,12 +139,12 @@ class WassRunner:
             encoding="utf-8",
         )
         self._execute(
-            [str(self.executables.autocalibrate), str(workdirs_file)],
+            self._command("autocalibrate", [str(workdirs_file)]),
             stage="autocalibrate", workspace=workspace, frame_id=None,
         )
         for frame in frames:
             self._execute(
-                [str(self.executables.stereo), str(stereo_config), str(workspace / frame["workdir"])],
+                self._command("stereo", [str(stereo_config), str(workspace / frame["workdir"])]),
                 stage="stereo", workspace=workspace, frame_id=frame["frame_id"],
             )
         return WassRunResult(workspace, ("prepare", "match", "autocalibrate", "stereo"), len(frames))

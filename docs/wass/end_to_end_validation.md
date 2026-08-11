@@ -11,23 +11,26 @@ The locked reconstruction baseline is WASS tag `v_1.5`, commit
 [`pipeline_analysis.md`](pipeline_analysis.md), and
 [`input_output_spec.md`](input_output_spec.md).
 
-This validation did **not** reach a real WASS reconstruction. On the inspected
-Windows host, none of `wass_prepare`, `wass_match`, `wass_autocalibrate`,
-`wass_stereo`, or `wassgridsurface` was found on `PATH` or under the inspected
-project/D-drive locations. No Linux/Docker WASS runtime was supplied. The
-current simulation calibration is `camera.yaml`; it is not a verified OpenCV
-XML calibration accepted by WASS v1.5. Therefore Case 0 is blocked before
-`wass_prepare`; Cases 1 and 2 were intentionally not attempted. No numerical
-height metric is available and no success claim is made.
+This validation still has not run Case 0, but the core-runtime blocker is now
+removed. An existing native Windows installation was located at
+`D:\\wass\\dist\\bin`; all four core programs are callable through the project
+binding and report `1.11_heads/master-0-g6b82aeb` with MSVC/OpenCV 4.6.0. This
+observed runtime differs from the locked v1.5 reproducibility baseline. The
+current simulation calibration is still `camera.yaml`, not a deliberately
+generated WASS OpenCV XML calibration for the virtual cameras. Case 0 therefore
+remains NOT_RUN pending simulation-specific XML/config preparation; Cases 1 and
+2 remain intentionally unattempted. Details and binary hashes are recorded in
+[`local_runtime_binding.md`](local_runtime_binding.md).
 
 ## 2. Invocation environment
 
 | Item | Recorded value | Status |
 |---|---|---|
 | Host | Windows, project at `D:\research\stereo-wave-height` | observed |
-| WASS core executables | not found | BLOCKED/TODO |
-| WASS build/runtime | recommended isolated Linux/Docker baseline | UNKNOWN/TODO |
-| `wassgridsurface` executable | not found | BLOCKED/TODO |
+| WASS core executables | `D:\\wass\\dist\\bin\\wass_*.exe` | CONFIRMED/CALLABLE |
+| WASS build/runtime | native Windows, `1.11_heads/master-0-g6b82aeb`, MSVC/OpenCV 4.6.0 | observed local runtime |
+| locked v1.5 baseline runtime | not located | UNKNOWN/TODO |
+| `wassgridsurface` executable | not found | UNKNOWN/TODO |
 | WASS source modification | none | confirmed |
 
 No package, image, source checkout, or large dataset was downloaded during this
@@ -74,9 +77,11 @@ byte; no geometry, radiometry, or filename-derived pairing correction occurs.
 Ground-truth files are neither read nor copied into the WASS workspace. Every
 input/config file is recorded with SHA-256.
 
-The adapter deliberately requires caller-supplied, verified WASS XML/config
-files. It does not translate simulation `camera.yaml` into OpenCV XML because
-the exact v1.5 XML node/container compatibility remains **UNKNOWN/TODO**.
+The old successful native run confirms OpenCV XML root `<opencv_storage>`, node
+name `intrinsics_penne`, 3 x 3 double intrinsic matrices, and 5 x 1 double
+distortion vectors. The adapter still requires caller-supplied WASS XML/config
+files: converting the simulation nominal camera to these files must be a
+separate explicit step and must not reuse the old real-data calibration.
 
 ## 5. Actual command sequence
 
@@ -97,11 +102,13 @@ the chain at that stage. Executable paths are mandatory and explicit.
 
 ## 6. Actual outputs and parser boundary
 
-The v1.5 source review confirms per-frame outputs including `matches.txt`,
+The located completed work directory directly confirms per-frame outputs including `matches.txt`,
 `matcher_stats.csv`, `ext_R.xml`, `ext_T.xml`, `H.xml`, `P0cam.txt`,
 `P1cam.txt`, `plane.txt`, `mesh_cam.xyzC`, optional `mesh_cam.xyzbin`/PLY, and
 stereo diagnostic logs/images. `wassgridsurface` is expected to produce
-`gridded.nc`, but the exact 0.11.4 schema has not been observed on this host.
+`gridded.nc`, but neither the gridder nor an old `gridded.nc` was found on this host.
+The colocated MATLAB loader confirms the `mesh_cam.xyzC` binary field order and
+dequantization formula; its physical unit remains UNKNOWN/TODO.
 
 The new NetCDF parser requires a run-specific mapping proven by `ncdump -h` and
 an independent scale check. The caller must specify variable names, exact Z/mask
@@ -133,38 +140,37 @@ maximum absolute error, coverage, and hole rate are all **NOT_AVAILABLE**.
 
 | Case | Status | Reason/result |
 |---|---|---|
-| Case 0: static water | BLOCKED before prepare | WASS binaries and verified XML/config absent |
+| Case 0: static water | NOT_RUN | core runtime callable; simulation-specific XML/config still required |
 | Case 1: fixed height | NOT_ATTEMPTED | Case 0 did not close |
 | Case 2: sinusoidal wave | NOT_ATTEMPTED | Cases 0 and 1 did not close |
 
 ## 9. Automated verification
 
-Unit tests cover input path mapping, left/right pairing, exclusion of truth,
-runner return-code/log handling with a mock process, explicit parser metadata,
-and rejection of unknown units and coordinate systems. They do not mock a WASS
-reconstruction result and do not count as an integration success.
+Thirty-seven unit tests cover input path mapping, left/right pairing, exclusion
+of truth, runner failure/log handling, native/WSL runtime configuration, runtime
+probe behavior, explicit parser metadata, and rejection of unknown units and
+coordinate systems. A separate live health probe through project code reports
+all four local core programs callable. No test mocks a successful WASS
+reconstruction, and these checks do not count as Case 0 success.
 
 ## 10. UNKNOWN/TODO and next gate
 
-1. Provide/build the locked WASS v1.5 executables in an isolated Linux/Docker
-   environment and record compiler, OpenCV, dependency, and executable hashes.
-2. Generate `matcher_config.txt` and `stereo_config.txt` using the locked
-   binaries' `--genconfig`, then record hashes and water-tank adaptations.
-3. Verify exact OpenCV XML node names/container format for candidate nominal
-   intrinsics/distortion; validate whether ideal zero distortion is accepted.
-4. Select and record Case 0 baseline and working distance as simulation inputs.
-5. Determine whether the current sparse point-splat texture provides sufficient
-   connected texture for WASS matching; do not change it without a documented
-   simulation-model decision.
-6. Run Case 0 and archive command logs plus actual output inventory outside Git.
-7. Inspect `gridded.nc` with `ncdump -h`; verify 0.11.4 variables/dimensions,
-   invalid-value semantics, frame order, coordinate axes, and scale.
-8. Verify physical scale using the declared baseline/known geometry before
-   converting to metres.
-9. Determine the v1.5 procedure for aggregating per-frame `plane.txt` into the
-   `planes.txt` required by the gridder.
-10. Only after Case 0 metrics exist and pass a predeclared gate, run Case 1;
-    only after Case 1 passes, run Case 2.
+1. Full SHA/tag for embedded short commit `6b82aeb` is UNKNOWN because the local
+   source snapshot has no `.git` metadata; the observed runtime is not v1.5.
+2. The installed path/version of `wassgridsurface` remains UNKNOWN/TODO.
+3. Generate simulation-specific OpenCV XML using the confirmed container/node
+   schema; verify ideal zero distortion with the local build.
+4. Generate/freeze Case 0 matcher and stereo configs from the observed build,
+   then record hashes and intentional parameter changes.
+5. Select and record Case 0 baseline and working distance as simulation inputs.
+6. Determine whether the current point-splat texture supplies adequate connected
+   texture for matching.
+7. Run Case 0 and archive logs/output outside Git.
+8. Locate/install nothing in this task: later obtain the gridder deliberately,
+   then inspect real `gridded.nc` schema, mask polarity, axes, and scale.
+9. Verify the physical unit of `mesh_cam.xyzC` using declared baseline/known
+   geometry before converting to metres.
+10. Only after Case 0 passes its gate run Case 1, then Case 2.
 
 ## 11. Limitations
 

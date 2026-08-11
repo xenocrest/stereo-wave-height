@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status": "local_observed_example",
+  "environment_type": "native",
+  "working_directory": "D:\\wass\\dist\\bin",
+  "command_prefix": [],
+  "environment_variables": {},
+  "observed_version": "1.11_heads/master-0-g6b82aeb",
+  "build_banner": "Windows-10.0.19044 - MSVC, OpenCV 4.6.0",
+  "executables": {
+    "prepare": "D:\\wass\\dist\\bin\\wass_prepare.exe",
+    "match": "D:\\wass\\dist\\bin\\wass_match.exe",
+    "autocalibrate": "D:\\wass\\dist\\bin\\wass_autocalibrate.exe",
+    "stereo": "D:\\wass\\dist\\bin\\wass_stereo.exe",
+    "gridsurface": null
+  },
+  "sha256": {
+    "prepare": "81CD7085B17127C2EA96D0F1BC7CFACF1DC63D8B683E28FAB859E1DCF036F06B",
+    "match": "69D5DB33E9400A741DB34D6104EC2B34C23459DFE842373F5BD0A37144607B47",
+    "autocalibrate": "B869AF7B32E5BD0691989E0CF760A7554BC18669DCC42CA62837C987907C1FA3",
+    "stereo": "BDE66000C54940104A3978C68C9C3FEA3BAE00B43410F0B6B032407A690B57B9"
+  },
+  "notes": "Machine-local observed example only; no WASS files are copied into this repository. gridsurface remains UNKNOWN/TODO."
+}
