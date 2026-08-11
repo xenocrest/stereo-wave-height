@@ -47,6 +47,11 @@ class SupportStatistics:
     def supported_cell_ratio(self) -> float:
         return float(np.count_nonzero(self.counts) / self.counts.size)
 
+    @property
+    def observation_mask(self) -> npt.NDArray[np.bool_]:
+        """Mark cells containing at least one raw observation; do not interpolate."""
+        return self.counts > 0
+
 
 @dataclass(frozen=True)
 class SpatialErrorStatistics:
@@ -129,6 +134,27 @@ def verify_grid_alignment(
         raise ValueError("x grids differ")
     if not np.array_equal(np.asarray(y_a), np.asarray(y_b)):
         raise ValueError("y grids differ")
+
+
+def height_observation_support_mask(
+    dynamic_support: npt.ArrayLike,
+    static_support: npt.ArrayLike,
+) -> npt.NDArray[np.bool_]:
+    """Return the physical support intersection required by ``H=Z-Z0``.
+
+    ``dynamic_support`` has shape ``[time,y,x]``. ``static_support`` has the
+    same form and contributes to Z0 wherever at least one static frame contains
+    a raw observation. This function only combines booleans; it does not change
+    or estimate height values.
+    """
+    dynamic = np.asarray(dynamic_support, dtype=bool)
+    static = np.asarray(static_support, dtype=bool)
+    if dynamic.ndim != 3 or static.ndim != 3 or dynamic.shape[1:] != static.shape[1:]:
+        raise ValueError("support arrays must have compatible [time,y,x] shapes")
+    if dynamic.shape[0] == 0 or static.shape[0] == 0:
+        raise ValueError("dynamic and static support must contain frames")
+    reference_support = np.any(static, axis=0)
+    return dynamic & reference_support[np.newaxis, :, :]
 
 
 def spatial_error_statistics(error: npt.ArrayLike, valid_mask: npt.ArrayLike) -> SpatialErrorStatistics:

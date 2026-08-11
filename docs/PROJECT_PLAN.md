@@ -116,12 +116,15 @@
 - Case 1 固定 +0.010 m 高度完成统一坐标端到端验证，但 RMSE 和最大误差未达预注册门槛；
 - Case 1 分层误差诊断完成：真值严格为 10 mm，xyzC 平面恢复为 8.999 mm；
   升高帧只有 51.45% 网格单元具有原始点支持，官方 DCT 的无支持区域贡献
-  超过 98% 平方误差。上游点数下降原因仍为 UNKNOWN，Case 2 继续冻结；
+  超过 98% 平方误差；
+- Case 1 支持损失已定位到 WASS 三角化后的 Z-gap 最大连通分量提取：升高帧
+  在此单步丢失 58.57% 点。项目已定义 raw observation support mask 作为后续
+  预注册物理有效域；具体垂直断带机制仍需保留被拒点诊断，Case 2 继续冻结；
 - 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
 当前尚未完成：
 
-- Case 1 上游点数下降原因、官方 gridder 有效域政策和专用正负符号测试；
+- Case 1 连通分量垂直断带机制、物理有效域预注册和专用正负符号测试；
 - WASS 锁定 `v_1.5` 基线的独立构建复现；
 - 工业相机实机接入与同步测量；
 - 水槽静水和人工波实验；
@@ -140,6 +143,7 @@ Case 0 已在本机 WASS `1.11` 和官方 gridder 0.11.4 上闭环。Case 1 已�
 - [Case 0 静水验证](validation/case0_static_water.md)
 - [Case 1 固定高度验证](validation/case1_constant_height.md)
 - [Case 1 误差根因诊断](validation/case1_error_diagnosis.md)
+- [Case 1 重建支持追踪](validation/case1_support_trace.md)
 - [WASS 参数映射](wass/wass_parameter_mapping.md)
 - [静水参考集成](wass/static_water_reference_integration.md)
 - [数学模型](mathematical_model/height_definition.md)

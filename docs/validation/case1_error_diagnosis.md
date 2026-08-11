@@ -3,6 +3,11 @@
 Run date: 2026-08-11  
 Status: **DIAGNOSIS COMPLETE; CASE 1 REMAINS FAILED; CASE 2 NOT STARTED**
 
+The follow-up stage trace is documented in
+[`case1_support_trace.md`](case1_support_trace.md). It locates the upstream
+loss at WASS's Z-gap largest-connected-component extraction and defines the
+raw-observation physical domain without changing this run's formal decision.
+
 This is a read-only decomposition of the frozen Case 1 run. No WASS or
 `wassgridsurface` source, parameter, interpolation method, mask, acceptance
 gate, or evaluation region was changed. Machine-readable values are in
@@ -137,13 +142,16 @@ acceptance failure's large spatial tail appears after xyzC: supported grid cells
 retain about 1.28 mm RMSE, while unsupported DCT cells contain more than 98% of
 squared error and every top-tail cell. The **primary cause of the RMSE and
 maximum-error failure is official DCT full-domain reconstruction over missing
-raised-frame raw support**. Why WASS retains only 1.79 million raised points and
-leaves 48.55% of cells unsupported remains UNKNOWN.
+raised-frame raw support**. WASS retains only 1.79 million raised points because
+its post-triangulation Z-gap largest-connected-component stage removes 2.537
+million raised points. The precise disparity/depth mechanism that creates the
+vertical component boundaries remains UNKNOWN because the rejected full mesh
+was not saved.
 
 ## 9. Next work
 
-1. Stay in Case 1 and trace the raised/static point-count divergence through
-   documented WASS stereo rejection stages before changing any threshold.
+1. Stay in Case 1 and capture the rejected pre-component depth structure with
+   an official diagnostic output before changing any threshold.
 2. Review the official gridder's intended validity/ROI policy and define a raw
    support quality product separately from finite DCT output. Do not
    retroactively remove cells or claim this run passes.

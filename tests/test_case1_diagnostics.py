@@ -4,6 +4,7 @@ import pytest
 from src.validation.diagnostics import (
     constant_truth_difference,
     fit_plane_orthogonal,
+    height_observation_support_mask,
     raw_point_support,
     spatial_error_statistics,
     verify_grid_alignment,
@@ -35,6 +36,14 @@ def test_support_density_accounting() -> None:
     assert result.in_grid_points == 3
     assert result.counts.tolist() == [[2, 0], [0, 1]]
     assert result.supported_cell_ratio == pytest.approx(0.5)
+    assert result.observation_mask.tolist() == [[True, False], [False, True]]
+
+
+def test_height_support_requires_dynamic_and_static_observation() -> None:
+    static = np.array([[[True, False], [False, True]], [[False, True], [False, True]]])
+    dynamic = np.array([[[True, True], [True, False]]])
+    mask = height_observation_support_mask(dynamic, static)
+    assert mask.tolist() == [[[True, True], [False, False]]]
 
 
 def test_spatial_error_percentiles() -> None:

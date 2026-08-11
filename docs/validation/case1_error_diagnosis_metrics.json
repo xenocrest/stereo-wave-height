@@ -25,6 +25,38 @@
     "case1_count_per_cell_p95": 144.0,
     "case1_count_per_cell_p99": 144.0
   },
+  "support_trace": {
+    "static_textured_pixel_ratio": 0.7745520897160948,
+    "case1_textured_pixel_ratio": 0.7828193614685458,
+    "static_truth_disparity_px": 231.8840579710145,
+    "case1_truth_disparity_px": 233.0493044934819,
+    "static_common_fov_ratio": 0.9052761201098797,
+    "case1_common_fov_ratio": 0.904800120713447,
+    "static_triangulated_points": 4322503,
+    "case1_triangulated_points": 4331598,
+    "static_largest_component_points": 4311954,
+    "case1_largest_component_points": 1794468,
+    "case1_component_stage_loss": 2537130,
+    "case1_component_stage_loss_ratio": 0.585726099236356,
+    "supported_domain": {
+      "coverage": 0.5144921875,
+      "bias": -0.0010828891150700313,
+      "rmse": 0.0012785383290218626,
+      "mae": 0.0011163128397068504,
+      "maximum_absolute_error": 0.006634027063846588,
+      "absolute_p50": 0.001104254364967346,
+      "absolute_p90": 0.0019044884681701656,
+      "absolute_p95": 0.0021386532068252565,
+      "absolute_p99": 0.002668952243328095
+    },
+    "bias_budget": {
+      "static_depth_error": -0.00062076177767878,
+      "case1_depth_error": 0.000383235724484843,
+      "differential_disparity_error_px": -0.116866897882517,
+      "xyzc_half_step_euclidean_bound_static": 0.00001941407951123188,
+      "xyzc_half_step_euclidean_bound_case1": 0.000014613916111885066
+    }
+  },
   "grid_error": {
     "median_signed": -0.0011266708374023443,
     "absolute_p50": 0.0015900243520736686,
