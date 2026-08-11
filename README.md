@@ -22,18 +22,19 @@
 - WASS 输出适配、坐标变换、静水参考、高度计算和误差指标核心代码；
 - 虚拟双目相机、水面真值模型及可复现合成立体影像生成；
 - WASS 输入工作区适配、外部进程 runner 和显式 NetCDF 映射 parser 边界；
-- 本机 WASS 四阶段 Case 0 静水仿真核心重建成功并生成尺度已核验的 `mesh_cam.xyzC`；
-- 43 项自动化测试，覆盖后处理、虚拟双目、合成影像、WASS 输入和运行时/输出格式。
+- Case 0 已通过 WASS 核心、官方 `wassgridsurface 0.11.4` 和规则网格高度闭环；
+- Case 1 已完成 +0.010 m 固定高度端到端运行，平均符号/偏差正确，但 RMSE 和最大误差未通过预注册门槛；
+- 53 项自动化测试，覆盖后处理、仿真、WASS 接口、官方 NetCDF 和 Case 1 帧选择。
 
 尚未完成：
 
-- `wassgridsurface/gridded.nc` 接入及 Case 0 规则网格高度产品；
+- Case 1 稀疏点支持和官方 DCT 振铃问题的预注册诊断与修正验证；
 - WASS 锁定 `v_1.5` 基线的独立复现（当前成功运行的是本机 `1.11` 构建）；
 - 工业相机实机接入、同步与标定；
 - 水槽静水/人工波实验及独立参考对比；
 - 1 cm 目标的实测验收。
 
-Case 0 已通过本机 WASS 的 prepare、match、autocalibrate 和 stereo，结果与限制见 [Case 0 静水验证](docs/validation/case0_static_water.md)。规则网格 H 仍等待 `wassgridsurface/gridded.nc`；该仿真结果不等同于真实设备或真实水面的精度验证。
+Case 0 已正式闭环，见 [Case 0 静水验证](docs/validation/case0_static_water.md)。Case 1 的完整链路已运行，但未通过冻结的 RMSE/最大误差门槛，见 [Case 1 固定高度验证](docs/validation/case1_constant_height.md)。这些理想仿真结果均不等同于真实设备或真实水面的精度验证。
 
 ## 仓库结构
 

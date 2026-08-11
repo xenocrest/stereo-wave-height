@@ -112,18 +112,19 @@
 - 理想虚拟双目相机、水面真值模型与可复现合成立体影像生成；
 - WASS 输入工作区适配、外部进程 runner、显式 NetCDF 映射 parser 及其自动化测试；
 - 本机已有 WASS runtime 定位、版本/哈希绑定和四程序健康检查；
-- Case 0 静水仿真的 prepare、match、autocalibrate、stereo 核心链成功及 xyzC 尺度验证；
-- 已确认 OpenCV XML、配置派生和 xyzC 解码接口。
+- Case 0 静水仿真的 WASS 核心、官方网格和标准高度链正式闭环；
+- Case 1 固定 +0.010 m 高度完成统一坐标端到端验证，但 RMSE 和最大误差未达预注册门槛；
+- 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
 当前尚未完成：
 
-- `wassgridsurface/gridded.nc` 接入与 Case 0 规则网格高度产品；
+- Case 1 稀疏点支持、DCT 振铃和专用正负符号测试的预注册诊断；
 - WASS 锁定 `v_1.5` 基线的独立构建复现；
 - 工业相机实机接入与同步测量；
 - 水槽静水和人工波实验；
 - 1 cm 目标的实测达标声明。
 
-Case 0 已在本机 WASS `1.11` 构建上完成核心三维重建，但规则网格 H 尚未闭合；该理想仿真不等同于真实设备或真实水面验证。
+Case 0 已在本机 WASS `1.11` 和官方 gridder 0.11.4 上闭环。Case 1 已恢复正向非零均值，但未达到冻结的厘米级数值门槛；Case 2 未开始。这些理想仿真不等同于真实设备或真实水面验证。
 
 ## 6. 文档导航
 
@@ -134,6 +135,7 @@ Case 0 已在本机 WASS `1.11` 构建上完成核心三维重建，但规则网
 - [WASS 复现计划](wass/reproduction_plan.md)
 - [WASS 端到端集成验证](wass/end_to_end_validation.md)
 - [Case 0 静水验证](validation/case0_static_water.md)
+- [Case 1 固定高度验证](validation/case1_constant_height.md)
 - [WASS 参数映射](wass/wass_parameter_mapping.md)
 - [静水参考集成](wass/static_water_reference_integration.md)
 - [数学模型](mathematical_model/height_definition.md)

@@ -139,17 +139,25 @@ retained only as a diagnostic. On the official 160 x 160 grid, H RMSE is
 elevation RMSE about zero is `5.5410941e-4 m`. The independent optical plane
 distance is `1.9992484686 m`, or `-7.515314e-4 m` from 2.00 m.
 
+Case 1 used one unified sequence containing two static and two +0.010 m frames.
+All frames shared one autocalibration, mean `planes.txt`, grid setup, coordinate
+system, baseline scale, and x/y grid. Z0 used static frames only. Mean recovered
+height is `0.0088889696 m` with bias `-0.0011110304 m`, but RMSE is
+`0.0110795383 m` and maximum absolute error is `0.0754659262 m`; these violate
+the frozen `0.010 m` and `0.030 m` gates. Details are in
+[`case1_constant_height.md`](../validation/case1_constant_height.md).
+
 ## 8. Ordered case status
 
 | Case | Status | Reason/result |
 |---|---|---|
 | Case 0: static water | CLOSED | WASS core and official 0.11.4 gridder returned 0; canonical H metrics computed |
-| Case 1: fixed height | NOT_ATTEMPTED | explicitly outside this task |
+| Case 1: fixed height | COMPLETED / FAILED GATE | positive mean recovered; RMSE and maximum error exceed frozen limits |
 | Case 2: sinusoidal wave | NOT_ATTEMPTED | explicitly outside this task |
 
 ## 9. Automated verification
 
-Forty-seven unit tests cover input path mapping, left/right pairing, exclusion
+Fifty-three unit tests cover input path mapping, left/right pairing, exclusion
 of truth, runner failure/log handling, native/WSL runtime configuration, runtime
 probe behavior, explicit parser metadata, and rejection of unknown units and
 coordinate systems. A separate live health probe through project code reports
@@ -163,7 +171,8 @@ all four local core programs callable. The real WASS run is recorded separately 
    interpolation modes remain UNKNOWN until separately inspected and tested.
 3. Official DCT coverage is full-domain and does not encode raw point density;
    support-sensitive coverage remains a future validation definition.
-4. Case 1 and Case 2 remain NOT_ATTEMPTED in this task.
+4. Case 1 sparse-support/DCT behavior requires a separately reviewed diagnosis;
+   Case 2 remains NOT_ATTEMPTED.
 
 ## 11. Limitations
 
