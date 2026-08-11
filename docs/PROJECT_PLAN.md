@@ -110,11 +110,12 @@
 - 静水面参考作为 WASS 后处理的集成设计；
 - WASS 输出标准化适配、坐标变换、静水参考、高度计算和误差指标核心代码；
 - 理想虚拟双目相机、水面真值模型与可复现合成立体影像生成；
-- 后处理、虚拟双目、合成影像和 WASS 输出适配自动化测试。
+- WASS 输入工作区适配、外部进程 runner、显式 NetCDF 映射 parser 及其自动化测试；
+- 首次 WASS 端到端尝试的环境审查与失败状态记录。
 
 当前尚未完成：
 
-- WASS 锁定版本的本地构建与真实 WASS 端到端重建；
+- WASS 锁定版本的本地构建、已验证 OpenCV XML/config 准备与真实 WASS 端到端重建；
 - 工业相机实机接入与同步测量；
 - 水槽静水和人工波实验；
 - 1 cm 目标的实测达标声明。
@@ -128,6 +129,7 @@
 - [研究方向](research_direction.md)
 - [双目测波系统总体设计](system/stereo_measurement_system_design.md)
 - [WASS 复现计划](wass/reproduction_plan.md)
+- [WASS 端到端集成验证](wass/end_to_end_validation.md)
 - [WASS 参数映射](wass/wass_parameter_mapping.md)
 - [静水参考集成](wass/static_water_reference_integration.md)
 - [数学模型](mathematical_model/height_definition.md)
