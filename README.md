@@ -24,17 +24,19 @@
 - WASS 输入工作区适配、外部进程 runner 和显式 NetCDF 映射 parser 边界；
 - Case 0 已通过 WASS 核心、官方 `wassgridsurface 0.11.4` 和规则网格高度闭环；
 - Case 1 已完成 +0.010 m 固定高度端到端运行，平均符号/偏差正确，但 RMSE 和最大误差未通过预注册门槛；
-- 53 项自动化测试，覆盖后处理、仿真、WASS 接口、官方 NetCDF 和 Case 1 帧选择。
+- Case 1 分层诊断确认：xyzC 平面差为 8.999 mm；升高帧原始点仅支持
+  51.45% 网格单元，无支持 DCT 单元贡献超过 98% 平方误差；
+- 自动化测试覆盖后处理、仿真、WASS 接口、官方 NetCDF、Case 1 帧选择和误差诊断。
 
 尚未完成：
 
-- Case 1 稀疏点支持和官方 DCT 振铃问题的预注册诊断与修正验证；
+- Case 1 上游点数下降原因和官方 gridder 有效域政策审查；
 - WASS 锁定 `v_1.5` 基线的独立复现（当前成功运行的是本机 `1.11` 构建）；
 - 工业相机实机接入、同步与标定；
 - 水槽静水/人工波实验及独立参考对比；
 - 1 cm 目标的实测验收。
 
-Case 0 已正式闭环，见 [Case 0 静水验证](docs/validation/case0_static_water.md)。Case 1 的完整链路已运行，但未通过冻结的 RMSE/最大误差门槛，见 [Case 1 固定高度验证](docs/validation/case1_constant_height.md)。这些理想仿真结果均不等同于真实设备或真实水面的精度验证。
+Case 0 已正式闭环，见 [Case 0 静水验证](docs/validation/case0_static_water.md)。Case 1 的完整链路已运行，但未通过冻结的 RMSE/最大误差门槛，见 [Case 1 固定高度验证](docs/validation/case1_constant_height.md)和[误差根因诊断](docs/validation/case1_error_diagnosis.md)。这些理想仿真结果均不等同于真实设备或真实水面的精度验证；Case 2 尚未开始。
 
 ## 仓库结构
 

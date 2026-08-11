@@ -4,6 +4,11 @@ Run date: 2026-08-11
 
 Status: **END-TO-END COMPLETED; PRE-REGISTERED ACCURACY GATE FAILED**
 
+Post-run root-cause analysis is recorded in
+[`case1_error_diagnosis.md`](case1_error_diagnosis.md). It confirms that the
+large spatial error tail occurs in official DCT output cells without raised
+xyzC support; Case 1 remains failed and its formal metrics are unchanged.
+
 ## 1. Scientific question
 
 Case 1 asks whether a non-zero, known water-surface displacement survives the
@@ -172,8 +177,9 @@ Coverage is finite DCT output coverage, not raw point-support density, because
 ## 8. Limits and UNKNOWN/TODO
 
 - Full SHA/tag behind local WASS short commit `6b82aeb`: UNKNOWN.
-- Root cause of raised-frame point loss requires a separate, pre-registered
-  diagnosis; likely causes must not be selected without evidence.
+- The downstream error localization is confirmed in
+  `case1_error_diagnosis.md`; the upstream reason for raised-frame point loss
+  remains UNKNOWN and must be traced before any parameter change.
 - Whether official DCT parameters or another official gridder mode should be
   used for sparse point support: TODO and requires review before rerun.
 - A dedicated sign test with `|Delta H|>0.010 m`, and negative Delta H: TODO.

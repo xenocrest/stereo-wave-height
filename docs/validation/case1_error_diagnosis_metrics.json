@@ -1,0 +1,48 @@
+{
+  "run": "D:/stereo-wave-height-runs/case1-constant-20260811",
+  "unit": "m",
+  "truth_difference": {"min": 0.01, "max": 0.01, "mean": 0.009999999999999998, "standard_deviation": 1.734723475976807e-18},
+  "pointcloud": {
+    "static_z_at_origin": -0.004500653584485108,
+    "case1_z_at_origin": 0.004498001446473931,
+    "recovered_difference": 0.008998655030959039,
+    "difference_error": -0.001001344969040961,
+    "static_residual_rmse": 0.0006704633523753167,
+    "static_residual_max_abs": 0.0023599727916756748,
+    "case1_residual_rmse": 2.6535876583078067e-12,
+    "case1_residual_max_abs": 9.328533605301725e-12,
+    "static_point_count_per_frame": 4311954,
+    "case1_point_count_per_frame": 1794468
+  },
+  "raw_grid_support": {
+    "grid_cell_count": 25600,
+    "static_supported_ratio": 1.0,
+    "case1_supported_ratio": 0.5144921875,
+    "case1_unsupported_cells": 12429,
+    "case1_in_grid_points": 1697433,
+    "case1_count_per_cell_p50": 43.0,
+    "case1_count_per_cell_p90": 144.0,
+    "case1_count_per_cell_p95": 144.0,
+    "case1_count_per_cell_p99": 144.0
+  },
+  "grid_error": {
+    "median_signed": -0.0011266708374023443,
+    "absolute_p50": 0.0015900243520736686,
+    "absolute_p90": 0.017236875605583186,
+    "absolute_p95": 0.02569841799736022,
+    "absolute_p99": 0.047227534246444915,
+    "maximum_absolute": 0.07546592617034913,
+    "maximum_signed": -0.07546592617034913,
+    "maximum_frame": 2,
+    "maximum_x": 0.6950000000000002,
+    "maximum_y": 0.08499999999999998,
+    "center_rmse": 0.006234618826419752,
+    "boundary_rmse": 0.016488975104793763,
+    "frame_2_supported_rmse": 0.0012711216322649067,
+    "frame_2_unsupported_rmse": 0.019815271641538096,
+    "frame_2_unsupported_squared_error_fraction": 0.9956582280595738,
+    "frame_3_supported_rmse": 0.0012859122495505798,
+    "frame_3_unsupported_rmse": 0.010467667236918375,
+    "frame_3_unsupported_squared_error_fraction": 0.9842596247184481
+  }
+}
