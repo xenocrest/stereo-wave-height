@@ -22,16 +22,18 @@
 - WASS 输出适配、坐标变换、静水参考、高度计算和误差指标核心代码；
 - 虚拟双目相机、水面真值模型及可复现合成立体影像生成；
 - WASS 输入工作区适配、外部进程 runner 和显式 NetCDF 映射 parser 边界；
-- 34 项自动化测试，覆盖后处理、虚拟双目、合成影像与 WASS 集成边界。
+- 本机 WASS 四阶段 Case 0 静水仿真核心重建成功并生成尺度已核验的 `mesh_cam.xyzC`；
+- 43 项自动化测试，覆盖后处理、虚拟双目、合成影像、WASS 输入和运行时/输出格式。
 
 尚未完成：
 
-- WASS 锁定版本的本地构建与真实 WASS 端到端重建；
+- `wassgridsurface/gridded.nc` 接入及 Case 0 规则网格高度产品；
+- WASS 锁定 `v_1.5` 基线的独立复现（当前成功运行的是本机 `1.11` 构建）；
 - 工业相机实机接入、同步与标定；
 - 水槽静水/人工波实验及独立参考对比；
 - 1 cm 目标的实测验收。
 
-当前代码验证的是项目自有的几何、仿真和 WASS 接口边界，不等同于 WASS 本体或真实设备的端到端验证。首次端到端尝试因本机缺少锁定版 WASS 可执行程序及已验证 OpenCV XML 标定/config 而停在 `wass_prepare` 之前；Case 0/1/2 均未形成重建结果，详见 [端到端集成验证记录](docs/wass/end_to_end_validation.md)。
+Case 0 已通过本机 WASS 的 prepare、match、autocalibrate 和 stereo，结果与限制见 [Case 0 静水验证](docs/validation/case0_static_water.md)。规则网格 H 仍等待 `wassgridsurface/gridded.nc`；该仿真结果不等同于真实设备或真实水面的精度验证。
 
 ## 仓库结构
 

@@ -111,16 +111,19 @@
 - WASS 输出标准化适配、坐标变换、静水参考、高度计算和误差指标核心代码；
 - 理想虚拟双目相机、水面真值模型与可复现合成立体影像生成；
 - WASS 输入工作区适配、外部进程 runner、显式 NetCDF 映射 parser 及其自动化测试；
-- 首次 WASS 端到端尝试的环境审查与失败状态记录。
+- 本机已有 WASS runtime 定位、版本/哈希绑定和四程序健康检查；
+- Case 0 静水仿真的 prepare、match、autocalibrate、stereo 核心链成功及 xyzC 尺度验证；
+- 已确认 OpenCV XML、配置派生和 xyzC 解码接口。
 
 当前尚未完成：
 
-- WASS 锁定版本的本地构建、已验证 OpenCV XML/config 准备与真实 WASS 端到端重建；
+- `wassgridsurface/gridded.nc` 接入与 Case 0 规则网格高度产品；
+- WASS 锁定 `v_1.5` 基线的独立构建复现；
 - 工业相机实机接入与同步测量；
 - 水槽静水和人工波实验；
 - 1 cm 目标的实测达标声明。
 
-现有代码和测试只验证项目自有的几何、仿真及 WASS 后处理接口，不等同于 WASS 本体或真实设备的端到端验证。
+Case 0 已在本机 WASS `1.11` 构建上完成核心三维重建，但规则网格 H 尚未闭合；该理想仿真不等同于真实设备或真实水面验证。
 
 ## 6. 文档导航
 
@@ -130,6 +133,7 @@
 - [双目测波系统总体设计](system/stereo_measurement_system_design.md)
 - [WASS 复现计划](wass/reproduction_plan.md)
 - [WASS 端到端集成验证](wass/end_to_end_validation.md)
+- [Case 0 静水验证](validation/case0_static_water.md)
 - [WASS 参数映射](wass/wass_parameter_mapping.md)
 - [静水参考集成](wass/static_water_reference_integration.md)
 - [数学模型](mathematical_model/height_definition.md)
