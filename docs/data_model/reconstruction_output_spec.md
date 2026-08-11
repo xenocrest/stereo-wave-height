@@ -90,3 +90,21 @@ H(x_i,y_j,t)=Z(x_i,y_j,t)-Z_0(x_i,y_j).
 ## 8. 文件建议
 
 轻量点表可使用带 schema 的 Parquet/CSV；规则网格可使用 NetCDF。具体编码器、压缩和缺失值元数据在实现前为 `UNKNOWN/TODO`。无论格式如何，字段名称、单位、维序、mask 和 provenance 不得省略。
+
+## 9. 已确认的 wassgridsurface 0.11.4 映射
+
+Case 0 已从官方 PyPI 版本及实际输出确认：
+
+| 源字段 | 实际存储 | 项目映射 |
+|---|---|---|
+| `Z` | `(count,X,Y)`，millimeter | `[time,y,x]`，m |
+| `X_grid` | `(X,Y)`，millimeter；沿第二索引变化 | 一维递增 `x`，m |
+| `Y_grid` | `(X,Y)`，millimeter；沿第一索引变化 | 一维递增 `y`，m |
+| `time` | `(count)`，seconds | 与 manifest 核验后保留为 `timestamp_ns` |
+| `scale` | 标量，meter | 必须等于显式仿真/硬件 baseline |
+| `maskZ` | `(X,Y)` | 0.11.4 DCT 路径中未写入 |
+
+适配器通过二维坐标场验证物理轴可分离性，不相信源维度名称本身。
+仅对已确认的 0.11.4 DCT 路径，有效性显式定义为有限 `Z`，因为官方
+源码返回全域 DCT mask 且未写入 `maskZ`。策略标识为
+`finite_z_for_dct_0_11_4`；禁止未经重新验证应用到其他版本或插值模式。

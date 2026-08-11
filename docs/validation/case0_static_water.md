@@ -2,7 +2,7 @@
 
 Run date: 2026-08-11
 
-Status: **WASS CORE RECONSTRUCTION PASSED; REGULAR-GRID HEIGHT PRODUCT PENDING**
+Status: **CASE 0 CLOSED THROUGH OFFICIAL WASS REGULAR GRID**
 
 ## Scope and runtime
 
@@ -226,12 +226,50 @@ These zero temporal errors are expected because the two synthetic frames are
 identical; they do not measure robustness to temporal noise. The non-zero
 static-plane residual above is the meaningful spatial reconstruction diagnostic.
 
-The canonical project `valid_temporal_mean -> HeightField` path requires a
-regular `Z(time,y,x)` grid. `wassgridsurface` and `gridded.nc` are unavailable,
-and `mesh_cam.xyzC` does not store pixel indices. Consequently the metrics above
-are explicitly **irregular common-point diagnostics**, not canonical regular-grid
-height metrics. Regular-grid H remains `BLOCKED_AT_GRID_VALIDATION`; units and
-plane coordinates are no longer blocked.
+The zero values above remain **irregular common-point diagnostics** only. They
+are not the formal Case 0 result because the two `xyzC` files are identical and
+the same samples define their temporal mean.
+
+## Official regular-grid closure
+
+The official companion tool `wassgridsurface==0.11.4` was installed in an
+isolated runtime outside Git. Its wheel SHA-256 is
+`eebf61ee2a4ff59db96f648d5378be50c87c63df65af8f943b44e6dae4322732`.
+Full provenance and schema are recorded in
+[wassgridsurface integration](../wass/wassgridsurface_integration.md).
+
+The official DCT path produced a verified `gridded.nc` with shape
+`[2,160,160]`. The project adapter maps it to `Z[time,y,x]` in metres on:
+
+- x extent `[-0.895, 0.695] m`, increasing, `dx=0.010 m`;
+- y extent `[-0.795, 0.795] m`, increasing, `dy=0.010 m`;
+- coordinate system identifier `wass_plane_aligned_grid`;
+- positive Z normal to the fitted static plane after official Z inversion.
+
+The actual 0.11.4 DCT output leaves `maskZ` entirely at the NetCDF fill value.
+Source inspection confirms that DCT returns an all-one mask and this release
+does not write it. This run therefore uses the explicit version-scoped policy
+`finite_z_for_dct_0_11_4`; all 51,200 Z samples are finite.
+
+The existing `valid_temporal_mean`, `calculate_height`, and metrics functions
+give the formal regular-grid results:
+
+| Metric | Result |
+|---|---:|
+| H RMSE | `0.0000044625202 m` |
+| H MAE | `0.0000035309726 m` |
+| H maximum absolute error | `0.0000122763813 m` |
+| finite-grid coverage | `1.0` |
+| finite-grid hole rate | `0.0` |
+| aligned Z elevation RMSE about truth `Z=0` | `0.0005541094 m` |
+| aligned Z elevation MAE | `0.0004948676 m` |
+| aligned Z elevation maximum absolute error | `0.0010604991 m` |
+| temporal-mean Z0 RMSE about zero | `0.0005540914 m` |
+
+The non-zero H metrics measure official DCT numerical repeatability. `Z` here
+is plane-relative elevation, not optical depth. The independent plane-distance
+estimate is `1.9992484686 m` against the 2.00 m simulation distance: error
+`-0.0007515314 m`, absolute error `0.0007515314 m`.
 
 ## Output inventory
 
@@ -245,24 +283,18 @@ No run images, point clouds, or other large artifacts are committed to Git.
 
 ## Conclusion and remaining TODO
 
-Case 0 has passed the WASS core reconstruction gate: synthetic stereo images
-were accepted and all four WASS stages returned zero, producing scale-validated
-3-D point clouds. It has not yet passed the canonical regular-grid height-product
-gate.
+Case 0 has passed both the WASS core reconstruction gate and the official
+regular-grid height-product gate. All core stages and `wassgridsurface` returned
+zero, and the verified NetCDF was consumed by the existing height chain.
 
 Remaining items:
 
-1. locate or deliberately provision a recorded `wassgridsurface` runtime in a
-   later task;
-2. generate `gridded.nc` and verify its actual schema, mask polarity, axis order,
-   scale, and timestamp mapping;
-3. run the existing `valid_temporal_mean`, `calculate_height`, and standard
-   metrics on that verified regular grid;
-4. improve the Case 0 design to include independently generated static frames if
+1. improve the Case 0 design to include independently generated static frames if
    temporal repeatability, rather than deterministic reproducibility, is to be
    measured;
-5. do not start Case 1 until the project decides whether core reconstruction or
-   canonical gridded H is the required Case 0 exit gate.
+2. define a mask/support policy for other gridder versions or interpolation
+   modes before use;
+3. retain Case 1 and Case 2 as NOT_ATTEMPTED in this task.
 
 This run is ideal simulation only. It excludes real camera noise, calibration
 error, synchronization error, reflection/refraction, and real water optics. It

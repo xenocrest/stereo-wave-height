@@ -5,18 +5,19 @@ Validation date: 2026-08-11
 ## 1. Baseline and outcome
 
 The locked reconstruction baseline is WASS tag `v_1.5`, commit
-`59f1b1c46c41a7d0baf85fc2b21e062eaf552feb`; the separately planned gridder is
+`59f1b1c46c41a7d0baf85fc2b21e062eaf552feb`; the official companion gridder is
 `wassgridsurface 0.11.4`. Sources are the project reviews in
 [`upstream_reference.md`](upstream_reference.md),
 [`pipeline_analysis.md`](pipeline_analysis.md), and
 [`input_output_spec.md`](input_output_spec.md).
 
-Case 0 has now passed the four-stage WASS core pipeline with the bound native
+Case 0 has passed the four-stage WASS core pipeline with the bound native
 Windows runtime. Two ideal static frames completed prepare, match,
 autocalibrate, and stereo with return code 0 and produced identical real
 `mesh_cam.xyzC` point clouds. Baseline-normalized scale was validated from
 `||ext_T||=1` and the declared simulation baseline. The canonical regular-grid
-height product remains pending because `wassgridsurface/gridded.nc` is absent.
+height product was then generated with official `wassgridsurface==0.11.4` and
+consumed by the project's schema-validated height chain.
 Complete parameters, commands, hashes, diagnostics, and limitations are in
 [`case0_static_water.md`](../validation/case0_static_water.md).
 
@@ -28,11 +29,12 @@ Complete parameters, commands, hashes, diagnostics, and limitations are in
 | WASS core executables | `D:\\wass\\dist\\bin\\wass_*.exe` | CONFIRMED/CALLABLE |
 | WASS build/runtime | native Windows, `1.11_heads/master-0-g6b82aeb`, MSVC/OpenCV 4.6.0 | observed local runtime |
 | locked v1.5 baseline runtime | not located | UNKNOWN/TODO |
-| `wassgridsurface` executable | not found | UNKNOWN/TODO |
+| `wassgridsurface` executable | isolated runtime outside Git, version 0.11.4 | CONFIRMED/CALLABLE |
 | WASS source modification | none | confirmed |
 
-No package, image, source checkout, or large dataset was downloaded during this
-work.
+The official package and declared runtime dependencies were installed in a
+repository-external virtual environment. No source checkout or dataset was
+added to Git.
 
 ## 3. Input source and candidate camera
 
@@ -103,22 +105,19 @@ the chain at that stage. Executable paths are mandatory and explicit.
 The located completed work directory directly confirms per-frame outputs including `matches.txt`,
 `matcher_stats.csv`, `ext_R.xml`, `ext_T.xml`, `H.xml`, `P0cam.txt`,
 `P1cam.txt`, `plane.txt`, `mesh_cam.xyzC`, optional `mesh_cam.xyzbin`/PLY, and
-stereo diagnostic logs/images. `wassgridsurface` is expected to produce
-`gridded.nc`, but neither the gridder nor an old `gridded.nc` was found on this host.
+stereo diagnostic logs/images. The official companion package
+`wassgridsurface==0.11.4` was subsequently provisioned in an isolated runtime
+and produced an actual `gridded.nc` for Case 0.
 The colocated MATLAB loader confirms the `mesh_cam.xyzC` binary field order and
 dequantization formula. For Case 0, `||ext_T||=1` plus the declared 0.20 m
 simulation baseline confirms `0.20 m` per WASS baseline unit; this confirmation
 is run-specific and does not assign units to unrelated historical data.
 
-The new NetCDF parser requires a run-specific mapping proven by `ncdump -h` and
-an independent scale check. The caller must specify variable names, exact Z/mask
-dimension order, whether true means valid or invalid, source/output units,
-coordinate-system identifier, and a
-positive scale factor. It explicitly transposes to project `[time,y,x]`, applies
-only the declared scale to X/Y/Z, combines the declared mask with finite values,
-and pairs frames with manifest timestamps. It fails on UNKNOWN unit or
-coordinate metadata. It does not infer axes or parse `mesh_cam.xyzC` because
-the compressed representation and physical scale have not yet been verified.
+The version-specific parser verifies the actual 0.11.4 generator metadata,
+baseline, timestamps, units, dimensions, separable physical coordinate fields,
+and release-specific unwritten `maskZ` behavior. It maps millimetres to metres
+and produces project `[time,y,x]` without interpreting dimension names as
+physical axes. Unknown metadata or policy fails explicitly.
 
 ## 7. Height chain and metrics
 
@@ -133,23 +132,24 @@ StandardizedGrid3D
   -> RMSE, MAE, maximum absolute error, coverage, hole rate
 ```
 
-For Case 0, truth is `H_true=0 m`. On the identical common irregular point
-support, temporal-mean H has RMSE/MAE/max error 0 m, coverage 0.860391, and hole
-rate 0.139609 versus the full image. Static-plane RMSE is 0.0009599 m and max
-absolute residual is 0.0077326 m. These are point-support diagnostics; canonical
-regular-grid metrics remain NOT_AVAILABLE.
+For Case 0, truth is `H_true=0 m`. The earlier identical-point result of zero is
+retained only as a diagnostic. On the official 160 x 160 grid, H RMSE is
+`4.4625202e-6 m`, MAE is `3.5309726e-6 m`, maximum absolute error is
+`1.2276381e-5 m`, finite-grid coverage is 1.0, and hole rate is 0.0. Aligned Z
+elevation RMSE about zero is `5.5410941e-4 m`. The independent optical plane
+distance is `1.9992484686 m`, or `-7.515314e-4 m` from 2.00 m.
 
 ## 8. Ordered case status
 
 | Case | Status | Reason/result |
 |---|---|---|
-| Case 0: static water | CORE_PASSED / GRID_PENDING | all four WASS stages returned 0; xyzC scale confirmed |
-| Case 1: fixed height | NOT_ATTEMPTED | Case 0 did not close |
-| Case 2: sinusoidal wave | NOT_ATTEMPTED | Cases 0 and 1 did not close |
+| Case 0: static water | CLOSED | WASS core and official 0.11.4 gridder returned 0; canonical H metrics computed |
+| Case 1: fixed height | NOT_ATTEMPTED | explicitly outside this task |
+| Case 2: sinusoidal wave | NOT_ATTEMPTED | explicitly outside this task |
 
 ## 9. Automated verification
 
-Forty-three unit tests cover input path mapping, left/right pairing, exclusion
+Forty-seven unit tests cover input path mapping, left/right pairing, exclusion
 of truth, runner failure/log handling, native/WSL runtime configuration, runtime
 probe behavior, explicit parser metadata, and rejection of unknown units and
 coordinate systems. A separate live health probe through project code reports
@@ -159,12 +159,11 @@ all four local core programs callable. The real WASS run is recorded separately 
 
 1. Full SHA/tag for embedded short commit `6b82aeb` remains UNKNOWN because the
    local source snapshot has no `.git` metadata.
-2. Locate or deliberately provision a recorded `wassgridsurface` runtime.
-3. Generate and inspect real `gridded.nc`; confirm schema, mask polarity, axes,
-   scale, and timestamps.
-4. Run the existing canonical `valid_temporal_mean -> HeightField -> metrics`
-   chain on that verified grid.
-5. Case 1 and Case 2 remain NOT_ATTEMPTED until the Case 0 grid gate decision.
+2. `maskZ` is unwritten by the confirmed 0.11.4 DCT path; other versions and
+   interpolation modes remain UNKNOWN until separately inspected and tested.
+3. Official DCT coverage is full-domain and does not encode raw point density;
+   support-sensitive coverage remains a future validation definition.
+4. Case 1 and Case 2 remain NOT_ATTEMPTED in this task.
 
 ## 11. Limitations
 
