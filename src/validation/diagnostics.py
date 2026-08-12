@@ -65,6 +65,15 @@ class SpatialErrorStatistics:
     boundary_rmse: float
 
 
+@dataclass(frozen=True)
+class MeasurementDomainMasks:
+    """Distinct observation, grid-reconstruction and validation masks."""
+
+    raw_observed: npt.NDArray[np.bool_]
+    reconstructed_by_gridder: npt.NDArray[np.bool_]
+    validation_eligible: npt.NDArray[np.bool_]
+
+
 def constant_truth_difference(static: npt.ArrayLike, raised: npt.ArrayLike) -> FloatArray:
     """Return raised-static truth after exact shape and finite-value checks."""
     static_array = np.asarray(static, dtype=np.float64)
@@ -155,6 +164,43 @@ def height_observation_support_mask(
         raise ValueError("dynamic and static support must contain frames")
     reference_support = np.any(static, axis=0)
     return dynamic & reference_support[np.newaxis, :, :]
+
+
+def measurement_domain_masks(
+    dynamic_raw_support: npt.ArrayLike,
+    static_raw_support: npt.ArrayLike,
+    grid_finite_mask: npt.ArrayLike,
+    coordinate_quality_mask: npt.ArrayLike,
+) -> MeasurementDomainMasks:
+    """Build project measurement-domain layers without modifying grid values.
+
+    Eligibility requires a raw dynamic observation, at least one raw static
+    observation contributing to the reference, a finite official-grid value,
+    and an explicitly supplied coordinate/quality-valid mask.
+    """
+    raw = height_observation_support_mask(dynamic_raw_support, static_raw_support)
+    finite = np.asarray(grid_finite_mask, dtype=bool)
+    quality = np.asarray(coordinate_quality_mask, dtype=bool)
+    if finite.shape != raw.shape or quality.shape != raw.shape:
+        raise ValueError("finite, quality and raw support masks must share [time,y,x] shape")
+    eligible = raw & finite & quality
+    return MeasurementDomainMasks(raw.copy(), finite.copy(), eligible)
+
+
+def wass_zgap_percentile(zgaps: npt.ArrayLike, percentile: float) -> float:
+    """Reproduce WASS 6b82aeb's sorted floor-index percentile rule.
+
+    Input values must already be absolute camera-Z gaps between the neighbour
+    pairs selected by WASS. Units are inherited unchanged from camera Z.
+    """
+    values = np.asarray(zgaps, dtype=np.float64)
+    if values.ndim != 1 or values.size == 0 or not np.all(np.isfinite(values)):
+        raise ValueError("zgaps must be a non-empty finite one-dimensional array")
+    if not np.isfinite(percentile) or percentile < 0 or percentile >= 100:
+        raise ValueError("percentile must satisfy 0 <= percentile < 100")
+    ordered = np.sort(values)
+    index = int(np.floor(percentile / 100.0 * ordered.size))
+    return float(ordered[index])
 
 
 def spatial_error_statistics(error: npt.ArrayLike, valid_mask: npt.ArrayLike) -> SpatialErrorStatistics:

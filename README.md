@@ -38,6 +38,8 @@
   51.45% 网格单元，无支持 DCT 单元贡献超过 98% 平方误差；
 - 支持损失已定位到 WASS 三角化后的 Z-gap 最大连通分量阶段（单步丢失
   58.57%）；已定义 raw observation support mask，支持域诊断 RMSE 为 1.279 mm；
+- Z-gap 断带呈纵向条带；当前发布构建不保存 pre-cluster 浮点深度、阈值和
+  完整组件标签，机制归因标记为 `OBSERVABILITY_LIMITATION`；
 - 自动化测试覆盖后处理、仿真、WASS 接口、官方 NetCDF、Case 1 帧选择和误差诊断。
 
 尚未完成：
@@ -48,7 +50,7 @@
 - 水槽静水/人工波实验及独立参考对比；
 - 1 cm 目标的实测验收。
 
-Case 0 已正式闭环，见 [Case 0 静水验证](docs/validation/case0_static_water.md)。Case 1 的完整链路已运行，但未通过冻结的 RMSE/最大误差门槛，见 [Case 1 固定高度验证](docs/validation/case1_constant_height.md)、[误差根因诊断](docs/validation/case1_error_diagnosis.md)和[支持追踪](docs/validation/case1_support_trace.md)。这些理想仿真结果均不等同于真实设备或真实水面的精度验证；Case 2 尚未开始。
+Case 0 已正式闭环，见 [Case 0 静水验证](docs/validation/case0_static_water.md)。Case 1 的完整链路已运行，但未通过冻结的 RMSE/最大误差门槛，见 [Case 1 固定高度验证](docs/validation/case1_constant_height.md)、[误差根因诊断](docs/validation/case1_error_diagnosis.md)、[支持追踪](docs/validation/case1_support_trace.md)和[Z-gap 分析](docs/validation/case1_zgap_component_analysis.md)。[物理有效测量域规范](docs/data_model/measurement_valid_domain.md)要求以后并列报告全重建域与 raw-supported 域，但尚未替换原验收。Case 2 尚未开始。
 
 ## 仓库结构
 

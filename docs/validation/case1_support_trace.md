@@ -3,6 +3,11 @@
 Run date: 2026-08-11  
 Status: **SUPPORT LOSS LOCATED; CASE 1 STILL FAILED; CASE 2 NOT STARTED**
 
+The exact runtime rule and its current observability boundary are recorded in
+[`case1_zgap_component_analysis.md`](case1_zgap_component_analysis.md).
+The release build did not preserve float pre-cluster depth; no precise Z-gap
+statistics or component sizes were inferred from JPEG/PNG.
+
 This report reads the frozen Case 1 images, logs, diagnostics, xyzC and NetCDF.
 No WASS/gridder parameter or source was changed and no stage was rerun. Counts
 for frames in each identical pair are the same.
@@ -54,8 +59,10 @@ The static `graph_components.jpg` is almost one component. The raised image is
 split into several full-height vertical bands separated by invalid/Z-gap
 boundaries; WASS retains one 1.794-million-point band group. The exact numeric
 99th-percentile Z-gap is not printed and the pre-component full mesh was not
-saved (`SAVE_FULL_MESH=false`), so the disparity/depth values on each severing
-boundary remain UNKNOWN. The stage and count loss, however, are confirmed.
+saved. Runtime-source review confirms that `SAVE_FULL_MESH` executes after
+component extraction, while true pre-component exports are commented/compiled
+out. Severing depth values remain `OBSERVABILITY_LIMITATION`; stage and count
+loss are confirmed.
 
 Speckle, uniqueness, disparity-range and morphology operate before
 triangulation. Their individual rejection counts are not logged, but the final
@@ -187,23 +194,25 @@ pre-autocalibration disparity/depth export.
 
 ## 7. Root-cause classification and next action
 
-The evidence supports classification **D: multiple factors**:
+At pipeline-effect level, WASS removal and gridder extrapolation are both
+proven. At the stricter mechanism gate (synthetic local disparity bands versus
+near-field Z-gap mismatch versus both), classification is **D: current
+observation capability is insufficient**:
 
-1. **B — WASS filtering:** the adaptive Z-gap largest-connected-component
+1. **WASS filtering effect:** the adaptive Z-gap largest-connected-component
    stage discards 58.57% of raised triangulated points. This creates the raw
    support deficit. Gross synthetic coverage and normal FOV are excluded.
-2. **C — gridder policy:** DCT 0.11.4 fills cells without observations and marks
+2. **Gridder policy effect:** DCT 0.11.4 fills cells without observations and marks
    the whole domain finite. This converts the support deficit into 11.08 mm RMSE
    and 75.47 mm maximum error.
 3. A smaller WASS reconstruction/autocalibration term produces about 1 mm mean
    bias even inside the supported domain.
 
-The next modification should be to the **project's interface/acceptance
-definition**, not WASS algorithms: preserve and expose the raw observation
-support mask beside `grid_finite_mask`, then pre-register its use as the
-physical evaluation domain. In parallel, remain in Case 1 and capture/inspect
-the pre-component full mesh or equivalent official diagnostics in a controlled
-diagnostic rerun to explain the vertical Z-gap bands.
+The project interface now preserves raw observation support beside
+`grid_finite_mask`, with formal semantics in
+[`measurement_valid_domain.md`](../data_model/measurement_valid_domain.md).
+Remain in Case 1 and seek an upstream-supported float pre-component output to
+resolve A/B/C; the current release provides none.
 
 No WASS parameter should be tuned yet. In particular, changing
 `ZGAP_PERCENTILE`, matcher/stereo thresholds, DCT settings, or ROI before

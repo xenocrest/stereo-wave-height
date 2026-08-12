@@ -120,6 +120,9 @@
 - Case 1 支持损失已定位到 WASS 三角化后的 Z-gap 最大连通分量提取：升高帧
   在此单步丢失 58.57% 点。项目已定义 raw observation support mask 作为后续
   预注册物理有效域；具体垂直断带机制仍需保留被拒点诊断，Case 2 继续冻结；
+- 已完成运行版 Z-gap 数学规则与断带形态审计；当前发行构建没有官方
+  pre-cluster 浮点深度、阈值与完整标签输出，机制归因门选择 D（观测能力
+  不足）。raw/grid/eligible 三层有效域规范已建立，不追溯修改原验收结论；
 - 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
 当前尚未完成：
@@ -144,6 +147,8 @@ Case 0 已在本机 WASS `1.11` 和官方 gridder 0.11.4 上闭环。Case 1 已�
 - [Case 1 固定高度验证](validation/case1_constant_height.md)
 - [Case 1 误差根因诊断](validation/case1_error_diagnosis.md)
 - [Case 1 重建支持追踪](validation/case1_support_trace.md)
+- [Case 1 Z-gap 连通分量分析](validation/case1_zgap_component_analysis.md)
+- [物理有效测量域规范](data_model/measurement_valid_domain.md)
 - [WASS 参数映射](wass/wass_parameter_mapping.md)
 - [静水参考集成](wass/static_water_reference_integration.md)
 - [数学模型](mathematical_model/height_definition.md)

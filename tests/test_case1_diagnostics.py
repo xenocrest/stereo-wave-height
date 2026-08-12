@@ -5,9 +5,11 @@ from src.validation.diagnostics import (
     constant_truth_difference,
     fit_plane_orthogonal,
     height_observation_support_mask,
+    measurement_domain_masks,
     raw_point_support,
     spatial_error_statistics,
     verify_grid_alignment,
+    wass_zgap_percentile,
 )
 
 
@@ -44,6 +46,30 @@ def test_height_support_requires_dynamic_and_static_observation() -> None:
     dynamic = np.array([[[True, True], [True, False]]])
     mask = height_observation_support_mask(dynamic, static)
     assert mask.tolist() == [[[True, True], [False, False]]]
+
+
+def test_grid_finite_does_not_imply_raw_observation() -> None:
+    dynamic = np.array([[[True, False]]])
+    static = np.array([[[True, True]]])
+    finite = np.ones((1, 1, 2), dtype=bool)
+    quality = np.ones_like(finite)
+    masks = measurement_domain_masks(dynamic, static, finite, quality)
+    assert masks.reconstructed_by_gridder.tolist() == [[[True, True]]]
+    assert masks.raw_observed.tolist() == [[[True, False]]]
+    assert masks.validation_eligible.tolist() == [[[True, False]]]
+
+
+def test_eligible_domain_requires_coordinate_quality() -> None:
+    support = np.ones((1, 1, 2), dtype=bool)
+    quality = np.array([[[True, False]]])
+    masks = measurement_domain_masks(support, support, support, quality)
+    assert masks.validation_eligible.tolist() == [[[True, False]]]
+
+
+def test_wass_zgap_percentile_uses_sorted_floor_index() -> None:
+    gaps = np.arange(1.0, 101.0)
+    # floor(0.99 * 100) == 99, matching the source's zero-based index.
+    assert wass_zgap_percentile(gaps, 99.0) == 100.0
 
 
 def test_spatial_error_percentiles() -> None:

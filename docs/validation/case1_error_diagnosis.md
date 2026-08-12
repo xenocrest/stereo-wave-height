@@ -7,6 +7,9 @@ The follow-up stage trace is documented in
 [`case1_support_trace.md`](case1_support_trace.md). It locates the upstream
 loss at WASS's Z-gap largest-connected-component extraction and defines the
 raw-observation physical domain without changing this run's formal decision.
+The mechanism-level follow-up is
+[`case1_zgap_component_analysis.md`](case1_zgap_component_analysis.md); its
+decision is `D — OBSERVABILITY_LIMITATION`, not an unsupported A/B/C choice.
 
 This is a read-only decomposition of the frozen Case 1 run. No WASS or
 `wassgridsurface` source, parameter, interpolation method, mask, acceptance
