@@ -123,6 +123,10 @@
 - 已完成运行版 Z-gap 数学规则与断带形态审计；当前发行构建没有官方
   pre-cluster 浮点深度、阈值与完整标签输出，机制归因门选择 D（观测能力
   不足）。raw/grid/eligible 三层有效域规范已建立，不追溯修改原验收结论；
+- 已审计本机包、运行提交、master、v1.5--v1.11 与相关历史分支，确认
+  `NO_OFFICIAL_OBSERVABILITY_INTERFACE`：Debug 构建不会启用被源码注释的
+  pre-cluster 导出，`SAVE_FULL_MESH` 又位于 cluster 之后。下一步需向上游
+  请求正式诊断接口，禁止自行 patch，Case 2 继续冻结；
 - 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
 当前尚未完成：
@@ -148,6 +152,7 @@ Case 0 已在本机 WASS `1.11` 和官方 gridder 0.11.4 上闭环。Case 1 已�
 - [Case 1 误差根因诊断](validation/case1_error_diagnosis.md)
 - [Case 1 重建支持追踪](validation/case1_support_trace.md)
 - [Case 1 Z-gap 连通分量分析](validation/case1_zgap_component_analysis.md)
+- [WASS cluster 可观测性审计](validation/wass_cluster_observability.md)
 - [物理有效测量域规范](data_model/measurement_valid_domain.md)
 - [WASS 参数映射](wass/wass_parameter_mapping.md)
 - [静水参考集成](wass/static_water_reference_integration.md)

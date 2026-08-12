@@ -5,6 +5,12 @@ Run date: 2026-08-12
 Runtime: WASS `1.11_heads/master-0-g6b82aeb`
 Status: **RULE AND FRAGMENTATION CONFIRMED; PRE-CLUSTER DEPTH OBSERVABILITY LIMITED**
 
+The upstream capability audit is complete: no runtime/config/build interface
+exports lossless pre-cluster depth, numeric threshold and complete labels. See
+[`wass_cluster_observability.md`](wass_cluster_observability.md). Decision:
+`NO_OFFICIAL_OBSERVABILITY_INTERFACE`; A/B/C remain unresolved and no WASS
+source was patched.
+
 No WASS parameter or source was changed. No Case 2 work was performed.
 
 ## 1. Exact runtime algorithm
@@ -148,9 +154,8 @@ is insufficient to decide A/B/C**.
 - Consequently joint action C also cannot be established quantitatively.
 
 The next phase must remain Case 1 and improve **observability**, not tune for a
-pass. Use an upstream-supported build/output if one becomes available that
-exports float pre-cluster points/depth, Z-gap threshold and component labels.
-The current runtime offers no such official switch; record this limitation and
+pass. The completed audit found no upstream-supported switch in the current or
+audited historical code. Request an official diagnostic interface upstream;
 do not patch core WASS. `ZGAP_PERCENTILE`, matcher, stereo and gridder parameters
 remain frozen.
 
