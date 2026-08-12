@@ -104,15 +104,19 @@ Z(x,y,t)
 与 H_true 比较并评价误差
 ```
 
-当前 WASS 端到端状态和 Case 0/Case 1 验证结果见：
+当前 WASS 端到端状态和三级验证场景结果见：
 
 - [`validation/case0_static_water.md`](validation/case0_static_water.md)
 - [`validation/case1_constant_height.md`](validation/case1_constant_height.md)
 - [`validation/case1_error_diagnosis.md`](validation/case1_error_diagnosis.md)
 - [`validation/case1_support_trace.md`](validation/case1_support_trace.md)
+- [`validation/case1_repeatability.md`](validation/case1_repeatability.md)
+- [`validation/case2_sinusoidal_wave.md`](validation/case2_sinusoidal_wave.md)
+
+Case 0 是静水零场基础验证，Case 1 是 +10 mm 固定非零高度验证，Case 2 才是随时间变化的一维正弦规则波；三者不能统称为三种波。当前三级理想仿真已闭环，但 Case 2 的包裹相位误差 +0.7853 rad（约 45°）仍未解决。
 
 ## 5. 当前结论边界
 
-可以陈述：上述三类模型均已建立、文档化，并已有对应代码/端到端验证工作支撑。
+可以陈述：上述三类模型均已建立、文档化，并已有静水、固定非零高度和动态正弦规则波三级理想仿真端到端验证支撑。WASS 是外部双目重建引擎，本项目验证的是集成链及高度产品，不是证明 WASS 算法本身普遍正确。
 
-不能陈述：真实设备已经完成标定或采购、真实水面实验已经完成、系统已经达到 1 cm 实测精度。当前的厘米级结论仍处于理想合成数据和 WASS 软件链验证阶段。
+不能陈述：真实设备已经完成标定或采购、真实水面实验已经完成、系统已经达到 1 cm 实测精度。合成图像只在理想条件下满足候选相机几何，不等同真实拍摄效果。运行时距离 $Z$ 由双目视差重建得到；working distance 是仿真和性能分析参数，不是用户必须预先输入的海浪距离。

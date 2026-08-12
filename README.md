@@ -35,11 +35,9 @@
 - 虚拟双目相机、水面真值模型及可复现合成立体影像生成；
 - WASS 输入工作区适配、外部进程 runner 和显式 NetCDF 映射 parser 边界；
 - Case 0 已通过 WASS 核心、官方 `wassgridsurface 0.11.4` 和规则网格高度闭环；
-- Case 1 已完成 `ZGAP_PERCENTILE` 单因素扫描：99.5 在固定仿真输入下恢复
-  99.89% 升高帧连通支持且高度 RMSE 约 1.03 mm；该值仅是 Case 1 仿真候选，
-  默认 99 的原失败结论保留，99.5 已通过重复性门并冻结于当前仿真几何；
-- Case 2 单组一维正弦波已完成真实双目输入至高度场闭环：raw support 100%，
-  高度 RMSE 约5.40 mm并通过冻结门限；相位偏移约0.785 rad，保留为后续诊断项；
+- Case 1 的 +10 mm 固定非零高度场景已通过：`ZGAP_PERCENTILE=99.5` 时 raw support 为 100%，H RMSE 约 1.03 mm、MAE 约 0.916 mm、最大误差约 1.65 mm；该参数仅冻结于当前理想仿真几何；
+- Case 1 重复性验证完成：WASS `xyzC` 三轮逐帧 bitwise identical；gridder 文件哈希不同，但最大跨运行 Z 差异仅 0.020553 mm，分类为 B（Numerically deterministic）；
+- Case 2 单组一维正弦规则波已完成双目输入至高度场闭环：raw support 100%，高度 RMSE 5.3968 mm 并通过冻结门限；包裹相位误差 +0.7853 rad（约 45°）仍是未解决诊断项；
 - Case 1 的原始 default-99 运行平均符号/偏差正确，但 RMSE 和最大误差未通过预注册门槛；该历史结果不被后续适配覆盖；
 - Case 1 分层诊断确认：xyzC 平面差为 8.999 mm；升高帧原始点仅支持
   51.45% 网格单元，无支持 DCT 单元贡献超过 98% 平方误差；
@@ -51,13 +49,14 @@
 
 尚未完成：
 
-- Case 1 连通分量垂直断带机制和物理有效域正式预注册；
+- Case 2 相位、坐标原点与时间零点对齐诊断；
+- `baseline × scene distance` 部署参数空间验证；
 - WASS 锁定 `v_1.5` 基线的独立复现（当前成功运行的是本机 `1.11` 构建）；
 - 工业相机实机接入、同步与标定；
 - 水槽静水/人工波实验及独立参考对比；
 - 1 cm 目标的实测验收。
 
-Case 0 已正式闭环，见 [Case 0 静水验证](docs/validation/case0_static_water.md)。Case 1 的完整链路已运行，但未通过冻结的 RMSE/最大误差门槛，见 [Case 1 固定高度验证](docs/validation/case1_constant_height.md)、[误差根因诊断](docs/validation/case1_error_diagnosis.md)、[支持追踪](docs/validation/case1_support_trace.md)和[Z-gap 分析](docs/validation/case1_zgap_component_analysis.md)。[物理有效测量域规范](docs/data_model/measurement_valid_domain.md)要求以后并列报告全重建域与 raw-supported 域，但尚未替换原验收。Case 2 尚未开始。
+Case 0/1/2 是静水零场、固定非零高度和动态正弦规则波三个逐级验证场景，并非三种“波”。三级理想仿真已形成软件全链路闭环；详细结果见 [项目宏观汇报](PROJECT_OVERVIEW.md)。这不代表真实相机、水槽或海面已达到 1 cm：真实标定、同步、畸变、噪声、反光和振动等仍待验证。
 
 ## 仓库结构
 

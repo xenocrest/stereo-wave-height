@@ -18,10 +18,12 @@
 ## 2. 总体技术路线
 
 ```text
-严格复现 WASS
-  → 接入实验室双工业相机同步数据
-  → 水槽人工波三维重建
-  → 静水面参考与 1 cm 级高度验证
+建立并验证 WASS 外部引擎集成链
+  → 静水、固定高度、动态正弦波三级理想仿真闭环
+  → 关闭相位/坐标/时间对齐问题
+  → 扫描 baseline × scene distance 部署参数
+  → 采购并接入实验室双工业相机同步数据
+  → 水槽静水与人工波 1 cm 级高度验证
   → 配置、质量控制和数据流程工程化
   → 真实海浪环境扩展与再验证
 ```
@@ -113,31 +115,34 @@
 - WASS 输入工作区适配、外部进程 runner、显式 NetCDF 映射 parser 及其自动化测试；
 - 本机已有 WASS runtime 定位、版本/哈希绑定和四程序健康检查；
 - Case 0 静水仿真的 WASS 核心、官方网格和标准高度链正式闭环；
-- Case 1 固定 +0.010 m 高度完成统一坐标端到端验证，但 RMSE 和最大误差未达预注册门槛；
+- Case 1 的 default-99 历史基线未达预注册门槛；后续单因素扫描在当前仿真几何冻结 `ZGAP_PERCENTILE=99.5`，raw support 达到 100%，H RMSE 约 1.03 mm、MAE 约 0.916 mm、最大误差约 1.65 mm，Case 1 已通过；
 - Case 1 分层误差诊断完成：真值严格为 10 mm，xyzC 平面恢复为 8.999 mm；
   升高帧只有 51.45% 网格单元具有原始点支持，官方 DCT 的无支持区域贡献
   超过 98% 平方误差；
 - Case 1 支持损失已定位到 WASS 三角化后的 Z-gap 最大连通分量提取：升高帧
   在此单步丢失 58.57% 点。项目已定义 raw observation support mask 作为后续
-  预注册物理有效域；具体垂直断带机制仍需保留被拒点诊断，Case 2 继续冻结；
+  预注册物理有效域；具体垂直断带机制仍受既有可观测性限制；
 - 已完成运行版 Z-gap 数学规则与断带形态审计；当前发行构建没有官方
   pre-cluster 浮点深度、阈值与完整标签输出，机制归因门选择 D（观测能力
   不足）。raw/grid/eligible 三层有效域规范已建立，不追溯修改原验收结论；
 - 已审计本机包、运行提交、master、v1.5--v1.11 与相关历史分支，确认
   `NO_OFFICIAL_OBSERVABILITY_INTERFACE`：Debug 构建不会启用被源码注释的
   pre-cluster 导出，`SAVE_FULL_MESH` 又位于 cluster 之后。下一步需向上游
-  请求正式诊断接口，禁止自行 patch，Case 2 继续冻结；
+  请求正式诊断接口，禁止自行 patch；
+- Case 1 重复性验证完成：WASS `xyzC` 三轮逐帧 bitwise identical；gridder 文件哈希不同，但最大 Z 波动 0.020553 mm，非确定性来自 0.11.4 未固定的 `torch.rand` 与 NumPy permutation/shuffle，分类 B（Numerically deterministic）；
+- Case 2 一维正弦规则波完成：$A=10\ \mathrm{mm}$、$\lambda=0.80\ \mathrm{m}$、$f=0.50\ \mathrm{Hz}$、$\phi=0$，2 静水 + 10 动态帧，raw support 100%；bias -0.2606 mm、RMSE 5.3968 mm、MAE 4.7505 mm、最大误差 10.1320 mm，预注册高度门限通过；$A_{calc}=9.6930\ \mathrm{mm}$（-3.0695%）、$\lambda_{calc}=0.8000\ \mathrm{m}$、$f_{calc}=0.5000\ \mathrm{Hz}$；包裹相位误差 +0.7853 rad 仍未解决；
 - 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
 当前尚未完成：
 
-- Case 1 连通分量垂直断带机制、物理有效域预注册和专用正负符号测试；
+- Case 2 相位、坐标原点和时间零点对齐诊断；
+- `baseline × scene distance` 等部署参数空间验证；
 - WASS 锁定 `v_1.5` 基线的独立构建复现；
 - 工业相机实机接入与同步测量；
 - 水槽静水和人工波实验；
 - 1 cm 目标的实测达标声明。
 
-Case 0 已在本机 WASS `1.11` 和官方 gridder 0.11.4 上闭环。Case 1 已恢复正向非零均值，但未达到冻结的厘米级数值门槛；Case 2 未开始。这些理想仿真不等同于真实设备或真实水面验证。
+Case 0/1/2 分别是静水零场、固定非零高度和动态正弦规则波三级验证场景，并非三种波。它们已在本机 WASS `1.11` 和官方 gridder 0.11.4 上形成设备采购前的软件全链路闭环。这些理想仿真不等同于真实设备或真实水面验证，不能据此声称真实海面达到 1 cm。
 
 ## 6. 文档导航
 
@@ -164,13 +169,13 @@ Case 0 已在本机 WASS `1.11` 和官方 gridder 0.11.4 上闭环。Case 1 已�
 Case 1 最新状态：已完成只改变 `ZGAP_PERCENTILE` 的受控扫描。99 到 99.5
 之间出现明确连通性跃迁，升高帧保留率由 41.43% 增至 99.89%，原始支持域
 RMSE 未恶化。结论分类为 A，99.5 是当前冻结仿真几何下有依据的候选适配值；
-原始 default-99 失败结论、`OBSERVABILITY_LIMITATION` 和 Case 2 禁令均保留。
+原始 default-99 失败结论和 `OBSERVABILITY_LIMITATION` 均保留；后续重复性门通过后已按独立任务进入 Case 2。
 
 Case 1 重复性门已完成：正式 WASS stereo 三轮输出逐帧 bitwise identical；固定
 xyzC 的官方 DCT 五轮虽受未设种子的 PyTorch/NumPy 初始化影响而非位级一致，
 但最大 Z 波动仅 0.0206 mm，H RMSE 跨轮范围为 1.0262--1.0274 mm，结论分类
 为 B（numerically deterministic）。`ZGAP_PERCENTILE=99.5` 现冻结于该仿真
-Case 1；Case 1 可以结束，Case 2 可在独立后续任务中启动，本轮未进入。
+Case 1；Case 1 已结束，随后已在独立任务中完成 Case 2。
 
 Case 1 现正式完成。Case 2 已使用单组一维正弦波完成端到端验证：10 mm 波幅、
 0.80 m 波长、0.50 Hz、10 个动态帧加2个独立静水帧。raw support 为100%，

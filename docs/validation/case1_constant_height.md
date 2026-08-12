@@ -4,6 +4,17 @@ Run date: 2026-08-11
 
 Status: **END-TO-END COMPLETED; PRE-REGISTERED ACCURACY GATE FAILED**
 
+Current reporting status: **CASE 1 COMPLETE AND PASSED AFTER CONTROLLED
+SINGLE-FACTOR ADAPTATION**. The status above remains the historical
+`ZGAP_PERCENTILE=99` baseline and is not rewritten. A later controlled run
+changed only `ZGAP_PERCENTILE` to 99.5 for this ideal synthetic geometry: raw
+support reached 100%, H RMSE was approximately 1.03 mm, MAE approximately
+0.916 mm, and maximum error approximately 1.65 mm. Repeatability was classified
+B (Numerically deterministic). See
+[`case1_zgap_parameter_sweep.md`](case1_zgap_parameter_sweep.md) and
+[`case1_repeatability.md`](case1_repeatability.md). The value 99.5 is not a
+general WASS recommendation or a real-device setting.
+
 Post-run root-cause analysis is recorded in
 [`case1_error_diagnosis.md`](case1_error_diagnosis.md). It confirms that the
 large spatial error tail occurs in official DCT output cells without raised

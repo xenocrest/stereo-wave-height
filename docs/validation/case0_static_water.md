@@ -4,6 +4,12 @@ Run date: 2026-08-11
 
 Status: **CASE 0 CLOSED THROUGH OFFICIAL WASS REGULAR GRID**
 
+Reporting summary: Case 0 is the static-water/zero-field foundation scenario,
+not a wave case. It passed the ideal-simulation software-chain gate. The very
+small temporal H error reflects two ideal static reconstructions and numerical
+repeatability; it must not be reported as micrometre-scale real measurement
+accuracy. Later Case 1 and Case 2 work does not alter this historical run.
+
 ## Scope and runtime
 
 This run validates the path
@@ -15,7 +21,8 @@ The external runtime is the existing native Windows build at
 OpenCV 4.6.0. WASS source and binaries were not modified. Run data is retained
 outside Git at `D:\stereo-wave-height-runs\case0-static-20260811`.
 
-Case 1 and Case 2 were not entered.
+Case 1 and Case 2 were not entered in this historical run; both were completed
+later and are documented separately.
 
 ## Simulation test geometry
 
@@ -294,7 +301,8 @@ Remaining items:
    measured;
 2. define a mask/support policy for other gridder versions or interpolation
    modes before use;
-3. retain Case 1 and Case 2 as NOT_ATTEMPTED in this task.
+3. keep Case 1 and Case 2 outside this run's acceptance decision and refer to
+   their separate reports for current project status.
 
 This run is ideal simulation only. It excludes real camera noise, calibration
 error, synchronization error, reflection/refraction, and real water optics. It

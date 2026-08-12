@@ -121,3 +121,7 @@ geometry. Case 1 can conclude as a successful ideal-simulation validation.
 Case 2 may be authorized as the next separate task, but was not started here.
 This does not establish real-camera or real-water accuracy, and the existing
 cluster `OBSERVABILITY_LIMITATION` remains documented.
+
+Project-status note: Case 2 was subsequently completed in a separate run; this
+sentence is retained as the boundary of the repeatability task. See
+[`case2_sinusoidal_wave.md`](case2_sinusoidal_wave.md) for the later result.

@@ -65,10 +65,12 @@
 
 ## 6. 当前验证结果
 
-- [Case 0 静水验证](validation/case0_static_water.md)：已完成虚拟双目 → WASS → 官方网格化 → `Z0` → `H` 的正式闭环；
-- [Case 1 固定高度验证](validation/case1_constant_height.md)：+0.010 m 非零高度端到端运行完成，但未通过预注册 RMSE / 最大误差门限；
+- [Case 0 静水验证](validation/case0_static_water.md)：静水/零场基础闭环已通过；微米级 H 时间差只反映理想静态重复性，不是真实测量精度；
+- [Case 1 固定高度验证](validation/case1_constant_height.md)：保留 default-99 历史失败基线；后续单因素适配在当前仿真几何冻结 `ZGAP_PERCENTILE=99.5`，raw support 100%，H RMSE 约 1.03 mm，Case 1 已通过；
 - [Case 1 误差根因诊断](validation/case1_error_diagnosis.md)：定位全网格误差主要来自无原始支持区域上的 DCT 全域重建；
-- [Case 1 支持追踪](validation/case1_support_trace.md)：支持损失已定位到 WASS 三角化后的 Z-gap 最大连通分量阶段。
+- [Case 1 支持追踪](validation/case1_support_trace.md)：支持损失已定位到 WASS 三角化后的 Z-gap 最大连通分量阶段；
+- [Case 1 重复性验证](validation/case1_repeatability.md)：WASS `xyzC` 位级一致，gridder 数值稳定但文件哈希不同，分类 B（Numerically deterministic）；
+- [Case 2 一维正弦规则波](validation/case2_sinusoidal_wave.md)：2 静水 + 10 动态帧，raw support 100%，高度门限通过；+0.7853 rad 包裹相位误差仍待诊断。
 
 ## 7. 当前汇报边界
 
@@ -77,11 +79,16 @@
 - 双目几何模型、水面高度模型、虚拟相机模型已经建立并文档化；
 - 基于候选设备参数的虚拟双目图像链已经实现；
 - 本机 WASS 核心与官方 `wassgridsurface 0.11.4` 已实际跑通；
-- Case 0 已正式闭环；Case 1 已完成端到端运行并开展误差根因分析。
+- 静水、固定 +10 mm 高度、动态正弦规则波三级理想仿真场景已经闭环；
+- Case 1 的 H RMSE 约 1.03 mm，Case 2 的 H RMSE 为 5.3968 mm，均只适用于冻结的理想仿真条件。
 
 不能陈述：
 
 - 候选硬件已经最终定型或采购；
 - 真实水槽/真实海浪实验已经完成；
 - 系统已经达到 1 cm 实测精度；
-- Case 1 已通过验收（当前尚未通过）。
+- 真实标定、同步、畸变、噪声、反光、振动等因素已经验证；
+- 真实水槽或真实海面已经达到 1 cm 精度；
+- Case 2 的约 45° 相位偏移已经解决。
+
+下一步先关闭 Case 2 相位/坐标/时间对齐问题，再验证 `baseline × scene distance` 等部署参数，之后才进入设备采购、真实标定、人工波实验和真实海面验证。
