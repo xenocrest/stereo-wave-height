@@ -1,7 +1,8 @@
 # Case 1 Z-gap component-fragmentation analysis
 
-Run date: 2026-08-12  
-Runtime: WASS `1.11_heads/master-0-g6b82aeb`  
+Run date: 2026-08-12
+
+Runtime: WASS `1.11_heads/master-0-g6b82aeb`
 Status: **RULE AND FRAGMENTATION CONFIRMED; PRE-CLUSTER DEPTH OBSERVABILITY LIMITED**
 
 No WASS parameter or source was changed. No Case 2 work was performed.

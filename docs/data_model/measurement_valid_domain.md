@@ -1,6 +1,6 @@
 # Measurement valid-domain specification
 
-Status: **PROJECT SPECIFICATION / PRE-REGISTRATION REQUIRED BEFORE FORMAL USE**  
+Status: **PROJECT SPECIFICATION / PRE-REGISTRATION REQUIRED BEFORE FORMAL USE**
 Units: masks are dimensionless booleans; grid coordinates are metres.
 
 ## 1. Purpose
