@@ -13,6 +13,16 @@
 
 近期研究目标是在实验室人工波条件下验证厘米级高度解算。这里的“1 cm 级”是待实验验证的验收目标，并非当前已经达到的性能声明。
 
+## 核心建模成果
+
+老师/首次访问者可先查看 [核心建模成果总览](docs/MODEL_OVERVIEW.md)。其中集中说明并链接了当前已经建立的三类核心模型：
+
+- [双目几何模型](docs/mathematical_model/stereo_reconstruction_model.md)：理想平行双目关系 `Z=f_px B/d`、坐标/单位和当前设备参数绑定；
+- [水面高度模型](docs/mathematical_model/height_field_model.md)：最终高度定义 `H(x,y,t)=Z(x,y,t)-Z0(x,y)`，以及静水参考和坐标一致性要求；
+- [虚拟相机模型](docs/simulation/virtual_camera_model.md)：基于 MER2-503-36U3C、2448×2048、3.45 µm/px 和 8 mm 候选镜头建立 `SIMULATION_NOMINAL` 针孔双目模型。
+
+上述文档均明确区分 candidate / simulation assumption / UNKNOWN 与真实标定参数，避免把仿真参数误写成实测值。
+
 ## 当前进展
 
 已完成：
