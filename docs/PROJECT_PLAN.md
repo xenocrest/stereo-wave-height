@@ -153,6 +153,7 @@ Case 0 已在本机 WASS `1.11` 和官方 gridder 0.11.4 上闭环。Case 1 已�
 - [Case 1 重建支持追踪](validation/case1_support_trace.md)
 - [Case 1 Z-gap 连通分量分析](validation/case1_zgap_component_analysis.md)
 - [WASS cluster 可观测性审计](validation/wass_cluster_observability.md)
+- [WASS 隔离诊断构建](validation/wass_diagnostic_build.md)：精确源码基线与只读观测补丁已建立，但首次构建使用 OpenCV 4.10，而正式版为 4.6；Case 0/1 `xyzC` 哈希均不一致，诊断数据已禁用，`OBSERVABILITY_LIMITATION` 尚未解除，Case 2 继续禁止。
 - [物理有效测量域规范](data_model/measurement_valid_domain.md)
 - [WASS 参数映射](wass/wass_parameter_mapping.md)
 - [静水参考集成](wass/static_water_reference_integration.md)

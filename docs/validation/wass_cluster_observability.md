@@ -1,5 +1,7 @@
 # WASS cluster observability audit for Case 1
 
+> Follow-up status: **DIAGNOSTIC_BUILD_NOT_NUMERICALLY_EQUIVALENT**. An isolated read-only diagnostic patch was built, but frozen Case 0 and Case 1 `mesh_cam.xyzC` hashes differed from production. Its data are rejected; see [wass_diagnostic_build.md](wass_diagnostic_build.md).
+
 Audit date: 2026-08-12
 
 Runtime: WASS `1.11_heads/master-0-g6b82aeb`

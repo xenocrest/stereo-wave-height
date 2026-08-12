@@ -1,5 +1,7 @@
 # Case 1 Z-gap component-fragmentation analysis
 
+> The isolated observability build failed the mandatory numerical-equivalence gate. No exported pre-cluster data are accepted as evidence, so root-cause classification remains blocked. See [wass_diagnostic_build.md](wass_diagnostic_build.md).
+
 Run date: 2026-08-12
 
 Runtime: WASS `1.11_heads/master-0-g6b82aeb`

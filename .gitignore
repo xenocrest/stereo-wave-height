@@ -56,3 +56,7 @@ results/
 # Local WASS checkout/build products (dependency metadata is retained)
 external/WASS/*
 !external/WASS/README.md
+!external/WASS/diagnostics/
+external/WASS/diagnostics/*
+!external/WASS/diagnostics/README.md
+!external/WASS/diagnostics/observability.patch
