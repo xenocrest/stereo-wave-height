@@ -4,6 +4,8 @@
 
 Status: **DIAGNOSTIC_BUILD_NOT_NUMERICALLY_EQUIVALENT**.
 
+Follow-up audit status: **BUILD_ENVIRONMENT_NOT_REPRODUCED**. Production uses a v142-era 14.28 linker and a custom modular OpenCV 4.6 build, but the exact compiler and development tree were not recovered. Clean and patched builds were therefore not rerun. See [wass_build_reproducibility.md](wass_build_reproducibility.md).
+
 An isolated diagnostic tree was established at `D:\wass_diagnostic` from exact upstream commit `6b82aebbf47a692b610fce7e6ea87b6123050c88`. Production executables under `D:\wass\dist\bin` were not changed. Source, builds, binaries, copied workdirs, and generated arrays remain outside Git.
 
 The diagnostic executable built successfully, but both mandatory `mesh_cam.xyzC` comparisons failed. Its generated diagnostic arrays are quarantined and are not reported as measurements.
