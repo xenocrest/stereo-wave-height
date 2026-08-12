@@ -16,6 +16,7 @@ from .diagnostics import (
     verify_grid_alignment,
     wass_zgap_percentile,
 )
+from .sinusoidal_wave import SinusoidalWaveEstimate, estimate_sinusoidal_wave, wrap_phase_rad
 
 __all__ = [
     "ConstantHeightResult",
@@ -34,4 +35,7 @@ __all__ = [
     "spatial_error_statistics",
     "verify_grid_alignment",
     "wass_zgap_percentile",
+    "SinusoidalWaveEstimate",
+    "estimate_sinusoidal_wave",
+    "wrap_phase_rad",
 ]

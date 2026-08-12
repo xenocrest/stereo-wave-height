@@ -1,0 +1,29 @@
+# Frozen ideal-simulation Case 2 parameters; not real hardware deployment values.
+schema_version: 1
+status: SIMULATION_TEST_PARAMETER
+surface:
+  model: one_dimensional_travelling_sinusoid
+  amplitude_m: 0.010
+  wavelength_m: 0.80
+  frequency_hz: 0.50
+  phase_rad: 0.0
+sampling:
+  frame_rate_hz: 5.0
+  static_frame_count: 2
+  dynamic_frame_count: 10
+  dynamic_period_count: 1
+  grid_spacing_m: 0.01
+  samples_per_wavelength: 80
+  samples_per_period: 10
+simulation_geometry:
+  baseline_m: 0.20
+  working_distance_m: 2.00
+  status: SIMULATION_TEST_PARAMETER
+wass:
+  zgap_percentile: 99.5
+  status: frozen_for_current_simulation_geometry
+grid:
+  implementation: wassgridsurface_0.11.4
+  interpolation: DCT
+  size: [160, 160]
+  parallel: 1
