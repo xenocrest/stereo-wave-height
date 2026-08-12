@@ -1,6 +1,6 @@
 # Case 1 ZGAP_PERCENTILE controlled sweep
 
-Run date: 2026-08-12  
+Run date: 2026-08-12
 Status: **CLASSIFICATION A; CASE 1 BASELINE RESULT REMAINS FAILED; CASE 2 NOT STARTED**
 
 ## 1. Purpose and permission boundary
