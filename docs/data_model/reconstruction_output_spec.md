@@ -68,9 +68,9 @@ WASS 具体文件格式见 [WASS 输入输出规范](../wass/input_output_spec.m
 
 静水参考和动态水面必须共享坐标、尺度、网格及兼容标定：
 
-\[
+$
 H(x_i,y_j,t)=Z(x_i,y_j,t)-Z_0(x_i,y_j).
-\]
+$
 
 `H,Z,Z0` 单位为 m。`H>0` 表示高于静水平均面。静水参考的样本数、标准差、时间范围、生成配置和质量掩膜必须随 `Z0` 保存。流程依据见 [静水参考集成](../wass/static_water_reference_integration.md)。
 

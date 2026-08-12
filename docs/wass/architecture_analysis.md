@@ -38,7 +38,9 @@ cam0/cam1 + calibration/config
 
 `wass_stereo` 每帧拟合 `plane.txt` 并用 `PLANE_MAX_DISTANCE` 过滤；它不是本项目的静水产品。[A5] 本项目固定：
 
-$$H(x,y,t)=Z(x,y,t)-Z_0(x,y).$$
+$$
+H(x,y,t)=Z(x,y,t)-Z_0(x,y).
+$$
 
 `Z0(x,y)` 应由独立静水序列经过相同标定、重建、尺度恢复、对齐、网格和掩膜流程得到。`wassgridsurface --force-zero-mean` 是对处理序列逐网格点减时间均值，是否等价于独立静水基准为 **否/不可默认**。[A10]
 

@@ -20,21 +20,21 @@
 
 针孔、目标平面垂直光轴且忽略畸变时，传感器尺寸与距离 `Z` 处的视场为
 
-\[
+$
 S_x=N_xp_x,\quad S_y=N_yp_y,
 \qquad
 W(Z)=Z\frac{S_x}{f_{mm}},\quad V(Z)=Z\frac{S_y}{f_{mm}}.
-\]
+$
 
 `S_x,S_y,f_mm` 单位 mm；`W,V,Z` 使用同一长度单位（本项目用 m）。视场随 `Z` 线性增加。实际可测范围是左右有效视场交集，还受基线、姿态、校正 ROI 和遮挡限制。由于 `Z=null`，不输出固定视场。
 
 ## 深度能力
 
-\[
+$
 d(Z)=\frac{f_{px}B}{Z},
 \qquad
 \sigma_{Z,d}=\frac{Z^2}{f_{px}B}\sigma_d.
-\]
+$
 
 `d,f_px,sigma_d` 为 px，`B,Z,sigma_Z,d` 为 m。工作距离增加时视差按 `1/Z` 减小，视差引起的深度不确定度按 `Z²` 增大。增大基线可能减少公共视场或增加遮挡，不能仅按误差式选取。
 

@@ -62,17 +62,17 @@ WASS 必须执行 prepare、match、autocalibrate 和 stereo；规则网格由�
 
 每个 `(B,Z)` 点计算：
 
-\[
+$
 d=\frac{f_{px}B}{Z},
-\]
+$
 
-\[
+$
 \left|\frac{\partial Z}{\partial d}\right|=\frac{Z^2}{f_{px}B},
-\]
+$
 
-\[
+$
 \sigma_{d,max}^{(1cm)}=\frac{0.01f_{px}B}{Z^2}.
-\]
+$
 
 `d`、`f_px`、允许视差标准误差 `sigma_d,max` 单位 px；`B,Z` 为 m；深度敏感度为 m/px。最后一式把全部 0.01 m 分配给视差项，只是理论上限，完整系统还需为标定、尺度、静水、同步和网格误差留预算。
 

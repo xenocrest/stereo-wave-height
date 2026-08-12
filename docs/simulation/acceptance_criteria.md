@@ -10,37 +10,37 @@
 
 在真值与计算结果的共同有效网格 `V` 上，误差为
 
-\[
+$
 e_i=H_{calc,i}-H_{true,i},\qquad i\in V,
-\]
+$
 
 其中 `H_calc,H_true,e` 单位为 m，`N=|V|` 为无量纲有效样本数。
 
-\[
+$
 RMSE_H=\sqrt{\frac{1}{N}\sum_{i\in V}e_i^2},
-\]
+$
 
-\[
+$
 MAE_H=\frac{1}{N}\sum_{i\in V}|e_i|,
 \qquad
 E_{max}=\max_{i\in V}|e_i|.
-\]
+$
 
 有效点比例和空洞率为
 
-\[
+$
 r_{valid}=\frac{N_{valid}}{N_{eligible}},
 \qquad
 r_{hole}=1-r_{valid}.
-\]
+$
 
 其中计数均无量纲；eligible 区域是两相机真值可见、位于冻结 ROI 且非真值遮挡的格点，不能把几何不可见区计作 WASS 失败，也不能事后缩小 ROI。
 
 三维尺度误差用已知真值长度 `L_true`（m）和重建长度 `L_calc`（m）定义：
 
-\[
+$
 e_{scale}=\frac{|L_{calc}-L_{true}|}{L_{true}}.
-\]
+$
 
 ## 3. 预注册门槛
 

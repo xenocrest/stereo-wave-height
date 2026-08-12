@@ -17,9 +17,9 @@ official plane transform and physical baseline scale used by the gridder. Let
 `C(t,y,x)` be the count assigned to the nearest cell of the already fixed
 official x/y grid. Cell edges lie halfway between adjacent grid coordinates.
 
-\[
+$
 M_{raw}(t,y,x)=[C(t,y,x)\ge 1].
-\]
+$
 
 `raw_observation_support_mask` means only that at least one final WASS 3-D
 observation supports the cell. It is not inferred from DCT output, images,
@@ -29,10 +29,10 @@ pre-registration.
 
 ## 3. Grid reconstruction layer
 
-\[
+$
 M_{grid}(t,y,x)=\operatorname{isfinite}(Z_{grid}(t,y,x))
 \land M_{gridder}(t,y,x).
-\]
+$
 
 This is named `grid_finite_mask` or `reconstructed_by_gridder`. With the locked
 DCT 0.11.4 path, the interpolator returns a full-one mask and reconstructs the
@@ -43,9 +43,9 @@ numerical product, not direct physical observation support.
 
 For static frames `s` admitted to the independent static reference,
 
-\[
+$
 M_0(y,x)=\bigvee_{s\in S_{static}}M_{raw}(s,y,x).
-\]
+$
 
 This matches the current valid temporal mean: at least one raw-supported static
 sample is required. If the reference method later requires a minimum count,
@@ -55,10 +55,10 @@ that rule must be versioned and pre-registered.
 
 For dynamic frame `t`,
 
-\[
+$
 M_{eligible}(t,y,x)=M_{raw}(t,y,x)\land M_0(y,x)
 \land M_{grid}(t,y,x)\land M_{coord/quality}(t,y,x).
-\]
+$
 
 `M_coord/quality` is true only when coordinate system, unit, common x/y grid,
 scale, axis direction and any separately pre-registered quality rule are valid.
@@ -66,9 +66,9 @@ Unknown metadata must fail rather than default to true.
 
 For a time-invariant common measurement footprint, use
 
-\[
+$
 M_{common}(y,x)=\bigwedge_{t\in T_{evaluation}}M_{eligible}(t,y,x).
-\]
+$
 
 The Case 1 dynamic masks are identical, so frame-wise and common footprints are
 both 51.4492%.

@@ -10,6 +10,8 @@
 
 在平行双目近似下，视差误差 $\sigma_d$ 对深度的影响为
 
-$$\sigma_Z\approx\left|\frac{\partial Z}{\partial d}\right|\sigma_d=\frac{fB}{d^2}\sigma_d.$$
+$$
+\sigma_Z\approx\left|\frac{\partial Z}{\partial d}\right|\sigma_d=\frac{fB}{d^2}\sigma_d.
+$$
 
 完整高度不确定度应通过标定参数、像点观测和参考面参数的协方差传播得到。验证指标建议包括高度偏差、MAE、RMSE、有效像素比例、重投影误差以及与独立波高计或已知合成水面的对比。

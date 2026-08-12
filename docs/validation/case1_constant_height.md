@@ -27,14 +27,14 @@ diagnostic; it cannot answer this question.
 
 The unified four-frame truth is
 
-\[
+$
 H_{true}(x,y,t)=
 \begin{cases}
 0, & t\in\{0,0.2\}\ \mathrm{s},\\
 \Delta H, & t\in\{0.4,0.6\}\ \mathrm{s},
 \end{cases}
 \qquad \Delta H=+0.010\ \mathrm{m}.
-\]
+$
 
 `Delta H` is `SIMULATION_TEST_PARAMETER`, not a real wave height. It was chosen
 because 0.010 m is the project's stated centimetre-scale target and is well
@@ -58,21 +58,21 @@ This is required because independently aligning the static and raised planes to
 their own averages could remove the constant displacement. For any common
 offset/transform origin C,
 
-\[
+$
 (Z_{case1}-C)-(Z_0-C)=Z_{case1}-Z_0.
-\]
+$
 
 The static reference uses frames 0 and 1 only:
 
-\[
+$
 Z_0(y,x)=\frac{Z(0,y,x)+Z(1,y,x)}{2}.
-\]
+$
 
 Frames 2 and 3 are excluded from Z0 and evaluated as
 
-\[
+$
 H_{calc}(t,y,x)=Z_{case1}(t,y,x)-Z_0(y,x).
-\]
+$
 
 The parser confirmed identical x/y coordinates, `wass_plane_aligned_grid`,
 unit m, scale 0.20 m, spacing 0.010 m, and one `[4,160,160]` product before
@@ -151,9 +151,9 @@ filter, or interpolation method was changed after seeing the result.
 
 For every valid raised-frame cell,
 
-\[
+$
 e=H_{calc}-0.010\ \mathrm{m}.
-\]
+$
 
 | Metric | Result | Pre-registered gate | Decision |
 |---|---:|---:|---|

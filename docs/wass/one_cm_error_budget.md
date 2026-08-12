@@ -4,9 +4,9 @@
 
 本项目唯一的高度定义为：
 
-\[
+$
 H(x,y,t)=Z(x,y,t)-Z_0(x,y)
-\]
+$
 
 其中 `x,y` 是静水参考平面上的水平坐标（m），`t` 是时间（s），`Z(x,y,t)` 是动态水面在统一坐标系中的高程（m），`Z0(x,y)` 是静水平均面高程（m），`H` 是相对静水面的波高（m）。第一阶段“1 cm 级”定义为独立参考仪器对齐后的 `H` 的时空 RMSE 不超过 0.010 m；它不是当前能力声明。
 
@@ -14,10 +14,10 @@ H(x,y,t)=Z(x,y,t)-Z_0(x,y)
 
 若各随机分量近似零均值且相互独立，总标准不确定度可按均方根合成：
 
-\[
+$
 \sigma_H=\sqrt{\sigma_{stereo}^2+\sigma_{cal}^2+\sigma_s^2+
 \sigma_0^2+\sigma_t^2+\sigma_g^2}
-\]
+$
 
 各 `sigma` 均以等效高度误差计，单位 mm：`sigma_stereo` 为视差/三角化项，`sigma_cal` 为内外参项，`sigma_s` 为物理尺度项，`sigma_0` 为静水参考项，`sigma_t` 为同步项，`sigma_g` 为网格/插值项。相关误差或固定偏差不能用 RSS 隐藏，必须单独估计并从总偏差中验收。
 
@@ -39,15 +39,15 @@ H(x,y,t)=Z(x,y,t)-Z_0(x,y)
 
 视差项使用：
 
-\[
+$
 \sigma_{Z,d}=\frac{Z^2}{f_{px}B}\sigma_{disp}
-\]
+$
 
 `Z`、`B`、`sigma_Z,d` 单位 m；`f_px`、视差标准不确定度 `sigma_disp` 单位 px。为满足本预算 `sigma_Z,d≤0.005 m`：
 
-\[
+$
 B\geq\frac{Z^2\sigma_{disp}}{0.005f_{px}}
-\]
+$
 
 候选 8 mm/3.45 µm 组合的名义 `f_px=2318.8 px`。例如 `Z=2.0 m` 且 `sigma_disp=0.5 px` 时，要求 `B≥0.1725 m`；`B/Z≥0.0863`。`sigma_disp=0.5 px` 仅为预算情景，必须实测。公式推导和完整表见 [lab_scale_adaptation.md](lab_scale_adaptation.md)。
 
@@ -55,15 +55,15 @@ B\geq\frac{Z^2\sigma_{disp}}{0.005f_{px}}
 
 若局部最大垂向速度为 `V_z,max`（m/s），两相机有效曝光时刻差为 `delta_t`（s），同步造成的最坏高度差一阶上界为：
 
-\[
+$
 |\delta H_t|\leq V_{z,max}|\delta t|
-\]
+$
 
 为了满足 3 mm 同步分配：
 
-\[
+$
 |\delta t|\leq\frac{0.003}{V_{z,max}}\ \mathrm{s}
-\]
+$
 
 | `V_z,max` (m/s) | 允许 `|delta_t|` (ms) |
 |---:|---:|
@@ -78,15 +78,15 @@ B\geq\frac{Z^2\sigma_{disp}}{0.005f_{px}}
 
 若静水重建单帧在某网格点的标准差为 `sigma_static`（m），并有 `N_eff` 个有效独立样本，则均值参考的随机项近似为：
 
-\[
+$
 \sigma_{Z0}=\frac{\sigma_{static}}{\sqrt{N_{eff}}}
-\]
+$
 
 `N_eff` 为无量纲有效样本数；有时间相关时 `N_eff<N`，不能直接用总帧数 `N`。若动态高程与静水参考相互独立：
 
-\[
+$
 \sigma_H=\sqrt{\sigma_Z^2+\sigma_{Z0}^2}
-\]
+$
 
 其中三项单位均为 m。缓慢漂移、共用标定偏差和水槽变形不独立，需通过分时段静水序列和控制点单独检查。
 

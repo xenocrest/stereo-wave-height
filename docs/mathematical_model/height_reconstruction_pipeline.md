@@ -6,9 +6,9 @@
 
 输入目标为 WASS 点云或网格，最终输出为
 
-\[
+$
 H(x,y,t)=Z(x,y,t)-Z_0(x,y).
-\]
+$
 
 `x,y` 为世界水平坐标（m），`t` 为相对时间（s），`Z,Z0,H` 单位均为 m。
 
@@ -35,9 +35,9 @@ Raw WASS Reconstruction
 
 WASS 源坐标点 `P_r` 到世界点 `P_w` 使用已登记变换：
 
-\[
+$
 \mathbf P_w=s\mathbf R_{wr}\mathbf P_r+\mathbf T_{wr}.
-\]
+$
 
 `P_w,T_wr` 单位为 m；`P_r` 的单位由源格式声明；若 `P_r` 为归一化坐标，则尺度 `s` 具有 m/源单位；旋转矩阵 `R_wr` 无量纲。`s,R,T` 任一为 `UNKNOWN` 时停止物理高度输出。
 
@@ -47,9 +47,9 @@ WASS 源坐标点 `P_r` 到世界点 `P_w` 使用已登记变换：
 
 点云映射到项目共同网格：
 
-\[
+$
 Z_{tji}=Z(x_i,y_j,t).
-\]
+$
 
 `x_i,y_j,Z` 单位为 m，数组维序为 `[time,y,x]`。网格范围、间距、插值/聚合方法及过滤阈值当前为 `UNKNOWN/TODO`，必须作为带版本配置选择，不能在本文件固定。
 
@@ -59,9 +59,9 @@ Z_{tji}=Z(x_i,y_j,t).
 
 每个 `Z` 帧由 `frame_id` 关联 `timestamp_ns` 和 `time_reference`。高度时间为
 
-\[
+$
 t_q=(timestamp\_ns_q-timestamp\_ns_0)\times10^{-9}\ \mathrm{s}.
-\]
+$
 
 `timestamp_ns` 单位为 ns，`t_q` 为 s。左右同步在进入 WASS 前验收；后处理不得用插值时间掩盖无效帧对。静水 `Z0` 不携带动态时间轴，但必须保存其采集时间范围和标定/部署状态。
 
@@ -69,9 +69,9 @@ t_q=(timestamp\_ns_q-timestamp\_ns_0)\times10^{-9}\ \mathrm{s}.
 
 静水参考定义为未来独立静水实验在共同网格上的结果：
 
-\[
+$
 Z_0(x_i,y_j).
-\]
+$
 
 其具体来源、采集时长、样本选择、平均/稳健估计或平面约束方法当前均为 `UNKNOWN/TODO`。本项目只规定 reference 接口必须提供：
 
@@ -88,15 +88,15 @@ Z_0(x_i,y_j).
 
 联合有效掩膜为
 
-\[
+$
 M_H(t,j,i)=M_Z(t,j,i)\land M_{Z0}(j,i).
-\]
+$
 
 当 `M_H=true` 时：
 
-\[
+$
 H(t,j,i)=Z(t,j,i)-Z_0(j,i).
-\]
+$
 
 当 `M_H=false` 时，`H=NaN`。不得使用零填充、最近邻填洞或静水值冒充有效高度。若 `+Zw` 向上，`H>0` 表示高于静水平均面。
 
@@ -139,22 +139,22 @@ standardized simulated WASS output
 
 误差只在 truth 与计算结果的共同有效样本集合 `V` 上计算：
 
-\[
+$
 e_i=H_{calc,i}-H_{true,i},
-\]
+$
 
-\[
+$
 RMSE=\sqrt{\frac{1}{|V|}\sum_{i\in V}e_i^2},\qquad
 MAE=\frac{1}{|V|}\sum_{i\in V}|e_i|,
-\]
+$
 
-\[
+$
 E_{max}=\max_{i\in V}|e_i|,
 \qquad
 coverage=\frac{N_{valid}}{N_{eligible}},
 \qquad
 hole\_rate=1-coverage.
-\]
+$
 
 `e`、RMSE、MAE、`Emax` 单位为 m；coverage 和 hole rate 无量纲。指标继承 [仿真验收标准](../simulation/acceptance_criteria.md) 的定义，但本测试的评价对象仅为 WASS 输出后的坐标、参考、高度和指标链。
 

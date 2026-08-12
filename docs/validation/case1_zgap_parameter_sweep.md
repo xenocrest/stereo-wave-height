@@ -28,9 +28,9 @@ supported and both 99.5 and 99.9 were accepted by the real executable.
 `PovMesh.cpp` sorts the valid four-neighbour absolute camera-Z differences
 `G` and selects
 
-\[
+$
 \tau=G[\lfloor(r/100)|G|\rfloor],
-\]
+$
 
 where `r` is `ZGAP_PERCENTILE` and `0 <= r < 100`. Increasing `r` cannot lower
 the selected order statistic. It may connect more observations, but can also
