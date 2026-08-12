@@ -6,15 +6,15 @@
 
 三维点在相机坐标系中为 `P_c=(X,Y,Z)^T`，`X,Y,Z` 单位 m；像素坐标 `(u,v)` 单位 px：
 
-$
+$$
 s\begin{bmatrix}u\\v\\1\end{bmatrix}=\mathbf K\begin{bmatrix}X\\Y\\Z\end{bmatrix},\quad s=Z,
 \qquad
 \mathbf K=\begin{bmatrix}f_x&0&c_x\\0&f_y&c_y\\0&0&1\end{bmatrix}.
-$
+$$
 
-$
+$$
 u=f_x\frac{X}{Z}+c_x,\qquad v=f_y\frac{Y}{Z}+c_y.
-$
+$$
 
 | 变量 | 含义 | 单位 |
 |---|---|---|
@@ -31,9 +31,9 @@ $
 
 物理焦距 `f_mm`（mm）和像元间距 `p_x,p_y`（mm/px）满足
 
-$
+$$
 f_x=\frac{f_{mm}}{p_x},\qquad f_y=\frac{f_{mm}}{p_y}.
-$
+$$
 
 结果单位为 px，仅能作为名义初值；正式内参必须来自实际标定。
 
@@ -49,8 +49,8 @@ $
 
 候选名义值为
 
-$
+$$
 f_{x,nom}=f_{y,nom}=\frac{8.0\ \mathrm{mm}}{0.00345\ \mathrm{mm/px}}\approx2318.8\ \mathrm{px}.
-$
+$$
 
 这不是标定结果，不得写入正式 WASS 内参。镜头真实焦距、畸变、对焦位置和两相机各自内参均为 `UNKNOWN/TODO`。配置见 [`candidate_system.yaml`](../../configs/equipment/candidate_system.yaml)，来源见 [参数登记表](../equipment_model/parameter_registry.md)。

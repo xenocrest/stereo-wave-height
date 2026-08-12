@@ -77,9 +77,9 @@ The candidate nominal focal length is `f=2318.84058 px`, baseline `B=0.20 m`.
 For a parallel rig at camera-to-plane depth `Z`, disparity and horizontal
 common field are
 
-$
+$$
 d=fB/Z,\qquad W_{common}=N_xZ/f-B,
-$
+$$
 
 where `N_x=2448 px`. Relative horizontal sensor overlap is `1-d/N_x`.
 
@@ -119,10 +119,10 @@ This uncertainty does not change the identified loss stage.
 
 For `H(t)=Z(t)-Z0`, the physically observed mask is
 
-$
+$$
 M_H(t,y,x)=M_{raw,dynamic}(t,y,x)\land
             \left(\bigvee_{s\in static}M_{raw,static}(s,y,x)\right).
-$
+$$
 
 This is the minimum traceable physical valid-domain definition under the
 official gridder: both the dynamic value and at least one contributing static

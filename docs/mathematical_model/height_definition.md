@@ -2,15 +2,11 @@
 
 设世界坐标中的参考水面为
 
-$$
-\Pi_0: \mathbf{n}^{\mathsf T}\mathbf{X}+c=0,
-$$
+$$\Pi_0: \mathbf{n}^{\mathsf T}\mathbf{X}+c=0,$$
 
 其中 $\mathbf{n}$ 为单位法向量。像素 $\mathbf{p}=(u,v)$ 对应的重建点为 $\mathbf{X}(u,v)$，则有符号高度定义为
 
-$$
-h(u,v)=\mathbf{n}^{\mathsf T}\mathbf{X}(u,v)+c.
-$$
+$$h(u,v)=\mathbf{n}^{\mathsf T}\mathbf{X}(u,v)+c.$$
 
 法向方向应约定为竖直向上。若参考面随时间估计，则记为 $\Pi_0(t)$，并在输出中同时保存参考面参数，避免把平台姿态变化误认为波高变化。
 

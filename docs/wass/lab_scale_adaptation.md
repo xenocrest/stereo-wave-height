@@ -23,9 +23,9 @@ WASS 示例数字来自其论文第 4 节；官方 dense-stereo 页面明确说�
 
 对已校正、近似平行的双目模型：
 
-$
+$$
 Z=\frac{f_{px}B}{d},\qquad d=\frac{f_{px}B}{Z}
-$
+$$
 
 其中：
 
@@ -36,18 +36,18 @@ $
 
 对视差作一阶误差传播：
 
-$
+$$
 \sigma_{Z,d}=\left|\frac{\partial Z}{\partial d}\right|\sigma_d
 =\frac{Z^2}{f_{px}B}\sigma_d
 =\frac{Z}{f_{px}r}\sigma_d,\quad r=\frac{B}{Z}
-$
+$$
 
 其中 `sigma_d` 是视差标准不确定度（px），`sigma_Z,d` 是仅由视差造成的深度标准不确定度（m），`r` 为无量纲基线/距离比。若给定这一项的允许误差 `epsilon_d`（m）：
 
-$
+$$
 B\geq\frac{Z^2\sigma_d}{f_{px}\epsilon_d},\qquad
 r\geq\frac{Z\sigma_d}{f_{px}\epsilon_d}
-$
+$$
 
 这些式子来自针孔双目模型的明确数学推导，不是 WASS 的精度承诺。WASS 使用亚像素对应和三角化，但实际 `sigma_d` 必须在本系统上测量。[WASS 论文](https://www.dsi.unive.it/wass/papers/1-s2.0-S0098300417304302-main.pdf)
 
@@ -55,9 +55,9 @@ $
 
 候选相机像元尺寸为 3.45 µm；若镜头真实焦距为 8.00 mm，则：
 
-$
+$$
 f_{px,nom}=\frac{8.00\ \mathrm{mm}}{0.00345\ \mathrm{mm/px}}=2318.8\ \mathrm{px}
-$
+$$
 
 这是薄透镜名义值。最终计算必须使用标定所得 `fx`、`fy`，不能以 2318.8 px 替代。相机官方规格为 2448×2048、全局快门、3.45 µm、最高 36 fps。[大恒 MER2-503-36U3C 官方页面](https://en.daheng-imaging.com/show-106-1991-1.html)
 
@@ -81,10 +81,10 @@ $
 
 由 `Z=f_px B/d`：
 
-$
+$$
 \frac{\delta Z}{Z}\approx\frac{\delta f_{px}}{f_{px}}+
 \frac{\delta B}{B}-\frac{\delta d}{d}
-$
+$$
 
 `delta Z`、`delta B` 为 m，`delta f_px`、`delta d` 为 px；比值均无量纲。该式说明基线测量和焦距标定会造成尺度偏差。对相同几何下的 `H=Z-Z0`，共同尺度因子对绝对深度的偏差可部分抵消，但仍会按比例缩放波高，不能因此省略刚体尺度验证。
 

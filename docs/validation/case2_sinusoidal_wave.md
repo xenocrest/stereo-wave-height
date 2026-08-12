@@ -12,10 +12,10 @@ Case 2 is the first end-to-end time-varying surface test:
 
 The one selected truth is
 
-$
+$$
 H_{true}(x,t)=A\sin(kx-\omega t+\phi),\quad
 k=2\pi/\lambda,\quad \omega=2\pi f.
-$
+$$
 
 Parameters are `A=0.010 m`, `lambda=0.80 m`, `f=0.50 Hz`, and `phi=0 rad`.
 They are simulation truth, not measured wave parameters.

@@ -23,15 +23,15 @@ vertices. Runtime source `PovMesh.cpp` builds a Z-gap sample list from each
 valid `(u,v)`, `v>=1`, `1<=u<width-1`, to valid points at
 `(u-1,v-1)`, `(u,v-1)`, and `(u+1,v-1)`:
 
-$
+$$
 G=\{|Z_p-Z_q|:q\in\{upper\!\ left,upper,upper\!\ right\},p,q\ valid\}.
-$
+$$
 
 It sorts `G` ascending and sets, for `r=ZGAP_PERCENTILE`,
 
-$
+$$
 \tau=G_{\lfloor(r/100)|G|\rfloor}
-$
+$$
 
 using zero-based indexing. The frozen default is `r=99.0`. `Z` and therefore
 `tau` are in WASS camera-depth units (baseline-normalized before the later
@@ -40,9 +40,9 @@ gridder baseline multiplication).
 A second graph has the valid pixels as vertices and only four-neighbour
 left/right/top/bottom candidates. Edge `(p,q)` exists iff
 
-$
+$$
 |Z_p-Z_q|<\tau.
-$
+$$
 
 Notice the strict `<`: a gap equal to `tau` is disconnected. Depth-first graph
 traversal labels components; the component with greatest vertex count is kept,

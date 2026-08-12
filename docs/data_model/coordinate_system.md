@@ -44,9 +44,9 @@
 
 静水面是高度参考，但不强制把所有 `Z0(x,y)` 设为零。实际静水平均面可含空间变化：
 
-$
+$$
 H(x,y,t)=Z(x,y,t)-Z_0(x,y).
-$
+$$
 
 `Z`、`Z0`、`H` 单位均为 m。只有在经过记录的坐标变换后，才能把 WASS 重建坐标解释为世界高程。
 
@@ -66,24 +66,24 @@ $
 
 世界到相机的外参定义为
 
-$
+$$
 \mathbf P_c=\mathbf R_{cw}\mathbf P_w+\mathbf T_{cw},
-$
+$$
 
 其中 `P_c,P_w,T_cw` 单位为 m，旋转矩阵 `R_cw` 无量纲。逆变换为
 
-$
+$$
 \mathbf P_w=\mathbf R_{cw}^{\mathsf T}(\mathbf P_c-\mathbf T_{cw}).
-$
+$$
 
 针孔投影为
 
-$
+$$
 s\begin{bmatrix}u\\v\\1\end{bmatrix}
 =\mathbf K\begin{bmatrix}X_c\\Y_c\\Z_c\end{bmatrix},
 \qquad
 \mathbf K=\begin{bmatrix}f_x&0&c_x\\0&f_y&c_y\\0&0&1\end{bmatrix}.
-$
+$$
 
 `u,v,fx,fy,cx,cy` 单位为 px，`Xc,Yc,Zc,s` 单位为 m。每个变换必须记录源坐标系、目标坐标系、矩阵方向、长度单位、来源和状态；未知 `R,T` 使用 `null/UNKNOWN`，不得填单位阵或零向量冒充标定结果。
 

@@ -6,29 +6,29 @@
 
 ## 深度灵敏度
 
-$
+$$
 Z(f_{px},B,d)=\frac{f_{px}B}{d},
-$
+$$
 
 其中 `Z,B` 为 m，`f_px,d` 为 px。偏导为
 
-$
+$$
 \frac{\partial Z}{\partial f_{px}}=\frac{B}{d}=\frac{Z}{f_{px}},\quad
 \frac{\partial Z}{\partial B}=\frac{f_{px}}{d}=\frac{Z}{B},\quad
 \frac{\partial Z}{\partial d}=-\frac{f_{px}B}{d^2}=-\frac{Z}{d}.
-$
+$$
 
 偏导单位依次为 m/px、无量纲和 m/px。
 
 若输入为小量、零均值且相互独立：
 
-$
+$$
 \sigma_Z^2\approx
 \left(\frac{B}{d}\right)^2\sigma_f^2+
 \left(\frac{f_{px}}{d}\right)^2\sigma_B^2+
 \left(\frac{f_{px}B}{d^2}\right)^2\sigma_d^2+
 \sigma_{cal}^2.
-$
+$$
 
 | 变量 | 含义 | 单位 |
 |---|---|---|
@@ -40,13 +40,13 @@ $
 
 相对形式为
 
-$
+$$
 \left(\frac{\sigma_Z}{Z}\right)^2\approx
 \left(\frac{\sigma_f}{f_{px}}\right)^2+
 \left(\frac{\sigma_B}{B}\right)^2+
 \left(\frac{\sigma_d}{d}\right)^2+
 \left(\frac{\sigma_{cal}}{Z}\right)^2.
-$
+$$
 
 输入相关时必须使用 `sigma_Z²≈J Sigma J^T`；`J` 是上述偏导行向量，`Sigma` 为输入协方差矩阵，元素单位为对应变量单位的乘积，不能直接使用独立 RSS。
 
@@ -56,9 +56,9 @@ $
 
 由 `H=Z-Z0`：
 
-$
+$$
 \sigma_H^2=\sigma_Z^2+\sigma_{Z0}^2-2\operatorname{Cov}(Z,Z_0).
-$
+$$
 
 `sigma_H,sigma_Z,sigma_Z0` 为 m，协方差为 m²。只有动态与静水随机误差独立时协方差才为零；共用标定和尺度误差需保留或端到端验证。
 

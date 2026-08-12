@@ -30,9 +30,9 @@
 
 派生量必须同时记录公式和输入版本。例如候选名义像素焦距
 
-$
+$$
 f_{px,nom}=\frac{8.0\ \mathrm{mm}}{0.00345\ \mathrm{mm/px}}\approx2318.8\ \mathrm{px}
-$
+$$
 
 只能标为 `candidate/derived`，不能替代标定的 `fx,fy`。任何涉及基线、工作距离或水槽尺寸的派生量，在输入为 `UNKNOWN` 时也保持 `UNKNOWN`。
 
