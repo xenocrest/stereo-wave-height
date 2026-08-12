@@ -159,3 +159,9 @@ Case 0 已在本机 WASS `1.11` 和官方 gridder 0.11.4 上闭环。Case 1 已�
 - [WASS 参数映射](wass/wass_parameter_mapping.md)
 - [静水参考集成](wass/static_water_reference_integration.md)
 - [数学模型](mathematical_model/height_definition.md)
+- [Case 1 Z-gap 单因素适配](validation/case1_zgap_parameter_sweep.md)
+
+Case 1 最新状态：已完成只改变 `ZGAP_PERCENTILE` 的受控扫描。99 到 99.5
+之间出现明确连通性跃迁，升高帧保留率由 41.43% 增至 99.89%，原始支持域
+RMSE 未恶化。结论分类为 A，99.5 是当前冻结仿真几何下有依据的候选适配值；
+原始 default-99 失败结论、`OBSERVABILITY_LIMITATION` 和 Case 2 禁令均保留。

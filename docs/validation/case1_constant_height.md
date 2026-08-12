@@ -190,3 +190,14 @@ Coverage is finite DCT output coverage, not raw point-support density, because
 
 Large images, point clouds, logs, `config.mat`, and `gridded.nc` remain outside
 Git at `D:\stereo-wave-height-runs\case1-constant-20260811`.
+
+## 9. Subsequent single-factor adaptation study
+
+The default-99 result and its failed acceptance decision above remain the
+formal baseline. A later controlled scan changed only `ZGAP_PERCENTILE` and
+found a sharp raised-frame support transition between 99 and 99.5. At 99.5,
+raw grid support reached 100% and supported/full-grid RMSE was 1.027 mm without
+changing WASS, gridder, DCT settings, ROI or acceptance limits. This is evidence
+for a Case 1-specific adapted candidate, not a retroactive replacement of this
+baseline and not a real-device claim. See
+[`case1_zgap_parameter_sweep.md`](case1_zgap_parameter_sweep.md).
