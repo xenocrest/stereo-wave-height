@@ -165,3 +165,9 @@ Case 1 最新状态：已完成只改变 `ZGAP_PERCENTILE` 的受控扫描。99 
 之间出现明确连通性跃迁，升高帧保留率由 41.43% 增至 99.89%，原始支持域
 RMSE 未恶化。结论分类为 A，99.5 是当前冻结仿真几何下有依据的候选适配值；
 原始 default-99 失败结论、`OBSERVABILITY_LIMITATION` 和 Case 2 禁令均保留。
+
+Case 1 重复性门已完成：正式 WASS stereo 三轮输出逐帧 bitwise identical；固定
+xyzC 的官方 DCT 五轮虽受未设种子的 PyTorch/NumPy 初始化影响而非位级一致，
+但最大 Z 波动仅 0.0206 mm，H RMSE 跨轮范围为 1.0262--1.0274 mm，结论分类
+为 B（numerically deterministic）。`ZGAP_PERCENTILE=99.5` 现冻结于该仿真
+Case 1；Case 1 可以结束，Case 2 可在独立后续任务中启动，本轮未进入。

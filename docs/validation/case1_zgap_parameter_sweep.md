@@ -162,8 +162,10 @@ remains prohibited.
 - Official pre-cluster float depth, actual `tau`, and component labels remain
   unavailable: `OBSERVABILITY_LIMITATION` is not lifted.
 - The precise cause of the 99-to-99.5 component merge remains unobserved.
-- DCT run-to-run variability needs a controlled repeatability study; no DCT
-  parameter was changed here.
+- The subsequent controlled repeatability study classified the frozen 99.5
+  chain as numerically deterministic (B): maximum inter-run Z difference was
+  0.0206 mm and no acceptance conclusion changed. See
+  [`case1_repeatability.md`](case1_repeatability.md).
 - Results apply only to the frozen ideal synthetic Case 1 and do not establish
   real-camera or real-water centimetre accuracy.
 - No Case 2 data was generated or processed.
