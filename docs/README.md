@@ -7,8 +7,8 @@
 如果需要快速核对汇报中提到的“**双目几何模型、水面高度模型、虚拟相机模型**”，请先查看：
 
 - [核心建模成果总览](MODEL_OVERVIEW.md)：集中说明三类模型的公式、参数来源、用途和当前状态；
-- [双目几何模型](mathematical_model/stereo_reconstruction_model.md)：`Z=f_px B/d`、双目坐标/单位和设备参数绑定；
-- [水面高度模型](mathematical_model/height_field_model.md)：`H(x,y,t)=Z(x,y,t)-Z0(x,y)`、静水参考和统一坐标要求；
+- [双目几何模型](mathematical_model/stereo_reconstruction_model.md)：$Z=f_{px}B/d$、双目坐标/单位和设备参数绑定；
+- [水面高度模型](mathematical_model/height_field_model.md)：$H(x,y,t)=Z(x,y,t)-Z_0(x,y)$、静水参考和统一坐标要求；
 - [虚拟相机模型](simulation/virtual_camera_model.md)：基于候选设备参数建立的 `SIMULATION_NOMINAL` 针孔双目模型。
 
 这些文档是当前汇报中“已完成建模”的直接证据入口。
