@@ -1,6 +1,17 @@
 # 文档索引
 
-本索引按“项目汇报所需信息”组织仓库文档。建议首次阅读依次查看项目定位、系统路线、当前实现和验收边界。
+本索引按“项目汇报所需信息”组织仓库文档。建议首次阅读依次查看核心建模成果、系统路线、当前验证结果和验收边界。
+
+## 0. 核心建模成果（汇报入口）
+
+如果需要快速核对汇报中提到的“**双目几何模型、水面高度模型、虚拟相机模型**”，请先查看：
+
+- [核心建模成果总览](MODEL_OVERVIEW.md)：集中说明三类模型的公式、参数来源、用途和当前状态；
+- [双目几何模型](mathematical_model/stereo_reconstruction_model.md)：`Z=f_px B/d`、双目坐标/单位和设备参数绑定；
+- [水面高度模型](mathematical_model/height_field_model.md)：`H(x,y,t)=Z(x,y,t)-Z0(x,y)`、静水参考和统一坐标要求；
+- [虚拟相机模型](simulation/virtual_camera_model.md)：基于候选设备参数建立的 `SIMULATION_NOMINAL` 针孔双目模型。
+
+这些文档是当前汇报中“已完成建模”的直接证据入口。
 
 ## 1. 项目定位与计划
 
@@ -36,7 +47,7 @@
 - [合成水面模型](simulation/synthetic_surface_models.md)；
 - [合成立体影像生成](simulation/synthetic_image_generation.md)。
 
-当前仿真用于隔离并验证几何、符号、尺度、接口和数据谱系问题，不代表真实水面成像条件，也不代表 WASS 端到端重建已经完成。
+当前仿真用于隔离并验证几何、符号、尺度、接口和数据谱系问题。它在数学几何关系上绑定候选设备参数，但不等同于真实水面成像；真实反射、光照变化、相机抖动和真实传感器噪声尚未纳入。
 
 ## 5. WASS 复现与集成
 
@@ -46,14 +57,31 @@
 - [输入输出规范](wass/input_output_spec.md)；
 - [集成架构](wass/wass_integration_architecture.md)；
 - [参数映射](wass/wass_parameter_mapping.md)；
-- [复现与实验室适配计划](wass/reproduction_plan.md)；
-- [实验室尺度适配论证](wass/lab_scale_adaptation.md)；
+- [本机运行时绑定](wass/local_runtime_binding.md)；
+- [端到端验证记录](wass/end_to_end_validation.md)；
+- [官方 wassgridsurface 集成](wass/wassgridsurface_integration.md)；
 - [静水参考集成](wass/static_water_reference_integration.md)；
 - [1 cm 误差预算与验收条件](wass/one_cm_error_budget.md)。
 
-## 6. 当前汇报边界
+## 6. 当前验证结果
 
-可以陈述：系统与数学定义已经建立；WASS 集成边界和输出适配已经设计并部分编码；理想虚拟双目与合成立体影像链已有自动化测试。
+- [Case 0 静水验证](validation/case0_static_water.md)：已完成虚拟双目 → WASS → 官方网格化 → `Z0` → `H` 的正式闭环；
+- [Case 1 固定高度验证](validation/case1_constant_height.md)：+0.010 m 非零高度端到端运行完成，但未通过预注册 RMSE / 最大误差门限；
+- [Case 1 误差根因诊断](validation/case1_error_diagnosis.md)：定位全网格误差主要来自无原始支持区域上的 DCT 全域重建；
+- [Case 1 支持追踪](validation/case1_support_trace.md)：支持损失已定位到 WASS 三角化后的 Z-gap 最大连通分量阶段。
 
-不能陈述：WASS 已在本机完整跑通；候选硬件已经定型；真实水槽实验已经完成；系统已达到 1 cm 实测精度。
+## 7. 当前汇报边界
 
+可以陈述：
+
+- 双目几何模型、水面高度模型、虚拟相机模型已经建立并文档化；
+- 基于候选设备参数的虚拟双目图像链已经实现；
+- 本机 WASS 核心与官方 `wassgridsurface 0.11.4` 已实际跑通；
+- Case 0 已正式闭环；Case 1 已完成端到端运行并开展误差根因分析。
+
+不能陈述：
+
+- 候选硬件已经最终定型或采购；
+- 真实水槽/真实海浪实验已经完成；
+- 系统已经达到 1 cm 实测精度；
+- Case 1 已通过验收（当前尚未通过）。
