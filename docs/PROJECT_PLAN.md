@@ -208,3 +208,11 @@ at the homography acceptance path. Stereo/grid/height metrics were not produced.
 IRR-1 is `BLOCKED_AT_AUTOCALIBRATION`, not passed; scene-distance validation is
 deferred pending a separate source-backed diagnosis. See
 [the IRR-1 report](validation/irregular_wave_validation.md).
+## 2026-08-13 IRR-1A closure
+
+Source-backed diagnosis disproved a monotonic frame-count limit and identified
+the strict post-SBA error-improvement gate. AC-10D, uniformly spanning the full
+window without static duplicates, was frozen before height reconstruction. It
+calibrated all subset/unseen frames and closed the full 52-frame chain: RMSE
+2.368 mm, maximum error 8.732 mm, raw support >=99.996%. IRR-1A passes; original
+IRR-1 remains FAIL. A separately pre-registered scene-distance study may follow.

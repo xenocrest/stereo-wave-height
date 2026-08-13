@@ -1,7 +1,7 @@
 {
   "experiment_id": "IRR-1",
-  "status": "BLOCKED_AT_AUTOCALIBRATION",
-  "pass": false,
+  "status": "IRR-1 FAIL PRESERVED; IRR-1A PASS",
+  "pass": true,
   "surface": {
     "formula": "sum_i A_i sin(2*pi*x/lambda_i - 2*pi*f_i*t + phi_i)",
     "components": [
@@ -39,9 +39,9 @@
     "stereo": {"status": "NOT_RUN"},
     "grid": {"status": "NOT_RUN"}
   },
-  "global_metrics": null,
-  "point_metrics": null,
-  "support_metrics": null,
+  "global_metrics_IRR1A": {"bias_m": 0.0000363661, "rmse_m": 0.0023676125, "mae_m": 0.0018821852, "max_abs_error_m": 0.0087321280, "p90_m": 0.0039125659, "p95_m": 0.0046720194, "p99_m": 0.0061705306},
+  "point_rmse_range_IRR1A_m": [0.0015067525, 0.0033838862],
+  "support_metrics_IRR1A": {"triangulated_min_mean_max": [4331824, 4338838.68, 4344965], "component_retention_min_mean_max": [0.9974967489, 0.9992531243, 0.9998054921], "raw_support_min_mean_max": [0.9999609375, 0.99999921875, 1.0], "finite_grid_coverage": 1.0, "hole_rate": 0.00000078125},
   "config_sha256": "31ae779881dea572944fed8c10e2a51eee98964cedd60b961b87ba0a6bef3932",
   "manifest_sha256": "6578e038cad0d0414e7eb513681c424875e504c7a7be79b63c3ec3bb3d2a3c87",
   "project_commit_at_input_generation": "e89e643480475b073b2742c4197b5bfaba3b071f",

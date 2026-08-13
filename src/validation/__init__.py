@@ -23,7 +23,12 @@ from .sinusoidal_wave import (
     translate_coordinate_origin_m,
     wrap_phase_rad,
 )
-from .irregular_wave import RepresentativeGridPoint, direct_error_metrics, freeze_nearest_grid_points
+from .irregular_wave import (
+    RepresentativeGridPoint,
+    direct_error_metrics,
+    freeze_nearest_grid_points,
+    uniformly_spaced_frame_ids,
+)
 from .virtual_stereo_geometry import (
     ClosureMetrics,
     closure_metrics,
@@ -54,6 +59,7 @@ __all__ = [
     "RepresentativeGridPoint",
     "direct_error_metrics",
     "freeze_nearest_grid_points",
+    "uniformly_spaced_frame_ids",
     "translate_coordinate_origin_m",
     "wrap_phase_rad",
     "ClosureMetrics",

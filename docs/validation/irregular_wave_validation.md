@@ -1,7 +1,7 @@
 # IRR-1 deterministic multi-component irregular-wave validation
 
 Run date: 2026-08-13  
-Status: **BLOCKED_AT_AUTOCALIBRATION / FAIL (no height result)**
+Status: **ORIGINAL IRR-1 FAIL PRESERVED; IRR-1A PASS**
 
 ## Purpose and frozen truth
 
@@ -91,3 +91,29 @@ Compact evidence is in
 [`data/irregular_wave_metrics.json`](data/irregular_wave_metrics.json). Large
 images and work products remain outside Git at
 `D:/stereo-wave-height-runs/irregular-wave-20260813`.
+
+## IRR-1A adaptation result
+
+A subsequent pre-registered diagnosis established that failure is not monotonic
+with frame count and that the source requires strict post-SBA error improvement.
+The frozen AC-10D subset `[2,7,13,18,24,29,35,40,46,51]` spans the full dynamic
+window. Its unchanged calibration successfully drove all 52 stereo frames and
+the official shared grid. See
+[`irregular_wave_autocalibration_diagnosis.md`](irregular_wave_autocalibration_diagnosis.md).
+
+On the original frozen truth, representative points, times and eligible-domain
+rules, IRR-1A obtains bias 0.0364 mm, RMSE 2.3676 mm, MAE 1.8822 mm, maximum
+error 8.7321 mm, P90/P95/P99 3.9126/4.6720/6.1705 mm. Dynamic raw support is
+99.9961--100%, component retention 99.7497--99.9805%, finite coverage 100%, and
+hole rate 0.0000781%. All frozen gates pass.
+
+Point RMSE ranges 1.5068--3.3839 mm; point MAE 1.1720--2.9033 mm; point maximum
+error 4.1826--7.5763 mm. The pre-registered 0.0/3.4/6.8 s comparisons are stored
+with all 300 point-time rows in
+[`data/irregular_wave_points.csv`](data/irregular_wave_points.csv). P1/P2 have
+positive biases 2.874/2.700 mm while other points range -0.789 to -0.202 mm,
+showing a localized spatial bias pattern that remains below formal gates and
+should be tracked in deployment validation.
+
+IRR-1A passes. Scene-distance validation may proceed as a new pre-registered
+task, while preserving the original IRR-1 failure and the localized-bias note.

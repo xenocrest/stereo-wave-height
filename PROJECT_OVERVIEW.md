@@ -269,3 +269,12 @@ failed after successful SBA during homography acceptance. The fail-fast protocol
 therefore prevented stereo, gridding and height claims. IRR-1 remains blocked;
 deployment distance scanning is not yet authorized. Details are in the
 [IRR-1 validation report](docs/validation/irregular_wave_validation.md).
+## 2026-08-13 IRR-1A autocalibration adaptation
+
+The original 52-frame joint-autocalibration failure remains recorded. A bounded,
+deterministic subset diagnosis showed the result depends on strict SBA error
+improvement and match composition, not a simple frame-count ceiling. The frozen
+10-dynamic-frame, full-window calibration was applied through WASS's per-workdir
+interface to all 52 frames. IRR-1A then passed with 2.368 mm RMSE, 8.732 mm
+maximum error and at least 99.996% raw support. Scene-distance validation may
+now be designed without erasing the historical failure.

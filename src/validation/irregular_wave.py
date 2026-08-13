@@ -67,3 +67,19 @@ def direct_error_metrics(error: npt.ArrayLike, valid_mask: npt.ArrayLike) -> dic
         "max_abs_error_m": float(np.max(absolute)),
         **{f"p{p}_abs_error_m": float(np.percentile(absolute, p)) for p in (50, 90, 95, 99)},
     }
+
+
+def uniformly_spaced_frame_ids(first: int, last: int, count: int) -> tuple[str, ...]:
+    """Select an exact deterministic full-span subset by rounded linspace.
+
+    The endpoints are included. Duplicate rounded indices are forbidden rather
+    than silently repaired, so the selection rule cannot change after results.
+    """
+    if first < 0 or last < first or count < 2 or count > last - first + 1:
+        raise ValueError("invalid inclusive frame range or requested count")
+    indices = np.rint(np.linspace(first, last, count)).astype(np.int64)
+    if np.unique(indices).size != count:
+        raise ValueError("rounded linspace did not produce the exact unique count")
+    if indices[0] != first or indices[-1] != last:
+        raise ValueError("selection must cover both time-span endpoints")
+    return tuple(f"{index:06d}" for index in indices)

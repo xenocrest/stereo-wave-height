@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 
 from src.simulation.irregular_surface import WaveComponent, component_height_m, multicomponent_wave
-from src.validation.irregular_wave import direct_error_metrics, freeze_nearest_grid_points
+from src.validation.irregular_wave import direct_error_metrics, freeze_nearest_grid_points, uniformly_spaced_frame_ids
 
 
 class IrregularWaveValidationTests(unittest.TestCase):
@@ -51,6 +51,17 @@ class IrregularWaveValidationTests(unittest.TestCase):
         text = (Path(__file__).parents[1]/'configs'/'simulation'/'irregular_wave_multicomponent.yaml').read_text(encoding='utf-8')
         for token in ('dynamic_frame_count: 50', 'world_minus_grid_x_m: 0.10', 'sampling_rule: nearest_grid_node', 'zgap_percentile: 99.5'):
             self.assertIn(token, text)
+
+    def test_uniform_subset_is_exact_deterministic_unique_and_full_span(self) -> None:
+        first = uniformly_spaced_frame_ids(2, 51, 10)
+        second = uniformly_spaced_frame_ids(2, 51, 10)
+        self.assertEqual(first, second)
+        self.assertEqual(len(first), 10)
+        self.assertEqual(len(set(first)), 10)
+        self.assertEqual(first[0], "000002")
+        self.assertEqual(first[-1], "000051")
+        self.assertNotIn("000000", first)
+        self.assertNotIn("000001", first)
 
 
 if __name__ == '__main__':

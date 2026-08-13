@@ -1,0 +1,21 @@
+{
+  "source_rule": "round(linspace(first_dynamic=2,last_dynamic=51,N)); exact unique count and endpoints required",
+  "runs": {
+    "AC-04": {"ids": [2,18,35,51], "matches": 6979, "pre_px": 0.00000286193, "post_px": 0.00000287839, "result": "FAIL"},
+    "AC-06": {"ids": [2,12,22,31,41,51], "matches": 10613, "pre_px": 0.000133286, "post_px": 0.00000493377, "result": "PASS", "R_sha256": "d220318cd389d0b70001eb1f0744611a70aac7687991c10613a5ae8085c979e5", "T_sha256": "40e2a90c8a9efeef606148130cb80c6ca83010d330b5af083fd1677816085b8a"},
+    "AC-10D": {"ids": [2,7,13,18,24,29,35,40,46,51], "matches": 17722, "pre_px": 0.257261, "post_px": 0.00000626708, "result": "PASS", "iterations": 22, "R_sha256": "ad5ea4cec04b9070ce954c0b726f81da27e154342639fe3bb1e49ba5e4d76731", "T_sha256": "a9631686ac29cd9987704ebff0ea4d37a3cbbd20dcc66922ad4be7dd44e50a79", "H_sha256": "7cd0a00250c35ffec8f6ba8214efc908bed45861e6ea207a5c34765d102bdf32"},
+    "AC-20": {"ids": [2,5,7,10,12,15,17,20,23,25,28,30,33,36,38,41,43,46,48,51], "matches": 36393, "pre_px": 0.00000530737, "post_px": 0.00000530737, "result": "FAIL"},
+    "AC-30": {"ids": [2,4,5,7,9,10,12,14,16,17,19,21,22,24,26,27,29,31,32,34,36,37,39,41,43,44,46,48,49,51], "matches": 54304, "pre_px": 0.00000512477, "post_px": 0.00000512480, "result": "FAIL"},
+    "AC-40": {"frame_count": 40, "matches": 72203, "pre_px": 0.000329128, "post_px": 0.00000594683, "result": "PASS", "R_sha256": "9cd25ec43925f0d9584a9dbc14d07157dcc1806f8922a696995919cc5ed488ab", "T_sha256": "33ceae0f621ec30b6d5fe04585c83231028d1c566b6ed77af3d570b8b83a9683"},
+    "AC-50D": {"ids": "2..51 inclusive", "matches": 90537, "pre_px": 0.000179617, "post_px": 0.00000584310, "result": "PASS", "R_sha256": "58c5ffebd6e1afaf4d5ad2e62b9ead5fa60537ab940de002947e228ac19f919b", "T_sha256": "42d397d277d315cbc3628b2237260bd36babbcccd1fa56dfb88f6b688c9f03ce"},
+    "AC-52": {"ids": "0..51 inclusive", "matches": 95083, "pre_px": 0.00000511451, "post_px": 0.00000511451, "result": "FAIL"},
+    "AC-10DS": {"ids": [0,1,2,7,13,18,24,29,35,40,46,51], "matches": 22268, "pre_px": 0.00000454307, "post_px": 0.00000454568, "result": "FAIL"},
+    "TR-B-early": {"ids": [2,5,7,10,13,15,18,21,23,26], "pre_px": 0.00000922679, "post_px": 0.00000663537, "result": "PASS"},
+    "TR-C-late": {"ids": [27,30,32,35,38,40,43,46,48,51], "pre_px": 0.00000523102, "post_px": 0.00000523131, "result": "FAIL"}
+  },
+  "source_failure_condition": "post_SBA_mean_epipolar_error < pre_SBA_mean_epipolar_error; strict less-than",
+  "selected_adaptation": "AC-10D",
+  "unseen_stereo_probes": {"frames": [0,2,27,29,51], "all_return_code_zero": true},
+  "IRR-1_original": "FAIL_BLOCKED_AT_AUTOCALIBRATION",
+  "IRR-1A": "PASS"
+}
