@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "validation": "virtual_stereo_geometry",
+  "thresholds": {"projection_max_px": 1e-9, "disparity_max_px": 1e-9, "triangulation_max_m": 1e-9},
+  "camera": {"model": "MER2-503-36U3C", "status": "candidate", "width_px": 2448, "height_px": 2048, "pixel_size_um": 3.45, "focal_length_mm": 8.0, "intrinsics_status": "SIMULATION_NOMINAL", "fx_px": 2318.8405797101445, "fy_px": 2318.8405797101445, "cx_px": 1223.5, "cy_px": 1023.5, "baseline_m": 0.2},
+  "focal_mapping": {"theory_px": 2318.840579710145, "implementation_px": 2318.8405797101445, "absolute_error_px": 4.547473508864641e-13, "relative_error": 1.9610979506978765e-16},
+  "projection": {"max_abs_u_px": 0.0, "max_abs_v_px": 0.0, "rmse_px": 0.0, "point_camera_comparisons": 20},
+  "disparity": [
+    {"depth_m": 1.5, "theory_px": 309.1787439613526, "virtual_px": 309.17874396135267, "absolute_error_px": 5.684341886080802e-14},
+    {"depth_m": 2.0, "theory_px": 231.88405797101447, "virtual_px": 231.8840579710145, "absolute_error_px": 2.842170943040401e-14},
+    {"depth_m": 2.5, "theory_px": 185.50724637681157, "virtual_px": 185.5072463768115, "absolute_error_px": 5.684341886080802e-14},
+    {"depth_m": 3.0, "theory_px": 154.5893719806763, "virtual_px": 154.58937198067633, "absolute_error_px": 2.842170943040401e-14}
+  ],
+  "multi_depth_closure": {"x_rmse_m": 1.4835979218054372e-16, "y_rmse_m": 1.2245301254481501e-16, "z_rmse_m": 1.0227145444901955e-15, "euclidean_rmse_m": 1.0406490319646402e-15, "euclidean_max_m": 4.05953166610789e-15, "point_count": 140},
+  "plane_surface_closure": {"x_rmse_m": 2.200335413928992e-16, "y_rmse_m": 1.7768708410849132e-16, "z_rmse_m": 9.078966436652606e-16, "euclidean_rmse_m": 9.509278494057918e-16, "euclidean_max_m": 2.010699415441723e-15, "point_count": 4331},
+  "sinusoidal_surface_closure": {"x_rmse_m": 2.227063564938016e-16, "y_rmse_m": 1.7547488675726705e-16, "z_rmse_m": 9.287581194846276e-16, "euclidean_rmse_m": 9.710721917621993e-16, "euclidean_max_m": 2.574883661569045e-15, "point_count": 4331},
+  "shared_texture": "confirmed_single_surface_attached_array",
+  "pass": true,
+  "project_commit_at_evaluation": "2f762395f889bbc23143a70a9801736239d0d467"
+}

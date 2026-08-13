@@ -22,6 +22,12 @@ from .sinusoidal_wave import (
     translate_coordinate_origin_m,
     wrap_phase_rad,
 )
+from .virtual_stereo_geometry import (
+    ClosureMetrics,
+    closure_metrics,
+    theoretical_pinhole_projection,
+    triangulate_parallel_downward_stereo,
+)
 
 __all__ = [
     "ConstantHeightResult",
@@ -44,4 +50,8 @@ __all__ = [
     "estimate_sinusoidal_wave",
     "translate_coordinate_origin_m",
     "wrap_phase_rad",
+    "ClosureMetrics",
+    "closure_metrics",
+    "theoretical_pinhole_projection",
+    "triangulate_parallel_downward_stereo",
 ]

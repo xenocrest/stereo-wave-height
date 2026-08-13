@@ -100,6 +100,11 @@ WASS（Waves Acquisition Stereo System）是本项目调用的**外部双目匹�
 
 ## 5. 设备购买前的仿真验证方法
 
+虚拟相机本身已先通过几何可信性验证：候选参数到内参的映射、独立理论投影、
+多深度视差以及点集、平面和正弦面的三角化闭环均达到机器精度门限；shared
+physical texture 调用链也已确认。这是后续多场景仿真的前提证据，但不代表真实
+光学等价。详见 [虚拟双目几何验证](docs/validation/virtual_stereo_geometry_validation.md)。
+
 仿真的核心价值是拥有严格已知的 `H_true`，并且不把真值泄漏给 WASS：
 
 ```text
