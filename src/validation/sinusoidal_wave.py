@@ -23,6 +23,25 @@ def wrap_phase_rad(value: float) -> float:
     return float((value + np.pi) % (2.0 * np.pi) - np.pi)
 
 
+def translate_coordinate_origin_m(
+    coordinate_m: npt.ArrayLike,
+    *,
+    target_minus_source_m: float,
+) -> npt.NDArray[np.float64]:
+    """Translate metre coordinates between explicitly identified origins.
+
+    The caller supplies ``target_minus_source_m``; no baseline, camera centre,
+    axis direction, or coordinate-system relationship is inferred. For Case 2,
+    ``x_world = x_grid + 0.10 m`` is established from the frozen grid centre.
+    """
+    coordinate = np.asarray(coordinate_m, dtype=np.float64)
+    if coordinate.ndim != 1 or coordinate.size == 0 or not np.all(np.isfinite(coordinate)):
+        raise ValueError("coordinate_m must be a non-empty finite one-dimensional array")
+    if not np.isfinite(target_minus_source_m):
+        raise ValueError("target_minus_source_m must be finite")
+    return coordinate + float(target_minus_source_m)
+
+
 def estimate_sinusoidal_wave(
     height_tx_m: npt.ArrayLike,
     x_m: npt.ArrayLike,

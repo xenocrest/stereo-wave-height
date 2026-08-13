@@ -104,11 +104,12 @@ added after seeing the data.
 
 The exact wavelength and frequency show that sampled periodic structure and
 propagation rate survive the chain. Amplitude is underestimated by 3.07%. The
-44.99-degree phase offset is material and remains a TODO for a separately
-reviewed coordinate/phase-origin analysis; it is not hidden, corrected, or used
-to tune WASS. Current evidence does not distinguish common x-origin/plane
-transform effects from reconstruction phase bias. The height result itself
-passes, so no failure-category parameter intervention is authorized here.
+The historical 44.99-degree phase offset is retained above. A subsequent audit
+proved that the comparison mixed the official grid x origin (centre at
+`-0.10 m`) with world-truth x. The explicit mapping `x_world=x_grid+0.10 m`
+reduces phase error to `-0.000111 rad` and diagnostic RMSE to `0.8617 mm`,
+without changing WASS or H. See
+[`case2_phase_alignment_diagnosis.md`](case2_phase_alignment_diagnosis.md).
 
 ## 7. Limits
 
@@ -117,5 +118,5 @@ passes, so no failure-category parameter intervention is authorized here.
 - No reflection, refraction, camera noise, lens distortion, synchronization
   error or real calibration uncertainty is represented.
 - DCT is numerically rather than bitwise deterministic as documented for Case 1.
-- The reported phase offset requires diagnosis before phase-sensitive scientific
-  use; no post-hoc phase correction is applied.
+- The phase-origin issue is closed for this run; future physical datasets still
+  require an explicitly recorded world-to-grid transform.
