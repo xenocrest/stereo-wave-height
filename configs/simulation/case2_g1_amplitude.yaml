@@ -1,0 +1,8 @@
+schema_version: 1
+status: KINEMATIC_SYNTHETIC_WAVE_TEST
+group: G1
+surface: {amplitude_m: 0.030, wavelength_m: 0.80, frequency_hz: 0.50, phase_rad: 0.0}
+sampling: {frame_rate_hz: 5.0, static_frames: 2, dynamic_frames: 10, samples_per_wavelength: 80, samples_per_period: 10}
+geometry: {baseline_m: 0.20, working_distance_m: 2.00}
+wass: {zgap_percentile: 99.5}
+grid: {implementation: wassgridsurface_0.11.4, interpolation: DCT, size: [160, 160], spacing_m: 0.01}

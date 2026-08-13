@@ -1,0 +1,19 @@
+{
+  "run_date": "2026-08-13",
+  "input_project_commit": "7d13034ed93f937ac88b134b06814ac03082640e",
+  "versions": {"WASS": "1.11_heads/master-0-g6b82aeb", "wassgridsurface": "0.11.4"},
+  "frozen": {"baseline_m": 0.2, "working_distance_m": 2.0, "wavelength_m": 0.8, "frame_rate_hz": 5.0, "zgap_percentile": 99.5, "grid": [160, 160], "grid_spacing_m": 0.01},
+  "groups": {
+    "G0": {"A_m": 0.01, "f_hz": 0.5, "frames": 12, "triangulated_range": [4322503, 4337716], "component_range": [4320224, 4336691], "retention_min": 0.9994091361, "raw_support": 1.0, "bias_m": -0.0002581819, "rmse_m": 0.0008588461, "mae_m": 0.0006912908, "max_m": 0.0025085414, "p90_m": 0.0013960007, "p95_m": 0.0016419549, "p99_m": 0.0021200700, "A_calc_m": 0.0096941948, "A_error_m": -0.0003058052, "A_relative_error": -0.0305805243, "lambda_calc_m": 0.8000000000, "f_calc_hz": 0.5, "phase_error_rad": 0.0002067058, "pass": true},
+    "G1": {"A_m": 0.03, "f_hz": 0.5, "frames": 12, "triangulated_range": [4324706, 4358632], "component_range": [4323792, 4358006], "retention_min": 0.9984487534, "raw_support": 1.0, "bias_m": -0.0004333372, "rmse_m": 0.0010303035, "mae_m": 0.0008485273, "max_m": 0.0033977164, "p90_m": 0.0016791596, "p95_m": 0.0019488867, "p99_m": 0.0024217808, "A_calc_m": 0.0295961801, "A_error_m": -0.0004038199, "A_relative_error": -0.0134606649, "lambda_calc_m": 0.8000000000, "f_calc_hz": 0.5, "phase_error_rad": 0.0004060584, "pass": true},
+    "G2": {"A_m": 0.01, "f_hz": 1.0, "frames": 12, "triangulated_range": [4322503, 4335514], "component_range": [4322122, 4334186], "retention_min": 0.9996250806, "raw_support": 1.0, "bias_m": -0.0001089998, "rmse_m": 0.0007386240, "mae_m": 0.0006035457, "max_m": 0.0020989722, "p90_m": 0.0012210315, "p95_m": 0.0013805304, "p99_m": 0.0017350900, "A_calc_m": 0.0096887138, "A_error_m": -0.0003112862, "A_relative_error": -0.0311286168, "lambda_calc_m": 0.8000000000, "f_calc_hz": 1.0, "phase_error_rad": -0.0026333058, "pass": true},
+    "G3": {"A_m": 0.03, "f_hz": 1.0, "frames": 12, "triangulated_range": [4320548, 4354517], "component_range": [4319465, 4351618], "retention_min": 0.9985934567, "raw_support": 1.0, "bias_m": -0.0005452231, "rmse_m": 0.0011310146, "mae_m": 0.0009245529, "max_m": 0.0036721434, "p90_m": 0.0018761504, "p95_m": 0.0021664271, "p99_m": 0.0026108892, "A_calc_m": 0.0296594284, "A_error_m": -0.0003405716, "A_relative_error": -0.0113523874, "lambda_calc_m": 0.8000000000, "f_calc_hz": 1.0, "phase_error_rad": -0.0032467871, "pass": true}
+  },
+  "hashes": {
+    "G0_config": "5a19d3b548b8d7b7ece414272215965a543ea52fe49ec8388a99bf154b3ed436",
+    "G1_config": "de9616e18ae8e5dd3bb16e10f4c74bdd1217b471552be646b739f9e846416217",
+    "G2_config": "f779e2f8a5ad72a4aab63731d685712b2ce155a24b9042a40b094d55a65db6d2",
+    "G3_config": "594943da10d76d5fae748933cdbd653eaf8db3db8275422fe39d7347b9ed9bbb",
+    "manifest_each_group": "67f0af63d84b05fd41385623c6a432945e4feb945f3dbac7284c4fb966ba0179"
+  }
+}

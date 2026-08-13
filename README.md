@@ -96,3 +96,11 @@ WASS 上游仓库：<https://github.com/fbergama/wass>
 2. 理论可行性、合成验证和真实实验结论明确分层。
 3. 坐标、单位、配置、软件版本和数据来源可追溯。
 4. 未确认参数保留 `UNKNOWN/TODO`，不以假设冒充实测数据。
+## Latest validation status (2026-08-13)
+
+The pre-purchase controlled regular-wave matrix is complete. Four ideal
+synthetic groups spanning 10--30 mm amplitude and 0.5--1.0 Hz all passed the
+frozen height/support gates through real WASS and official wassgridsurface.
+This is software-chain evidence only, not a real-device 1 cm claim. See the
+[comparison report](docs/validation/sinusoidal_wave_parameter_comparison.md)
+and [validation matrix](docs/validation/prepurchase_validation_matrix.md).

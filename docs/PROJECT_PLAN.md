@@ -191,3 +191,12 @@ x 的原点相差 `+0.10 m`，在 `lambda=0.80 m` 下恰为 `pi/4`。使用显�
 虚拟双目几何可信性验证已通过：参数到内参的映射、独立理论投影、多深度视差、
 点集及平面/正弦整面三角化闭环均达到机器精度门限；shared physical texture
 调用链已确认。该结论只覆盖理想针孔几何，真实光学与标定误差仍需实机验证。
+## 2026-08-13 controlled regular-wave matrix
+
+The pre-purchase G0--G3 kinematic sinusoidal matrix is complete. With all
+geometry, WASS, grid and acceptance settings frozen, amplitudes 10/30 mm and
+frequencies 0.5/1.0 Hz all passed. Raw support was 100%; height RMSE ranged
+0.739--1.131 mm and maximum error 2.099--3.672 mm. This confirms stability only
+for the ideal synthetic parameter rectangle, not real equipment or water.
+See [the comparison report](validation/sinusoidal_wave_parameter_comparison.md)
+and [long-term matrix](validation/prepurchase_validation_matrix.md).

@@ -253,3 +253,11 @@ $$
 | 2026-08-11 | 见专项历史 | Case 0 闭环 | 静水通过 WASS 核心与官方规则网格；理想仿真，不代表真实设备精度。 |
 | 2026-08-12 | `8b33bb9` | Case 1 重复性关闭 | ZGAP=99.5 冻结于当前仿真几何；分类 B，最大跨运行 Z 差异 0.020553 mm。 |
 | 2026-08-12 | `b44fe57` | Case 2 高度验收通过 | RMSE 5.3968 mm；波长和频率正确恢复；约 45 deg 相位偏移保留为未解决诊断项。 |
+## 2026-08-13 procurement-preparation update
+
+Four controlled ideal-synthetic sinusoidal groups now close the regular-wave
+software matrix: A=10/30 mm crossed with f=0.5/1.0 Hz at fixed wavelength
+0.80 m. All groups retained 100% raw grid support and passed the frozen height
+gates; RMSE was 0.739--1.131 mm. This result is limited to the virtual pinhole
+chain and does not establish real-camera, real-water, or physical wave accuracy.
+Details: [controlled comparison](docs/validation/sinusoidal_wave_parameter_comparison.md).

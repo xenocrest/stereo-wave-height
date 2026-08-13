@@ -233,3 +233,22 @@ def spatial_error_statistics(error: npt.ArrayLike, valid_mask: npt.ArrayLike) ->
         center_rmse=float(np.sqrt(np.mean(values[center] ** 2))),
         boundary_rmse=float(np.sqrt(np.mean(values[boundary] ** 2))),
     )
+
+
+def absolute_error_percentiles(
+    error: npt.ArrayLike,
+    valid_mask: npt.ArrayLike,
+    percentiles: tuple[float, ...] = (50.0, 90.0, 95.0, 99.0),
+) -> dict[float, float]:
+    """Return absolute-error percentiles over an explicit valid domain."""
+    values = np.asarray(error, dtype=np.float64)
+    valid = np.asarray(valid_mask, dtype=bool)
+    if values.shape != valid.shape or values.size == 0:
+        raise ValueError("error and valid_mask must share a non-empty shape")
+    if any(not np.isfinite(p) or p < 0 or p > 100 for p in percentiles):
+        raise ValueError("percentiles must lie in [0,100]")
+    selected = valid & np.isfinite(values)
+    if not np.any(selected):
+        raise ValueError("no valid finite errors")
+    absolute = np.abs(values[selected])
+    return {p: float(np.percentile(absolute, p)) for p in percentiles}
