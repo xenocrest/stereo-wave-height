@@ -1,0 +1,50 @@
+{
+  "experiment_id": "IRR-1",
+  "status": "BLOCKED_AT_AUTOCALIBRATION",
+  "pass": false,
+  "surface": {
+    "formula": "sum_i A_i sin(2*pi*x/lambda_i - 2*pi*f_i*t + phi_i)",
+    "components": [
+      {"amplitude_m": 0.015, "wavelength_m": 0.80, "frequency_hz": 0.50, "phase_rad": 0.0},
+      {"amplitude_m": 0.008, "wavelength_m": 0.50, "frequency_hz": 0.80, "phase_rad": 1.0471975511965976},
+      {"amplitude_m": 0.005, "wavelength_m": 1.20, "frequency_hz": 0.30, "phase_rad": -0.7853981633974483}
+    ],
+    "analytical_height_bound_m": [-0.028, 0.028],
+    "evaluated_declared_domain_height_range_m": [-0.0279814576, 0.0206350924],
+    "evaluated_peak_to_peak_m": 0.0486165501,
+    "analytical_slope_bound": 0.2445206282,
+    "evaluated_max_abs_slope": 0.2329501603,
+    "analytical_time_rate_bound_m_per_s": 0.0967610537,
+    "evaluated_max_abs_time_rate_m_per_s": 0.0921560797
+  },
+  "sampling": {
+    "frame_rate_hz": 5.0,
+    "static_frames": 2,
+    "dynamic_frames": 50,
+    "dynamic_observation_times_s": {"start": 0.0, "step": 0.2, "last_sample": 9.8, "repeat_window": 10.0},
+    "samples_per_period": [10.0, 6.25, 16.6666666667],
+    "samples_per_wavelength": [80.0, 50.0, 120.0]
+  },
+  "representative_points_world_m": {
+    "P1": [0.005, -0.005], "P2": [-0.595, -0.005], "P3": [0.605, -0.005],
+    "P4": [-0.195, 0.395], "P5": [0.405, -0.405], "P6": [-0.795, 0.695]
+  },
+  "sampling_rule": "nearest_grid_node",
+  "world_minus_grid_x_m": 0.10,
+  "key_dynamic_times_s": [0.0, 3.4, 6.8],
+  "stages": {
+    "prepare": {"status": "PASS", "frames": 52},
+    "match": {"status": "PASS", "frames": 52, "total_matches_loaded_by_autocalibrate": 95083},
+    "autocalibrate": {"status": "FAIL", "return_code_windows_unsigned": 4294967295, "reproducible_retry": true, "valid_points": 95076, "homography_determinant": 0.999967, "terminal_message": "SBA failed"},
+    "stereo": {"status": "NOT_RUN"},
+    "grid": {"status": "NOT_RUN"}
+  },
+  "global_metrics": null,
+  "point_metrics": null,
+  "support_metrics": null,
+  "config_sha256": "31ae779881dea572944fed8c10e2a51eee98964cedd60b961b87ba0a6bef3932",
+  "manifest_sha256": "6578e038cad0d0414e7eb513681c424875e504c7a7be79b63c3ec3bb3d2a3c87",
+  "project_commit_at_input_generation": "e89e643480475b073b2742c4197b5bfaba3b071f",
+  "WASS_version": "1.11_heads/master-0-g6b82aeb",
+  "gridder_version": "0.11.4_NOT_INVOKED"
+}

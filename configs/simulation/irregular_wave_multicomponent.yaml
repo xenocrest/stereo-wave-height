@@ -1,0 +1,29 @@
+# Frozen before IRR-1 image generation; all geometry values are simulation parameters.
+schema_version: 1
+status: KINEMATIC_SYNTHETIC_WAVE_TEST
+surface:
+  model: deterministic_multicomponent_wave
+  components:
+    - {amplitude_m: 0.015, wavelength_m: 0.80, frequency_hz: 0.50, phase_rad: 0.0}
+    - {amplitude_m: 0.008, wavelength_m: 0.50, frequency_hz: 0.80, phase_rad: 1.0471975511965976}
+    - {amplitude_m: 0.005, wavelength_m: 1.20, frequency_hz: 0.30, phase_rad: -0.7853981633974483}
+sampling:
+  frame_rate_hz: 5.0
+  static_frame_count: 2
+  dynamic_frame_count: 50
+  common_repeat_period_s: 10.0
+geometry: {baseline_m: 0.20, working_distance_m: 2.00}
+rendering: {texture_seed: 20260811, splat_radius_px: 1}
+wass: {zgap_percentile: 99.5}
+grid: {implementation: wassgridsurface_0.11.4, interpolation: DCT, size: [160, 160], spacing_m: 0.01, parallel: 1}
+world_alignment: {world_minus_grid_x_m: 0.10, status: explicit_confirmed_for_frozen_virtual_rig}
+representative_points_world_m:
+  P1: [0.005, -0.005]
+  P2: [-0.595, -0.005]
+  P3: [0.605, -0.005]
+  P4: [-0.195, 0.395]
+  P5: [0.405, -0.405]
+  P6: [-0.795, 0.695]
+sampling_rule: nearest_grid_node
+key_dynamic_times_s: [0.0, 3.4, 6.8]
+acceptance: {rmse_max_m: 0.010, mae_max_m: 0.010, max_abs_error_max_m: 0.030, raw_support_min: 0.95, hole_rate_max: 0.05}

@@ -261,3 +261,11 @@ software matrix: A=10/30 mm crossed with f=0.5/1.0 Hz at fixed wavelength
 gates; RMSE was 0.739--1.131 mm. This result is limited to the virtual pinhole
 chain and does not establish real-camera, real-water, or physical wave accuracy.
 Details: [controlled comparison](docs/validation/sinusoidal_wave_parameter_comparison.md).
+## 2026-08-13 deterministic irregular-wave result
+
+IRR-1 froze a 10 s, three-component continuous surface and 52-frame dataset.
+WASS prepare and match completed for every frame, but autocalibration repeatedly
+failed after successful SBA during homography acceptance. The fail-fast protocol
+therefore prevented stereo, gridding and height claims. IRR-1 remains blocked;
+deployment distance scanning is not yet authorized. Details are in the
+[IRR-1 validation report](docs/validation/irregular_wave_validation.md).

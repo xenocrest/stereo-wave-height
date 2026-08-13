@@ -23,6 +23,7 @@ from .sinusoidal_wave import (
     translate_coordinate_origin_m,
     wrap_phase_rad,
 )
+from .irregular_wave import RepresentativeGridPoint, direct_error_metrics, freeze_nearest_grid_points
 from .virtual_stereo_geometry import (
     ClosureMetrics,
     closure_metrics,
@@ -50,6 +51,9 @@ __all__ = [
     "wass_zgap_percentile",
     "SinusoidalWaveEstimate",
     "estimate_sinusoidal_wave",
+    "RepresentativeGridPoint",
+    "direct_error_metrics",
+    "freeze_nearest_grid_points",
     "translate_coordinate_origin_m",
     "wrap_phase_rad",
     "ClosureMetrics",

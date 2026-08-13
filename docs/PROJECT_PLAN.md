@@ -200,3 +200,11 @@ frequencies 0.5/1.0 Hz all passed. Raw support was 100%; height RMSE ranged
 for the ideal synthetic parameter rectangle, not real equipment or water.
 See [the comparison report](validation/sinusoidal_wave_parameter_comparison.md)
 and [long-term matrix](validation/prepurchase_validation_matrix.md).
+## 2026-08-13 IRR-1 irregular-wave gate
+
+The frozen 3-component, 50-dynamic-frame IRR-1 run completed synthetic imaging,
+WASS prepare and matching, but reproducibly stopped in autocalibration after SBA
+at the homography acceptance path. Stereo/grid/height metrics were not produced.
+IRR-1 is `BLOCKED_AT_AUTOCALIBRATION`, not passed; scene-distance validation is
+deferred pending a separate source-backed diagnosis. See
+[the IRR-1 report](validation/irregular_wave_validation.md).

@@ -13,6 +13,7 @@ Case 2/G0 values below use the corrected explicit world/grid alignment.
 | G1 | amplitude only | 30 mm | 0.80 m | 0.50 Hz | 0.20 / 2.00 m | 80 / 10 | 100% | 99.8449% | -0.433 mm | 1.030 mm | 0.849 mm | 3.398 mm | -0.404 mm; <1e-12 m; 0 Hz; +0.000406 rad | PASS | amplitude factor only |
 | G2 | frequency only | 10 mm | 0.80 m | 1.00 Hz | 0.20 / 2.00 m | 80 / 5 | 100% | 99.9625% | -0.109 mm | 0.739 mm | 0.604 mm | 2.099 mm | -0.311 mm; <1e-12 m; 0 Hz; -0.002633 rad | PASS | frequency factor only; low temporal margin |
 | G3 | combined stress | 30 mm | 0.80 m | 1.00 Hz | 0.20 / 2.00 m | 80 / 5 | 100% | 99.8593% | -0.545 mm | 1.131 mm | 0.925 mm | 3.672 mm | -0.341 mm; <1e-12 m; 0 Hz; -0.003247 rad | PASS | tested amplitude-frequency combination |
+| IRR-1 | deterministic 3-component irregular wave | -27.981 to +20.635 mm evaluated | 0.80/0.50/1.20 m | 0.50/0.80/0.30 Hz | 0.20 / 2.00 m | min 50 / min 6.25 | N/A | N/A | N/A | N/A | N/A | N/A | point RMSE N/A | FAIL/BLOCKED | prepare/match pass; repeatable post-SBA autocalibration failure; stereo/grid not run |
 
 The frozen regular-wave gates are height RMSE/MAE <=10 mm, maximum absolute
 error <=30 mm, raw support >=95%, and hole rate <=5%. Wave-parameter errors are
