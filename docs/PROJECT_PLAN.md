@@ -233,7 +233,7 @@ WASS/grid/height gates. RMSE decreased from 1.483 to 1.030 to 0.906 mm while
 raw support stayed 100%; triangulated counts decreased with reduced overlap.
 This establishes only the tested baseline slice. The pre-purchase core
 simulation set is complete, including retained distance FAIL/BLOCKED evidence;
-the final local report remains gated on explicit user confirmation.
+the final local report is a separate local-only deliverable.
 
 ## 2026-08-14 unique baseline-distance cross-check
 
@@ -241,5 +241,20 @@ XZ-1 `(B=0.25 m,Z=2.50 m)` completed the full frozen WASS/grid/height chain.
 It restored 98.106% minimum component retention and 99.988% minimum raw
 support, passed with 1.551 mm RMSE, and removed the former D2 plane-fit blocker.
 This closes the planned pre-purchase simulation evidence but does not map the
-complete deployment region. Final local report generation still requires user
-confirmation.
+complete deployment region. Final local report generation has been authorized
+but remains outside the repository.
+
+## 2026-08-14 engineering handoff
+
+The pre-purchase simulation evidence is closed and summarized in the
+[two-day progress report](progress/2026-08-13_2026-08-14_summary.md). The next
+engineering phase targets a locally deployable desktop application, not a web
+page or mini-program. Planned modules are device configuration, calibration,
+WASS workflow orchestration, reconstruction/quality review, and controlled data
+export. Camera procurement, real-camera calibration, water-tank validation, and
+field validation remain future work; ideal-simulation accuracy must not be
+presented as real-system accuracy.
+
+The complete user-facing report in DOCX/Markdown is intentionally local-only.
+It and large generated artifacts such as raw stereo images, `xyzC`, NetCDF,
+large PNG files, and WASS run directories must remain outside Git history.

@@ -305,3 +305,19 @@ synthetic chain: minimum raw support 99.988%, RMSE 1.551 mm, and maximum error
 This is direct bounded evidence of baseline-distance coupling, not a complete
 deployment map. See the
 [cross-check report](docs/validation/baseline_distance_crosscheck.md).
+
+## 2026-08-13 to 2026-08-14 work summary
+
+The pre-purchase ideal-simulation campaign is now closed. It covers the Case 2
+phase diagnosis, virtual-stereo geometry, the G0--G3 regular-wave matrix,
+IRR-1/IRR-1A, the D1/D0/D2 distance slice, the B1/B0/B2 baseline slice, and the
+single XZ-1 baseline-distance cross-check. PASS, FAIL, and BLOCKED results are
+retained as separate evidence; XZ-1 removes the former D2 plane-fit blocker only
+for `(B=0.25 m,Z=2.50 m)` and does not establish a complete deployment region.
+
+The engineering target is a locally deployable desktop application for camera
+configuration, calibration, WASS execution, reconstruction review, quality
+control, and data export. A web page or mini-program is no longer the planned
+delivery form. The complete management report in DOCX/Markdown is a local-only
+deliverable and must not be added to this repository. See the
+[two-day summary](docs/progress/2026-08-13_2026-08-14_summary.md).
