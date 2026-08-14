@@ -1,0 +1,16 @@
+{
+  "run_date": "2026-08-14",
+  "versions": {"WASS": "1.11_heads/master-0-g6b82aeb", "wassgridsurface": "0.11.4"},
+  "frozen": {"baseline_m": 0.2, "focal_px": 2318.840579710145, "wave_amplitude_m": 0.03, "wavelength_m": 0.8, "frequency_hz": 0.5, "zgap_percentile": 99.5, "grid_size": [160, 160], "grid_spacing_m": 0.01},
+  "theory": {
+    "D1": {"distance_m": 1.75, "nominal_disparity_px": 265.010352, "wave_disparity_range_px": [260.543885, 269.632625], "depth_sensitivity_m_per_px": 0.006603516, "minimum_common_fov_width_m": 1.615804},
+    "D0": {"distance_m": 2.0, "nominal_disparity_px": 231.884058, "wave_disparity_range_px": [228.4572, 235.415287], "depth_sensitivity_m_per_px": 0.008625, "minimum_common_fov_width_m": 1.879729},
+    "D2": {"distance_m": 2.5, "nominal_disparity_px": 185.507246, "wave_disparity_range_px": [183.307556, 187.760371], "depth_sensitivity_m_per_px": 0.013476563, "minimum_common_fov_width_m": 2.407579}
+  },
+  "results": {
+    "D1": {"status": "FAIL_RAW_SUPPORT", "triangulated_points_min_mean_max": [4410713, 4429758.416667, 4445654], "largest_component_points_min_mean_max": [3240396, 4305227.25, 4437630], "retained_ratio_min_mean_max": [0.729390977, 0.971941494, 0.999069963], "raw_support_ratio_min_mean_max": [0.717578125, 0.948746745, 0.970742188], "bias_m": -0.0002584304, "rmse_m": 0.0028319272, "mae_m": 0.0017885110, "max_abs_error_m": 0.0235090676, "amplitude_error_m": -0.0004238290, "wavelength_m": 0.8, "frequency_hz": 0.5, "phase_error_rad": 0.0263734815, "hole_rate": 0.0, "failing_frame": "000003"},
+    "D0": {"status": "PASS", "evidence": "reused exact frozen G1 run", "triangulated_points_min_mean_max": [4324706, 4347761.166667, 4358632], "largest_component_points_min_mean_max": [4323792, 4344853.833333, 4358006], "retained_ratio_min_mean_max": [0.998448753, 0.999331781, 0.999856377], "raw_support_ratio_min_mean_max": [1.0, 1.0, 1.0], "bias_m": -0.0004333372, "rmse_m": 0.0010303035, "mae_m": 0.0008485273, "max_abs_error_m": 0.0033977164, "amplitude_error_m": -0.0004038199, "wavelength_m": 0.8, "frequency_hz": 0.5, "phase_error_rad": 0.0004060584, "hole_rate": 0.0},
+    "D2": {"status": "BLOCKED_AT_STEREO_PLANE_FIT", "frame_id": "000000", "triangulated_points": 1467806, "largest_component_points": 610135, "retained_ratio": 0.415676, "ransac_best_inliers": 0, "grid_and_height_metrics": null}
+  },
+  "hashes": {"D1_manifest_sha256": "7d9702a87836731b62b75215bc2f10d663a537fd5d012b740884bc87c867d62c", "D2_manifest_sha256": "eaf90b755b2239fb647eec0a72ed78078cc59c9cdfa2ad727ff95c691ffd526", "matcher_config_sha256": "bae1e60a3680bc0193628c35bffb7fd68ba5e8c672f12a489284bd25b25eaf32", "stereo_config_sha256": "998e5c10065d49b2f4546a96d25962dec5fa458f44c5190ebd95c13271c2b192", "gridconfig_sha256": "701069a2761277a71f7f198b2fbe9562c106d6d58b2869c96a3d96bb8e2a23de"}
+}

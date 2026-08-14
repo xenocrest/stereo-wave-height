@@ -1,0 +1,14 @@
+# Frozen before D1/D2 rendering; only working_distance_m changes between cases.
+schema_version: 1
+status: KINEMATIC_SYNTHETIC_DEPLOYMENT_TEST
+camera: {resolution_px: [2448, 2048], pixel_pitch_um: 3.45, focal_length_mm: 8.0, focal_px: 2318.840579710145}
+baseline_m: 0.20
+wave: {amplitude_m: 0.030, wavelength_m: 0.80, frequency_hz: 0.50, phase_rad: 0.0}
+distances_m: {D1: 1.75, D0: 2.00, D2: 2.50}
+sampling: {frame_rate_hz: 5.0, static_frames: 2, dynamic_frames: 10}
+autocalibration: {rule: all_dynamic_only, frame_ids: [2,3,4,5,6,7,8,9,10,11], distribute_common_outputs_to_static: true}
+wass: {min_disparity_px: 160, max_disparity_px: 320, zgap_percentile: 99.5}
+grid: {size: [160,160], spacing_m: 0.01, physical_width_m: 1.59, interpolation: DCT, parallel: 1}
+world_alignment: {world_minus_grid_x_m: 0.10, status: explicit_confirmed_for_frozen_virtual_rig}
+representative_points_world_m: {P1: [0.005,-0.005], P2: [-0.595,-0.005], P3: [0.605,-0.005], P4: [0.405,0.395], P5: [-0.795,0.695]}
+acceptance: {rmse_max_m: 0.010, mae_max_m: 0.010, max_abs_error_max_m: 0.030, raw_support_min: 0.95, hole_rate_max: 0.05}

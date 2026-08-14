@@ -278,3 +278,12 @@ improvement and match composition, not a simple frame-count ceiling. The frozen
 interface to all 52 frames. IRR-1A then passed with 2.368 mm RMSE, 8.732 mm
 maximum error and at least 99.996% raw support. Scene-distance validation may
 now be designed without erasing the historical failure.
+
+## 2026-08-14 scene-distance result
+
+At fixed B=0.20 m and all other frozen factors, the 2.00 m reference passes
+the ideal-synthetic chain. The 1.75 m case fails minimum raw-support coverage
+despite passing height-error gates, and the 2.50 m case fails fast during WASS
+stereo plane fitting. This does not select a final working distance or establish
+real-camera performance. See the
+[controlled distance report](docs/validation/scene_distance_validation.md).

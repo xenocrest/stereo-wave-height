@@ -216,3 +216,12 @@ window without static duplicates, was frozen before height reconstruction. It
 calibrated all subset/unseen frames and closed the full 52-frame chain: RMSE
 2.368 mm, maximum error 8.732 mm, raw support >=99.996%. IRR-1A passes; original
 IRR-1 remains FAIL. A separately pre-registered scene-distance study may follow.
+
+## 2026-08-14 controlled scene-distance validation
+
+The one-factor D1/D0/D2 study is recorded. D0=2.00 m passes. D1=1.75 m passes
+height-error gates but fails the frozen minimum raw-support gate because one
+dynamic frame falls to 71.758% support. D2=2.50 m stops at WASS stereo plane
+fitting after component retention falls to 41.568%; no grid metrics are claimed.
+The tested deployment-distance interval is not established. A separate baseline
+study is permitted only at frozen D0, while D1/D2 limitations remain open.

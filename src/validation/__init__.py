@@ -29,6 +29,7 @@ from .irregular_wave import (
     freeze_nearest_grid_points,
     uniformly_spaced_frame_ids,
 )
+from .scene_distance import SceneDistanceTheory, min_mean_max, scene_distance_theory
 from .virtual_stereo_geometry import (
     ClosureMetrics,
     closure_metrics,
@@ -60,6 +61,9 @@ __all__ = [
     "direct_error_metrics",
     "freeze_nearest_grid_points",
     "uniformly_spaced_frame_ids",
+    "SceneDistanceTheory",
+    "min_mean_max",
+    "scene_distance_theory",
     "translate_coordinate_origin_m",
     "wrap_phase_rad",
     "ClosureMetrics",
