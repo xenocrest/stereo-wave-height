@@ -296,3 +296,12 @@ baselines all passed frozen gates with 100% raw support. Height RMSE was 1.483,
 selection of a final optimum or real-camera proof. See the
 [baseline report](docs/validation/baseline_validation.md) and
 [deployment geometry summary](docs/validation/deployment_geometry_summary.md).
+
+## 2026-08-14 baseline-distance cross-check
+
+The single authorized `(B=0.25 m,Z=2.50 m)` point passed the complete ideal
+synthetic chain: minimum raw support 99.988%, RMSE 1.551 mm, and maximum error
+8.306 mm. Unlike the old `(0.20 m,2.50 m)` case, every plane fit succeeded.
+This is direct bounded evidence of baseline-distance coupling, not a complete
+deployment map. See the
+[cross-check report](docs/validation/baseline_distance_crosscheck.md).

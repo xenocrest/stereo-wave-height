@@ -234,3 +234,12 @@ raw support stayed 100%; triangulated counts decreased with reduced overlap.
 This establishes only the tested baseline slice. The pre-purchase core
 simulation set is complete, including retained distance FAIL/BLOCKED evidence;
 the final local report remains gated on explicit user confirmation.
+
+## 2026-08-14 unique baseline-distance cross-check
+
+XZ-1 `(B=0.25 m,Z=2.50 m)` completed the full frozen WASS/grid/height chain.
+It restored 98.106% minimum component retention and 99.988% minimum raw
+support, passed with 1.551 mm RMSE, and removed the former D2 plane-fit blocker.
+This closes the planned pre-purchase simulation evidence but does not map the
+complete deployment region. Final local report generation still requires user
+confirmation.

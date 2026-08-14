@@ -1,0 +1,13 @@
+schema_version: 1
+status: KINEMATIC_SYNTHETIC_DEPLOYMENT_CROSSCHECK
+crosscheck_id: XZ-1
+camera: {resolution_px: [2448, 2048], pixel_pitch_um: 3.45, focal_length_mm: 8.0, focal_px: 2318.840579710145, distortion: ideal_zero}
+baseline_m: 0.25
+working_distance_m: 2.50
+wave: {amplitude_m: 0.030, wavelength_m: 0.80, frequency_hz: 0.50, phase_rad: 0.0}
+sampling: {frame_rate_hz: 5.0, static_frames: 2, dynamic_frames: 10}
+autocalibration: {rule: all_dynamic_only, frame_ids: [2,3,4,5,6,7,8,9,10,11], distribute_common_outputs_to_static: true}
+wass: {min_disparity_px: 160, max_disparity_px: 320, triangulation_min_angle_deg: 3, zgap_percentile: 99.5}
+grid: {size: [160,160], spacing_m: 0.01, interpolation: DCT, parallel: 1}
+coordinate: {formula: x_world = x_grid + baseline_m / 2, offset_m: 0.125, status: explicit_from_virtual_camera_centres}
+acceptance: {rmse_max_m: 0.010, mae_max_m: 0.010, max_abs_error_max_m: 0.030, raw_support_min: 0.95, hole_rate_max: 0.05}

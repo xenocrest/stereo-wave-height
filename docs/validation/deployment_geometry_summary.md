@@ -10,5 +10,6 @@ The current evidence consists of two one-dimensional slices, not a complete map 
 | baseline | B1 | 0.15 m | 2.00 m | 173.913 px | 11.500 mm/px | PASS |
 | baseline | B0 | 0.20 m | 2.00 m | 231.884 px | 8.625 mm/px | PASS |
 | baseline | B2 | 0.25 m | 2.00 m | 289.855 px | 6.900 mm/px | PASS |
+| cross-check | XZ-1 | 0.25 m | 2.50 m | 231.884 px | 10.781 mm/px | PASS |
 
-The governing relations are $d=f_{px}B/Z$ and $|\partial Z/\partial d|=Z^2/(f_{px}B)$. Larger B or smaller Z improves ideal depth sensitivity but raises disparity and reduces common field of view. Only the listed combinations have end-to-end evidence. A future `(0.25 m,2.50 m)` cross-check is mathematically motivated but not yet authorized or tested.
+The governing relations are $d=f_{px}B/Z$ and $|\partial Z/\partial d|=Z^2/(f_{px}B)$. Larger B or smaller Z improves ideal depth sensitivity but raises disparity and reduces common field of view. Only the listed combinations have end-to-end evidence. XZ-1 removed the prior 2.50 m blocker under the tested 0.25 m baseline, but the evidence still comprises two one-dimensional slices plus one cross-check rather than a complete deployment region.

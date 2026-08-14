@@ -21,6 +21,7 @@ Case 2/G0 values below use the corrected explicit world/grid alignment.
 | Baseline/B1 | regular wave, small baseline | 30 mm | 0.80 m | 0.50 Hz | 0.15 / 2.00 m | 160 / 10 | 100% | 99.699% min | -0.569 mm | 1.483 mm | 1.205 mm | 5.048 mm | point bias -1.370 to +0.354 mm | PASS | explicit world/grid offset B/2=0.075 m |
 | Baseline/B0 | regular-wave reference | 30 mm | 0.80 m | 0.50 Hz | 0.20 / 2.00 m | 160 / 10 | 100% | 99.845% min | -0.433 mm | 1.030 mm | 0.849 mm | 3.398 mm | point bias -0.244 to +0.320 mm | PASS | exact frozen G1/D0 reuse |
 | Baseline/B2 | regular wave, large baseline | 30 mm | 0.80 m | 0.50 Hz | 0.25 / 2.00 m | 160 / 10 | 100% | 99.911% min | -0.335 mm | 0.906 mm | 0.743 mm | 3.094 mm | point bias +0.038 to +0.329 mm | PASS | explicit world/grid offset B/2=0.125 m |
+| BZ-X1 | unique baseline-distance cross-check | 30 mm | 0.80 m | 0.50 Hz | 0.25 / 2.50 m | 160 / 10 | 99.988% min | 98.106% min | -0.713 mm | 1.551 mm | 1.222 mm | 8.306 mm | A error +0.259 mm; phase +0.003166 rad | PASS | former D2 plane-fit blocker removed; not a complete B x Z map |
 
 The frozen regular-wave gates are height RMSE/MAE <=10 mm, maximum absolute
 error <=30 mm, raw support >=95%, and hole rate <=5%. Wave-parameter errors are

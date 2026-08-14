@@ -1,0 +1,22 @@
+{
+  "run_date": "2026-08-14",
+  "crosscheck_id": "XZ-1",
+  "versions": {"WASS": "1.11_heads/master-0-g6b82aeb", "wassgridsurface": "0.11.4"},
+  "geometry": {"baseline_m": 0.25, "scene_distance_m": 2.50, "baseline_over_distance": 0.10, "nominal_disparity_px": 231.884057971, "wave_disparity_range_px": [229.134444635,234.700463533], "depth_sensitivity_m_per_px": 0.01078125, "common_fov_m": 2.357579, "triangulation_angle_deg": 5.724810452, "disparity_range_pass": true},
+  "frozen": {"wave": {"amplitude_m": 0.03, "wavelength_m": 0.8, "frequency_hz": 0.5, "phase_rad": 0.0}, "zgap_percentile": 99.5, "grid": [160,160], "grid_spacing_m": 0.01, "world_minus_grid_x_m": 0.125, "autocalibration_frame_ids": [2,3,4,5,6,7,8,9,10,11]},
+  "stages": {"prepare": "12/12 PASS", "match": "12/12 PASS", "autocalibrate": "PASS", "stereo": "12/12 PASS", "wassgridsurface": "PASS"},
+  "matches_per_frame": [678,678,617,584,550,563,604,629,628,625,617,648],
+  "matches_min_mean_max": [550,618.416667,678],
+  "triangulated_min_mean_max": [3870685,3883116.083333,3913468],
+  "largest_component_min_mean_max": [3804553,3829344.083333,3891986],
+  "retention_min_mean_max": [0.981059586,0.986140686,0.994510751],
+  "plane_ransac_inliers_min_mean_max": [3804553,3829344.083333,3891986],
+  "raw_support_min_mean_max": [0.999882813,0.999980469,1.0],
+  "finite_grid_coverage": 1.0,
+  "hole_rate": 0.0,
+  "height": {"bias_m": -0.0007129163, "rmse_m": 0.0015509600, "mae_m": 0.0012219462, "max_abs_error_m": 0.0083064671, "p50_m": 0.0010627394, "p90_m": 0.0022877193, "p95_m": 0.0027711780, "p99_m": 0.0047748548},
+  "wave": {"A_m": 0.0302590824, "A_error_m": 0.0002590824, "lambda_m": 0.8, "lambda_error_m": 0.0, "f_hz": 0.5, "f_error_hz": 0.0, "phase_error_rad": 0.0031659563},
+  "status": "PASS",
+  "old_D2_blocker_removed": true,
+  "hashes": {"manifest_sha256": "7976617ea57ba0f25566aa26b58b2faae34e16d52c49a45dc0fb840cb8566ef5", "matcher_config_sha256": "bae1e60a3680bc0193628c35bffb7fd68ba5e8c672f12a489284bd25b25eaf32", "stereo_config_sha256": "998e5c10065d49b2f4546a96d25962dec5fa458f44c5190ebd95c13271c2b192", "gridconfig_sha256": "701069a2761277a71f7f198b2fbe9562c106d6d58b2869c96a3d96bb8e2a23de", "ext_R_sha256": "f0bf400bf98316f0e85a4a0b839ae3b5da6c9a14af73d74885790717974c873e", "ext_T_sha256": "de8b426c23813e063ace6b9d84b8c5c4526a4ed9c15e58a2bff56f5f14cc2114", "H_sha256": "143da62d024dd6e5be6e29efd97b6a81c81c30c10f50f3289742f9be43ccf566"}
+}
