@@ -57,7 +57,7 @@ Consequently Static/Case 1 tau, Z-gap distributions, complete component sizes, a
 
 ## Recovery
 
-Reconstruct the production toolchain鈥攅specially OpenCV 4.6.0 and compatible compiler/dependencies鈥攖hen rebuild in isolation and repeat the frozen Case 0/1 gate. Diagnostic arrays may be used only after byte-identical `mesh_cam.xyzC` plus equivalent plane, pose, scale, diagnostic images, numerical log results, and point counts.
+重建正式运行工具链，尤其是 OpenCV 4.6.0 及兼容的编译器和依赖；随后在隔离环境重新构建并重复冻结的 Case 0/1 门控。只有在 `mesh_cam.xyzC` 字节一致，且平面、姿态、尺度、诊断图、数值日志和点数均等价后，诊断数组才可使用。
 
 ## Upstream issue draft
 

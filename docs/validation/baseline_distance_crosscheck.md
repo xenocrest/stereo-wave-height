@@ -1,12 +1,12 @@
-# Baseline-distance cross-check
+# 基线—工作距离交叉验证
 
-## Purpose
+## 目的
 
 XZ-1 is the single authorized supplemental deployment point: baseline 0.25 m and scene distance 2.50 m. It tests whether increasing baseline can remove the former D2 reconstruction blocker while recovering a disparity geometry similar to the passing reference. It is not a two-dimensional parameter scan.
 
 The old D2 point `(B=0.20 m,Z=2.50 m)` stopped on its first static frame after 1,467,806 triangulated points, a 610,135-point largest component (41.568%), and zero plane-RANSAC inliers. No grid or height result existed.
 
-## Theory
+## 理论依据
 
 The governing quantities are
 
@@ -26,13 +26,13 @@ $$
 
 REF and XZ-1 share B/Z, nominal disparity, and central ray angle. They do not share absolute depth sensitivity, footprint, common FOV, viewing rays, or matching distribution. Similar disparity is therefore a controlled hypothesis, not a similarity proof.
 
-## Frozen configuration
+## 冻结配置
 
 Only baseline and scene distance differ from the deployment validation reference. Camera resolution/pitch/nominal lens, ideal zero distortion, deterministic texture and timestamps, wave (`A=0.030 m`, `lambda=0.80 m`, `f=0.50 Hz`, `phi=0`), two static plus ten dynamic frames, matcher/stereo configs, `ZGAP_PERCENTILE=99.5`, official DCT grid, and acceptance gates remain frozen. `Z0` uses only frames 000000--000001. Coordinate alignment is explicitly `x_world=x_grid+0.125 m`.
 
 Autocalibration used exactly dynamic frames `000002..000011`. Per-frame matcher counts were 678, 678, 617, 584, 550, 563, 604, 629, 628, 625, 617, and 648; min/mean/max were 550/618.417/678. Calibration and config hashes are in the metrics JSON.
 
-## WASS and blocker result
+## WASS 与阻塞状态
 
 | stage | result |
 |---|---|
@@ -52,7 +52,7 @@ Autocalibration used exactly dynamic frames `000002..000011`. Per-frame matcher 
 
 The original D2 connected-component/plane-fit blocker is removed. This conclusion is directly supported by the same frozen WASS executable and configuration, not by parameter tuning.
 
-## Support and height acceptance
+## 支持域与高度验收
 
 | metric | XZ-1 |
 |---|---:|
@@ -70,7 +70,7 @@ XZ-1 passes every frozen gate: RMSE and MAE <=10 mm, maximum <=30 mm, raw suppor
 
 Recovered wave parameters are amplitude 30.259 mm (error +0.259 mm), wavelength 0.800 m (error below numerical precision), frequency 0.500 Hz (zero discrete error), and phase error +0.003166 rad.
 
-## Classification and meaning
+## 结论分类与边界
 
 XZ-1 is **PASS**, classification A. Increasing baseline from 0.20 to 0.25 m at the frozen 2.50 m scene distance removed the former reconstruction blocker and also passed height acceptance. This is direct evidence of baseline-distance coupling in this controlled ideal simulation.
 

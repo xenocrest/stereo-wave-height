@@ -40,7 +40,11 @@
 - Case 0 已通过 WASS 核心、官方 `wassgridsurface 0.11.4` 和规则网格高度闭环；
 - Case 1 的 +10 mm 固定非零高度场景已通过：`ZGAP_PERCENTILE=99.5` 时 raw support 为 100%，H RMSE 约 1.03 mm、MAE 约 0.916 mm、最大误差约 1.65 mm；该参数仅冻结于当前理想仿真几何；
 - Case 1 重复性验证完成：WASS `xyzC` 三轮逐帧 bitwise identical；gridder 文件哈希不同，但最大跨运行 Z 差异仅 0.020553 mm，分类为 B（Numerically deterministic）；
-- Case 2 单组一维正弦规则波已完成双目输入至高度场闭环：raw support 100%，高度 RMSE 5.3968 mm 并通过冻结门限；包裹相位误差 +0.7853 rad（约 45°）仍是未解决诊断项；
+- Case 2 单组一维正弦规则波已完成双目输入至高度场闭环；原约 45° 相位差已定位为世界坐标与官方网格 x 原点相差 0.10 m，显式对齐后相位误差接近 0；
+- G0--G3 四组规则波幅频组合全部通过，raw support 均为 100%，高度 RMSE 为 0.739--1.131 mm；
+- 确定性不规则波原始 IRR-1 在自动标定阶段阻塞；冻结 AC-10D 子集适配后的 IRR-1A 完成全链并通过，RMSE 为 2.368 mm，同时保留原失败历史；
+- 工作距离实验保留 D1=1.75 m FAIL、D0=2.00 m PASS、D2=2.50 m BLOCKED；固定 2.00 m 时 0.15/0.20/0.25 m 三组基线均 PASS；
+- B--Z 交叉验证点 `(B=0.25 m, Z=2.50 m)` 通过并解除该点原有的平面拟合阻塞，但尚未形成完整部署参数图；
 - Case 1 的原始 default-99 运行平均符号/偏差正确，但 RMSE 和最大误差未通过预注册门槛；该历史结果不被后续适配覆盖；
 - Case 1 分层诊断确认：xyzC 平面差为 8.999 mm；升高帧原始点仅支持
   51.45% 网格单元，无支持 DCT 单元贡献超过 98% 平方误差；
@@ -50,10 +54,10 @@
   完整组件标签，机制归因标记为 `OBSERVABILITY_LIMITATION`；
 - 自动化测试覆盖后处理、仿真、WASS 接口、官方 NetCDF、Case 1 帧选择和误差诊断。
 
-尚未完成：
+当前阶段边界与后续：
 
-- Case 2 相位、坐标原点与时间零点对齐诊断；
-- `baseline × scene distance` 部署参数空间验证；
+- 采购前核心理想仿真验证已完成，下一步先进行系统回顾，再进入设备采购和实机验证；
+- 当前仅验证了工作距离、基线的两个单因素切片和一个交叉点，尚未得到完整 `baseline × scene distance` 有效域或全局最优参数；
 - WASS 锁定 `v_1.5` 基线的独立复现（当前成功运行的是本机 `1.11` 构建）；
 - 工业相机实机接入、同步与标定；
 - 水槽静水/人工波实验及独立参考对比；
@@ -96,11 +100,3 @@ WASS 上游仓库：<https://github.com/fbergama/wass>
 2. 理论可行性、合成验证和真实实验结论明确分层。
 3. 坐标、单位、配置、软件版本和数据来源可追溯。
 4. 未确认参数保留 `UNKNOWN/TODO`，不以假设冒充实测数据。
-## Latest validation status (2026-08-13)
-
-The pre-purchase controlled regular-wave matrix is complete. Four ideal
-synthetic groups spanning 10--30 mm amplitude and 0.5--1.0 Hz all passed the
-frozen height/support gates through real WASS and official wassgridsurface.
-This is software-chain evidence only, not a real-device 1 cm claim. See the
-[comparison report](docs/validation/sinusoidal_wave_parameter_comparison.md)
-and [validation matrix](docs/validation/prepurchase_validation_matrix.md).

@@ -1,6 +1,6 @@
 # stereo-wave-height 项目宏观汇报与持续更新入口
 
-> 文档定位：本页面向项目汇报、阶段复盘和新成员快速理解，集中说明“为什么做、怎样做、已经做到什么、还不能证明什么、下一步做什么”。详细推导、配置和逐帧证据仍以链接的专项文档为准。后续每完成一个关键模型、验证、硬件或实测节点，都应更新本页末尾记录。
+> 文档定位：本页面面向项目汇报、阶段复盘和新成员快速理解，集中说明“为什么做、怎样做、已经做到什么、还不能证明什么、下一步做什么”。详细推导、配置和逐帧证据仍以链接的专项文档为准。后续进展必须整合回对应章节，不在文末追加游离总结。
 
 ## 1. 项目目标
 
@@ -196,7 +196,40 @@ $$
 
 **相位诊断已关闭。**约 45 deg 偏移来自世界真值 x 与官方网格 x 的原点差。冻结网格中心为 `-0.10 m`，因此本次映射为 `x_world=x_grid+0.10 m`；参考对齐后相位误差为 `-0.000111 rad`。WASS、gridder 和 H 均未修改。详见 [相位诊断](docs/validation/case2_phase_alignment_diagnosis.md)。
 
-## 7. 当前已经证明什么
+## 7. 扩展波形与采购前验证矩阵
+
+### 7.1 G0--G3 规则波幅频组合
+
+在冻结波长 0.80 m、基线 0.20 m、工作距离 2.00 m 及其余处理条件后，组合测试幅值 10/30 mm 与频率 0.5/1.0 Hz。四组 raw support 均为 100%，高度 RMSE 为 0.739--1.131 mm，最大误差为 2.099--3.672 mm，全部通过冻结门限。该结论只覆盖已测试的理想合成幅频矩形，不代表真实设备或真实水面性能。详见 [规则波参数对比](docs/validation/sinusoidal_wave_parameter_comparison.md)。
+
+### 7.2 确定性不规则波与自动标定适配
+
+IRR-1 使用三组不同幅值、波长、频率和相位的正弦分量叠加，冻结为 2 帧静水加 50 帧动态水面。原始 52 帧联合自动标定在 SBA 后的单应性验收路径稳定失败，因此原始 IRR-1 保持 **FAIL/BLOCKED**，且没有生成 stereo、网格或高度指标。
+
+源码与子集诊断表明，失败与 SBA 后严格误差改进条件及匹配组成有关，不是简单的帧数上限。冻结覆盖完整时间窗且不含静水重复帧的 AC-10D 子集后，IRR-1A 完成全部 52 帧处理：RMSE 2.368 mm、MAE 1.882 mm、最大误差 8.732 mm、raw support 不低于 99.996%，结论为 **PASS**。适配成功不覆盖原始失败历史。详见 [不规则波验证](docs/validation/irregular_wave_validation.md) 和 [自动标定诊断](docs/validation/irregular_wave_autocalibration_diagnosis.md)。
+
+## 8. 部署几何：工作距离、基线与交叉验证
+
+冻结其他因素后，单因素和交叉结果如下：
+
+| 实验 | 基线 B | 距离 Z | 历史状态 | 主要证据 |
+|---|---:|---:|---|---|
+| D1 | 0.20 m | 1.75 m | FAIL | 高度误差通过，但最小 raw support 仅 71.758%，未过覆盖门限 |
+| D0/B0 | 0.20 m | 2.00 m | PASS | raw support 100%，RMSE 1.030 mm |
+| D2 | 0.20 m | 2.50 m | BLOCKED | stereo 平面拟合阻塞；未生成网格和高度指标 |
+| B1 | 0.15 m | 2.00 m | PASS | raw support 100%，RMSE 1.483 mm |
+| B2 | 0.25 m | 2.00 m | PASS | raw support 100%，RMSE 0.906 mm |
+| XZ-1 | 0.25 m | 2.50 m | PASS | 最小 raw support 99.988%，RMSE 1.551 mm；解除该点原平面拟合阻塞 |
+
+理论上 $d=f_{px}B/Z$，视差误差引起的深度敏感度近似为：
+
+$$
+\left|\frac{\partial Z}{\partial d}\right|=\frac{Z^2}{f_{px}B}.
+$$
+
+因此工作距离与基线需要联合设计。现有证据是两个一维切片加一个交叉点，不是完整 $(B,Z)$ 有效域，也不能证明保持 $B/Z$ 不变必然成功或 0.25 m 为最优基线。详见 [部署几何汇总](docs/validation/deployment_geometry_summary.md)。至此，采购前核心理想仿真验证按既定范围完成。
+
+## 9. 当前已经证明什么
 
 在当前冻结的理想合成几何和软件版本范围内，项目已经证明：
 
@@ -206,9 +239,11 @@ $$
 - Case 1 的默认 ZGAP=99 失败已定位到支持损失，并通过受控单因素研究得到当前几何的 99.5 适配值；
 - 99.5 链虽不是文件级 bitwise deterministic，但属于数值确定的重复性分类 B，其波动不会影响毫米/厘米尺度结论；
 - 一组一维正弦规则波的振幅、波长、频率和高度场通过既定高度验收，完整动态链已建立；
+- G0--G3 四组规则波、适配后的确定性不规则波均在冻结理想合成条件下通过；
+- 工作距离和基线存在需要联合设计的耦合关系；已保留距离实验的 FAIL/PASS/BLOCKED 与交叉点 PASS 证据；
 - 仿真、配置、坐标、数据接口、验收和外部依赖边界均已形成可追溯文档与自动化测试。
 
-## 8. 当前尚未证明什么
+## 10. 当前尚未证明什么
 
 项目尚未证明：
 
@@ -217,107 +252,33 @@ $$
 - 合成图像等同于真实照片，或当前结果覆盖噪声、畸变、同步、反射、折射、眩光、振动和纹理退化；
 - 未来真实设备数据已经建立并验证世界坐标到输出网格的物理配准；Case 2
   仿真运行的原点映射已关闭，但不能替代实机配准；
-- 多组振幅/波长/频率、二维交叉波、复杂海谱、破碎波或真实海面已经通过；
+- 二维交叉波、复杂海谱、破碎波或真实海面已经通过；
+- 当前有限部署几何实验已经覆盖完整有效域，或已确定全局最优基线与工作距离；
 - 真实水槽或海面高度达到 1 cm 精度；
 - WASS 算法由本项目开发，或这些实验是在独立证明 WASS 算法本身普遍正确。
 
-## 9. 下一步工作
+## 11. 后续工作与本地桌面软件工程化
 
 建议按以下门控顺序推进：
 
-1. **部署参数空间验证。**预注册并扫描 `baseline x scene distance`，同时检查公共视场、视差范围、三角化角度、raw support、误差和失效点；必要时再加入焦距、视场和波参数维度。单次仿真的 0.20 m x 2.00 m 不能替代参数空间结论。
-2. **形成采购依据并采购设备。**结合候选设备规格、接口、同步方案、镜头准确型号、机械刚度、数据吞吐和参数扫描结果冻结物料清单。
-3. **真实标定与同步验证。**分别标定两机内参/畸变，测量外参和真实基线，验证硬件触发、曝光时间、帧配对、时钟和漂移。
-4. **真实静水 `Z0`。**在固定部署下采集独立静水序列，检查平面度、空间稳定性、时间重复性、有效域和环境光变化。
-5. **人工波实验。**从已知固定高度/规则波开始，引入独立位移或波高参考，预注册 ROI 和门限，报告 bias、RMSE、MAE、max、覆盖及失败帧。
-6. **扩展到真实海面。**按更大距离、风浪纹理、反光、遮挡、平台振动和环境变化重新建立误差预算及部署方案，并用现场独立参考重新验证；水槽结论不能直接外推。
+1. **系统回顾。**复核模型、配置、验收边界、采购清单和现有失败证据，冻结实机阶段输入条件。
+2. **设备采购。**确认相机、镜头、同步、照明、安装和计算设备的准确型号与接口。
+3. **实机双目标定。**完成内参、畸变、外参、真实基线、硬件触发、帧配对和漂移验证。
+4. **静水与人工波。**建立独立静水 `Z0`，从静水、固定高度和规则人工波逐级验证，并与独立物理参考比较。
+5. **真实环境扩展。**评估水面反光、折射、泡沫、纹理退化、环境光、振动和更大距离，重新建立误差预算与部署边界。
+6. **本地桌面软件。**工程交付目标为本地可部署桌面程序，模块包括设备配置、标定、WASS 流程编排、重建与质量复核、可追溯数据导出；不规划网页或小程序作为主交付形态。
 
-## 10. 后续更新记录与维护规则
+完整用户汇报 DOCX/Markdown 仅保存在本地，不进入本仓库；大型 PNG、原始双目图像、`xyzC`、NetCDF 和 WASS 运行目录同样不得提交。
+
+## 12. 文档维护规则
 
 ### 维护规则
 
 - 本文件是项目长期宏观入口；专项文档保存完整推导、配置、日志和逐次证据，本页保存经审查后的摘要与链接。
-- 每完成一个关键模型、仿真验证、参数冻结、硬件采购/标定、同步验证、水槽实验或海面实测节点，都必须在对应章节更新状态，并在下方追加一条记录。
-- 每条记录至少包含日期、Git commit、完成事项、关键数值/结论、结论边界和专项文档链接。
+- 每完成一个关键节点，必须把结论整合到其所属章节，并同步更新专项证据文档；禁止在文末连续追加“Latest update”“Recent work”“Summary”等游离总结。
 - 失败、未解决诊断和历史基线不得被后续成功结果删除或改写；应说明“原结论”和“后续适配结论”的关系。
 - `candidate`、`SIMULATION_NOMINAL`、`SIMULATION_TEST_PARAMETER`、`confirmed` 和 `UNKNOWN/TODO` 必须严格区分；未知值不得猜测。
 - 所有精度声明必须注明是几何单元测试、理想仿真、真实水槽还是现场海面；不得跨层外推。
 - 若数据或算法表现仅数值可重复而非文件哈希一致，必须同时报告数值波动和重复性分类。
 - WASS 始终标注为外部引擎；若未来修改其源码或更换版本，必须单独记录来源、差异、版本与重新验证范围。
 - 后续新增或修改公式必须遵守 [Markdown 公式书写规范](docs/FORMULA_STYLE_GUIDE.md)，并在提交前检查 GitHub 公式渲染，避免乱码或定界符再次损坏。
-
-### 更新记录
-
-| 日期 | Git commit | 里程碑 | 摘要 |
-|---|---|---|---|
-| 2026-08-11 | 见专项历史 | Case 0 闭环 | 静水通过 WASS 核心与官方规则网格；理想仿真，不代表真实设备精度。 |
-| 2026-08-12 | `8b33bb9` | Case 1 重复性关闭 | ZGAP=99.5 冻结于当前仿真几何；分类 B，最大跨运行 Z 差异 0.020553 mm。 |
-| 2026-08-12 | `b44fe57` | Case 2 高度验收通过 | RMSE 5.3968 mm；波长和频率正确恢复；约 45 deg 相位偏移保留为未解决诊断项。 |
-## 2026-08-13 procurement-preparation update
-
-Four controlled ideal-synthetic sinusoidal groups now close the regular-wave
-software matrix: A=10/30 mm crossed with f=0.5/1.0 Hz at fixed wavelength
-0.80 m. All groups retained 100% raw grid support and passed the frozen height
-gates; RMSE was 0.739--1.131 mm. This result is limited to the virtual pinhole
-chain and does not establish real-camera, real-water, or physical wave accuracy.
-Details: [controlled comparison](docs/validation/sinusoidal_wave_parameter_comparison.md).
-## 2026-08-13 deterministic irregular-wave result
-
-IRR-1 froze a 10 s, three-component continuous surface and 52-frame dataset.
-WASS prepare and match completed for every frame, but autocalibration repeatedly
-failed after successful SBA during homography acceptance. The fail-fast protocol
-therefore prevented stereo, gridding and height claims. IRR-1 remains blocked;
-deployment distance scanning is not yet authorized. Details are in the
-[IRR-1 validation report](docs/validation/irregular_wave_validation.md).
-## 2026-08-13 IRR-1A autocalibration adaptation
-
-The original 52-frame joint-autocalibration failure remains recorded. A bounded,
-deterministic subset diagnosis showed the result depends on strict SBA error
-improvement and match composition, not a simple frame-count ceiling. The frozen
-10-dynamic-frame, full-window calibration was applied through WASS's per-workdir
-interface to all 52 frames. IRR-1A then passed with 2.368 mm RMSE, 8.732 mm
-maximum error and at least 99.996% raw support. Scene-distance validation may
-now be designed without erasing the historical failure.
-
-## 2026-08-14 scene-distance result
-
-At fixed B=0.20 m and all other frozen factors, the 2.00 m reference passes
-the ideal-synthetic chain. The 1.75 m case fails minimum raw-support coverage
-despite passing height-error gates, and the 2.50 m case fails fast during WASS
-stereo plane fitting. This does not select a final working distance or establish
-real-camera performance. See the
-[controlled distance report](docs/validation/scene_distance_validation.md).
-
-## 2026-08-14 baseline result
-
-At fixed 2.00 m scene distance, the 0.15, 0.20, and 0.25 m ideal-synthetic
-baselines all passed frozen gates with 100% raw support. Height RMSE was 1.483,
-1.030, and 0.906 mm respectively. This is a tested one-dimensional slice, not
-selection of a final optimum or real-camera proof. See the
-[baseline report](docs/validation/baseline_validation.md) and
-[deployment geometry summary](docs/validation/deployment_geometry_summary.md).
-
-## 2026-08-14 baseline-distance cross-check
-
-The single authorized `(B=0.25 m,Z=2.50 m)` point passed the complete ideal
-synthetic chain: minimum raw support 99.988%, RMSE 1.551 mm, and maximum error
-8.306 mm. Unlike the old `(0.20 m,2.50 m)` case, every plane fit succeeded.
-This is direct bounded evidence of baseline-distance coupling, not a complete
-deployment map. See the
-[cross-check report](docs/validation/baseline_distance_crosscheck.md).
-
-## 2026-08-13 to 2026-08-14 work summary
-
-The pre-purchase ideal-simulation campaign is now closed. It covers the Case 2
-phase diagnosis, virtual-stereo geometry, the G0--G3 regular-wave matrix,
-IRR-1/IRR-1A, the D1/D0/D2 distance slice, the B1/B0/B2 baseline slice, and the
-single XZ-1 baseline-distance cross-check. PASS, FAIL, and BLOCKED results are
-retained as separate evidence; XZ-1 removes the former D2 plane-fit blocker only
-for `(B=0.25 m,Z=2.50 m)` and does not establish a complete deployment region.
-
-The engineering target is a locally deployable desktop application for camera
-configuration, calibration, WASS execution, reconstruction review, quality
-control, and data export. A web page or mini-program is no longer the planned
-delivery form. The complete management report in DOCX/Markdown is a local-only
-deliverable and must not be added to this repository. See the
-[two-day summary](docs/progress/2026-08-13_2026-08-14_summary.md).

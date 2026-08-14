@@ -1,8 +1,8 @@
-# IRR-1 WASS autocalibration diagnosis
+# IRR-1 WASS 自动标定诊断
 
 Status: **IRR-1 FAIL PRESERVED; IRR-1A SUBSET ADAPTATION PASS**
 
-## Official/local interface facts
+## 官方与本地接口事实
 
 The native CLI accepts exactly one work-directory list. Source
 `wass_autocalibrate.cpp` loads every existing directory in that list and only
@@ -24,7 +24,7 @@ homography determinant is logged but not tested. IRR-1 failed because pre and
 post values were equal at displayed precision, not because determinant 0.999967
 violated a threshold.
 
-## Pre-registered subset matrix
+## 预注册子集矩阵
 
 Dynamic IDs are produced by `round(linspace(2,51,N))`, require exact uniqueness,
 and include both endpoints. No result-dependent replacement is permitted.
@@ -49,7 +49,7 @@ There is no monotonic frame-count boundary: largest passing N is 50 dynamic;
 smallest failing N is 4 dynamic. The outcome follows whether SBA strictly
 improves the already tiny initial error, not a maximum input count.
 
-## Static and time-region effects
+## 静水帧与时间区域效应
 
 AC-10D passes while the identical dynamic subset plus the two duplicate static
 frames (AC-10DS) fails. AC-50D passes while AC-52 fails. Thus static inclusion
@@ -60,7 +60,7 @@ fails (`5.23102e-6 -> 5.23131e-6`). This is evidence of match-combination/time-
 region conditioning, not proof that an individual late frame is defective. No
 unbounded frame search was performed.
 
-## IRR-1A selection and unseen-frame validation
+## IRR-1A 选择与未参与标定帧验证
 
 AC-10D was frozen before height reconstruction because it spans the entire
 0--9.8 s window, provides ten multi-frame constraints, has modest cost, and does
@@ -76,7 +76,7 @@ zero for static frame 0, subset frame 2, unseen middle frame 27, subset frame 29
 and last frame 51, then for all 52 frames. This validates both subset and unseen
 use through the official per-workdir interface.
 
-## Conclusion and UNKNOWN/TODO
+## 结论与未知项/待办
 
 IRR-1's original joint 52-frame autocalibration remains permanently FAIL.
 IRR-1A is a new adaptation and completes the unchanged stereo/grid/height chain.

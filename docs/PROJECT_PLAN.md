@@ -130,19 +130,27 @@
   pre-cluster 导出，`SAVE_FULL_MESH` 又位于 cluster 之后。下一步需向上游
   请求正式诊断接口，禁止自行 patch；
 - Case 1 重复性验证完成：WASS `xyzC` 三轮逐帧 bitwise identical；gridder 文件哈希不同，但最大 Z 波动 0.020553 mm，非确定性来自 0.11.4 未固定的 `torch.rand` 与 NumPy permutation/shuffle，分类 B（Numerically deterministic）；
-- Case 2 一维正弦规则波完成：$A=10\ \mathrm{mm}$、$\lambda=0.80\ \mathrm{m}$、$f=0.50\ \mathrm{Hz}$、$\phi=0$，2 静水 + 10 动态帧，raw support 100%；bias -0.2606 mm、RMSE 5.3968 mm、MAE 4.7505 mm、最大误差 10.1320 mm，预注册高度门限通过；$A_{calc}=9.6930\ \mathrm{mm}$（-3.0695%）、$\lambda_{calc}=0.8000\ \mathrm{m}$、$f_{calc}=0.5000\ \mathrm{Hz}$；包裹相位误差 +0.7853 rad 仍未解决；
+- Case 2 一维正弦规则波完成；原 +0.7853 rad 相位差已定位为世界/网格 x 原点相差 +0.10 m，显式对齐后相位误差为 -0.000111 rad，历史未对齐结果仍保留；
+- G0--G3 四组规则波幅频组合全部通过，raw support 100%，高度 RMSE 为 0.739--1.131 mm；
+- 原始不规则波 IRR-1 在自动标定阶段 FAIL/BLOCKED；冻结 AC-10D 适配后的 IRR-1A 通过，RMSE 2.368 mm、最大误差 8.732 mm，原失败不被覆盖；
+- 工作距离 D1/D0/D2 分别为 FAIL/PASS/BLOCKED；固定 2.00 m 的基线 B1/B0/B2 全部 PASS；交叉点 XZ-1 `(B=0.25 m,Z=2.50 m)` PASS；
+- **采购前核心理想仿真验证已完成。**现有部署证据只包含两个单因素切片和一个交叉点，不构成完整参数图或最优参数证明；
 - 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
-当前尚未完成：
+下一阶段按以下门控顺序推进：
 
-- Case 2 相位、坐标原点和时间零点对齐诊断；
-- `baseline × scene distance` 等部署参数空间验证；
+- 系统回顾：复核模型、验证证据、失败边界、配置和采购清单；
+- 设备采购：冻结相机、镜头、同步、照明、安装与计算设备；
+- 实机双目标定与同步验证；
+- 静水、固定高度和人工规则波验证，并与独立物理参考比较；
+- 真实环境验证，重点处理反光、波纹、泡沫、纹理退化、振动与环境光；
+- 本地桌面软件工程化：设备配置、标定、WASS 编排、重建质检和数据导出；
 - WASS 锁定 `v_1.5` 基线的独立构建复现；
 - 工业相机实机接入与同步测量；
 - 水槽静水和人工波实验；
 - 1 cm 目标的实测达标声明。
 
-Case 0/1/2 分别是静水零场、固定非零高度和动态正弦规则波三级验证场景，并非三种波。它们已在本机 WASS `1.11` 和官方 gridder 0.11.4 上形成设备采购前的软件全链路闭环。这些理想仿真不等同于真实设备或真实水面验证，不能据此声称真实海面达到 1 cm。
+Case 0/1/2 分别是静水零场、固定非零高度和动态正弦规则波三级验证场景，并非三种波。连同 G0--G3、不规则波适配、距离/基线单因素及 B--Z 交叉点，它们已形成采购前核心理想仿真证据链。这些结果不等同于真实设备或真实水面验证，不能据此声称真实海面达到 1 cm。
 
 ## 6. 文档导航
 
@@ -165,96 +173,8 @@ Case 0/1/2 分别是静水零场、固定非零高度和动态正弦规则波三
 - [静水参考集成](wass/static_water_reference_integration.md)
 - [数学模型](mathematical_model/height_definition.md)
 - [Case 1 Z-gap 单因素适配](validation/case1_zgap_parameter_sweep.md)
+- [采购前验证总表](validation/prepurchase_validation_matrix.md)
+- [部署几何汇总](validation/deployment_geometry_summary.md)
+- [阶段进展总结](progress/2026-08-13_2026-08-14_summary.md)
 
-Case 1 最新状态：已完成只改变 `ZGAP_PERCENTILE` 的受控扫描。99 到 99.5
-之间出现明确连通性跃迁，升高帧保留率由 41.43% 增至 99.89%，原始支持域
-RMSE 未恶化。结论分类为 A，99.5 是当前冻结仿真几何下有依据的候选适配值；
-原始 default-99 失败结论和 `OBSERVABILITY_LIMITATION` 均保留；后续重复性门通过后已按独立任务进入 Case 2。
-
-Case 1 重复性门已完成：正式 WASS stereo 三轮输出逐帧 bitwise identical；固定
-xyzC 的官方 DCT 五轮虽受未设种子的 PyTorch/NumPy 初始化影响而非位级一致，
-但最大 Z 波动仅 0.0206 mm，H RMSE 跨轮范围为 1.0262--1.0274 mm，结论分类
-为 B（numerically deterministic）。`ZGAP_PERCENTILE=99.5` 现冻结于该仿真
-Case 1；Case 1 已结束，随后已在独立任务中完成 Case 2。
-
-Case 1 现正式完成。Case 2 已使用单组一维正弦波完成端到端验证：10 mm 波幅、
-0.80 m 波长、0.50 Hz、10 个动态帧加2个独立静水帧。raw support 为100%，
-高度 RMSE 5.397 mm、MAE 4.751 mm、最大误差10.132 mm，均通过冻结门限；
-波幅恢复误差为 -3.07%，波长和频率恢复到离散真值。相位存在0.785 rad偏移，
-已登记为后续独立坐标/相位诊断项，未据此调参或修改本次结果。
-
-Case 2 相位诊断已关闭：`+0.7853 rad` 来自世界真值 x 与冻结官方网格
-x 的原点相差 `+0.10 m`，在 `lambda=0.80 m` 下恰为 `pi/4`。使用显式
-`x_world=x_grid+0.10 m` 后，相位误差为 `-0.000111 rad`，参考对齐 RMSE
-为0.8617 mm。修复仅更正项目评价坐标，不修改 WASS、gridder 或历史结果。
-
-虚拟双目几何可信性验证已通过：参数到内参的映射、独立理论投影、多深度视差、
-点集及平面/正弦整面三角化闭环均达到机器精度门限；shared physical texture
-调用链已确认。该结论只覆盖理想针孔几何，真实光学与标定误差仍需实机验证。
-## 2026-08-13 controlled regular-wave matrix
-
-The pre-purchase G0--G3 kinematic sinusoidal matrix is complete. With all
-geometry, WASS, grid and acceptance settings frozen, amplitudes 10/30 mm and
-frequencies 0.5/1.0 Hz all passed. Raw support was 100%; height RMSE ranged
-0.739--1.131 mm and maximum error 2.099--3.672 mm. This confirms stability only
-for the ideal synthetic parameter rectangle, not real equipment or water.
-See [the comparison report](validation/sinusoidal_wave_parameter_comparison.md)
-and [long-term matrix](validation/prepurchase_validation_matrix.md).
-## 2026-08-13 IRR-1 irregular-wave gate
-
-The frozen 3-component, 50-dynamic-frame IRR-1 run completed synthetic imaging,
-WASS prepare and matching, but reproducibly stopped in autocalibration after SBA
-at the homography acceptance path. Stereo/grid/height metrics were not produced.
-IRR-1 is `BLOCKED_AT_AUTOCALIBRATION`, not passed; scene-distance validation is
-deferred pending a separate source-backed diagnosis. See
-[the IRR-1 report](validation/irregular_wave_validation.md).
-## 2026-08-13 IRR-1A closure
-
-Source-backed diagnosis disproved a monotonic frame-count limit and identified
-the strict post-SBA error-improvement gate. AC-10D, uniformly spanning the full
-window without static duplicates, was frozen before height reconstruction. It
-calibrated all subset/unseen frames and closed the full 52-frame chain: RMSE
-2.368 mm, maximum error 8.732 mm, raw support >=99.996%. IRR-1A passes; original
-IRR-1 remains FAIL. A separately pre-registered scene-distance study may follow.
-
-## 2026-08-14 controlled scene-distance validation
-
-The one-factor D1/D0/D2 study is recorded. D0=2.00 m passes. D1=1.75 m passes
-height-error gates but fails the frozen minimum raw-support gate because one
-dynamic frame falls to 71.758% support. D2=2.50 m stops at WASS stereo plane
-fitting after component retention falls to 41.568%; no grid metrics are claimed.
-The tested deployment-distance interval is not established. A separate baseline
-study is permitted only at frozen D0, while D1/D2 limitations remain open.
-
-## 2026-08-14 controlled baseline validation
-
-At frozen Z=2.00 m, B=0.15/0.20/0.25 m all passed the complete ideal-synthetic
-WASS/grid/height gates. RMSE decreased from 1.483 to 1.030 to 0.906 mm while
-raw support stayed 100%; triangulated counts decreased with reduced overlap.
-This establishes only the tested baseline slice. The pre-purchase core
-simulation set is complete, including retained distance FAIL/BLOCKED evidence;
-the final local report is a separate local-only deliverable.
-
-## 2026-08-14 unique baseline-distance cross-check
-
-XZ-1 `(B=0.25 m,Z=2.50 m)` completed the full frozen WASS/grid/height chain.
-It restored 98.106% minimum component retention and 99.988% minimum raw
-support, passed with 1.551 mm RMSE, and removed the former D2 plane-fit blocker.
-This closes the planned pre-purchase simulation evidence but does not map the
-complete deployment region. Final local report generation has been authorized
-but remains outside the repository.
-
-## 2026-08-14 engineering handoff
-
-The pre-purchase simulation evidence is closed and summarized in the
-[two-day progress report](progress/2026-08-13_2026-08-14_summary.md). The next
-engineering phase targets a locally deployable desktop application, not a web
-page or mini-program. Planned modules are device configuration, calibration,
-WASS workflow orchestration, reconstruction/quality review, and controlled data
-export. Camera procurement, real-camera calibration, water-tank validation, and
-field validation remain future work; ideal-simulation accuracy must not be
-presented as real-system accuracy.
-
-The complete user-facing report in DOCX/Markdown is intentionally local-only.
-It and large generated artifacts such as raw stereo images, `xyzC`, NetCDF,
-large PNG files, and WASS run directories must remain outside Git history.
+维护要求：新进展必须回填到对应阶段和状态节点，禁止在文末追加彼此割裂的英文更新块。完整用户汇报 DOCX/Markdown 及大型原始/中间数据仅保存在本地，不进入 Git。

@@ -113,7 +113,7 @@ Z(x,y,t)
 - [`validation/case1_repeatability.md`](validation/case1_repeatability.md)
 - [`validation/case2_sinusoidal_wave.md`](validation/case2_sinusoidal_wave.md)
 
-Case 0 是静水零场基础验证，Case 1 是 +10 mm 固定非零高度验证，Case 2 才是随时间变化的一维正弦规则波；三者不能统称为三种波。当前三级理想仿真已闭环，但 Case 2 的包裹相位误差 +0.7853 rad（约 45°）仍未解决。
+Case 0 是静水零场基础验证，Case 1 是 +10 mm 固定非零高度验证，Case 2 才是随时间变化的一维正弦规则波；三者不能统称为三种波。当前三级理想仿真已闭环。Case 2 原包裹相位误差 +0.7853 rad（约 45°）已定位为世界坐标与官方网格 x 原点相差 0.10 m，显式坐标对齐后相位误差接近 0；该修正不改写历史未对齐结果。
 
 ## 5. 当前结论边界
 

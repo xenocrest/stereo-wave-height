@@ -1,10 +1,8 @@
-# Pre-purchase validation matrix
+# 采购前验证总表
 
-This table is the long-term summary of pre-purchase simulation evidence. A dash
-means the metric does not apply or was not reported under that test's protocol.
-Case 2/G0 values below use the corrected explicit world/grid alignment.
+本表是采购前仿真证据的长期汇总入口。“--”表示该指标不适用，或相应实验规程没有报告该指标。Case 2/G0 使用显式修正后的世界坐标/网格坐标对齐结果。
 
-| ID | test type | A / height | lambda | f | B / Z | spatial / temporal samples | raw support | min component retention | bias | RMSE | MAE | max | wave errors (A; lambda; f; phase) | result | notes |
+| 编号 | 实验类型 | 幅值/高度 | 波长 | 频率 | B / Z | 空间/时间采样 | raw support | 最小分量保留率 | 偏差 | RMSE | MAE | 最大误差 | 波参数误差（幅值；波长；频率；相位） | 结果 | 备注 |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---|---|
 | Geometry | ideal stereo geometry | variable | - | - | 0.20 / variable m | analytical | - | - | - | machine precision | - | - | - | PASS | Projection/triangulation unit validation only |
 | Case 0 | static plane | 0 | - | - | 0.20 / 2.00 m | 160 grid | 100% | 99.756% | ~0 | diagnostic zero field | ~0 | ~0 | - | PASS | ideal static closure |
@@ -23,6 +21,4 @@ Case 2/G0 values below use the corrected explicit world/grid alignment.
 | Baseline/B2 | regular wave, large baseline | 30 mm | 0.80 m | 0.50 Hz | 0.25 / 2.00 m | 160 / 10 | 100% | 99.911% min | -0.335 mm | 0.906 mm | 0.743 mm | 3.094 mm | point bias +0.038 to +0.329 mm | PASS | explicit world/grid offset B/2=0.125 m |
 | BZ-X1 | unique baseline-distance cross-check | 30 mm | 0.80 m | 0.50 Hz | 0.25 / 2.50 m | 160 / 10 | 99.988% min | 98.106% min | -0.713 mm | 1.551 mm | 1.222 mm | 8.306 mm | A error +0.259 mm; phase +0.003166 rad | PASS | former D2 plane-fit blocker removed; not a complete B x Z map |
 
-The frozen regular-wave gates are height RMSE/MAE <=10 mm, maximum absolute
-error <=30 mm, raw support >=95%, and hole rate <=5%. Wave-parameter errors are
-reported but are not retrospectively assigned acceptance thresholds.
+冻结的规则波门限为：高度 RMSE/MAE 不大于 10 mm、最大绝对误差不大于 30 mm、raw support 不低于 95%、空洞率不高于 5%。波参数误差只作报告，不追溯补设验收门限。

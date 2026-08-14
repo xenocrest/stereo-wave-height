@@ -1,12 +1,12 @@
-# Controlled scene-distance validation
+# 工作距离单因素验证
 
-## Scope and frozen design
+## 范围与冻结设计
 
 This pre-purchase test changes only the virtual camera-to-static-water distance. It is an ideal pinhole simulation, not a real-camera or real-water result. The camera candidate (2448 x 2048, 3.45 um pixels, nominal 8 mm lens), focal length 2318.840580 px, baseline 0.20 m, deterministic texture and timestamps, wave (`A=0.030 m`, `lambda=0.80 m`, `f=0.50 Hz`, zero initial phase), WASS settings including `ZGAP_PERCENTILE=99.5`, official DCT grid (160 x 160 at 0.01 m), explicit `x_world=x_grid+0.10 m`, and gates were frozen. Each distance has two independent static frames for `Z0` and ten dynamic frames. Distances are `SIMULATION_TEST_PARAMETER`, not selected hardware deployment values.
 
 The gates remain RMSE and MAE <=0.010 m, maximum absolute error <=0.030 m, minimum raw-observation support >=95%, and hole rate <=5%. A finite DCT value is not treated as raw observation support.
 
-## Distance selection from geometry
+## 基于几何关系的距离选择
 
 For rectified pinhole stereo, `d=f_px B/Z` and the local one-pixel depth sensitivity is `|dZ/dd|=Z^2/(f_px B)`. The horizontal common field width used here is `(image_width_px-d) Z/f_px`; the conservative value below uses the nearest wave depth `Z-A`. The frozen disparity bounds are 160--320 px and the required physical width is 1.59 m.
 
@@ -20,13 +20,13 @@ For rectified pinhole stereo, `d=f_px B/Z` and the local one-pixel depth sensiti
 
 D1 and D2 are the nearest/farthest explanatory cases inside both constraints. No final deployment distance is inferred.
 
-## Execution and provenance
+## 执行与来源记录
 
 D1 and D2 use newly rendered, distance-specific images; images were not regenerated between WASS stages. Prepare and match succeeded on all 12 frames, and autocalibration succeeded using the pre-registered all-dynamic subset `000002..000011`; its official exterior calibration was distributed to the two static workdirs. D1 completed stereo and `wassgridsurface 0.11.4`. D0 reuses the G1 evidence because every frozen factor and its 2.00 m distance are identical. Run products remain outside Git under `D:\stereo-wave-height-runs\scene-distance-20260814`.
 
 Manifest and configuration hashes are preserved in `scene_distance_validation_metrics.json`. WASS and wassgridsurface source were not modified.
 
-## Results
+## 结果
 
 | item | D1 1.75 m | D0 2.00 m | D2 2.50 m |
 |---|---:|---:|---:|
@@ -48,17 +48,17 @@ D1's failure is not a height-error failure: frame `000003` alone drops to 72.939
 
 D2 fails fast on static frame `000000`: WASS triangulates 1,467,806 points, retains 610,135 in the largest component, finds zero RANSAC plane inliers, emits plane coefficients `0 0 0 0`, and terminates. No grid or height metrics are reported. This is `BLOCKED_AT_STEREO_PLANE_FIT`; no parameter was tuned after observing it.
 
-## Fixed physical-point tracking
+## 固定物理点跟踪
 
 Nearest official nodes were frozen once for P1 `(0.005,-0.005)`, P2 `(-0.595,-0.005)`, P3 `(0.605,-0.005)`, P4 `(0.405,0.395)`, and P5 `(-0.795,0.695)` m in world coordinates. D0 point RMSE spans 0.602--1.756 mm. D1 spans 1.182--7.921 mm; the largest is P5 near the domain edge. D2 has no valid reconstructed series. The partial trend cannot establish a monotonic distance law.
 
-## Interpretation and next decision
+## 解释与后续决策
 
 The theoretical trend is confirmed only at the geometry level: disparity falls and one-pixel depth sensitivity worsens as distance grows. The end-to-end results are not monotonic evidence because D1 has a single-frame support collapse and D2 stops before gridding. The supported operating interval is not established beyond the passing 2.00 m reference. These are procurement constraints, not proof that 2.00 m is optimal.
 
 Baseline validation may proceed only as a separate one-factor study at the passing frozen D0=2.00 m reference. It must not claim that the unresolved D1/D2 limitations are closed. No final comprehensive procurement report is produced here.
 
-## UNKNOWN / TODO
+## 未知项与待办
 
 - The exact cause of D1 frame `000003` component fragmentation is UNKNOWN.
 - The exact cause of D2's low triangulated count, component loss, and zero-plane RANSAC result is UNKNOWN; attribution to distance sensitivity alone would be unsupported.

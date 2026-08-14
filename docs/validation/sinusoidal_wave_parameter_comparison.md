@@ -1,9 +1,9 @@
-# Controlled sinusoidal-wave parameter comparison
+# 规则正弦波参数对比验证
 
 Run date: 2026-08-13  
 Status: **G0/G1/G2/G3 PASS**
 
-## Purpose and boundary
+## 目的与边界
 
 This procurement-preparation experiment tests whether the frozen ideal-synthetic
 pipeline remains stable when wave amplitude and temporal frequency change. It
@@ -11,7 +11,7 @@ is a `KINEMATIC_SYNTHETIC_WAVE_TEST`; water depth is still `UNKNOWN`, so the
 chosen frequency/wavelength pairs are not claimed to satisfy a physical gravity-wave
 dispersion relation. It does not establish real-camera or real-water accuracy.
 
-## Controlled design
+## 受控实验设计
 
 All groups use the candidate 2448 x 2048 camera geometry, 3.45 um pixel pitch,
 nominal 8 mm ideal pinhole lens, zero distortion, baseline 0.20 m, scene distance
@@ -34,7 +34,7 @@ sample length (two wavelengths).
 | G2 | frequency only | 0.010 | 1.00 | 5 |
 | G3 | combined stress | 0.030 | 1.00 | 5 |
 
-## End-to-end execution and support
+## 端到端执行与支持域
 
 Every group independently ran truth -> stereo PNG -> prepare -> match ->
 autocalibrate -> stereo -> xyzC -> shared-plane official grid -> explicit
@@ -51,7 +51,7 @@ given to WASS.
 
 No group triggered the pre-registered 95% support stop rule.
 
-## Height-field results
+## 高度场结果
 
 Metrics use the pre-registered raw-observation validation-eligible domain. All
 values below are millimetres except coverage.
@@ -66,7 +66,7 @@ values below are millimetres except coverage.
 Frozen gates are RMSE <=10 mm, MAE <=10 mm, maximum absolute error <=30 mm,
 raw support >=95%, and hole rate <=5%. All groups pass without post-hoc changes.
 
-## Wave-parameter recovery
+## 波参数恢复
 
 The verified estimator uses the center physical row and world-aligned x.
 Amplitude/wavelength/frequency thresholds were not pre-registered, so these are
@@ -79,7 +79,7 @@ report-only auxiliary indicators.
 | G2 | 9.689 | -0.311 / -3.113% | 0.800 / <1e-12 | 1.00 / 0 | -0.002633 |
 | G3 | 29.659 | -0.341 / -1.135% | 0.800 / <1e-12 | 1.00 / 0 | -0.003247 |
 
-## Controlled comparisons
+## 受控对比
 
 G0 -> G1 changes amplitude only. RMSE rises 0.171 mm, MAE 0.157 mm, maximum
 error 0.889 mm, while raw support remains 100% and minimum component retention
@@ -98,7 +98,7 @@ G3 combines both tested changes. It has the largest RMSE (1.131 mm), MAE
 far inside all gates. Because G1 and G2 pass and G3 also passes, no new harmful
 amplitude-frequency interaction is observed within this matrix.
 
-## Conclusion and limits
+## 结论与限制
 
 The frozen software chain is stable across A=10--30 mm and f=0.5--1.0 Hz for
 this one ideal pinhole geometry and kinematic sinusoid. This is sufficient to

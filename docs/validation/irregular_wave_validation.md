@@ -1,9 +1,9 @@
-# IRR-1 deterministic multi-component irregular-wave validation
+# IRR-1 确定性多分量不规则波验证
 
 Run date: 2026-08-13  
 Status: **ORIGINAL IRR-1 FAIL PRESERVED; IRR-1A PASS**
 
-## Purpose and frozen truth
+## 目的与冻结真值
 
 IRR-1 asks whether the complete chain that passed single sinusoids also recovers
 a continuous deterministic multi-component surface. Formal validation remains
@@ -25,7 +25,7 @@ $$
 This is a `KINEMATIC_SYNTHETIC_WAVE_TEST`. Water depth is `UNKNOWN`; the
 components are not asserted to satisfy a gravity-wave dispersion relation.
 
-## Pre-run legality and sampling
+## 运行前合规性与采样
 
 The exact triangle-inequality height bound is +/-0.028 m. A dense deterministic
 evaluation over x `[-0.9,0.9] m` and the 10 s repeat gives -0.0279815 to
@@ -42,7 +42,7 @@ samples at t=0.0--9.8 s represent one complete discrete repeat window and cover
 5, 8 and 3 component cycles. Two preceding independent static frames are the
 only intended `Z0` input.
 
-## Frozen observation, points and times
+## 冻结观测、位置与时间
 
 Camera, texture, baseline 0.20 m, distance 2.00 m, ZGAP 99.5, grid, DCT and
 acceptance gates match the completed regular-wave matrix. The explicit mapping
@@ -52,7 +52,7 @@ reconstruction for P1 `(0.005,-0.005)`, P2 `(-0.595,-0.005)`, P3
 `(-0.795,0.695)` metres in world coordinates. Key dynamic times were frozen at
 0.0, 3.4 and 6.8 s.
 
-## WASS execution and blocking failure
+## WASS 执行与阻塞失败
 
 All 52 stereo pairs were generated and copied into the WASS workspace without
 truth exposure. `prepare` and `match` returned zero for all 52 frames.
@@ -72,7 +72,7 @@ representative-point errors, key-time comparisons and frequency diagnostics are
 **NOT AVAILABLE**. Inventing those values or reusing earlier output would violate
 the end-to-end requirement.
 
-## Decision
+## 原始结论
 
 IRR-1 is **not passed** and is classified `BLOCKED_AT_AUTOCALIBRATION`. The
 failure is a newly observed pipeline scaling/conditioning issue for this frozen
@@ -92,7 +92,7 @@ Compact evidence is in
 images and work products remain outside Git at
 `D:/stereo-wave-height-runs/irregular-wave-20260813`.
 
-## IRR-1A adaptation result
+## IRR-1A 适配结果
 
 A subsequent pre-registered diagnosis established that failure is not monotonic
 with frame count and that the source requires strict post-SBA error improvement.

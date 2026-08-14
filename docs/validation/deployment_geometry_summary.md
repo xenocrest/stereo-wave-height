@@ -1,15 +1,33 @@
-# Deployment geometry summary
+# 部署几何验证汇总
 
-The current evidence consists of two one-dimensional slices, not a complete map of $(B,Z)\in\Omega_{valid}$.
+## 1. 结论边界
 
-| slice | case | B | Z | nominal disparity | sensitivity | result |
+现有证据由两个单因素切片和一个交叉点组成，不是完整的 $(B,Z)\in\Omega_{valid}$ 参数图，也不能据此选择全局最优部署参数。
+
+## 2. 已验证组合
+
+| 切片 | 工况 | 基线 B | 距离 Z | 名义视差 | 深度敏感度 | 结果 |
 |---|---|---:|---:|---:|---:|---|
-| distance | D1 | 0.20 m | 1.75 m | 265.010 px | 6.604 mm/px | FAIL raw support |
-| distance | D0 | 0.20 m | 2.00 m | 231.884 px | 8.625 mm/px | PASS |
-| distance | D2 | 0.20 m | 2.50 m | 185.507 px | 13.477 mm/px | BLOCKED plane fit |
-| baseline | B1 | 0.15 m | 2.00 m | 173.913 px | 11.500 mm/px | PASS |
-| baseline | B0 | 0.20 m | 2.00 m | 231.884 px | 8.625 mm/px | PASS |
-| baseline | B2 | 0.25 m | 2.00 m | 289.855 px | 6.900 mm/px | PASS |
-| cross-check | XZ-1 | 0.25 m | 2.50 m | 231.884 px | 10.781 mm/px | PASS |
+| 工作距离 | D1 | 0.20 m | 1.75 m | 265.010 px | 6.604 mm/px | FAIL：raw support 未过门限 |
+| 工作距离 | D0 | 0.20 m | 2.00 m | 231.884 px | 8.625 mm/px | PASS |
+| 工作距离 | D2 | 0.20 m | 2.50 m | 185.507 px | 13.477 mm/px | BLOCKED：平面拟合阻塞 |
+| 基线 | B1 | 0.15 m | 2.00 m | 173.913 px | 11.500 mm/px | PASS |
+| 基线 | B0 | 0.20 m | 2.00 m | 231.884 px | 8.625 mm/px | PASS |
+| 基线 | B2 | 0.25 m | 2.00 m | 289.855 px | 6.900 mm/px | PASS |
+| 交叉点 | XZ-1 | 0.25 m | 2.50 m | 231.884 px | 10.781 mm/px | PASS |
 
-The governing relations are $d=f_{px}B/Z$ and $|\partial Z/\partial d|=Z^2/(f_{px}B)$. Larger B or smaller Z improves ideal depth sensitivity but raises disparity and reduces common field of view. Only the listed combinations have end-to-end evidence. XZ-1 removed the prior 2.50 m blocker under the tested 0.25 m baseline, but the evidence still comprises two one-dimensional slices plus one cross-check rather than a complete deployment region.
+## 3. 理论解释
+
+控制关系为：
+
+$$
+d=\frac{f_{px}B}{Z},
+\qquad
+\left|\frac{\partial Z}{\partial d}\right|=\frac{Z^2}{f_{px}B}.
+$$
+
+增大基线或缩短工作距离通常能改善理想深度敏感度，但也会增大视差并缩小公共视场。XZ-1 表明在已测试的 2.50 m 距离上，将基线从 0.20 m 增至 0.25 m 可解除原 D2 平面拟合阻塞；该结论仅适用于这一交叉点，不能外推为恒定 $B/Z$ 必然成功。
+
+## 4. 历史状态保持
+
+D1 的 FAIL、D2 的 BLOCKED 与 XZ-1 的 PASS 是不同几何条件下的独立事实，均须保留。XZ-1 的成功不改写或删除 D2 历史结果。

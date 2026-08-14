@@ -70,7 +70,11 @@
 - [Case 1 误差根因诊断](validation/case1_error_diagnosis.md)：定位全网格误差主要来自无原始支持区域上的 DCT 全域重建；
 - [Case 1 支持追踪](validation/case1_support_trace.md)：支持损失已定位到 WASS 三角化后的 Z-gap 最大连通分量阶段；
 - [Case 1 重复性验证](validation/case1_repeatability.md)：WASS `xyzC` 位级一致，gridder 数值稳定但文件哈希不同，分类 B（Numerically deterministic）；
-- [Case 2 一维正弦规则波](validation/case2_sinusoidal_wave.md)：2 静水 + 10 动态帧，raw support 100%，高度门限通过；+0.7853 rad 包裹相位误差仍待诊断。
+- [Case 2 一维正弦规则波](validation/case2_sinusoidal_wave.md)：高度门限通过；原 +0.7853 rad 相位差已由显式世界/网格坐标对齐关闭；
+- [规则波 G0--G3 参数对比](validation/sinusoidal_wave_parameter_comparison.md)：四组幅频组合全部通过；
+- [确定性不规则波验证](validation/irregular_wave_validation.md)：保留原始 IRR-1 阻塞，IRR-1A 适配后通过；
+- [工作距离验证](validation/scene_distance_validation.md)、[双目基线验证](validation/baseline_validation.md)与 [B--Z 交叉验证](validation/baseline_distance_crosscheck.md)：保留各自 FAIL/PASS/BLOCKED 边界；
+- [采购前验证总表](validation/prepurchase_validation_matrix.md)与[部署几何汇总](validation/deployment_geometry_summary.md)：采购前核心理想仿真证据的长期入口。
 
 ## 7. 当前汇报边界
 
