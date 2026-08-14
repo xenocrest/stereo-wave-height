@@ -225,3 +225,12 @@ dynamic frame falls to 71.758% support. D2=2.50 m stops at WASS stereo plane
 fitting after component retention falls to 41.568%; no grid metrics are claimed.
 The tested deployment-distance interval is not established. A separate baseline
 study is permitted only at frozen D0, while D1/D2 limitations remain open.
+
+## 2026-08-14 controlled baseline validation
+
+At frozen Z=2.00 m, B=0.15/0.20/0.25 m all passed the complete ideal-synthetic
+WASS/grid/height gates. RMSE decreased from 1.483 to 1.030 to 0.906 mm while
+raw support stayed 100%; triangulated counts decreased with reduced overlap.
+This establishes only the tested baseline slice. The pre-purchase core
+simulation set is complete, including retained distance FAIL/BLOCKED evidence;
+the final local report remains gated on explicit user confirmation.

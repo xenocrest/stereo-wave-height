@@ -287,3 +287,12 @@ despite passing height-error gates, and the 2.50 m case fails fast during WASS
 stereo plane fitting. This does not select a final working distance or establish
 real-camera performance. See the
 [controlled distance report](docs/validation/scene_distance_validation.md).
+
+## 2026-08-14 baseline result
+
+At fixed 2.00 m scene distance, the 0.15, 0.20, and 0.25 m ideal-synthetic
+baselines all passed frozen gates with 100% raw support. Height RMSE was 1.483,
+1.030, and 0.906 mm respectively. This is a tested one-dimensional slice, not
+selection of a final optimum or real-camera proof. See the
+[baseline report](docs/validation/baseline_validation.md) and
+[deployment geometry summary](docs/validation/deployment_geometry_summary.md).

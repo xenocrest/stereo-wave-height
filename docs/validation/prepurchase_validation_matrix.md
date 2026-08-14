@@ -18,6 +18,9 @@ Case 2/G0 values below use the corrected explicit world/grid alignment.
 | Distance/D1 | regular wave, near distance | 30 mm | 0.80 m | 0.50 Hz | 0.20 / 1.75 m | 160 / 10 | 71.758% min | 72.939% min | -0.258 mm | 2.832 mm | 1.789 mm | 23.509 mm | -0.424 mm; 0 m; 0 Hz; +0.02637 rad | FAIL | height gates pass; minimum raw-support gate fails on frame 000003 |
 | Distance/D0 | regular-wave reference | 30 mm | 0.80 m | 0.50 Hz | 0.20 / 2.00 m | 160 / 10 | 100% | 99.8449% min | -0.433 mm | 1.030 mm | 0.849 mm | 3.398 mm | -0.404 mm; 0 m; 0 Hz; +0.00041 rad | PASS | exact frozen G1 evidence reused |
 | Distance/D2 | regular wave, far distance | 30 mm | 0.80 m | 0.50 Hz | 0.20 / 2.50 m | 160 / 10 | N/A | 41.568% frame 0 | N/A | N/A | N/A | N/A | N/A | BLOCKED | stereo frame 000000: plane RANSAC zero inliers; no grid metrics |
+| Baseline/B1 | regular wave, small baseline | 30 mm | 0.80 m | 0.50 Hz | 0.15 / 2.00 m | 160 / 10 | 100% | 99.699% min | -0.569 mm | 1.483 mm | 1.205 mm | 5.048 mm | point bias -1.370 to +0.354 mm | PASS | explicit world/grid offset B/2=0.075 m |
+| Baseline/B0 | regular-wave reference | 30 mm | 0.80 m | 0.50 Hz | 0.20 / 2.00 m | 160 / 10 | 100% | 99.845% min | -0.433 mm | 1.030 mm | 0.849 mm | 3.398 mm | point bias -0.244 to +0.320 mm | PASS | exact frozen G1/D0 reuse |
+| Baseline/B2 | regular wave, large baseline | 30 mm | 0.80 m | 0.50 Hz | 0.25 / 2.00 m | 160 / 10 | 100% | 99.911% min | -0.335 mm | 0.906 mm | 0.743 mm | 3.094 mm | point bias +0.038 to +0.329 mm | PASS | explicit world/grid offset B/2=0.125 m |
 
 The frozen regular-wave gates are height RMSE/MAE <=10 mm, maximum absolute
 error <=30 mm, raw support >=95%, and hole rate <=5%. Wave-parameter errors are

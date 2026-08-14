@@ -1,0 +1,14 @@
+# Frozen before B1/B2 rendering; only baseline_m changes between cases.
+schema_version: 1
+status: KINEMATIC_SYNTHETIC_DEPLOYMENT_TEST
+camera: {resolution_px: [2448, 2048], pixel_pitch_um: 3.45, focal_length_mm: 8.0, focal_px: 2318.840579710145}
+working_distance_m: 2.00
+baselines_m: {B1: 0.15, B0: 0.20, B2: 0.25}
+wave: {amplitude_m: 0.030, wavelength_m: 0.80, frequency_hz: 0.50, phase_rad: 0.0}
+sampling: {frame_rate_hz: 5.0, static_frames: 2, dynamic_frames: 10}
+autocalibration: {rule: all_dynamic_only, frame_ids: [2,3,4,5,6,7,8,9,10,11], distribute_common_outputs_to_static: true}
+wass: {min_disparity_px: 160, max_disparity_px: 320, triangulation_min_angle_deg: 3, zgap_percentile: 99.5}
+grid: {size: [160,160], spacing_m: 0.01, physical_width_m: 1.59, interpolation: DCT, parallel: 1}
+world_alignment: {rule: world_minus_grid_x_m = baseline_m / 2, B1_m: 0.075, B0_m: 0.100, B2_m: 0.125, status: explicit_from_virtual_camera_centres}
+representative_points_world_m: {shared: {P1: [0.005,-0.005], P2: [-0.595,-0.005], P3: [0.605,-0.005], P4: [0.405,0.395]}, excluded_after_preflight: {P5: [-0.795,0.695], reason: outside_B2_physical_grid_domain_no_replacement}}
+acceptance: {rmse_max_m: 0.010, mae_max_m: 0.010, max_abs_error_max_m: 0.030, raw_support_min: 0.95, hole_rate_max: 0.05}
