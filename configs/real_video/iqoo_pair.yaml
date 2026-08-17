@@ -1,0 +1,38 @@
+schema_version: 1
+status: real_video_candidate_input_pair
+
+left:
+  role: cam0
+  device: iQOO Z10 Turbo+
+  camera: rear_main
+  resolution: null
+  fps: null
+  codec: null
+  stabilization: UNKNOWN
+  focus_lock: UNKNOWN
+  exposure_lock: UNKNOWN
+  white_balance_lock: UNKNOWN
+  rolling_shutter_readout: null
+  status: existing_phone_pending_on-device_confirmation
+
+right:
+  role: cam1
+  device: iQOO Neo5S
+  camera: rear_main
+  resolution: null
+  fps: null
+  codec: null
+  stabilization: UNKNOWN
+  focus_lock: UNKNOWN
+  exposure_lock: UNKNOWN
+  white_balance_lock: UNKNOWN
+  rolling_shutter_readout: null
+  status: existing_phone_pending_on-device_confirmation
+
+stereo:
+  baseline_m: null
+  working_distance_m: null
+  intrinsic_calibration_id: null
+  stereo_calibration_id: null
+  synchronization_method: shared_flash_affine_time_mapping_candidate
+  status: UNKNOWN

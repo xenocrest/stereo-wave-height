@@ -1,0 +1,42 @@
+schema_version: 1
+experiment_id: null
+date: null
+environment: low_cost_real_video_feasibility
+status: UNKNOWN
+
+input:
+  left_video: null
+  right_video: null
+  manifest: null
+  raw_data_location: null
+
+capture:
+  resolution: null
+  fps: null
+  codec: null
+  focus: UNKNOWN
+  exposure: UNKNOWN
+  white_balance: UNKNOWN
+  stabilization: UNKNOWN
+
+geometry:
+  baseline_m: null
+  working_distance_m: null
+  calibration_id: null
+
+synchronization:
+  method: shared_flash_affine_time_mapping_candidate
+  left_flash_timestamps_s: null
+  right_flash_timestamps_s: null
+  pairing_tolerance_s: null
+
+wass:
+  runtime_id: null
+  config_id: null
+  workspace: null
+
+validation:
+  protocol: null
+  raw_support: null
+  status: UNKNOWN
+  limitations: null

@@ -10,7 +10,7 @@ $$
 
 其中 `x,y` 为水平坐标（m），`t` 为时间（s），`Z`、`Z0` 和 `H` 单位均为 m。近期目标是在实验室人工波条件下验证约 1 cm 级高度解算；长期目标是扩展至真实海浪。1 cm 是验收目标，不是当前性能声明。
 
-本阶段只完成总体设计和复现准备，不编写算法代码、不修改 WASS、不进入工程实现。
+采购前理想仿真已经完成。当前新增低成本真实视频可行性层，并开始最终桌面程序 V0.x 原型；WASS 仍保持外部只读，专业设备阶段的 1 cm 目标仍待实测。
 
 ## 2. WASS 框架定位
 
@@ -162,6 +162,22 @@ $$
 | 归档层 | 保存配置、版本、清单、指标和报告 | 确保数据谱系与复现性 |
 
 层间接口必须显式记录坐标系、单位、数组形状、无效值、质量掩膜、时间戳和版本。任何自动过滤都必须可追溯，不能静默删除失败帧或用插值值冒充有效测量。
+
+### 8.1 通用输入与同步边界
+
+```text
+StereoVideoSource (当前真实视频文件)
+        ┐
+        ├─> StereoFramePair -> Calibration -> Synchronization -> WASS -> XYZ/Grid -> Z0/H -> QA/Export
+        ┘
+LiveStereoCameraSource (未来专业相机接口)
+```
+
+`StereoFramePair` 之后的处理不得识别手机或 MER2 型号。视频文件时间轴由公共闪光事件拟合 $t_R=a t_L+b$，再按显式容差最近邻配对；未来硬件触发时间戳仍进入同一同步/诊断边界。当前不实现 rolling-shutter 亚毫秒校正，也不编写未经验证的 Galaxy SDK 代码。
+
+### 8.2 桌面程序 V0.x
+
+桌面程序名称为 **Stereo Wave Height Measurement System**。V0.x 骨架包含 Input、Calibration、Synchronization、Reconstruction、3D Surface、Height Map、Point Wave Height、QA / Export 页面。当前环境没有 PySide6 或视频解码依赖，因此使用标准库 Tkinter 建立可运行结构，并通过可替换 backend 保留未来迁移空间；缺失或未知 metadata 必须显式失败/显示 `UNKNOWN`，不得自动猜测。
 
 ## 9. 设计约束与当前未知项
 

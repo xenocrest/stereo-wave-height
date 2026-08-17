@@ -30,6 +30,9 @@ tmp/
 *.wmv
 *.flv
 *.webm
+*.3gp
+*.mts
+*.m2ts
 *.raw
 *.tif
 *.tiff
@@ -39,6 +42,10 @@ data/
 datasets/
 outputs/
 results/
+real_video_workspace/
+real_video_workspaces/
+real_video_runs/
+extracted_frames/
 *.bin
 *.dat
 *.h5

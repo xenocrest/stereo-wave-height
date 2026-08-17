@@ -22,6 +22,7 @@
 ## 2. 系统与数据流
 
 - [双目测波系统总体设计](system/stereo_measurement_system_design.md)：端到端系统架构；
+- [桌面程序 V0.x 架构](system/desktop_application_architecture.md)：通用视频/未来实时相机输入、同步和 GUI 边界；
 - [数据流设计](system/data_flow_design.md)：各阶段输入输出、单位闸门与数据谱系；
 - [统一坐标与时间体系](data_model/coordinate_system.md)：图像、相机、世界和规则网格坐标定义；
 - [双目图像数据集规范](data_model/stereo_image_dataset_spec.md)；
@@ -62,6 +63,13 @@
 - [官方 wassgridsurface 集成](wass/wassgridsurface_integration.md)；
 - [静水参考集成](wass/static_water_reference_integration.md)；
 - [1 cm 误差预算与验收条件](wass/one_cm_error_budget.md)。
+
+## 5A. 采购前真实视频可行性
+
+- [真实视频验证协议](real_video_validation/README.md)：RV0 刚性纹理平面、RV1 静水、RV2 静态液位变化、RV3 人工波；
+- [实验记录模板](real_video_validation/experiment_template.md)：设备、视频、标定、同步、WASS、支持率、状态与限制字段。
+
+该阶段使用现有双手机作为低成本 `Stereo Video File` 输入，只验证真实光学输入下的符号、趋势、空间结构和时间连续性；不执行 1 cm 精度验收。
 
 ## 6. 当前验证结果
 
