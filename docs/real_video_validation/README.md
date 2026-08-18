@@ -75,4 +75,4 @@ Run RV0 -> RV1 -> RV2 -> RV3. A blocked calibration, synchronization, coordinate
 
 ## Current status
 
-All RV results are `UNKNOWN/TODO`. No real video has been supplied or evaluated. The next action is on-device capture-parameter confirmation followed by RV0 acquisition.
+`HomeTank_001` has supplied the first uncalibrated static/wave stereo-video pair. File metadata, representative-frame inspection, geometry provenance, and preliminary common-event screening are recorded in the [HomeTank_001 input inspection](../../experiments/real_video/HomeTank_001/input_inspection.md). No WASS reconstruction or wave-height result has been produced. The next action is an explicitly approximate, uncalibrated K/R/T design review; all calibration and physical-accuracy claims remain blocked.

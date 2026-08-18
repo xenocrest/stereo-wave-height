@@ -1,0 +1,122 @@
+schema_version: "1.0"
+experiment_id: HomeTank_001
+metadata_source: ffprobe on original files
+generated_on: "2026-08-18"
+
+videos:
+  - filename: HomeTank_001_static_cam0_Z10TurboPlus.mp4
+    role: cam0_left
+    condition: static
+    size_bytes: 34735170
+    sha256: 8b08820cd5d4698a508b113a0ab0abe1658ec68ec6d975ae29d5b46247686786
+    container: mp4
+    codec: hevc
+    codec_tag: hvc1
+    width: 1920
+    height: 1080
+    pixel_format: yuv420p
+    nominal_fps: 60.0
+    average_fps: 60.024624129
+    duration_s: 37.768689
+    frame_count: 2267
+    rotation_deg: -180
+    time_base: 1/90000
+    vfr_cfr_assessment: CFR_LIKE
+    metadata_focal_length_mm: null
+    metadata_notes: Android 16 and timed metadata stream present; focal length unavailable; source contains GPS tags omitted from this repository summary; edit/transcode provenance UNKNOWN.
+
+  - filename: HomeTank_001_static_cam1_Neo5S.mp4
+    role: cam1_right
+    condition: static
+    size_bytes: 103130213
+    sha256: c0120fc64c2e2fb0d6153f546a9b7d5e2c569e57dc80eaa12a04f7ae48003883
+    container: mp4
+    codec: h264
+    codec_tag: avc1
+    width: 1920
+    height: 1080
+    pixel_format: yuv420p
+    nominal_fps: 60.0
+    average_fps: 59.544481187
+    duration_s: 37.766104
+    frame_count: 2248
+    rotation_deg: 0
+    time_base: 1/90000
+    vfr_cfr_assessment: VFR_OR_DROPPED_FRAME_EVIDENCE
+    metadata_focal_length_mm: null
+    metadata_notes: Android 14 and capture-fps=60 tags present; focal length unavailable; edit/transcode provenance UNKNOWN.
+
+  - filename: HomeTank_001_wave_cam0_Z10TurboPlus.mp4
+    role: cam0_left
+    condition: wave
+    size_bytes: 128503764
+    sha256: 5bdc2c6c30d9d9c254ecf0a291170fdc2b75d1a96598bcf4d62a10e87b73174b
+    container: mp4
+    codec: hevc
+    codec_tag: hvc1
+    width: 1920
+    height: 1080
+    pixel_format: yuv420p
+    nominal_fps: 60.0
+    average_fps: 59.991344604
+    duration_s: 139.720156
+    frame_count: 8382
+    rotation_deg: -180
+    time_base: 1/90000
+    vfr_cfr_assessment: MOSTLY_CFR_WITH_ONE_DOUBLE_INTERVAL
+    metadata_focal_length_mm: null
+    metadata_notes: Android 16 and timed metadata stream present; focal length unavailable; source contains GPS tags omitted from this repository summary; edit/transcode provenance UNKNOWN.
+
+  - filename: HomeTank_001_wave_cam1_Neo5S.mp4
+    role: cam1_right
+    condition: wave
+    size_bytes: 380358496
+    sha256: a140e4377416a78c41bc8a164db92d2a096c1924a82a44c9a400dc17803e9193
+    container: mp4
+    codec: h264
+    codec_tag: avc1
+    width: 1920
+    height: 1080
+    pixel_format: yuv420p
+    nominal_fps: 60.0
+    average_fps: 59.355512843
+    duration_s: 139.776
+    frame_count: 8296
+    rotation_deg: 0
+    time_base: 1/90000
+    vfr_cfr_assessment: VFR_OR_DROPPED_FRAME_EVIDENCE
+    metadata_focal_length_mm: null
+    metadata_notes: Android 14 and capture-fps=60 tags present; focal length unavailable; edit/transcode provenance UNKNOWN.
+
+pair_consistency:
+  static_pair:
+    same_resolution: true
+    nominal_fps_difference: 0.0
+    average_fps_difference: 0.480142942
+    duration_difference_s: 0.002585
+    rough_frame_count_difference: 19
+    timestamp_pairing_required: true
+  wave_pair:
+    same_resolution: true
+    nominal_fps_difference: 0.0
+    average_fps_difference: 0.635831761
+    duration_difference_s: 0.055844
+    rough_frame_count_difference: 86
+    timestamp_pairing_required: true
+
+synchronization_screening:
+  status: CANDIDATE_COMMON_EVENTS_FOUND
+  method: full-frame mean-luminance derivative at 60 samples/s after 16x9 downscale
+  static_pair:
+    candidate_event_count: 6
+    preliminary_affine_a: 0.9981477463
+    preliminary_affine_b_s: 0.074451760
+    residual_rmse_s: 0.007829704
+    residual_max_abs_s: 0.014107640
+  wave_pair:
+    candidate_event_count: 8
+    preliminary_affine_a: 0.9998262151
+    preliminary_affine_b_s: 0.071054119
+    residual_rmse_s: 0.005361428
+    residual_max_abs_s: 0.011657261
+  status_note: Candidate events and affine fits are input-screening diagnostics, not final synchronization truth.

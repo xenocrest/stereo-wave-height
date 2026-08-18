@@ -1,0 +1,74 @@
+schema_version: "1.0"
+experiment_id: HomeTank_001
+date: "2026-08-18"
+input_type: real_stereo_video
+trial: uncalibrated
+trial_description: Trial 1 - uncalibrated real-video feasibility test
+
+dataset_root: 'D:\research\stereo-wave-height-data\HomeTank_001'
+
+camera_left:
+  role: cam0
+  device: iQOO Z10 Turbo+
+  physical_side: left
+  status: user_confirmed_identity
+
+camera_right:
+  role: cam1
+  device: iQOO Neo5S
+  physical_side: right
+  status: user_confirmed_identity
+
+geometry:
+  baseline_mm: 650
+  vertical_height_cam0_mm: 1700
+  vertical_height_cam1_mm: 1700
+  pitch_cam0_deg: 40
+  pitch_cam1_deg: 40
+  pitch_reference: horizontal
+  relative_orientation: approximately_parallel
+  relative_height_difference_mm: 0
+  front_back_offset_mm: null
+  calibration_status: none
+  geometry_quality: approximate_manual_measurement
+  status: uncalibrated
+
+derived_geometry:
+  approximate_optical_axis_distance_mm: 2645
+  formula: vertical_height_mm / sin(pitch_deg)
+  note: derived from 1700 / sin(40 deg), not directly measured
+  status: derived_only_not_calibration_truth
+
+videos:
+  static:
+    left: videos/static/HomeTank_001_static_cam0_Z10TurboPlus.mp4
+    right: videos/static/HomeTank_001_static_cam1_Neo5S.mp4
+  wave:
+    left: videos/wave/HomeTank_001_wave_cam0_Z10TurboPlus.mp4
+    right: videos/wave/HomeTank_001_wave_cam1_Neo5S.mp4
+
+reference:
+  static_water_level_mm: null
+  tank_inner_length_mm: null
+  tank_inner_width_mm: null
+  water_depth_mm: null
+  status: UNKNOWN
+
+calibration:
+  intrinsics: null
+  distortion: null
+  extrinsics: null
+  status: none
+
+synchronization:
+  model: t_right = a * t_left + b
+  event_status: CANDIDATE_COMMON_EVENTS_FOUND
+  final_a: null
+  final_b_s: null
+  status: preliminary_input_screening_only
+
+provenance:
+  source_notes: notes/experiment_notes.txt
+  full_video_metadata: notes/video_metadata.json
+  inspection_frames: inspection_frames/
+  raw_data_git_policy: outside_repository
