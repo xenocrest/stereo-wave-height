@@ -1,0 +1,12 @@
+schema_version: "1.0"
+experiment_id: HomeTank_002
+status: NOT_RUN_CALIBRATION_GATE_FAILED
+model: t_right = a * t_left + b
+static_a: null
+static_b_s: null
+static_residual_s: null
+wave_a: null
+wave_b_s: null
+wave_residual_s: null
+frame_number_pairing_allowed: false
+reason: synchronization and reconstruction pairing were not entered after CALIBRATION_DATA_INSUFFICIENT

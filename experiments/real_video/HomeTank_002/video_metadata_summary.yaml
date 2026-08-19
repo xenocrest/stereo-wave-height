@@ -1,0 +1,105 @@
+schema_version: "1.0"
+experiment_id: HomeTank_002
+source: ffprobe on original MP4 files
+
+videos:
+  - condition: calibration
+    role: cam0_left
+    device: iQOO Neo5S
+    filename: HomeTank_002_calibration_cam0_Neo5S.mp4
+    sha256: 56dc05f7f539ee39069222d7e58a4f7abca5c5a545622fdd3495e757afaefc26
+    size_bytes: 240367758
+    codec: h264
+    codec_tag: avc1
+    resolution: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.432115757
+    duration_s: 88.342278
+    frame_count: 5250
+    rotation_deg: -180
+    time_base: 1/90000
+    start_time_s: 0.006200
+    creation_time_utc: "2026-08-19T08:15:17Z"
+    timing_assessment: VFR_OR_DROPPED_FRAME_EVIDENCE
+  - condition: calibration
+    role: cam1_right
+    device: iQOO Z10 Turbo+
+    filename: HomeTank_002_calibration_cam1_Z10TurboPlus.mp4
+    sha256: b34845b87d64aa7c3beb4c5caf621015f271548671fc50a0c217027720b7f327
+    size_bytes: 81288827
+    codec: hevc
+    codec_tag: hvc1
+    resolution: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.998565531
+    duration_s: 88.302100
+    frame_count: 5298
+    rotation_deg: 0
+    time_base: 1/90000
+    start_time_s: 0.0
+    creation_time_utc: "2026-08-19T08:15:17Z"
+    timing_assessment: CFR_LIKE
+  - condition: static
+    role: cam0_left
+    device: iQOO Neo5S
+    filename: HomeTank_002_static_cam0_Neo5S.mp4
+    sha256: 734fb6b674e2125144d7c7fd9b29b6e420536edea39bba47ca1b3dcbdf89bc75
+    size_bytes: 141233489
+    codec: h264
+    codec_tag: avc1
+    resolution: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.345053667
+    duration_s: 51.776000
+    frame_count: 3072
+    rotation_deg: -180
+    time_base: 1/90000
+    timing_assessment: VFR_OR_DROPPED_FRAME_EVIDENCE
+  - condition: static
+    role: cam1_right
+    device: iQOO Z10 Turbo+
+    filename: HomeTank_002_static_cam1_Z10TurboPlus.mp4
+    sha256: 11dd21ad85b1dcd02465eda966b75a38306e56b530f6da9fd2a8df263d8580da
+    size_bytes: 47563775
+    codec: hevc
+    codec_tag: hvc1
+    resolution: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.998569622
+    duration_s: 51.734556
+    frame_count: 3104
+    rotation_deg: 0
+    time_base: 1/90000
+    timing_assessment: CFR_LIKE
+  - condition: wave
+    role: cam0_left
+    device: iQOO Neo5S
+    filename: HomeTank_002_wave_cam0_Neo5S.mp4
+    sha256: 70fdb55214b2b359a7cad79a7de863aad8e47830a70587c710be30ece7c2e67d
+    size_bytes: 337360567
+    codec: h264
+    codec_tag: avc1
+    resolution: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.310749546
+    duration_s: 123.989333
+    frame_count: 7351
+    rotation_deg: -180
+    time_base: 1/90000
+    timing_assessment: VFR_OR_DROPPED_FRAME_EVIDENCE
+  - condition: wave
+    role: cam1_right
+    device: iQOO Z10 Turbo+
+    filename: HomeTank_002_wave_cam1_Z10TurboPlus.mp4
+    sha256: 92eadd4f2a129334afa38db09e57ee063312effaf4a468eca0451f968cba55e5
+    size_bytes: 114014518
+    codec: hevc
+    codec_tag: hvc1
+    resolution: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 60.006435122
+    duration_s: 123.903378
+    frame_count: 7435
+    rotation_deg: 0
+    time_base: 1/90000
+    timing_assessment: CFR_LIKE

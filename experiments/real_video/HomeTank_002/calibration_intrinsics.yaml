@@ -1,0 +1,14 @@
+schema_version: "1.0"
+experiment_id: HomeTank_002
+status: NOT_COMPUTED_CALIBRATION_DATA_INSUFFICIENT
+unit: pixels for K, OpenCV model coefficients for D
+K_left: null
+D_left: null
+K_right: null
+D_right: null
+R_right_from_left: null
+T_right_from_left_m: null
+E: null
+F: null
+baseline_m: null
+warning: null values are intentional; no calibration result was fabricated

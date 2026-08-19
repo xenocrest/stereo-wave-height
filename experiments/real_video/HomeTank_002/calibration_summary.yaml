@@ -1,0 +1,46 @@
+schema_version: "1.0"
+experiment_id: HomeTank_002
+classification: CALIBRATION_DATA_INSUFFICIENT
+
+target_specification:
+  pattern_size: [9, 6]
+  definition: inner corner columns and rows, not square count
+  total_inner_corners: 54
+  square_size_m: 0.020
+  square_size_mm: 20.0
+
+input_orientation:
+  cam0_left:
+    device: iQOO Neo5S
+    metadata_rotation_deg: -180
+    canonical_rotation_deg: 180
+  cam1_right:
+    device: iQOO Z10 Turbo+
+    metadata_rotation_deg: 0
+    canonical_rotation_deg: 0
+  visual_direction_check: PASS
+  inherited_from_HomeTank_001: false
+
+detection:
+  algorithm: OpenCV 5.0.0 findChessboardCornersSB
+  flags: [NORMALIZE_IMAGE, EXHAUSTIVE, ACCURACY]
+  sampling: uniform every 60 source frames, approximately once per second over each complete calibration video
+  cam0_left_frames_tested: 88
+  cam0_left_complete_detections: 0
+  cam1_right_frames_tested: 89
+  cam1_right_complete_detections: 0
+  shared_stereo_candidates: 0
+  subpixel_refinement_count: 0
+  accepted_stereo_views: 0
+
+failure_evidence:
+  visual_target_description: white cells separated by dark grid lines; no black-white alternating checkerboard pattern is visible in reviewed frames
+  interpretation: standard checkerboard topology is absent or not detectable as the declared 9x6 alternating pattern
+  custom_line_grid_solver_used: false
+  reason: fewer than 10 high-quality shared complete checkerboard views; in fact zero were detected
+
+calibration_gate:
+  status: FAIL
+  static_wass_allowed: false
+  wave_wass_allowed: false
+  next_action: acquire a rigid, flat, high-contrast black-white alternating 10x7-square board that yields exactly 9x6 inner corners, with verified 20.0 mm squares

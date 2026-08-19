@@ -1,0 +1,61 @@
+schema_version: "1.0"
+experiment_id: HomeTank_002
+date: "2026-08-19"
+input_type: real_stereo_video
+trial: calibrated_retry
+trial_description: calibrated retry after HomeTank_001 uncalibrated Trial-1
+
+dataset_root: 'D:\research\stereo-wave-height-data\HomeTank_002'
+
+camera_left:
+  role: cam0
+  device: iQOO Neo5S
+  physical_side: left
+  status: user_confirmed_identity_for_HomeTank_002
+
+camera_right:
+  role: cam1
+  device: iQOO Z10 Turbo+
+  physical_side: right
+  status: user_confirmed_identity_for_HomeTank_002
+
+orientation:
+  source: HomeTank_002 MP4 metadata, independently inspected
+  calibration_cam0_left_rotation_deg: -180
+  calibration_cam1_right_rotation_deg: 0
+  canonical_transform_cam0_left_deg: 180
+  canonical_transform_cam1_right_deg: 0
+  inherited_from_previous_experiment: false
+  status: confirmed_for_calibration_input
+
+calibration:
+  target: checkerboard
+  inner_corners_cols: 9
+  inner_corners_rows: 6
+  total_inner_corners: 54
+  square_size_mm: 20.0
+  square_size_m: 0.020
+  status: CALIBRATION_DATA_INSUFFICIENT
+  reason: no complete 9x6 alternating checkerboard detection in either calibration video sample set
+
+videos:
+  calibration:
+    left: calibration/HomeTank_002_calibration_cam0_Neo5S.mp4
+    right: calibration/HomeTank_002_calibration_cam1_Z10TurboPlus.mp4
+  static:
+    left: videos/static/HomeTank_002_static_cam0_Neo5S.mp4
+    right: videos/static/HomeTank_002_static_cam1_Z10TurboPlus.mp4
+  wave:
+    left: videos/wave/HomeTank_002_wave_cam0_Neo5S.mp4
+    right: videos/wave/HomeTank_002_wave_cam1_Z10TurboPlus.mp4
+
+previous_trial:
+  experiment_id: HomeTank_001
+  result: CALIBRATION_REQUIRED
+  relationship: HomeTank_002 is a separately mounted calibrated retry
+
+gate_status:
+  calibration: CALIBRATION_DATA_INSUFFICIENT
+  static_wass: NOT_RUN
+  wave_wass: NOT_RUN
+  height: NOT_COMPUTED

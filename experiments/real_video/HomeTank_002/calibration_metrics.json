@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "HomeTank_002",
+  "classification": "CALIBRATION_DATA_INSUFFICIENT",
+  "pattern_size_inner_corners": [9, 6],
+  "square_size_m": 0.020,
+  "sampling_interval_source_frames": 60,
+  "cam0_left": {
+    "device": "iQOO Neo5S",
+    "frames_tested": 88,
+    "complete_detections": 0,
+    "reprojection_rms_px": null
+  },
+  "cam1_right": {
+    "device": "iQOO Z10 Turbo+",
+    "frames_tested": 89,
+    "complete_detections": 0,
+    "reprojection_rms_px": null
+  },
+  "shared_stereo_candidates": 0,
+  "accepted_stereo_views": 0,
+  "stereo_rms_px": null,
+  "epipolar_residual_px": null,
+  "rectification_residual_px": null,
+  "baseline_m": null,
+  "outlier_rejection_performed": false,
+  "reason": "No full 9x6 alternating checkerboard was detected; calibration was not attempted."
+}

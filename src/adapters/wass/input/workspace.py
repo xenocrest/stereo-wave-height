@@ -155,6 +155,7 @@ def prepare_wass_workspace(
         ),
         "ground_truth_exposed_to_wass": False,
         "config_status": "caller_supplied_verified_wass_v1_5",
+        "calibration_provenance": payload.get("calibration_provenance"),
         "config": config_records,
         "frames": frame_records,
     }
