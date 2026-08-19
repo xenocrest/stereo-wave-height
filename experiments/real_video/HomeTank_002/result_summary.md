@@ -4,6 +4,13 @@
 
 `CALIBRATION_DATA_INSUFFICIENT`
 
+- `standard_checkerboard_detection: FAIL`
+- `custom_planar_grid_recovery: PASS`
+- `custom_planar_grid_calibration: FAIL`
+
+HomeTank_002 raw videos are retained. No re-record was requested before the
+custom grid recovery attempt.
+
 HomeTank_002 is the calibrated retry following HomeTank_001's `CALIBRATION_REQUIRED` uncalibrated trial. It uses a newly defined physical assignment: cam0/left is iQOO Neo5S and cam1/right is iQOO Z10 Turbo+. No device-side binding was inherited from HomeTank_001.
 
 ## Video and orientation checks
@@ -18,7 +25,10 @@ Detailed durations, rates, frame counts, and timing assessments are recorded in 
 - square size: `20.0 mm = 0.020 m`;
 - object points: `(column * 0.020, row * 0.020, 0)` metres.
 
-The physical target visible in reviewed frames consists of white cells separated by dark grid lines. It does not show the alternating black/white regions required by a standard checkerboard detector. This is not treated as a 10 x 7 inner-corner board, and no custom line-grid calibration solver was introduced.
+The physical target consists of white cells separated by dark grid lines. It
+does not have the polarity required by a standard checkerboard detector. A
+subsequent semi-automatic projective line-grid recovery was therefore attempted
+without changing the declared 9 x 6 internal-intersection topology.
 
 ## Detection evidence and gate
 
@@ -30,9 +40,18 @@ OpenCV 5.0.0 `findChessboardCornersSB` with normalization, exhaustive search, an
 | cam1 / right / Z10 Turbo+ | 89 | 0 |
 | shared stereo pairs | - | 0 |
 
-With no complete detection, subpixel refinement, pose-diversity selection, mono calibration, outlier evaluation, and stereo calibration cannot be performed. All K, D, R, T, E, F, RMS, epipolar, rectification, and baseline result fields remain null rather than guessed.
+That standard-detector result remains historical evidence, but it is no longer
+interpreted as absence of grid points. The custom detector recovered multiple
+complete, subpixel-refined 54-point frames in each camera, so the recovery gate
+is `GRID_RECOVERY_FEASIBLE`.
 
-The project rule requires at least approximately 10 diverse shared views to attempt calibration. The result therefore fails at the calibration gate as `CALIBRATION_DATA_INSUFFICIENT`.
+A controlled calibration attempt found nine complete stereo pairs but only
+three independent pose groups. Its diagnostic solution failed quality checks:
+mono RMS was 3.6508/5.8782 px, stereo RMS 7.6597 px, and symmetric epipolar RMS
+16.9093 px. Some poses also visibly bend the target, invalidating the assumed
+rigid plane. The resulting K/D/R/T and 0.11934 m diagnostic baseline are
+explicitly rejected and must not be used. Full evidence is in
+[planar_grid_recovery.md](planar_grid_recovery.md).
 
 ## Downstream status
 
@@ -42,8 +61,14 @@ The project rule requires at least approximately 10 diverse shared views to atte
 - wave subset: not run;
 - qualitative H: not computed.
 
-This result does not evaluate WASS or water-surface observability. The current blocker is solely the unusable calibration-target observation.
+This result does not evaluate WASS or water-surface observability. WASS, static,
+wave, and H processing were not run.
 
-## Required recapture
+## Recommended recapture after rescue attempt
 
-Use a rigid and flat, high-contrast alternating black/white board. For the frozen `(9,6)` inner-corner definition it must contain 10 x 7 physical squares, each independently verified as 20.0 mm. Before recording the complete sequence, test one frame from both cameras and require successful 54-corner detection. Then capture 20–30 shared views spanning centre, edges, distance, tilt, and in-plane rotation while keeping the stereo rig fixed.
+The existing custom grid has now been tested rather than discarded. A new
+capture is nevertheless recommended because the available complete stereo
+poses are insufficiently diverse and the target is not reliably planar. Use a
+rigid, flat, metrically verified target and capture at least 12--20 complete
+shared views spanning centre, edges, distance, tilt, and in-plane rotation
+while keeping the stereo rig fixed.

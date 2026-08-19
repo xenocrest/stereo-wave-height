@@ -1,0 +1,47 @@
+schema_version: "1.0"
+experiment_id: HomeTank_002
+starting_head: fee910aacf986929aadbb2bc5e52026d220dc2a5
+target:
+  type: regular_planar_line_grid
+  internal_intersections: [9, 6]
+  point_count: 54
+  spacing_m: 0.020
+  object_point_order: row-major, physical +X within row then physical +Y
+method:
+  mode: SEMIAUTOMATIC_ORIENTED_QUAD
+  hint: physical origin, +X outer corner, opposite outer corner, +Y outer corner
+  refinement: OpenCV cornerSubPix
+  standard_checkerboard_detection: FAIL
+representative_gate:
+  status: GRID_RECOVERY_FEASIBLE
+  frames_per_camera: 7
+  cam0_success_timestamps_s: [5, 15, 45, 55, 75]
+  cam0_rejected_timestamps_s: [35, 65]
+  cam1_success_timestamps_s: [5, 35, 45, 75]
+  cam1_rejected_timestamps_s: [15, 55, 65]
+  acceptance_evidence: multiple complete 9x6, 54-point recoveries in both cameras
+calibration_attempt:
+  candidate_pairs: 12
+  complete_pairs: 9
+  unique_pose_groups: 3
+  status: FAIL_QUALITY_GATE
+  reason:
+    - fewer than 12 complete and sufficiently diverse stereo views
+    - calibration target is visibly non-rigid/non-planar in some poses
+    - reprojection and epipolar residuals are unacceptable
+  rejected_diagnostic_solution:
+    mono_rms_px: {cam0: 3.6508198254, cam1: 5.8781796108}
+    stereo_rms_px: 7.6596667576
+    epipolar_residual_rms_px: 16.9092788696
+    baseline_m: 0.1193443087
+    note: values are diagnostic-only and MUST_NOT_BE_USED as calibration
+classification:
+  custom_planar_grid_recovery: PASS
+  custom_planar_grid_calibration: FAIL
+  final: CALIBRATION_DATA_INSUFFICIENT
+  static_wass_allowed: false
+  wave_wass_allowed: false
+data_policy:
+  raw_videos_retained: true
+  rerecord_requested_before_recovery_attempt: false
+  diagnostics_location: 'D:\research\stereo-wave-height-data\HomeTank_002\grid_recovery_diagnostics'

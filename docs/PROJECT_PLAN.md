@@ -151,6 +151,7 @@
 - 工作距离 D1/D0/D2 分别为 FAIL/PASS/BLOCKED；固定 2.00 m 的基线 B1/B0/B2 全部 PASS；交叉点 XZ-1 `(B=0.25 m,Z=2.50 m)` PASS；
 - **采购前核心理想仿真验证已完成。**现有部署证据只包含两个单因素切片和一个交叉点，不构成完整参数图或最优参数证明；
 - **真实视频可行性路径已建立，实验尚未开始。**手机参数、真实标定、同步事件、基线和工作距离仍为 `UNKNOWN/TODO`；
+- HomeTank_002 的白底线格已完成补救尝试：半自动投影线格恢复在双相机多帧得到完整 9 x 6 / 54 点，故 `custom_planar_grid_recovery=PASS`；但仅 9 对完整视图、3 组独立姿态，且靶板部分姿态可见弯曲，单目/双目/极线质量均失败。K/D/R/T 已拒绝，状态仍为 `CALIBRATION_DATA_INSUFFICIENT`，未运行 WASS；
 - 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
 下一阶段按以下门控顺序推进：

@@ -36,11 +36,18 @@ detection:
 failure_evidence:
   visual_target_description: white cells separated by dark grid lines; no black-white alternating checkerboard pattern is visible in reviewed frames
   interpretation: standard checkerboard topology is absent or not detectable as the declared 9x6 alternating pattern
-  custom_line_grid_solver_used: false
-  reason: fewer than 10 high-quality shared complete checkerboard views; in fact zero were detected
+  custom_line_grid_solver_used: true
+  custom_planar_grid_recovery: PASS
+  custom_planar_grid_calibration: FAIL
+  custom_complete_stereo_pairs: 9
+  custom_unique_pose_groups: 3
+  custom_mono_rms_px: {cam0: 3.6508198254, cam1: 5.8781796108}
+  custom_stereo_rms_px: 7.6596667576
+  custom_epipolar_rms_px: 16.9092788696
+  reason: custom 54-point recovery is feasible, but view diversity, rigid-planarity, reprojection, and epipolar quality gates fail
 
 calibration_gate:
   status: FAIL
   static_wass_allowed: false
   wave_wass_allowed: false
-  next_action: acquire a rigid, flat, high-contrast black-white alternating 10x7-square board that yields exactly 9x6 inner corners, with verified 20.0 mm squares
+  next_action: retain HomeTank_002; recapture calibration only with a rigid flat metrically verified target and 12-20 complete diverse stereo views

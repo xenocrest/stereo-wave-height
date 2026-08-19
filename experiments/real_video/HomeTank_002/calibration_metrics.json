@@ -24,5 +24,24 @@
   "rectification_residual_px": null,
   "baseline_m": null,
   "outlier_rejection_performed": false,
-  "reason": "No full 9x6 alternating checkerboard was detected; calibration was not attempted."
+  "custom_planar_grid": {
+    "recovery_status": "PASS",
+    "mode": "SEMIAUTOMATIC_ORIENTED_QUAD",
+    "representative_frames_per_camera": 7,
+    "cam0_complete_recoveries": 5,
+    "cam1_complete_recoveries": 4,
+    "candidate_stereo_pairs": 12,
+    "complete_stereo_pairs": 9,
+    "unique_pose_groups": 3,
+    "calibration_status": "FAIL_QUALITY_GATE",
+    "rejected_diagnostic_solution": {
+      "cam0_mono_rms_px": 3.6508198254,
+      "cam1_mono_rms_px": 5.8781796108,
+      "stereo_rms_px": 7.6596667576,
+      "epipolar_residual_rms_px": 16.9092788696,
+      "baseline_m": 0.1193443087,
+      "authorized_for_use": false
+    }
+  },
+  "reason": "Standard checkerboard detection failed. Custom 54-point recovery passed, but rigid-planarity, pose-diversity, reprojection, and epipolar quality gates failed."
 }
