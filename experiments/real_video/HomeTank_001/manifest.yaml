@@ -72,3 +72,10 @@ provenance:
   full_video_metadata: notes/video_metadata.json
   inspection_frames: inspection_frames/
   raw_data_git_policy: outside_repository
+
+trial1_coarse_reconstruction:
+  status: CALIBRATION_REQUIRED
+  report: trial1_reconstruction.md
+  metrics: trial1_metrics.json
+  wave_executed: false
+  reason: static WASS autocalibrate failed before stereo; no xyzC produced

@@ -1,4 +1,4 @@
-"""Prepare WASS inputs without changing image geometry or exposing truth data."""
+"""Prepare canonical WASS inputs without changing geometry or exposing truth."""
 
 from __future__ import annotations
 
@@ -55,18 +55,30 @@ def prepare_wass_workspace(
     *,
     verified_config_dir: str | Path,
 ) -> PreparedWassWorkspace:
-    """Map a synthetic manifest to WASS inputs using verified config files.
+    """Map a canonical stereo manifest to WASS inputs using verified configs.
 
-    Nanosecond timestamps are converted to integer milliseconds only when the
-    conversion is exact. Ground-truth files are neither read nor copied.
+    Synthetic timestamps require exact integer-millisecond filename tokens.
+    Real-video PTS retain nanoseconds in the manifest while only the filename
+    token is floored to milliseconds. Ground-truth files are neither read nor
+    copied.
     """
     dataset = Path(dataset_root).resolve()
     source_manifest = dataset / "metadata" / "manifest.json"
     if not source_manifest.is_file():
         raise FileNotFoundError(source_manifest)
     payload = json.loads(source_manifest.read_text(encoding="utf-8"))
-    if payload.get("dataset_type") != "synthetic_stereo_wass_input_adapter":
+    dataset_type = payload.get("dataset_type")
+    supported_types = {
+        "synthetic_stereo_wass_input_adapter",
+        "real_stereo_video_wass_input_adapter",
+    }
+    if dataset_type not in supported_types:
         raise ValueError("unsupported dataset_type")
+    if dataset_type == "real_stereo_video_wass_input_adapter":
+        if payload.get("orientation_status") != "CANONICAL_ORIENTATION_APPLIED":
+            raise ValueError("real-video frames must declare canonical orientation before WASS")
+        if payload.get("pairing_basis") != "timestamp":
+            raise ValueError("real-video frames must be paired by timestamp")
     frames = payload.get("frames")
     if not isinstance(frames, list) or not frames:
         raise ValueError("manifest frames must be a non-empty list")
@@ -106,7 +118,7 @@ def prepare_wass_workspace(
             raise ValueError("frame_id must be unique, contiguous, and six-digit")
         if not isinstance(timestamp_ns, int) or timestamp_ns < 0 or timestamp_ns in seen_timestamps:
             raise ValueError("timestamp_ns must be a unique non-negative integer")
-        if timestamp_ns % 1_000_000:
+        if dataset_type == "synthetic_stereo_wass_input_adapter" and timestamp_ns % 1_000_000:
             raise ValueError("timestamp_ns cannot be losslessly represented as integer milliseconds")
         seen_ids.add(frame_id)
         seen_timestamps.add(timestamp_ns)
@@ -124,6 +136,7 @@ def prepare_wass_workspace(
                 "frame_id": frame_id,
                 "timestamp_ns": timestamp_ns,
                 "timestamp_ms_filename_token": timestamp_ms,
+                "timestamp_filename_quantization": "exact" if timestamp_ns % 1_000_000 == 0 else "floor_to_millisecond_filename_only",
                 "cam0": left_target.relative_to(root).as_posix(),
                 "cam1": right_target.relative_to(root).as_posix(),
                 "workdir": f"work/{frame_id}_wd",
@@ -133,9 +146,13 @@ def prepare_wass_workspace(
 
     output = {
         "schema_version": 1,
-        "adapter": "stereo-wave-height.synthetic-to-wass.v1",
+        "adapter": f"stereo-wave-height.{dataset_type}.v1",
         "source_manifest": str(source_manifest),
-        "image_operation": "byte_for_byte_copy_no_geometry_change",
+        "image_operation": (
+            "byte_for_byte_copy_no_geometry_change"
+            if dataset_type == "synthetic_stereo_wass_input_adapter"
+            else "byte_for_byte_copy_of_already_canonical_frames"
+        ),
         "ground_truth_exposed_to_wass": False,
         "config_status": "caller_supplied_verified_wass_v1_5",
         "config": config_records,

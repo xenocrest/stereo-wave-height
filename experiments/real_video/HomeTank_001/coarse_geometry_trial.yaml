@@ -1,0 +1,73 @@
+schema_version: "1.0"
+experiment_id: HomeTank_001
+trial_id: trial1_static_coarse
+status: APPROXIMATE_UNCALIBRATED
+purpose: real-video WASS feasibility only
+physical_accuracy_claim_allowed: false
+
+image_geometry:
+  canonical_width_px: 1920
+  canonical_height_px: 1080
+  principal_point_assumption_px: [960.0, 540.0]
+
+coarse_intrinsics:
+  strategy: single_nominal_horizontal_fov_hypothesis
+  horizontal_fov_hypothesis_deg: 70.0
+  formula: fx = width / (2 * tan(horizontal_fov / 2))
+  left_K:
+    - [1371.02208647243, 0.0, 960.0]
+    - [0.0, 1371.02208647243, 540.0]
+    - [0.0, 0.0, 1.0]
+  right_K:
+    - [1371.02208647243, 0.0, 960.0]
+    - [0.0, 1371.02208647243, 540.0]
+    - [0.0, 0.0, 1.0]
+  distortion_left: [0.0, 0.0, 0.0, 0.0, 0.0]
+  distortion_right: [0.0, 0.0, 0.0, 0.0, 0.0]
+  status: ASSUMED_FOR_FEASIBILITY_ONLY
+  source: no focal metadata or calibration; one declared nominal-FOV hypothesis
+  warning: not measured phone intrinsics; zero distortion is a coarse approximation
+
+coarse_extrinsics:
+  relative_rotation_right_from_left:
+    - [1.0, 0.0, 0.0]
+    - [0.0, 1.0, 0.0]
+    - [0.0, 0.0, 1.0]
+  translation_right_from_left_m: [0.650, 0.0, 0.0]
+  baseline_m: 0.650
+  baseline_source: user manual measurement of 650 mm
+  status: APPROXIMATE_UNCALIBRATED
+  warning: identity rotation is the approximately-parallel placement assumption, not calibrated R
+
+deployment_geometry:
+  vertical_height_above_static_water_m: 1.700
+  common_pitch_down_from_horizontal_deg: 40.0
+  common_pitch_role: deployment_orientation_not_relative_stereo_rotation
+  approximate_optical_axis_distance_m: 2.645
+  optical_axis_distance_status: DERIVED_ONLY_NOT_DIRECTLY_MEASURED
+
+geometry_sanity_prediction:
+  formula: disparity_px = fx_px * baseline_m / depth_m
+  depth_hypothesis_m: 2.645
+  predicted_disparity_px: 336.958
+  predicted_horizontal_overlap_fraction: 0.824501
+  interpretation: disparity is substantial but remains below image width; WASS overlap is geometrically possible
+
+wass_trial_config:
+  inherited_matcher_source: case0-static-20260811 confirmed local configuration
+  matcher_changes: none
+  inherited_stereo_source: case0-static-20260811 confirmed local configuration
+  stereo_changes:
+    MIN_DISPARITY:
+      old: 160
+      new: 64
+      basis: include coarse depth variation without forcing the former synthetic near-range lower bound
+    MAX_DISPARITY:
+      old: 320
+      new: 512
+      basis: bracket the predeclared 336.958 px coarse disparity hypothesis
+    RANDOM_SEED:
+      old: 20260811
+      new: 20260819
+      basis: Trial-1 provenance only
+  parameter_scan: false

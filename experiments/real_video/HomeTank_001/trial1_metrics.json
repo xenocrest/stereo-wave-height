@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "HomeTank_001",
+  "trial_id": "trial1_static_coarse",
+  "classification": "CALIBRATION_REQUIRED",
+  "static_frame_pairs": 8,
+  "prepare": {
+    "status": "PASS",
+    "successful_frames": 8,
+    "failed_frames": 0
+  },
+  "match": {
+    "status": "PASS_WITH_LIMITED_PLANAR_SUPPORT",
+    "global_matches_loaded_by_autocalibrate": 400,
+    "global_essential_inliers": 288,
+    "per_frame_chirality_matches": [52, 49, 51, 48, 41, 49, 48, 47],
+    "per_frame_epipolar_mean_error_px": [0.273145351, 0.352610299, 0.324607042, 0.318490086, 0.393817245, 0.291135921, 0.339038863, 0.286659134]
+  },
+  "autocalibrate": {
+    "status": "FAIL",
+    "return_code": 3221225477,
+    "return_code_hex": "0xC0000005",
+    "global_pose_valid_triangulated_points_before_sba": 287,
+    "structure_reprojection_error_mean_px": 0.433354,
+    "structure_reprojection_error_std_px": 0.278468,
+    "epipolar_error_before_sba_mean_px": 0.866933,
+    "epipolar_error_before_sba_std_px": 0.556987,
+    "failure_evidence": "SBA normal equations became non-positive-definite; process terminated before a successful calibration result"
+  },
+  "stereo": {
+    "status": "NOT_RUN_DUE_TO_AUTOCALIBRATE_FAILURE"
+  },
+  "xyzc": {
+    "status": "NOT_PRODUCED",
+    "raw_point_count": 0,
+    "bounding_box_m": null,
+    "reconstructed_distance_m": null
+  },
+  "wave": {
+    "status": "NOT_RUN_STATIC_GATE_FAILED"
+  },
+  "height": {
+    "status": "NOT_COMPUTED"
+  }
+}

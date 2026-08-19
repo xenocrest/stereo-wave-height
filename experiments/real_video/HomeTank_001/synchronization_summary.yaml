@@ -1,0 +1,51 @@
+schema_version: "1.0"
+experiment_id: HomeTank_001
+model: t_right = a * t_left + b
+pairing_basis: original_video_pts
+pairing_tolerance_s: 0.010
+pairing_tolerance_basis: below one nominal 60-fps frame interval; accommodates observed VFR timing
+frame_number_pairing_allowed: false
+
+diagnostics_storage:
+  repository: summary_only
+  external_relative_directory: notes/sync_diagnostics
+  files:
+    - static_luminance_events.csv
+    - static_luminance_events.png
+    - wave_luminance_events.csv
+    - wave_luminance_events.png
+
+static:
+  status: CONFIRMED_FOR_TRIAL1_INPUT_PAIRING
+  confirmation_method: signed full-frame mean-luminance transitions at 60 samples/s
+  accepted_left_event_s: [11.8333, 14.0000, 18.0167, 20.9167, 23.6167, 26.8333]
+  accepted_right_event_s: [11.8833, 14.0500, 18.0667, 20.9500, 23.6333, 26.8667]
+  rejected_event_policy: unmatched or weak local transitions are not included
+  a: 0.9981477463
+  b_s: 0.0744517600
+  event_fit_residual_rmse_s: 0.007829704
+  event_fit_residual_max_abs_s: 0.014107640
+  selected_static_subset_pair_residual_rmse_s: 0.005544447
+  selected_static_subset_pair_residual_max_abs_s: 0.007840528
+  warning: event timing is limited by decoded frame timing and luminance response; not hardware synchronization
+
+wave:
+  status: CONFIRMED_FOR_TRIAL1_INPUT_PAIRING
+  confirmation_method: signed full-frame mean-luminance transitions at 60 samples/s
+  accepted_left_event_s: [11.5500, 14.6333, 42.1167, 44.7500, 88.2333, 92.1333, 96.6833, 99.2000]
+  accepted_right_event_s: [11.6167, 14.7000, 42.1833, 44.8167, 88.2833, 92.2000, 96.7333, 99.2500]
+  rejected_event_policy: unmatched or weak local transitions are not included
+  a: 0.9998262151
+  b_s: 0.0710541191
+  event_fit_residual_rmse_s: 0.005361428
+  event_fit_residual_max_abs_s: 0.011657261
+  warning: event timing is limited by decoded frame timing and luminance response; not hardware synchronization
+
+orientation_before_pairing:
+  cam0_left:
+    source_rotation_metadata_deg: -180
+    applied_canonical_rotation_deg_counter_clockwise: 180
+  cam1_right:
+    source_rotation_metadata_deg: 0
+    applied_canonical_rotation_deg_counter_clockwise: 0
+  status: CANONICAL_ORIENTATION_APPLIED
