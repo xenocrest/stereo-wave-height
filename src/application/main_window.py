@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
 from input import OpenCVVideoBackend, StereoVideoSource
+from .calibration_model import CalibrationPageModel
 
 
 class StereoWaveHeightApplication:
@@ -19,6 +20,7 @@ class StereoWaveHeightApplication:
         self.left_path: tk.StringVar | None = None
         self.right_path: tk.StringVar | None = None
         self.metadata_text: tk.Text | None = None
+        self.calibration_page: ttk.Frame | None = None
 
     def _choose(self, variable: tk.StringVar) -> None:
         path = filedialog.askopenfilename(title="Select stereo video", filetypes=[("Video files", "*.mp4 *.mov *.avi *.mkv *.m4v"), ("All files", "*.*")])
@@ -57,13 +59,33 @@ class StereoWaveHeightApplication:
         parent.columnconfigure(1, weight=1); parent.rowconfigure(3, weight=1)
         ttk.Label(parent, text="Live Stereo Cameras — unavailable until professional hardware and SDK are confirmed", state=tk.DISABLED).grid(row=4, column=0, columnspan=3, sticky=tk.W, padx=8, pady=8)
 
+    @staticmethod
+    def _build_calibration(parent: ttk.Frame, model: CalibrationPageModel | None = None) -> None:
+        """Render preflight/quality state; all metrics are computed outside GUI."""
+        current = model or CalibrationPageModel.pending()
+        ttk.Label(parent, text=current.target_text, padding=12).pack(anchor=tk.W)
+        ttk.Separator(parent).pack(fill=tk.X, padx=12)
+        for text in (current.cam0_text, current.cam1_text, current.dataset_text, current.result_text):
+            ttk.Label(parent, text=text, padding=(12, 8), justify=tk.LEFT).pack(anchor=tk.W)
+        ttk.Label(parent, text=f"Experiment status: {current.experiment_status}", padding=12).pack(anchor=tk.W)
+
+    def show_calibration_model(self, model: CalibrationPageModel) -> None:
+        """Refresh the page from shared calibration results without recomputing them."""
+        if self.calibration_page is None:
+            raise RuntimeError("build the application before showing calibration results")
+        for child in self.calibration_page.winfo_children():
+            child.destroy()
+        self._build_calibration(self.calibration_page, model)
+
     def build(self) -> tk.Tk:
         root = tk.Tk(); root.title(self.title); root.geometry("1100x720")
         self.root = root; self.left_path = tk.StringVar(root); self.right_path = tk.StringVar(root)
         notebook = ttk.Notebook(root); notebook.pack(fill=tk.BOTH, expand=True)
         input_page = ttk.Frame(notebook); notebook.add(input_page, text="Input"); self._build_input(input_page)
+        calibration_page = ttk.Frame(notebook); notebook.add(calibration_page, text="Calibration")
+        self.calibration_page = calibration_page
+        self._build_calibration(calibration_page)
         pages = {
-            "Calibration": "Load left/right intrinsics, stereo extrinsics, baseline, and reprojection diagnostics.",
             "Synchronization": "Enter shared flash events, fit offset/drift, pair frames, and review diagnostics.",
             "Reconstruction": "WASS prepare / match / autocalibrate / stereo / grid stage orchestration placeholder.",
             "3D Surface": "Regular 3-D surface visualization placeholder; no OpenGL dependency in V0.x.",

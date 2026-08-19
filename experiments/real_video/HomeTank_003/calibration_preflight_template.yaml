@@ -1,0 +1,26 @@
+schema_version: "1.0"
+experiment_id: HomeTank_003
+status: PENDING
+target: {pattern_cols: 9, pattern_rows: 6, square_size_m: 0.020}
+cam0:
+  detected: null
+  corners: null
+  expected_corners: 54
+  sharpness: null
+  coverage_fraction: null
+  edge_margin_px: null
+  usable: null
+cam1:
+  detected: null
+  corners: null
+  expected_corners: 54
+  sharpness: null
+  coverage_fraction: null
+  edge_margin_px: null
+  usable: null
+stereo_test_pose:
+  same_target_visible: null
+  timestamp_delta_ns: null
+  pose_distance: null
+  status: PENDING
+gate_a: PENDING

@@ -1,0 +1,15 @@
+schema_version: "1.0"
+experiment_id: HomeTank_003
+status: NOT_CAPTURED
+camera_roles:
+  cam0_left: {device: UNKNOWN, source: TODO}
+  cam1_right: {device: UNKNOWN, source: TODO}
+target_config: configs/calibration/checkerboard_9x6_20mm.yaml
+videos:
+  calibration: {left: null, right: null}
+  static: {left: null, right: null}
+  wave: {left: null, right: null}
+calibration_preflight_status: PENDING
+calibration_dataset_status: PENDING
+calibration_result_status: PENDING
+notes: No result is implied; populate only after capture and inspection.
