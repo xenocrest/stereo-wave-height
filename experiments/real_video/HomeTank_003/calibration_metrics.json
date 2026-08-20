@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "HomeTank_003",
+  "classification": "CALIBRATION_DATASET_INSUFFICIENT",
+  "approved_for_wass": false,
+  "primary_scan": {
+    "sampling_interval_s": 0.5,
+    "cam0": {"samples": 270, "detected": 0, "usable": 0},
+    "cam1": {"samples": 270, "detected": 4, "usable": 3}
+  },
+  "targeted_rescan": {
+    "cam0": {"samples": 90, "detected": 0, "usable": 0},
+    "cam1": {"samples": 90, "detected": 13, "usable": 12}
+  },
+  "bilateral_candidate_pairs": 0,
+  "independent_stereo_poses": 0,
+  "position_coverage": "FAIL",
+  "scale_diversity": "FAIL",
+  "orientation_diversity": "FAIL",
+  "overall_diversity_score": 0.0,
+  "initial_calibration_views": 0,
+  "final_calibration_views": 0,
+  "K_L": null,
+  "D_L": null,
+  "K_R": null,
+  "D_R": null,
+  "mono_left_rms_px": null,
+  "mono_right_rms_px": null,
+  "stereo_rms_px": null,
+  "R_right_from_left": null,
+  "T_right_from_left_m": null,
+  "baseline_m": null,
+  "symmetric_epipolar_rms_px": null,
+  "rectification": null
+}

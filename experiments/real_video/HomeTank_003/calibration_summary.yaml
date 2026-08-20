@@ -1,0 +1,36 @@
+schema_version: "1.0"
+experiment_id: HomeTank_003
+dataset_readiness:
+  raw_bilateral_pairs: 0
+  usable_bilateral_pairs: 0
+  independent_pose_count: 0
+  position_coverage: FAIL
+  scale_diversity: FAIL
+  orientation_diversity: FAIL
+  overall_diversity_score: 0.0
+  classification: CALIBRATION_DATASET_INSUFFICIENT
+calibration_attempt:
+  performed: false
+  stop_rule: independent stereo pose count below 12
+  initial_views: 0
+  final_views: 0
+mono_left: {K: null, D: null, rms_px: null, per_view_rms_px: null}
+mono_right: {K: null, D: null, rms_px: null, per_view_rms_px: null}
+stereo:
+  R_right_from_left: null
+  T_right_from_left_m: null
+  E: null
+  F: null
+  baseline_m: null
+  rms_px: null
+  symmetric_epipolar_rms_px: null
+  rectification_valid_roi_left: null
+  rectification_valid_roi_right: null
+  common_valid_roi: null
+  rectified_vertical_disparity: null
+quality_gate:
+  classification: CALIBRATION_DATASET_INSUFFICIENT
+  approved_for_wass: false
+  failure_categories: [A_CHECKERBOARD_DETECTION, B_INSUFFICIENT_BILATERAL_VIEWS]
+  not_evaluated: [D_MONO_CALIBRATION_QUALITY, E_STEREO_GEOMETRY, F_RECTIFICATION]
+camera_rig_unchanged_after_calibration: UNKNOWN

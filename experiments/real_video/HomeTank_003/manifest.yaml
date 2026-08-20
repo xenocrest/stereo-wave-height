@@ -1,0 +1,34 @@
+schema_version: "1.0"
+experiment_id: HomeTank_003
+status: CALIBRATION_DATASET_INSUFFICIENT
+dataset_root: 'D:\research\stereo-wave-height-data\HomeTank_003'
+camera_roles:
+  cam0_left:
+    device: iQOO Neo5S
+    source: user-specified HomeTank_003 role
+    status: CONFIRMED_FOR_EXPERIMENT
+  cam1_right:
+    device: iQOO Z10 Turbo+
+    source: user-specified HomeTank_003 role
+    status: CONFIRMED_FOR_EXPERIMENT
+target:
+  config: configs/calibration/checkerboard_9x6_20mm.yaml
+  square_size_m: 0.020
+  square_size_provenance: USER_SPECIFIED_CONFIGURED_NOT_INDEPENDENTLY_MEASURED
+videos:
+  calibration:
+    left: calibration/HomeTank_003_calibration_cam0_Neo5S.mp4
+    right: calibration/HomeTank_003_calibration_cam1_Z10TurboPlus.mp4
+  static:
+    left: videos/static/HomeTank_003_static_cam0_Neo5S.mp4
+    right: videos/static/HomeTank_003_static_cam1_Z10TurboPlus.mp4
+    processing_status: REGISTERED_ONLY_NOT_PROCESSED
+  wave:
+    left: videos/wave/HomeTank_003_wave_cam0_Neo5S.mp4
+    right: videos/wave/HomeTank_003_wave_cam1_Z10TurboPlus.mp4
+    processing_status: REGISTERED_ONLY_NOT_PROCESSED
+camera_rig_unchanged_after_calibration: UNKNOWN
+calibration_preflight_status: TARGET_PREFLIGHT_FAIL
+calibration_dataset_status: CALIBRATION_DATASET_INSUFFICIENT
+calibration_result_status: NOT_ATTEMPTED
+approved_for_wass: false

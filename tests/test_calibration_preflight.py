@@ -167,11 +167,11 @@ class QualityAndGuiTests(unittest.TestCase):
         model = CalibrationPageModel.from_assessments(cam0=item, cam1=item, dataset=dataset, quality=None, candidate_count=18, experiment_status="PENDING")
         self.assertIn("54/54", model.cam0_text); self.assertIn("Independent poses 12", model.dataset_text)
 
-    def test_hometank_003_template_remains_pending(self) -> None:
+    def test_hometank_003_failed_gate_is_not_approved_for_wass(self) -> None:
         root = Path(__file__).resolve().parents[1]
-        manifest = (root / "experiments/real_video/HomeTank_003/manifest_template.yaml").read_text(encoding="utf-8")
-        self.assertIn("status: NOT_CAPTURED", manifest)
-        self.assertIn("calibration_result_status: PENDING", manifest)
+        manifest = (root / "experiments/real_video/HomeTank_003/manifest.yaml").read_text(encoding="utf-8")
+        self.assertIn("status: CALIBRATION_DATASET_INSUFFICIENT", manifest)
+        self.assertIn("approved_for_wass: false", manifest)
 
 
 if __name__ == "__main__":

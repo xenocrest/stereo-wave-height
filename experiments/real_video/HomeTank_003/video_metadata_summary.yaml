@@ -1,0 +1,25 @@
+schema_version: "1.0"
+experiment_id: HomeTank_003
+source: local ffprobe stream metadata and SHA-256 of original MP4 files
+common_video_properties:
+  resolution: [1920, 1080]
+  pixel_format: yuv420p
+  color_range: tv
+  color_space: bt709
+  color_transfer: bt709
+  color_primaries: bt709
+file_mapping:
+  calibration_cam0_left: HomeTank_003_calibration_cam0_Neo5S.mp4
+  calibration_cam1_right: HomeTank_003_calibration_cam1_Z10TurboPlus.mp4
+  static_cam0_left: HomeTank_003_static_cam0_Neo5S.mp4
+  static_cam1_right: HomeTank_003_static_cam1_Z10TurboPlus.mp4
+  wave_cam0_left: HomeTank_003_wave_cam0_Neo5S.mp4
+  wave_cam1_right: HomeTank_003_wave_cam1_Z10TurboPlus.mp4
+videos:
+  - {condition: calibration, role: cam0_left, device: iQOO Neo5S, codec: h264, codec_tag: avc1, nominal_fps: 60.0, average_fps: 59.0950314260, duration_s: 135.036733, frame_count: 7980, time_base: '1/90000', start_time_s: 0.0, rotation_deg: -180, canonical_rotation_deg: 180, timing_assessment: VFR_OR_DROPPED_FRAME_EVIDENCE, sha256: 0b6529cd9a5a6c9b28b08edf8f03eee0df8031a3aade241885db3ba7a4a5cad9}
+  - {condition: calibration, role: cam1_right, device: iQOO Z10 Turbo+, codec: hevc, codec_tag: hvc1, nominal_fps: 60.0, average_fps: 59.9984847372, duration_s: 135.070078, frame_count: 8104, time_base: '1/90000', start_time_s: 0.0, rotation_deg: 0, canonical_rotation_deg: 0, timing_assessment: CFR_LIKE, sha256: 30cd1df8cd5a2e5bfc78917f3ed2d14833a2c69d02093003e6c40aa25aabc418}
+  - {condition: static, role: cam0_left, device: iQOO Neo5S, codec: h264, codec_tag: avc1, nominal_fps: 60.0, average_fps: 59.2095420989, duration_s: 55.480922, frame_count: 3285, time_base: '1/90000', start_time_s: 0.0082, rotation_deg: -180, canonical_rotation_deg: 180, timing_assessment: VFR_OR_DROPPED_FRAME_EVIDENCE, sha256: bc5c3394e032a93ee59245651296bc10eac51e8133006259d9e7a3941253769c}
+  - {condition: static, role: cam1_right, device: iQOO Z10 Turbo+, codec: hevc, codec_tag: hvc1, nominal_fps: 60.0, average_fps: 59.9985500650, duration_s: 55.634678, frame_count: 3338, time_base: '1/90000', start_time_s: 0.0, rotation_deg: 0, canonical_rotation_deg: 0, timing_assessment: CFR_LIKE, sha256: 06625a9629217484b6efa360a77effcb252af9bd0b1138ae290e4b8be79cf483}
+  - {condition: wave, role: cam0_left, device: iQOO Neo5S, codec: hevc, codec_tag: hvc1, nominal_fps: 59.0, average_fps: 59.0003594262, duration_s: 91.813, frame_count: 5417, time_base: '1/90000', start_time_s: 0.0, rotation_deg: 0, canonical_rotation_deg: 0, timing_assessment: CFR_LIKE, sha256: c4abbb85063de3ab0d8d02ec044d096bb016c5b77201e1e5e296061c3b5ce3c4}
+  - {condition: wave, role: cam1_right, device: iQOO Z10 Turbo+, codec: hevc, codec_tag: hvc1, nominal_fps: 60.0, average_fps: 59.9997814614, duration_s: 91.517, frame_count: 5491, time_base: '1/90000', start_time_s: 0.0, rotation_deg: 0, canonical_rotation_deg: 0, timing_assessment: CFR_LIKE, sha256: b55e43658612c3cc2a18ad603074a04f39d578f3e652e277647557c1eb24d2a8}
+orientation_note: Canonical orientation is derived per file from its own display metadata; wave cam0 differs from calibration/static cam0 and must not inherit their 180-degree transform.
