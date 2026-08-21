@@ -1,14 +1,15 @@
 # HomeTank_004 Result Summary
 
-Status: `NOT_PROCESSED`
+Status: `STRICT_CALIBRATION_FAILED`
 
 Capture: `INPUT_DATA_READY`
 
-Calibration: `NOT_RUN`
+Calibration: `CALIBRATION_QUALITY_FAIL`
 
 WASS: `NOT_RUN`
 
 Height reconstruction: `NOT_RUN`
 
-This file is an empty result template. It contains no experimental result and
-must only be updated after the six expected source videos have been captured.
+The official OpenCV calibration attempt returned finite matrices but failed
+the frozen reprojection, epipolar and rectification quality gates. It is not
+approved for WASS. Next: `COARSE_GEOMETRY_VALIDATION`.

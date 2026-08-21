@@ -1,0 +1,48 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+scan_rate_hz: 5.0
+timestamp_source: decoder PTS via CAP_PROP_POS_MSEC
+canonical_orientation: {cam0: rotate180, cam1: identity}
+detector_order: [NATIVE_SB, HALF_SCALE_SB, CLAHE_SB, FAIL]
+cam0:
+  decoded_frames: 6968
+  scanned_frames: 588
+  native_success: 0
+  half_scale_success: 233
+  clahe_success: 0
+  complete_54_corner_success: 233
+  success_rate: 0.39625850340136054
+  major_success_intervals_s: [[9.213, 28.607, 96], [44.218, 46.001, 10], [50.816, 55.015, 21], [64.212, 67.610, 18]]
+cam1:
+  decoded_frames: 7040
+  scanned_frames: 587
+  native_success: 4
+  half_scale_success: 324
+  clahe_success: 0
+  complete_54_corner_success: 328
+  success_rate: 0.5587734241908007
+  major_success_intervals_s: [[9.800, 32.001, 108], [32.601, 42.001, 48], [42.801, 51.601, 43], [91.002, 97.203, 30], [110.603, 117.203, 34]]
+stereo_pairing:
+  synchronization_seed_cam1_minus_cam0_s: 0.0
+  maximum_pair_window_s: 0.12
+  candidate_pair_count: 192
+  residual_mean_s: -0.007970081018518713
+  residual_median_s: -0.00892777777777809
+  residual_rms_s: 0.009215871062986672
+  residual_min_s: -0.017122222222226924
+  residual_max_s: 0.002277777777791812
+  residual_p95_absolute_s: 0.014398333333337019
+point_order_qa:
+  rule: compare normalized left grid against right original and full 54-point reverse; choose lower RMS before stereo calibration
+  keep_count: 192
+  reversed_right_count: 0
+  minimum_selected_vs_alternative_margin_ratio: 16.420996798814368
+  median_margin_ratio: 62.792826911488106
+  ambiguous_pair_count: 0
+pose_selection:
+  implementation: existing deterministic pose-signature diversity selector
+  duplicate_signature_distance: 0.12
+  candidate_pairs: 192
+  selected_independent_poses: 12
+  duplicates: 180
+  status: DATASET_USABLE_WITH_WARNING

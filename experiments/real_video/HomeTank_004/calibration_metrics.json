@@ -1,0 +1,18 @@
+{
+  "experiment_id": "HomeTank_004",
+  "classification": "CALIBRATION_QUALITY_FAIL",
+  "strict_calibration_failed": true,
+  "approved_for_wass": false,
+  "view_counts": {"initial": 12, "rejected": 0, "final": 12},
+  "detection": {"cam0_scanned": 588, "cam0_success": 233, "cam0_rate": 0.39625850340136054, "cam1_scanned": 587, "cam1_success": 328, "cam1_rate": 0.5587734241908007, "stereo_candidates": 192, "independent_poses": 12},
+  "mono_cam0": {"rms_px": 4.380505717787364, "per_view_min_px": 2.9745876789093018, "per_view_median_px": 3.921147108078003, "per_view_p95_px": 6.013256692886351, "per_view_max_px": 6.998053550720215},
+  "mono_cam1": {"rms_px": 4.525324741510539, "per_view_min_px": 2.8745381832122803, "per_view_median_px": 4.094955682754517, "per_view_p95_px": 6.495174407958984, "per_view_max_px": 6.714424133300781},
+  "stereo_rms_px": 7.922425043794302,
+  "symmetric_epipolar_rms_px": 9.508413074591859,
+  "baseline_m": 0.06868471158474378,
+  "relative_rotation_angle_deg": 14.652724096515515,
+  "common_roi": [0, 0, 1920, 1079],
+  "common_roi_fraction": 0.9990740740740741,
+  "rectified_vertical_disparity": {"rms_px": 21.122547472723607, "median_px": 10.994903564453125, "p95_px": 46.28102722167967, "max_px": 92.52593994140625},
+  "physical_baseline_sanity": "NOT_VERIFIABLE_MISSING_MEASUREMENT"
+}
