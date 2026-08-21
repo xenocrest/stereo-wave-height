@@ -6,7 +6,11 @@ import unittest
 
 import numpy as np
 
-from adapters.wass.input.opencv_xml import inspect_opencv_matrix_schema, write_wass_fixed_calibration
+from adapters.wass.input.opencv_xml import (
+    inspect_opencv_matrix_schema,
+    write_wass_coarse_fixed_calibration,
+    write_wass_fixed_calibration,
+)
 from calibration import (
     CheckerboardSpec,
     CoarseGeometryConfig,
@@ -16,6 +20,32 @@ from calibration import (
     load_calibration_result_json,
     save_calibration_result_json,
 )
+
+
+class CoarseFixedCalibrationExportTests(unittest.TestCase):
+    def test_explicit_non_metric_coarse_export_without_autocalibrate(self):
+        k = np.array([[1329.0, 0, 960.0], [0, 1329.0, 540.0], [0, 0, 1.0]])
+        kwargs = dict(
+            intrinsic_00=k, intrinsic_01=k, distortion_00=np.zeros(5),
+            distortion_01=np.zeros(5), rotation_01=np.eye(3),
+            translation_01_m=np.array([-0.070, 0, 0]),
+            metrological_validity=False,
+            purpose="ALGORITHM_CLOSURE_VALIDATION_ONLY", source="coarse unit test",
+        )
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as directory:
+            with self.assertRaisesRegex(ValueError, "explicitly allowed"):
+                write_wass_coarse_fixed_calibration(
+                    directory, coarse_fixed_calibration_allowed=False, **kwargs,
+                )
+            files = write_wass_coarse_fixed_calibration(
+                directory, coarse_fixed_calibration_allowed=True, **kwargs,
+            )
+            self.assertEqual(len(files), 7)
+            meta = json.loads((Path(directory) / "fixed_calibration_provenance.json").read_text())
+            self.assertFalse(meta["approved_for_wass"])
+            self.assertFalse(meta["metrological_validity"])
+            self.assertTrue(meta["coarse_fixed_calibration_allowed"])
+            self.assertFalse(meta["autocalibrate_required"])
 
 
 class OpenCvCalibrationBackendTests(unittest.TestCase):

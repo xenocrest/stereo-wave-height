@@ -14,5 +14,11 @@
   "common_roi": [0, 0, 1920, 1079],
   "common_roi_fraction": 0.9990740740740741,
   "rectified_vertical_disparity": {"rms_px": 21.122547472723607, "median_px": 10.994903564453125, "p95_px": 46.28102722167967, "max_px": 92.52593994140625},
-  "physical_baseline_sanity": "NOT_VERIFIABLE_MISSING_MEASUREMENT"
+  "physical_baseline_sanity": {
+    "status": "PASS",
+    "measured_baseline_m": 0.070,
+    "absolute_difference_m": 0.00131528841525623,
+    "relative_difference_percent_of_measured": 1.8789834503660428,
+    "interpretation": "baseline scale is physically plausible; strict calibration remains failed"
+  }
 }

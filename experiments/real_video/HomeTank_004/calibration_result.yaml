@@ -92,8 +92,17 @@ rectification:
   vertical_disparity_p95_px: 46.28102722167967
 physical_sanity:
   recovered_baseline_m: 0.06868471158474378
-  measured_baseline_m: UNKNOWN
-  baseline_check: NOT_VERIFIABLE_MISSING_MEASUREMENT
+  measured_baseline_m: 0.070
+  absolute_difference_m: 0.00131528841525623
+  relative_difference_percent_of_measured: 1.8789834503660428
+  sanity_threshold_percent: 5.0
+  threshold_status: PROJECT_COARSE_SANITY_THRESHOLD
+  baseline_check: PASS
+  interpretation: baseline scale is physically plausible; this does not approve the calibration
   rotation_check: WARNING_RELATIVE_ROTATION_14_65_DEG_NOT_INDEPENDENTLY_MEASURED
   approval_effect: FAIL
+coarse_calibration_physical_plausibility: PASS_BASELINE_ONLY
+coarse_fixed_calibration_allowed: true
+metrological_validity: false
+coarse_purpose: ALGORITHM_CLOSURE_VALIDATION_ONLY
 outputs_are_diagnostic_only: true

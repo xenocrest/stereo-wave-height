@@ -121,6 +121,72 @@ def write_wass_fixed_calibration(
     return tuple(files)
 
 
+def write_wass_coarse_fixed_calibration(
+    output_dir: str | Path,
+    *,
+    intrinsic_00: npt.ArrayLike,
+    intrinsic_01: npt.ArrayLike,
+    distortion_00: npt.ArrayLike,
+    distortion_01: npt.ArrayLike,
+    rotation_01: npt.ArrayLike,
+    translation_01_m: npt.ArrayLike,
+    coarse_fixed_calibration_allowed: bool,
+    metrological_validity: bool,
+    purpose: str,
+    source: str,
+) -> tuple[Path, ...]:
+    """Export an explicit non-metrological fixed calibration for closure tests.
+
+    This is intentionally separate from :func:`write_wass_fixed_calibration`:
+    a coarse candidate remains unapproved for metrology and may only be used
+    for ``ALGORITHM_CLOSURE_VALIDATION_ONLY`` without autocalibration.
+    """
+    if not coarse_fixed_calibration_allowed:
+        raise ValueError("coarse fixed-calibration export must be explicitly allowed")
+    if metrological_validity:
+        raise ValueError("coarse fixed calibration can never be metrically valid")
+    if purpose != "ALGORITHM_CLOSURE_VALIDATION_ONLY":
+        raise ValueError("coarse fixed calibration purpose must be ALGORITHM_CLOSURE_VALIDATION_ONLY")
+    if not source:
+        raise ValueError("coarse calibration source is required")
+
+    rotation = np.asarray(rotation_01, dtype=np.float64)
+    translation = np.asarray(translation_01_m, dtype=np.float64).reshape(-1, 1)
+    if rotation.shape != (3, 3) or translation.shape != (3, 1):
+        raise ValueError("WASS fixed extrinsics require R[3,3] and T[3,1]")
+    if not np.all(np.isfinite(rotation)) or not np.all(np.isfinite(translation)):
+        raise ValueError("WASS fixed extrinsics must be finite")
+    baseline = float(np.linalg.norm(translation))
+    if baseline <= 0 or not np.allclose(rotation.T @ rotation, np.eye(3), atol=1e-8):
+        raise ValueError("WASS fixed extrinsics require a valid rotation and positive baseline")
+
+    directory = Path(output_dir)
+    files = list(write_wass_calibration_xml(
+        directory, intrinsic_00=intrinsic_00, intrinsic_01=intrinsic_01,
+        distortion_00=distortion_00, distortion_01=distortion_01,
+    ))
+    files.append(write_opencv_matrix_xml(directory / "ext_R.xml", rotation, node_name="ext_R"))
+    files.append(write_opencv_matrix_xml(directory / "ext_T.xml", translation, node_name="ext_T"))
+    metadata = directory / "fixed_calibration_provenance.json"
+    metadata.write_text(json.dumps({
+        "schema_version": "1.0",
+        "approved_for_wass": False,
+        "coarse_fixed_calibration_allowed": True,
+        "metrological_validity": False,
+        "purpose": purpose,
+        "source": source,
+        "camera_roles": {"cam0": "left", "cam1": "right"},
+        "extrinsic_convention": "X_cam1 = R_01 @ X_cam0 + T_01_m",
+        "translation_input_unit": "m",
+        "baseline_m": baseline,
+        "wass_internal_scale_behavior": "T direction retained; norm rescaled to 1.0 by wass_stereo 1.11",
+        "metric_scale_requirement": "coarse closure only; this export is not a metric calibration approval",
+        "autocalibrate_required": False,
+    }, indent=2) + "\n", encoding="utf-8")
+    files.append(metadata)
+    return tuple(files)
+
+
 def inspect_opencv_matrix_schema(path: str | Path) -> OpenCvMatrixSchema:
     """Read structural fields for comparison; numeric calibration is not interpreted."""
     root = ET.parse(path).getroot()

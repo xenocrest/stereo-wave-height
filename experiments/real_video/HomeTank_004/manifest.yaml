@@ -65,7 +65,11 @@ calibration:
   detection_summary: calibration_detection_summary.yaml
   metrics: calibration_metrics.json
   report: calibration_report.md
-  next: COARSE_GEOMETRY_VALIDATION
+  coarse_geometry_candidates: coarse_geometry_candidates.yaml
+  coarse_geometry_reassessment: coarse_geometry_reassessment.md
+  coarse_fixed_calibration_allowed: true
+  metrological_validity: false
+  next: STATIC_COARSE_GEOMETRY_SANITY_TRIAL
 checkerboard:
   inner_corners: [9, 6]
   physical_squares: [10, 7]

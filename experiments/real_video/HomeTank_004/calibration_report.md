@@ -69,19 +69,16 @@ data risks, not backend implementation errors.
 
 ## Physical sanity and fallback
 
-The recovered baseline is 0.068685 m. The actual baseline remains `UNKNOWN` in
-`measured_geometry.yaml`, so the scale sanity check cannot be completed. The
-14.65-degree relative rotation is likewise not independently measured. These
-outputs are diagnostic and must not be exported to WASS.
+The recovered baseline is 0.068685 m. A later correction established the
+user-measured baseline as 0.070 m; the prior 0.700 m entry was a factor-of-10
+transcription error. The 1.3153 mm (1.879%) agreement passes the separate
+coarse physical-baseline sanity check. It does **not** alter this report's
+strict quality failure or `approved_for_wass=false` status. See
+[the coarse reassessment](coarse_geometry_reassessment.md).
 
-The coarse fallback still needs:
-
-- `baseline_m`;
-- `cam0_height_to_water_m` and `cam1_height_to_water_m`;
-- `cam0_pitch_deg` and `cam1_pitch_deg`;
-- yaw/roll/height differences if available;
-- approximate `focal_px` or HFOV;
-- explicit assumed principal point and distortion model.
+The corrected fallback now records baseline, camera heights, pitch, approximate
+HFOV/focal length, image-center principal point, and zero-distortion
+assumptions. Relative yaw/roll and a complete manual R/T remain `UNKNOWN`.
 
 No further checkerboard capture or detector development is proposed. The next
 stage is the already-defined non-metrological coarse-geometry closure route.

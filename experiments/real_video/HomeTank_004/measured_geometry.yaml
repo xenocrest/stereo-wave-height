@@ -1,21 +1,28 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
-status: NOT_CAPTURED
+status: CORRECTED_USER_MEASUREMENT
+correction:
+  correction_reason: previous manual geometry values contained a decimal-place / factor-of-10 transcription error
+  corrected_from:
+    baseline_m: 0.700
+    cam0_height_to_water_m: 1.900
+    cam1_height_to_water_m: 1.700
+  correction_factor: 0.1
 baseline_m:
-  value: UNKNOWN
-  source: UNKNOWN
+  value: 0.070
+  source: USER_SPECIFIED
 cam0_height_to_water_m:
-  value: UNKNOWN
-  source: UNKNOWN
+  value: 0.190
+  source: USER_SPECIFIED
 cam1_height_to_water_m:
-  value: UNKNOWN
-  source: UNKNOWN
+  value: 0.170
+  source: USER_SPECIFIED
 cam0_pitch_deg:
-  value: UNKNOWN
-  source: UNKNOWN
+  value: 40.0
+  source: USER_SPECIFIED
 cam1_pitch_deg:
-  value: UNKNOWN
-  source: UNKNOWN
+  value: 40.0
+  source: USER_SPECIFIED
 yaw_difference_deg:
   value: UNKNOWN
   source: UNKNOWN
@@ -23,6 +30,7 @@ roll_difference_deg:
   value: UNKNOWN
   source: UNKNOWN
 height_difference_m:
-  value: UNKNOWN
-  source: UNKNOWN
+  value: -0.020
+  definition: cam1_height_to_water_m - cam0_height_to_water_m
+  source: DERIVED
 allowed_source_values: [UNKNOWN, MEASURED, USER_SPECIFIED, ASSUMED, DERIVED]
