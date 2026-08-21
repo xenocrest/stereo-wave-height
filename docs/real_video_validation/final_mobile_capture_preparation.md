@@ -107,7 +107,8 @@ session (six videos). Until all six videos are complete:
 - do not remove either phone;
 - do not move the support;
 - do not reclamp either phone;
-- do not change the relative camera pose.
+- do not change the baseline;
+- do not change either camera angle or the relative camera pose.
 
 Only after all six files are complete may the rig be dismantled and files be
 uploaded. Any relative movement invalidates the shared extrinsics.

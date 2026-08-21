@@ -167,13 +167,16 @@ class OpenCvCalibrationBackendTests(unittest.TestCase):
     def test_hometank004_templates_are_not_captured(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
         expected = {
-            "capture_manifest_template.yaml", "measured_geometry_template.yaml",
-            "calibration_result_template.yaml", "fallback_geometry_template.yaml",
-            "result_summary_template.md",
+            "manifest.yaml", "measured_geometry.yaml", "calibration_result.yaml",
+            "fallback_geometry.yaml", "result_summary.md", "videos",
         }
         self.assertEqual({path.name for path in root.iterdir()}, expected)
-        for path in root.iterdir():
-            self.assertIn("NOT_CAPTURED", path.read_text(encoding="utf-8"))
+        self.assertIn("NOT_CAPTURED", (root / "manifest.yaml").read_text(encoding="utf-8"))
+        self.assertIn("NOT_PROCESSED", (root / "calibration_result.yaml").read_text(encoding="utf-8"))
+        for condition in ("calibration", "static", "wave"):
+            directory = root / "videos" / condition
+            self.assertTrue(directory.is_dir())
+            self.assertEqual([path.name for path in directory.iterdir()], [".gitkeep"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,14 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: NOT_PROCESSED
+purpose: COARSE_GEOMETRY_VALIDATION
+metrological_validity: false
+run_wass_autocalibrate: false
+baseline_m: UNKNOWN
+focal_px: UNKNOWN
+hfov_deg: UNKNOWN
+principal_point: UNKNOWN
+distortion_model: UNKNOWN
+cam0_pitch_deg: UNKNOWN
+cam1_pitch_deg: UNKNOWN
+allowed_provenance: [UNKNOWN, MEASURED, USER_SPECIFIED, ASSUMED, DERIVED]
