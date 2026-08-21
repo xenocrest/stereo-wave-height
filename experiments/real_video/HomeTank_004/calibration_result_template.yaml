@@ -1,0 +1,28 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: NOT_CAPTURED
+backend: OPENCV_OFFICIAL
+camera_roles: {cam0: left, cam1: right}
+object_point_unit: m
+image_point_unit: pixel
+mono_cam0: {rms_px: null, K: null, D: null, per_view_rms_px: null}
+mono_cam1: {rms_px: null, K: null, D: null, per_view_rms_px: null}
+stereo:
+  rms_px: null
+  R_right_from_left: null
+  T_right_from_left_m: null
+  baseline_m: null
+  E: null
+  F: null
+rectification:
+  R1: null
+  R2: null
+  P1: null
+  P2: null
+  Q: null
+  valid_roi_left: null
+  valid_roi_right: null
+  common_valid_roi: null
+  vertical_disparity_rms_px: null
+  epipolar_rms_px: null
+approved_for_wass: false

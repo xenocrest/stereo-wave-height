@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -21,13 +22,17 @@ class OpenCvMatrixSchema:
     data_type: str
 
 
-def write_opencv_matrix_xml(path: str | Path, matrix: npt.ArrayLike) -> Path:
-    """Write a finite float64 matrix under the confirmed ``intrinsics_penne`` node."""
+def write_opencv_matrix_xml(
+    path: str | Path, matrix: npt.ArrayLike, *, node_name: str = "intrinsics_penne"
+) -> Path:
+    """Write a finite float64 matrix under an explicit OpenCV node name."""
     values = np.asarray(matrix, dtype=np.float64)
     if values.ndim != 2 or values.size == 0 or not np.all(np.isfinite(values)):
         raise ValueError("OpenCV matrix must be a non-empty finite 2-D array")
     root = ET.Element("opencv_storage")
-    node = ET.SubElement(root, "intrinsics_penne", {"type_id": "opencv-matrix"})
+    if not node_name or not node_name.replace("_", "").isalnum():
+        raise ValueError("node_name must be a non-empty XML-safe identifier")
+    node = ET.SubElement(root, node_name, {"type_id": "opencv-matrix"})
     ET.SubElement(node, "rows").text = str(values.shape[0])
     ET.SubElement(node, "cols").text = str(values.shape[1])
     ET.SubElement(node, "dt").text = "d"
@@ -59,6 +64,61 @@ def write_wass_calibration_xml(
     if matrices[2][1].shape != (5, 1) or matrices[3][1].shape != (5, 1):
         raise ValueError("distortion vectors must have five coefficients")
     return tuple(write_opencv_matrix_xml(directory / name, matrix) for name, matrix in matrices)
+
+
+def write_wass_fixed_calibration(
+    output_dir: str | Path,
+    *,
+    intrinsic_00: npt.ArrayLike,
+    intrinsic_01: npt.ArrayLike,
+    distortion_00: npt.ArrayLike,
+    distortion_01: npt.ArrayLike,
+    rotation_01: npt.ArrayLike,
+    translation_01_m: npt.ArrayLike,
+    approved_for_wass: bool,
+    source: str,
+) -> tuple[Path, ...]:
+    """Export a quality-approved OpenCV fixed calibration for WASS 1.11.
+
+    R/T use ``X_cam1 = R_01 X_cam0 + T_01``. WASS reads this direction but
+    normalizes the translation norm to one internally; the metric baseline is
+    therefore retained in the sidecar for the established scale stage.
+    """
+    if not approved_for_wass:
+        raise ValueError("quality gate must approve calibration before WASS export")
+    if not source:
+        raise ValueError("calibration source is required")
+    rotation = np.asarray(rotation_01, dtype=np.float64)
+    translation = np.asarray(translation_01_m, dtype=np.float64).reshape(-1, 1)
+    if rotation.shape != (3, 3) or translation.shape != (3, 1):
+        raise ValueError("WASS fixed extrinsics require R[3,3] and T[3,1]")
+    if not np.all(np.isfinite(rotation)) or not np.all(np.isfinite(translation)):
+        raise ValueError("WASS fixed extrinsics must be finite")
+    baseline = float(np.linalg.norm(translation))
+    if baseline <= 0 or not np.allclose(rotation.T @ rotation, np.eye(3), atol=1e-8):
+        raise ValueError("WASS fixed extrinsics require a valid rotation and positive baseline")
+    directory = Path(output_dir)
+    files = list(write_wass_calibration_xml(
+        directory, intrinsic_00=intrinsic_00, intrinsic_01=intrinsic_01,
+        distortion_00=distortion_00, distortion_01=distortion_01,
+    ))
+    files.append(write_opencv_matrix_xml(directory / "ext_R.xml", rotation, node_name="ext_R"))
+    files.append(write_opencv_matrix_xml(directory / "ext_T.xml", translation, node_name="ext_T"))
+    metadata = directory / "fixed_calibration_provenance.json"
+    metadata.write_text(json.dumps({
+        "schema_version": "1.0",
+        "approved_for_wass": True,
+        "source": source,
+        "camera_roles": {"cam0": "left", "cam1": "right"},
+        "extrinsic_convention": "X_cam1 = R_01 @ X_cam0 + T_01_m",
+        "translation_input_unit": "m",
+        "baseline_m": baseline,
+        "wass_internal_scale_behavior": "T direction retained; norm rescaled to 1.0 by wass_stereo 1.11",
+        "metric_scale_requirement": "use established WASS physical scale recovery; ext_T alone does not guarantee metric xyzC",
+        "autocalibrate_required": False,
+    }, indent=2) + "\n", encoding="utf-8")
+    files.append(metadata)
+    return tuple(files)
 
 
 def inspect_opencv_matrix_schema(path: str | Path) -> OpenCvMatrixSchema:

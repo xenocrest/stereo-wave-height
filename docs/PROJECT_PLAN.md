@@ -154,6 +154,7 @@
 - HomeTank_002 的白底线格已完成补救尝试：半自动投影线格恢复在双相机多帧得到完整 9 x 6 / 54 点，故 `custom_planar_grid_recovery=PASS`；但仅 9 对完整视图、3 组独立姿态，且靶板部分姿态可见弯曲，单目/双目/极线质量均失败。K/D/R/T 已拒绝，状态仍为 `CALIBRATION_DATA_INSUFFICIENT`，未运行 WASS；
 - 已将 HomeTank_002 教训固化为通用标定基础设施：录像前 Gate A 检查双侧 54/54 与画质，录像后 Gate B 基于图像几何去重独立姿态并检查位置/尺度/方向覆盖；
 - HomeTank_003 已执行真实标定 Gate：0.5 s 全段抽样与一次 10 Hz 针对性补扫均得到 cam0 完整棋盘检测 0，故双侧候选和独立姿态均为 0；分类 `CALIBRATION_DATASET_INSUFFICIENT`、`approved_for_wass=false`，未求 K/D/R/T，static/wave 仅登记未处理；
+- HomeTank_004 录制前软件 Gate 已完成：标定主线冻结为 OpenCV 官方 API 薄封装，官方 OpenCV 4.x 样例 13 对图像的 detection/mono/stereo/rectify 黄金路径通过；WASS 1.11 已确认支持由 `wass_prepare` 注入固定 `ext_R/ext_T` 后跳过 match/autocalibrate，粗几何备用模式仅用于 `ALGORITHM_CLOSURE_VALIDATION`。HomeTank_004 当前仍为 `NOT_CAPTURED`，六段视频必须在同一未移动 rig setup 中完成；
 - 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
 下一阶段按以下门控顺序推进：
@@ -197,5 +198,7 @@ Case 0/1/2 分别是静水零场、固定非零高度和动态正弦规则波三
 - [采购前验证总表](validation/prepurchase_validation_matrix.md)
 - [部署几何汇总](validation/deployment_geometry_summary.md)
 - [阶段进展总结](progress/2026-08-13_2026-08-14_summary.md)
+- [HomeTank_004 录制前软件准备](real_video_validation/final_mobile_capture_preparation.md)
+- [WASS 固定标定路径](wass/fixed_calibration_path.md)
 
 维护要求：新进展必须回填到对应阶段和状态节点，禁止在文末追加彼此割裂的英文更新块。完整用户汇报 DOCX/Markdown 及大型原始/中间数据仅保存在本地，不进入 Git。

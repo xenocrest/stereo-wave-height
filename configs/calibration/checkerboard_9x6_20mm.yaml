@@ -7,8 +7,9 @@ target:
   physical_square_cols: 10
   physical_square_rows: 7
   square_size_m: 0.020
-  source: HomeTank_003 planned target specification
-  status: PLANNED
+  source: project configured checkerboard specification; physical size entered by user
+  status: USER_SPECIFIED_CONFIGURED
+  calibration_backend: OPENCV_OFFICIAL
 
 # Project heuristics for capture feedback; configurable, not universal standards.
 preflight_thresholds:

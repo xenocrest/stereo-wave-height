@@ -1,0 +1,22 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: NOT_CAPTURED
+mode: COARSE_GEOMETRY_VALIDATION
+METROLOGICAL_VALIDITY: false
+PURPOSE: ALGORITHM_CLOSURE_VALIDATION
+run_wass_autocalibrate: false
+baseline_m: {value: null, unit: m, provenance: MEASURED}
+cam0_height_m: {value: null, unit: m, provenance: MEASURED}
+cam1_height_m: {value: null, unit: m, provenance: MEASURED}
+cam0_pitch_deg: {value: null, unit: deg, provenance: USER_SPECIFIED}
+cam1_pitch_deg: {value: null, unit: deg, provenance: USER_SPECIFIED}
+cam0_yaw_deg: {value: null, unit: deg, provenance: USER_SPECIFIED}
+cam1_yaw_deg: {value: null, unit: deg, provenance: USER_SPECIFIED}
+cam0_roll_deg: {value: null, unit: deg, provenance: USER_SPECIFIED}
+cam1_roll_deg: {value: null, unit: deg, provenance: USER_SPECIFIED}
+image_width_px: {value: null, unit: pixel, provenance: DERIVED}
+image_height_px: {value: null, unit: pixel, provenance: DERIVED}
+approximate_focal_px: {value: null, unit: pixel, provenance: ASSUMED}
+approximate_hfov_deg: {value: null, unit: deg, provenance: ASSUMED}
+principal_point: {value: IMAGE_CENTER, unit: pixel, provenance: ASSUMED}
+distortion: {value: ZERO, unit: dimensionless, provenance: ASSUMED}

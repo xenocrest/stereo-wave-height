@@ -8,6 +8,18 @@ from .checkerboard import (
     detect_and_refine_checkerboard,
     stereo_baseline_m,
 )
+from .coarse_geometry import CoarseGeometryConfig, CoarseValue
+from .opencv_backend import (
+    MonoCalibrationResult,
+    OpenCvCheckerboardDetection,
+    RectificationResult,
+    StereoCalibrationResult,
+    calibrate_monocular_official,
+    calibrate_stereo_official,
+    detect_checkerboard_official,
+    load_calibration_result_json,
+    save_calibration_result_json,
+)
 from .planar_grid import PlanarGridDiagnostics, PlanarGridHint, PlanarGridRecovery, orient_quad, recover_planar_grid
 from .preflight import (
     CalibrationFrameAssessment,

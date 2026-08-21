@@ -1,5 +1,9 @@
 # Real-video feasibility validation
 
+HomeTank_004 的最终手机录制前软件 Gate 见
+[final_mobile_capture_preparation.md](final_mobile_capture_preparation.md)。该主线遵循
+`MATURE_CODE_FIRST`，以 OpenCV 官方标定 API 为唯一主 backend；历史自定义标定补救代码仅保留为实验档案。
+
 ## Position in the project
 
 This is a low-cost real-optics transfer gate inside `stereo-wave-height`, not a new project and not a phone measurement product. Two existing phones provide recorded stereo video before professional-camera purchase:
