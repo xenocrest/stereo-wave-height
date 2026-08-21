@@ -1,7 +1,7 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
-experiment_status: NOT_CAPTURED
-processing_status: NOT_PROCESSED
+experiment_status: INPUT_DATA_READY
+processing_status: INPUT_INSPECTION_COMPLETE
 camera_setup:
   left:
     id: cam0
@@ -13,24 +13,43 @@ videos:
   calibration:
     cam0:
       expected_path: videos/calibration/calibration_cam0_iQOO_Neo5S.mp4
-      status: NOT_CAPTURED
+      status: PRESENT_METADATA_READABLE
     cam1:
       expected_path: videos/calibration/calibration_cam1_iQOO_Z10_TurboPlus.mp4
-      status: NOT_CAPTURED
+      status: PRESENT_METADATA_READABLE
   static:
     cam0:
       expected_path: videos/static/static_cam0_iQOO_Neo5S.mp4
-      status: NOT_CAPTURED
+      status: PRESENT_METADATA_READABLE
     cam1:
       expected_path: videos/static/static_cam1_iQOO_Z10_TurboPlus.mp4
-      status: NOT_CAPTURED
+      status: PRESENT_METADATA_READABLE
   wave:
     cam0:
       expected_path: videos/wave/wave_cam0_iQOO_Neo5S.mp4
-      status: NOT_CAPTURED
+      status: PRESENT_METADATA_READABLE
     cam1:
       expected_path: videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4
-      status: NOT_CAPTURED
+      status: PRESENT_METADATA_READABLE
+video_metadata:
+  status: COMPLETE
+  summary: video_metadata_summary.yaml
+orientation_processing:
+  source: ffprobe Display Matrix metadata plus representative-frame visual check
+  cam0:
+    raw_rotation_deg: -180
+    canonical_transform: rotate180
+    canonical_resolution_px: [1920, 1080]
+  cam1:
+    raw_rotation_deg: 0
+    canonical_transform: identity
+    canonical_resolution_px: [1920, 1080]
+synchronization:
+  status: CANDIDATE_ONLY_NOT_FINAL_SYNC
+  method: global mean-luma series sampled at 10 Hz; smoothed temporal derivative cross-correlation
+  calibration_candidate_cam1_minus_cam0_s: 0.0
+  static_candidate_cam1_minus_cam0_s: 0.1
+  wave_candidate_cam1_minus_cam0_s: 0.0
 capture_constraint:
   same_rig_setup_for_calibration_static_wave: true
   rig_moved_during_capture: false

@@ -2,7 +2,7 @@
 
 Status: `NOT_PROCESSED`
 
-Capture: `NOT_CAPTURED`
+Capture: `INPUT_DATA_READY`
 
 Calibration: `NOT_RUN`
 

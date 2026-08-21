@@ -1,0 +1,154 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+inspection_status: INPUT_DATA_READY
+inspection_scope: container and representative-frame input inspection only
+probe: ffprobe
+camera_roles:
+  cam0: LEFT
+  cam1: RIGHT
+videos:
+  - condition: calibration
+    camera_id: cam0
+    role: LEFT
+    path: videos/calibration/calibration_cam0_iQOO_Neo5S.mp4
+    exists: true
+    size_bytes: 320022925
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    codec: h264
+    codec_profile: High
+    resolution_px: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.31398485
+    duration_s: 117.476511
+    frame_count: 6968
+    time_base: 1/90000
+    pixel_format: yuv420p
+    color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+    rotation_metadata_deg: -180
+    canonical_transform: rotate180
+    canonical_resolution_px: [1920, 1080]
+  - condition: calibration
+    camera_id: cam1
+    role: RIGHT
+    path: videos/calibration/calibration_cam1_iQOO_Z10_TurboPlus.mp4
+    exists: true
+    size_bytes: 107967334
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    codec: hevc
+    codec_profile: Main
+    resolution_px: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.99847163
+    duration_s: 117.336300
+    frame_count: 7040
+    time_base: 1/90000
+    pixel_format: yuv420p
+    color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+    rotation_metadata_deg: 0
+    canonical_transform: identity
+    canonical_resolution_px: [1920, 1080]
+  - condition: static
+    camera_id: cam0
+    role: LEFT
+    path: videos/static/static_cam0_iQOO_Neo5S.mp4
+    exists: true
+    size_bytes: 149193525
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    codec: h264
+    codec_profile: High
+    resolution_px: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.36210886
+    duration_s: 54.664500
+    frame_count: 3245
+    time_base: 1/90000
+    pixel_format: yuv420p
+    color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+    rotation_metadata_deg: -180
+    canonical_transform: rotate180
+    canonical_resolution_px: [1920, 1080]
+  - condition: static
+    camera_id: cam1
+    role: RIGHT
+    path: videos/static/static_cam1_iQOO_Z10_TurboPlus.mp4
+    exists: true
+    size_bytes: 50270700
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    codec: hevc
+    codec_profile: Main
+    resolution_px: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 60.01647511
+    duration_s: 54.668300
+    frame_count: 3281
+    time_base: 1/90000
+    pixel_format: yuv420p
+    color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+    rotation_metadata_deg: 0
+    canonical_transform: identity
+    canonical_resolution_px: [1920, 1080]
+  - condition: wave
+    camera_id: cam0
+    role: LEFT
+    path: videos/wave/wave_cam0_iQOO_Neo5S.mp4
+    exists: true
+    size_bytes: 438552096
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    codec: h264
+    codec_profile: High
+    resolution_px: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.28870921
+    duration_s: 161.177400
+    frame_count: 9556
+    time_base: 1/90000
+    pixel_format: yuv420p
+    color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+    rotation_metadata_deg: -180
+    canonical_transform: rotate180
+    canonical_resolution_px: [1920, 1080]
+  - condition: wave
+    camera_id: cam1
+    role: RIGHT
+    path: videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4
+    exists: true
+    size_bytes: 148338753
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    codec: hevc
+    codec_profile: Main
+    resolution_px: [1920, 1080]
+    nominal_fps: 60.0
+    average_fps: 59.99843644
+    duration_s: 161.170867
+    frame_count: 9670
+    time_base: 1/90000
+    pixel_format: yuv420p
+    color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+    rotation_metadata_deg: 0
+    canonical_transform: identity
+    canonical_resolution_px: [1920, 1080]
+orientation_rule:
+  cam0: apply one metadata-derived 180-degree rotation during decoding
+  cam1: preserve decoded pixel orientation
+  source_mp4_modified: false
+representative_frames:
+  sampling: 10%, 50%, and 90% of each container duration
+  storage: repository-external diagnostics only
+  calibration_common_scene: PASS
+  static_common_scene: PASS
+  wave_common_scene: PASS
+synchronization_preanalysis:
+  method: global mean-luma at 10 Hz; five-sample smoothing and temporal-derivative cross-correlation within +/-5 s
+  interpretation: candidate offsets only; not final frame synchronization
+  calibration:
+    candidate_cam1_minus_cam0_s: 0.0
+    peak_correlation: 0.3190
+    confidence: LOW
+  static:
+    candidate_cam1_minus_cam0_s: 0.1
+    peak_correlation: 0.5352
+    confidence: MEDIUM
+  wave:
+    candidate_cam1_minus_cam0_s: 0.0
+    peak_correlation: 0.5732
+    confidence: MEDIUM

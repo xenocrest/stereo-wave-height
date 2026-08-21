@@ -164,20 +164,5 @@ class OpenCvCalibrationBackendTests(unittest.TestCase):
         self.assertGreater(result.rectification.common_valid_roi[2], 0)
         self.assertGreater(result.rectification.common_valid_roi[3], 0)
 
-    def test_hometank004_templates_are_not_captured(self):
-        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
-        expected = {
-            "manifest.yaml", "measured_geometry.yaml", "calibration_result.yaml",
-            "fallback_geometry.yaml", "result_summary.md", "videos",
-        }
-        self.assertEqual({path.name for path in root.iterdir()}, expected)
-        self.assertIn("NOT_CAPTURED", (root / "manifest.yaml").read_text(encoding="utf-8"))
-        self.assertIn("NOT_PROCESSED", (root / "calibration_result.yaml").read_text(encoding="utf-8"))
-        for condition in ("calibration", "static", "wave"):
-            directory = root / "videos" / condition
-            self.assertTrue(directory.is_dir())
-            self.assertEqual([path.name for path in directory.iterdir()], [".gitkeep"])
-
-
 if __name__ == "__main__":
     unittest.main()
