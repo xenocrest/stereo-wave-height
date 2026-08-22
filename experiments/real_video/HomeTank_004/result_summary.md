@@ -48,6 +48,14 @@ at plane RANSAC on the first static frame (400 rounds, zero inliers), so no XYZ
 result exists. This does not change `CALIBRATION_QUALITY_FAIL` or
 `approved_for_wass=false`; see [rectification_policy_result.md](rectification_policy_result.md).
 
+Pre-RANSAC raw-point diagnostics subsequently confirmed a concentrated finite
+plane (167,581 points; 2.249 mm orthogonal RMS). The zero-inlier failure is
+explained by uniform three-pixel RANSAC sampling over the full image when the
+retained component covers only 8.0816% of pixels; the probability of no usable
+triplet in 400 rounds is approximately 80.96%. See
+[static_pointcloud_diagnosis.md](static_pointcloud_diagnosis.md). No parameter
+or historical status was changed.
+
 The controlled A0-A3 matrix produced nonzero offline OpenCV ROIs for A0, A1,
 and A3, but production WASS hard-codes alpha=1/flags=0 and cannot represent any
 matrix entry. No WASS policy run or static reconstruction was fabricated.

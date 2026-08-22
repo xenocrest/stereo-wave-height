@@ -16,6 +16,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "static_trial_plan.yaml", "static_trial_full_calibration.yaml",
             "static_trial_full_calibration.md", "fixed_calibration_rectification_audit.md",
             "rectification_policy.yaml", "rectification_policy_result.md",
+            "static_pointcloud_diagnosis.md",
             "fixed_calibration_rectification_policy_audit.md",
             "rectification_policy_compatibility.yaml",
             "rectification_policy_compatibility_report.md",
@@ -125,6 +126,20 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "No adapter modification",
         ):
             self.assertIn(required, audit)
+
+    def test_static_pointcloud_diagnosis_preserves_frozen_status(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        report = (root / "static_pointcloud_diagnosis.md").read_text(encoding="utf-8")
+        for required in (
+            "PLANE_PRESENT_BUT_RANSAC_TOO_STRICT",
+            "RANSAC_VALID_TRIPLET_SAMPLING_INSUFFICIENT",
+            "167,581",
+            "2.2490 mm",
+            "80.9620%",
+            "approved_for_wass=false",
+            "Wave remains prohibited",
+        ):
+            self.assertIn(required, report)
 
 
 if __name__ == "__main__":

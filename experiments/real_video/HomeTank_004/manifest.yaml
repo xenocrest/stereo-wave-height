@@ -79,6 +79,7 @@ calibration:
   rectification_policy_compatibility_report: rectification_policy_compatibility_report.md
   rectification_policy_config: rectification_policy.yaml
   rectification_policy_result: rectification_policy_result.md
+  static_pointcloud_diagnosis: static_pointcloud_diagnosis.md
   rectification_policy_compatible: false
   rectification_policy_test_status: ROI_INCOMPATIBILITY_RESOLVED_STEREO_PIPELINE_NOT_PASSED
   static_algorithm_validation_status: FAILED_AT_WASS_RECTIFICATION
