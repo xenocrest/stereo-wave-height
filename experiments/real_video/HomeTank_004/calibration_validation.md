@@ -18,6 +18,19 @@ The calibrated baseline is 68.6847 mm and the corrected manual measurement is
 measurement. Therefore `baseline_validation=PASS`: the calibrated baseline is
 physically consistent with the independent measurement.
 
+### Calibration result versus manual measurement
+
+| Parameter | OpenCV calibration result | Manual measurement | Difference | Validation |
+|---|---:|---:|---:|---|
+| Stereo baseline | 68.6847 mm | 70.0000 mm | 1.3153 mm (1.87898%) | PASS |
+| cam0 height | Not estimated by stereo calibration | 190 mm | N/A | Physical reference only |
+| cam1 height | Not estimated by stereo calibration | 170 mm | N/A | Physical reference only |
+| cam0 pitch | Not estimated by stereo calibration | 40 deg | N/A | Physical reference only |
+| cam1 pitch | Not estimated by stereo calibration | 40 deg | N/A | Physical reference only |
+
+This table records the engineering validation evidence. Manual geometry values
+are not used as reconstruction parameters.
+
 This pass is not a calibration quality pass. The strict metrics remain:
 
 | Metric | Result |
