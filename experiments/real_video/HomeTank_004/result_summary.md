@@ -75,6 +75,12 @@ classified `DIFFERENT_VISIBLE_RECONSTRUCTED_REGION`: disparity support and XYZ
 extent change sharply rather than undergoing a common rigid transform. See
 [static_frame_geometry_diagnostic.md](static_frame_geometry_diagnostic.md).
 
+The controlled 640/1280/2560 disparity audit confirms that 640 is the SGBM
+search bound and the current geometry reaches it. Wider ranges produce fewer
+points and physically invalid negative-Z components, so the final classification
+is `OTHER_MATCHING_INSTABILITY`; no formal WASS parameter was changed. See
+[wass_disparity_range_audit.md](wass_disparity_range_audit.md).
+
 The controlled A0-A3 matrix produced nonzero offline OpenCV ROIs for A0, A1,
 and A3, but production WASS hard-codes alpha=1/flags=0 and cannot represent any
 matrix entry. No WASS policy run or static reconstruction was fabricated.

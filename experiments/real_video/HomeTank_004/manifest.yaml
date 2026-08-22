@@ -91,6 +91,8 @@ calibration:
   static_baseline_status: STATIC_BASELINE_UNSTABLE
   static_frame_geometry_diagnostic: static_frame_geometry_diagnostic.md
   static_geometry_drift_classification: DIFFERENT_VISIBLE_RECONSTRUCTED_REGION
+  wass_disparity_range_audit: wass_disparity_range_audit.md
+  disparity_range_audit_classification: OTHER_MATCHING_INSTABILITY
   rectification_policy_compatible: false
   rectification_policy_test_status: ROI_INCOMPATIBILITY_RESOLVED_STEREO_PIPELINE_NOT_PASSED
   static_algorithm_validation_status: FAILED_AT_WASS_RECTIFICATION

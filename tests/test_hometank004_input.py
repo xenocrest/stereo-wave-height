@@ -21,6 +21,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "plane_ransac_sampling_update.md",
             "static_validation_summary.yaml", "static_validation_summary.md",
             "static_frame_geometry_diagnostic.md",
+            "wass_disparity_range_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
             "rectification_policy_compatibility.yaml",
             "rectification_policy_compatibility_report.md",
@@ -181,6 +182,19 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("133,968 | 488.8168", report)
         self.assertIn("141,950 | 478.1076", report)
         self.assertIn("STATIC_VALIDATION_FAIL", report)
+        self.assertIn("approved_for_wass=false", report)
+        self.assertIn("Wave remains prohibited", report)
+
+    def test_disparity_range_audit_rejects_blind_range_expansion(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        report = (root / "wass_disparity_range_audit.md").read_text(encoding="utf-8")
+        self.assertIn("OpenCV `StereoSGBM`", report)
+        self.assertIn("`P1=2*13^2=338`", report)
+        self.assertIn("`P2=64*13^2=10816`", report)
+        self.assertIn("classification **A: the disparity-search upper bound**", report)
+        self.assertIn("| 1280 | 000000 | 92,829", report)
+        self.assertIn("| 2560 | 000002 | 81,078", report)
+        self.assertIn("OTHER_MATCHING_INSTABILITY", report)
         self.assertIn("approved_for_wass=false", report)
         self.assertIn("Wave remains prohibited", report)
 
