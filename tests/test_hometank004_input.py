@@ -14,7 +14,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "coarse_geometry_reassessment.md", "calibration_validation.yaml",
             "calibration_validation.md", "calibration_parameter_usage.yaml",
             "static_trial_plan.yaml", "static_trial_full_calibration.yaml",
-            "static_trial_full_calibration.md",
+            "static_trial_full_calibration.md", "fixed_calibration_rectification_audit.md",
         }
         self.assertEqual({path.name for path in root.iterdir()}, expected)
         self.assertIn("CALIBRATION_QUALITY_FAIL", (root / "manifest.yaml").read_text(encoding="utf-8"))
@@ -75,6 +75,21 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "candidate_c_run: false",
         ):
             self.assertIn(required, result)
+
+    def test_fixed_calibration_convention_audit_preserves_failure(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        audit = (root / "fixed_calibration_rectification_audit.md").read_text(encoding="utf-8")
+        for required in (
+            "X_second = R * X_first + T",
+            "X_cam1 = ext_R * X_cam0 + ext_T",
+            "R/T_DIRECTION_CONVERSION_REQUIRED = false",
+            "LEFT_RIGHT_INPUT_ERROR = false",
+            "TRANSLATION_UNIT_ERROR = false",
+            "CALIBRATION_QUALITY_FAIL",
+            "approved_for_wass=false",
+            "FAILED_AT_WASS_RECTIFICATION",
+        ):
+            self.assertIn(required, audit)
 
 
 if __name__ == "__main__":

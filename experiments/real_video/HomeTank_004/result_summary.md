@@ -27,4 +27,10 @@ because the epipole lay inside the image plane. No XYZ was produced; B/C,
 autocalibrate, and wave were not run. This does not change
 `CALIBRATION_QUALITY_FAIL` or `approved_for_wass=false`.
 
-Next: `REVIEW_FIXED_CALIBRATION_RECTIFICATION_FAILURE`.
+Next: `AUDIT_WASS_RECTIFICATION_POLICY_WITH_UNCHANGED_CANDIDATE_A`.
+
+The fixed-calibration convention audit found that OpenCV and WASS both use the
+cam0-to-cam1 transform `X_cam1=R*X_cam0+T`. The adapter's direct write is
+correct; no pre-inversion, left/right input swap, or mm/m correction is needed.
+The rectification failure therefore remains a geometry/policy issue under the
+unchanged Candidate A parameters, not an adapter convention error.
