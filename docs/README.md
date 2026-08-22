@@ -68,8 +68,11 @@
 
 - [真实视频验证协议](real_video_validation/README.md)：RV0 刚性纹理平面、RV1 静水、RV2 静态液位变化、RV3 人工波；
 - [实验记录模板](real_video_validation/experiment_template.md)：设备、视频、标定、同步、WASS、支持率、状态与限制字段。
+- [HomeTank_004 标定验证](../experiments/real_video/HomeTank_004/calibration_validation.md)：OpenCV `K/D/R/T`、标定质量门和人工 baseline sanity check；
+- [HomeTank_004 静水验证](../experiments/real_video/HomeTank_004/static_validation_summary.md)：单帧平面恢复完成，跨帧静水基准未通过；
+- [HomeTank_004 SGBM 参数审计](../experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md)：完成 uniqueness/block size 分阶段诊断，尚无可批准的正式参数变更。
 
-该阶段使用现有双手机作为低成本 `Stereo Video File` 输入，只验证真实光学输入下的符号、趋势、空间结构和时间连续性；不执行 1 cm 精度验收。
+该阶段使用现有双手机作为低成本 `Stereo Video File` 输入。HomeTank_004 已完成第一轮真实视频输入、OpenCV 标定、固定参数 WASS 接入和静水单帧重建闭环，当前进入跨帧匹配稳定性优化；不执行 1 cm 精度验收，尚未运行 wave。
 
 ## 6. 当前验证结果
 
@@ -83,6 +86,7 @@
 - [确定性不规则波验证](validation/irregular_wave_validation.md)：保留原始 IRR-1 阻塞，IRR-1A 适配后通过；
 - [工作距离验证](validation/scene_distance_validation.md)、[双目基线验证](validation/baseline_validation.md)与 [B--Z 交叉验证](validation/baseline_distance_crosscheck.md)：保留各自 FAIL/PASS/BLOCKED 边界；
 - [采购前验证总表](validation/prepurchase_validation_matrix.md)与[部署几何汇总](validation/deployment_geometry_summary.md)：采购前核心理想仿真证据的长期入口。
+- [HomeTank_004 静水稳定性总结](../experiments/real_video/HomeTank_004/static_validation_summary.md)与[帧间几何诊断](../experiments/real_video/HomeTank_004/static_frame_geometry_diagnostic.md)：第一轮真实手机静水闭环及当前 `STATIC_VALIDATION_FAIL` 证据。
 
 ## 7. 当前汇报边界
 
@@ -93,14 +97,15 @@
 - 本机 WASS 核心与官方 `wassgridsurface 0.11.4` 已实际跑通；
 - 静水、固定 +10 mm 高度、动态正弦规则波三级理想仿真场景已经闭环；
 - Case 1 的 H RMSE 约 1.03 mm，Case 2 的 H RMSE 为 5.3968 mm，均只适用于冻结的理想仿真条件。
+- HomeTank_004 已完成低成本真实视频第一轮闭环：OpenCV 标定、固定参数 WASS 接入、dense stereo、triangulation 和单帧静水平面恢复均已执行。
 
 不能陈述：
 
 - 候选硬件已经最终定型或采购；
-- 真实水槽/真实海浪实验已经完成；
+- HomeTank_004 静水跨帧稳定性已经通过，或人工波/真实海浪实验已经完成；
 - 系统已经达到 1 cm 实测精度；
-- 真实标定、同步、畸变、噪声、反光、振动等因素已经验证；
-- 真实水槽或真实海面已经达到 1 cm 精度；
-- Case 2 的约 45° 相位偏移已经解决。
+- HomeTank_004 标定质量、跨帧静水稳定性或同步精度已经通过；
+- 专业设备条件下的畸变、噪声、反光、振动等因素已经完成验证；
+- 手机数据或候选工业相机已经达到 1 cm 实测精度。
 
-下一步先关闭 Case 2 相位/坐标/时间对齐问题，再验证 `baseline × scene distance` 等部署参数，之后才进入设备采购、真实标定、人工波实验和真实海面验证。
+下一步先关闭 HomeTank_004 的 rectified 图像尺度、极线残差和共同纹理支持问题，得到稳定静水参考后才允许处理 wave 视频；随后进入专业设备采购、硬件同步标定和人工波物理验收。

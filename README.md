@@ -15,6 +15,41 @@
 
 项目路线、模型体系、Case 0/1/2 结果、结论边界和下一步工作的长期汇报入口见 [项目宏观汇报](PROJECT_OVERVIEW.md)。
 
+## 当前项目状态
+
+当前阶段：**低成本真实双目视频验证阶段（HomeTank_004）**。
+
+在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
+
+1. **OpenCV 官方双目标定流程接入**
+   - 完成双目标定并获得 `K/D/R/T`；
+   - 完成标定结果的物理一致性验证；
+   - 标定质量门仍为 `CALIBRATION_QUALITY_FAIL`，不能据此宣称实测精度达标。
+2. **标定参数与人工测量核对**
+   - OpenCV calibrated baseline：68.6847 mm；
+   - manual measured baseline：70.0000 mm；
+   - difference：1.3153 mm；relative error：1.879%；
+   - 人工测量参数仅用于 physical sanity check，实际三维重建采用 OpenCV 标定结果。
+3. **OpenCV → WASS 接口适配**
+   - 完成标定参数格式转换、相机坐标约定统一和固定标定路径接入；
+   - 固定标定 rectification 已闭环，未用人工 baseline 替代标定外参。
+4. **手机双目静水三维重建**
+   - 已接入 iQOO Neo5S（cam0/left）与 iQOO Z10 Turbo Plus（cam1/right）视频；
+   - WASS 的 prepare、match、rectification、dense stereo、triangulation 和单帧静水面检测已跑通；
+   - 当前瓶颈是跨帧静水深度稳定性不足，正式状态保持 `STATIC_VALIDATION_FAIL`。
+
+当前主要原因证据为：近距离拍摄使有效视差接近 StereoSGBM 搜索范围上界，水面弱纹理造成匹配支持区域变化，手机 autofocus/EIS 等成像链变化仍待进一步确认。参数审计已证明盲目扩大 disparity 范围或单独调整 uniqueness/block size 不能恢复稳定静水基准。尚未运行 wave。
+
+### 真实视频成果索引
+
+| 内容 | 状态 | 文档 |
+|---|---|---|
+| OpenCV 双目标定 | 完成 | [HomeTank_004 calibration validation](experiments/real_video/HomeTank_004/calibration_validation.md) |
+| 标定与人工测量验证 | 完成 | [HomeTank_004 calibration validation](experiments/real_video/HomeTank_004/calibration_validation.md) |
+| OpenCV → WASS 接口 | 完成 | [Fixed-calibration rectification policy audit](experiments/real_video/HomeTank_004/fixed_calibration_rectification_policy_audit.md) |
+| 静水三维重建 | 完成验证，跨帧未通过 | [Static validation summary](experiments/real_video/HomeTank_004/static_validation_summary.md) |
+| StereoSGBM 分析 | 进行中 | [SGBM matching parameter audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md) |
+
 ## 核心建模成果
 
 老师/首次访问者可先查看 [核心建模成果总览](docs/MODEL_OVERVIEW.md)。其中集中说明并链接了当前已经建立的三类核心模型：
@@ -56,8 +91,8 @@
 
 当前阶段边界与后续：
 
-- 采购前核心理想仿真验证已完成；正式采购前新增低成本真实视频可行性验证，使用现有 iQOO Z10 Turbo+（cam0/left）和 iQOO Neo5S（cam1/right）作为双目视频文件输入；
-- 手机阶段只验证从合成到真实光学输入的迁移，以及符号、趋势、空间结构和时间连续性，不设置 1 cm 验收门槛，也不改变历史仿真结论；
+- 采购前核心理想仿真验证已完成；低成本真实视频第一轮闭环也已完成，当前使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/right）；
+- 手机阶段当前进入静水匹配稳定性诊断，不设置 1 cm 验收门槛，也不改变历史仿真结论；
 - 手机阶段通过后再采购并接入专业双目相机；最终 1 cm 目标只在真实标定、硬件同步和独立物理参考条件下验收；
 - 当前仅验证了工作距离、基线的两个单因素切片和一个交叉点，尚未得到完整 `baseline × scene distance` 有效域或全局最优参数；
 - WASS 锁定 `v_1.5` 基线的独立复现（当前成功运行的是本机 `1.11` 构建）；
@@ -77,7 +112,7 @@ Case 0/1/2 是静水零场、固定非零高度和动态正弦规则波三个逐
 - `src/application/`：未来最终桌面程序的 V0.x 骨架，不是手机专用 Demo；
 - `configs/`：候选设备、仿真和实验配置模板；
 - `tests/`：自动化测试；
-- `experiments/`：预留的可复现实验入口，目前不包含实验结果；
+- `experiments/`：可复现实验入口；当前包含 HomeTank_004 的小型配置、元数据和诊断报告，不包含原始 MP4 或大型重建产物；
 - `external/WASS/`：WASS 外部依赖元数据，不包含 WASS 源码。
 
 完整导航见 [文档索引](docs/README.md)，总体阶段安排见 [项目计划](docs/PROJECT_PLAN.md)。

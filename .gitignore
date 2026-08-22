@@ -20,6 +20,9 @@ Thumbs.db
 *.cache
 cache/
 tmp/
+local_reports/
+workdir_*/
+wass_workdir*/
 
 # Raw imagery and video
 *.avi
@@ -56,9 +59,13 @@ extracted_frames/
 *.mat
 *.pcd
 *.ply
+*.xyz
+*.xyzC
 *.las
 *.laz
 *.obj
+mesh_cam.xyzC
+gridded.nc
 
 # Local WASS checkout/build products (dependency metadata is retained)
 external/WASS/*

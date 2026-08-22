@@ -22,7 +22,7 @@
   → 静水、固定高度、动态正弦波三级理想仿真闭环
   → 关闭相位/坐标/时间对齐问题
   → 扫描 baseline × scene distance 部署参数
-  → 使用现有双手机完成低成本真实视频可行性验证
+  → 使用现有双手机完成低成本真实视频第一轮闭环并优化静水稳定性
   → 采购并接入实验室双工业相机同步数据
   → 水槽静水与人工波 1 cm 级高度验证
   → 配置、质量控制和数据流程工程化
@@ -84,7 +84,7 @@
 
 该门位于理想仿真完成之后、专业设备采购之前，并与 Phase 2 的数据接入工作衔接：
 
-- 使用 iQOO Z10 Turbo+ 作为 cam0/left、iQOO Neo5S 作为 cam1/right；
+- 使用 iQOO Neo5S 作为 cam0/left、iQOO Z10 Turbo Plus 作为 cam1/right；
 - 依次执行刚性纹理平面、静水、静态液位变化和人工波协议；
 - 用公共闪光事件拟合文件时间轴偏移与漂移；
 - 复用 WASS、坐标/尺度、网格、独立 `Z0`、`H`、QA 和可视化链；
@@ -150,16 +150,18 @@
 - 原始不规则波 IRR-1 在自动标定阶段 FAIL/BLOCKED；冻结 AC-10D 适配后的 IRR-1A 通过，RMSE 2.368 mm、最大误差 8.732 mm，原失败不被覆盖；
 - 工作距离 D1/D0/D2 分别为 FAIL/PASS/BLOCKED；固定 2.00 m 的基线 B1/B0/B2 全部 PASS；交叉点 XZ-1 `(B=0.25 m,Z=2.50 m)` PASS；
 - **采购前核心理想仿真验证已完成。**现有部署证据只包含两个单因素切片和一个交叉点，不构成完整参数图或最优参数证明；
-- **真实视频可行性路径已建立，实验尚未开始。**手机参数、真实标定、同步事件、基线和工作距离仍为 `UNKNOWN/TODO`；
+- **低成本真实视频第一轮闭环已完成，当前进入匹配稳定性优化。**HomeTank_004 已完成六段视频采集、输入检查、OpenCV 标定、固定参数 WASS 接入和静水单帧平面恢复；wave 尚未运行；
 - HomeTank_002 的白底线格已完成补救尝试：半自动投影线格恢复在双相机多帧得到完整 9 x 6 / 54 点，故 `custom_planar_grid_recovery=PASS`；但仅 9 对完整视图、3 组独立姿态，且靶板部分姿态可见弯曲，单目/双目/极线质量均失败。K/D/R/T 已拒绝，状态仍为 `CALIBRATION_DATA_INSUFFICIENT`，未运行 WASS；
 - 已将 HomeTank_002 教训固化为通用标定基础设施：录像前 Gate A 检查双侧 54/54 与画质，录像后 Gate B 基于图像几何去重独立姿态并检查位置/尺度/方向覆盖；
 - HomeTank_003 已执行真实标定 Gate：0.5 s 全段抽样与一次 10 Hz 针对性补扫均得到 cam0 完整棋盘检测 0，故双侧候选和独立姿态均为 0；分类 `CALIBRATION_DATASET_INSUFFICIENT`、`approved_for_wass=false`，未求 K/D/R/T，static/wave 仅登记未处理；
-- HomeTank_004 录制前软件 Gate 已完成：标定主线冻结为 OpenCV 官方 API 薄封装，官方 OpenCV 4.x 样例 13 对图像的 detection/mono/stereo/rectify 黄金路径通过；WASS 1.11 已确认支持由 `wass_prepare` 注入固定 `ext_R/ext_T` 后跳过 match/autocalibrate，粗几何备用模式仅用于 `ALGORITHM_CLOSURE_VALIDATION`。HomeTank_004 当前仍为 `NOT_CAPTURED`，六段视频必须在同一未移动 rig setup 中完成；
+- HomeTank_004 的 calibrated baseline 为 68.6847 mm，人工测量为 70.0000 mm，相差 1.3153 mm（1.879%）；人工值只作 physical sanity check，重建采用标定 `K/D/R/T`；
+- HomeTank_004 已跑通 rectification、dense stereo、triangulation 和单帧静水面检测，但三帧静水基准不稳定，状态为 `STATIC_VALIDATION_FAIL`。disparity 范围与 SGBM uniqueness/block size 审计均未产生可批准的正式参数变更；
 - 已确认 OpenCV XML、配置派生、xyzC 解码和 wassgridsurface 0.11.4 NetCDF 接口。
 
 下一阶段按以下门控顺序推进：
 
-- RV0--RV3：用现有双手机依次完成刚性纹理平面、静水、静态液位变化和人工波可行性验证；
+- HomeTank_004 静水稳定性：只读检查 rectified 图像尺度、极线残差和共同纹理支持，保持标定与正式 WASS 参数冻结；
+- wave 门：只有静水跨帧基准通过后才处理已采集的 wave 视频；
 - 设备采购：手机门通过后冻结专业相机、镜头、同步、照明、安装与计算设备；
 - 实机双目标定与同步验证；
 - 静水、固定高度和人工规则波验证，并与独立物理参考比较；
@@ -199,6 +201,8 @@ Case 0/1/2 分别是静水零场、固定非零高度和动态正弦规则波三
 - [部署几何汇总](validation/deployment_geometry_summary.md)
 - [阶段进展总结](progress/2026-08-13_2026-08-14_summary.md)
 - [HomeTank_004 录制前软件准备](real_video_validation/final_mobile_capture_preparation.md)
+- [HomeTank_004 静水验证总结](../experiments/real_video/HomeTank_004/static_validation_summary.md)
+- [HomeTank_004 SGBM 参数审计](../experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md)
 - [WASS 固定标定路径](wass/fixed_calibration_path.md)
 
 维护要求：新进展必须回填到对应阶段和状态节点，禁止在文末追加彼此割裂的英文更新块。完整用户汇报 DOCX/Markdown 及大型原始/中间数据仅保存在本地，不进入 Git。

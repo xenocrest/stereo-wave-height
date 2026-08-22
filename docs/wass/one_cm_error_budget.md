@@ -65,7 +65,7 @@ $$
 |\delta t|\leq\frac{0.003}{V_{z,max}}\ \mathrm{s}
 $$
 
-| `V_z,max` (m/s) | 允许 `|delta_t|` (ms) |
+| `V_z,max` (m/s) | 允许时间偏差幅值 (ms) |
 |---:|---:|
 | 0.05 | 60 |
 | 0.10 | 30 |
