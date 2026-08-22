@@ -20,6 +20,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "plane_ransac_config.yaml", "plane_ransac_result.yaml",
             "plane_ransac_sampling_update.md",
             "static_validation_summary.yaml", "static_validation_summary.md",
+            "static_frame_geometry_diagnostic.md",
             "fixed_calibration_rectification_policy_audit.md",
             "rectification_policy_compatibility.yaml",
             "rectification_policy_compatibility_report.md",
@@ -170,6 +171,18 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("authorized: false", summary)
         self.assertIn("No WASS stage was rerun", report)
         self.assertIn("processing remains unauthorized", report)
+
+    def test_static_frame_geometry_diagnostic_preserves_failure_gate(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        report = (root / "static_frame_geometry_diagnostic.md").read_text(encoding="utf-8")
+        self.assertIn("DIFFERENT_VISIBLE_RECONSTRUCTED_REGION", report)
+        self.assertIn("No frame-dependent WASS calibration", report)
+        self.assertIn("216,874 | 585.2716", report)
+        self.assertIn("133,968 | 488.8168", report)
+        self.assertIn("141,950 | 478.1076", report)
+        self.assertIn("STATIC_VALIDATION_FAIL", report)
+        self.assertIn("approved_for_wass=false", report)
+        self.assertIn("Wave remains prohibited", report)
 
 
 if __name__ == "__main__":

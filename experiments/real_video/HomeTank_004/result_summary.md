@@ -69,6 +69,12 @@ The frozen three-frame static comparison is `STATIC_VALIDATION_FAIL` and
 and mean reconstructed Z spans 97.2334 mm. No wave processing is authorized.
 See [static_validation_summary.md](static_validation_summary.md).
 
+Read-only geometry diagnostics found byte-identical fixed calibration,
+projection matrices and camera poses across all three frames. The drift is
+classified `DIFFERENT_VISIBLE_RECONSTRUCTED_REGION`: disparity support and XYZ
+extent change sharply rather than undergoing a common rigid transform. See
+[static_frame_geometry_diagnostic.md](static_frame_geometry_diagnostic.md).
+
 The controlled A0-A3 matrix produced nonzero offline OpenCV ROIs for A0, A1,
 and A3, but production WASS hard-codes alpha=1/flags=0 and cannot represent any
 matrix entry. No WASS policy run or static reconstruction was fabricated.
