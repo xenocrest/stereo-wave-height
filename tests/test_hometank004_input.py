@@ -15,6 +15,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "calibration_validation.md", "calibration_parameter_usage.yaml",
             "static_trial_plan.yaml", "static_trial_full_calibration.yaml",
             "static_trial_full_calibration.md", "fixed_calibration_rectification_audit.md",
+            "fixed_calibration_rectification_policy_audit.md",
         }
         self.assertEqual({path.name for path in root.iterdir()}, expected)
         self.assertIn("CALIBRATION_QUALITY_FAIL", (root / "manifest.yaml").read_text(encoding="utf-8"))
@@ -88,6 +89,22 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "CALIBRATION_QUALITY_FAIL",
             "approved_for_wass=false",
             "FAILED_AT_WASS_RECTIFICATION",
+        ):
+            self.assertIn(required, audit)
+
+    def test_rectification_policy_audit_schema_preserves_candidate_a(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        audit = (root / "fixed_calibration_rectification_policy_audit.md").read_text(encoding="utf-8")
+        for required in (
+            "validPixROI1 = [0, 0, 1920, 1079]",
+            "validPixROI2 = [0, 0, 1920, 1080]",
+            "(4277.6657, 134.7423) px",
+            "(3786.6227, 28.8087) px",
+            "EPIPOLE_INSIDE_IMAGE=false",
+            "RECTIFICATION_POLICY_ROI_INCOMPATIBILITY",
+            "CALIBRATION_QUALITY_FAIL",
+            "approved_for_wass=false",
+            "No adapter modification",
         ):
             self.assertIn(required, audit)
 

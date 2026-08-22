@@ -74,12 +74,13 @@ calibration:
   static_trial_full_calibration_result: static_trial_full_calibration.yaml
   static_trial_full_calibration_report: static_trial_full_calibration.md
   fixed_calibration_rectification_audit: fixed_calibration_rectification_audit.md
+  fixed_calibration_rectification_policy_audit: fixed_calibration_rectification_policy_audit.md
   static_algorithm_validation_status: FAILED_AT_WASS_RECTIFICATION
   coarse_fixed_calibration_allowed: true
   metrological_validity: false
   reconstruction_parameter_principle: CALIBRATION_FIRST
   manual_geometry_role: PHYSICAL_SANITY_CHECK_ONLY
-  next: AUDIT_WASS_RECTIFICATION_POLICY_WITH_UNCHANGED_CANDIDATE_A
+  next: CONTROLLED_CANDIDATE_A_RECTIFICATION_POLICY_COMPATIBILITY_TEST
 checkerboard:
   inner_corners: [9, 6]
   physical_squares: [10, 7]

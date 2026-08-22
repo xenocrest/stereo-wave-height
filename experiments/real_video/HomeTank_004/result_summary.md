@@ -34,3 +34,9 @@ cam0-to-cam1 transform `X_cam1=R*X_cam0+T`. The adapter's direct write is
 correct; no pre-inversion, left/right input swap, or mm/m correction is needed.
 The rectification failure therefore remains a geometry/policy issue under the
 unchanged Candidate A parameters, not an adapter convention error.
+
+The policy audit reproduced the distinction: OpenCV zero-disparity/alpha=0
+returns full valid ROIs, while WASS flags=0/alpha=1 returns zero ROIs with either
+calibrated or zero distortion. Both finite epipoles are outside the source
+image. The immediate classification is
+`RECTIFICATION_POLICY_ROI_INCOMPATIBILITY`; no adapter change is indicated.
