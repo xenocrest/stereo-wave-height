@@ -1,6 +1,6 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
-status: PLANNED_NOT_RUN
+status: CANDIDATE_A_COMPLETED_INVALID
 input_scope: STATIC_ONLY
 wave_data_allowed: false
 parameter_selection_cannot_use_wave_data: true
@@ -9,10 +9,13 @@ metrological_validity: false
 candidates:
   - id: FULL_CALIBRATION
     role: PRIMARY_RECONSTRUCTION_CANDIDATE
+    execution_status: FAILED_AT_WASS_RECTIFICATION
   - id: CALIBRATION_ZERO_DISTORTION
     role: DISTORTION_SENSITIVITY_CANDIDATE
+    execution_status: NOT_RUN_PROHIBITED_THIS_TRIAL
   - id: SPECIFICATION_INTRINSIC_REFERENCE
     role: REFERENCE_ONLY_NOT_DEFAULT
+    execution_status: NOT_RUN_PROHIBITED_THIS_TRIAL
 comparison_metrics:
   - XYZ_POINT_COUNT
   - STATIC_PLANE_RMS
@@ -20,4 +23,6 @@ comparison_metrics:
   - WATER_RULER_SCALE_CONSISTENCY
   - RECONSTRUCTION_STABILITY
 selection_rule: compare candidates only on frozen static inputs; do not inspect wave reconstruction
-next: STATIC_TRIAL_WITH_CALIBRATION_PARAMETERS
+result: static_trial_full_calibration.yaml
+report: static_trial_full_calibration.md
+next: REVIEW_FIXED_CALIBRATION_RECTIFICATION_FAILURE

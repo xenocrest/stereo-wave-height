@@ -13,7 +13,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "calibration_report.md", "coarse_geometry_candidates.yaml",
             "coarse_geometry_reassessment.md", "calibration_validation.yaml",
             "calibration_validation.md", "calibration_parameter_usage.yaml",
-            "static_trial_plan.yaml",
+            "static_trial_plan.yaml", "static_trial_full_calibration.yaml",
+            "static_trial_full_calibration.md",
         }
         self.assertEqual({path.name for path in root.iterdir()}, expected)
         self.assertIn("CALIBRATION_QUALITY_FAIL", (root / "manifest.yaml").read_text(encoding="utf-8"))
@@ -52,9 +53,28 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("usage: PHYSICAL_SANITY_CHECK_ONLY", usage)
         self.assertIn("may_override_calibration: false", usage)
         plan = (root / "static_trial_plan.yaml").read_text(encoding="utf-8")
-        self.assertIn("status: PLANNED_NOT_RUN", plan)
+        self.assertIn("status: CANDIDATE_A_COMPLETED_INVALID", plan)
         self.assertIn("wave_data_allowed: false", plan)
         self.assertIn("run_wass_autocalibrate: false", plan)
+
+    def test_full_calibration_static_trial_schema_and_failure_are_explicit(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        result = (root / "static_trial_full_calibration.yaml").read_text(encoding="utf-8")
+        for required in (
+            "candidate: FULL_CALIBRATION",
+            "T: OPENCV_STEREO_CALIBRATION_RESULT_UNCHANGED",
+            "manual_baseline_used_for_reconstruction: false",
+            "status: NOT_RUN_PROHIBITED",
+            "primary_error: epipole lies inside the image plane",
+            "xyz_point_count: 0",
+            "static_trial_result: STATIC_GEOMETRY_INVALID",
+            "strict_calibration_status_preserved: CALIBRATION_QUALITY_FAIL",
+            "approved_for_wass: false",
+            "wave_run: false",
+            "candidate_b_run: false",
+            "candidate_c_run: false",
+        ):
+            self.assertIn(required, result)
 
 
 if __name__ == "__main__":

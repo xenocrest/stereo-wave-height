@@ -105,6 +105,7 @@ physical_validation:
   baseline: PASS
 engineering_interpretation: PHYSICALLY_CONSISTENT_BUT_NOT_METROLOGICAL
 reconstruction_parameter_principle: CALIBRATION_PARAMETERS_PRIMARY_MANUAL_MEASUREMENTS_SANITY_ONLY
+static_algorithm_validation_status: FAILED_AT_WASS_RECTIFICATION
 coarse_calibration_physical_plausibility: PASS_BASELINE_ONLY
 coarse_fixed_calibration_allowed: true
 metrological_validity: false

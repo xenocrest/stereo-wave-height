@@ -1,0 +1,83 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+candidate: FULL_CALIBRATION
+calibration_source: OpenCV official calib3d calibration_result.yaml
+calibration_parameter_policy:
+  K0: OPENCV_CALIBRATION_RESULT_UNCHANGED
+  D0: OPENCV_CALIBRATION_RESULT_UNCHANGED
+  K1: OPENCV_CALIBRATION_RESULT_UNCHANGED
+  D1: OPENCV_CALIBRATION_RESULT_UNCHANGED
+  R: OPENCV_STEREO_CALIBRATION_RESULT_UNCHANGED
+  T: OPENCV_STEREO_CALIBRATION_RESULT_UNCHANGED
+  calibrated_baseline_m: 0.06868471158474378
+  manual_baseline_used_for_reconstruction: false
+  autocalibrate_run: false
+input:
+  condition: static
+  source_video_modified: false
+  planned_pair_count: 3
+  extracted_pair_count: 3
+  synchronization_source: HomeTank_004 synchronization preanalysis
+  candidate_cam1_minus_cam0_s: 0.1
+  pairing_method: independent stream PTS; nearest decoded frame to cam0 target and cam1 target plus 0.1 s
+  pairs:
+    - {frame_id: "000000", cam0_timestamp_s: 10.012256, cam1_timestamp_s: 10.100267, timestamp_difference_s: 0.088011}
+    - {frame_id: "000001", cam0_timestamp_s: 27.006311, cam1_timestamp_s: 27.100722, timestamp_difference_s: 0.094411}
+    - {frame_id: "000002", cam0_timestamp_s: 44.000511, cam1_timestamp_s: 44.101167, timestamp_difference_s: 0.100656}
+wass:
+  runtime: D:/wass/dist/bin
+  version: 1.11_heads/master-0-g6b82aeb
+  fixed_calibration_path: true
+  prepare:
+    status: PASS
+    attempted_frames: 3
+    passed_frames: 3
+    return_codes: [0, 0, 0]
+  match:
+    status: PASS
+    purpose: sparse correspondence diagnostic only; recovered match poses were not supplied to stereo
+    attempted_frames: 3
+    passed_frames: 3
+    return_codes: [0, 0, 0]
+    retained_matches: [35, 36, 28]
+  fixed_extrinsics_restore_after_match:
+    status: PASS
+    reason: wass_match writes diagnostic ext_R/ext_T; frozen OpenCV ext_R/ext_T were restored before stereo
+    restored_T_norm_m: 0.06868471158474378
+  autocalibrate:
+    status: NOT_RUN_PROHIBITED
+  stereo:
+    status: FAIL
+    attempted_frames: 1
+    passed_frames: 0
+    unattempted_frames_after_failure: 2
+    return_code: -1073740791
+    failure_stage: RECTIFICATION
+    primary_error: epipole lies inside the image plane
+    terminal_error: OpenCV cvtColor assertion failed because rectification produced an empty image
+output:
+  mesh_cam_xyzc_generated: false
+  xyz_point_count: 0
+  coordinate_unit: m
+  metric_scale_source_if_xyz_existed: calibrated OpenCV T norm; not manual baseline
+  xyz_range_m:
+    x: {min: null, max: null}
+    y: {min: null, max: null}
+    z: {min: null, max: null}
+plane_fit:
+  status: NOT_AVAILABLE_NO_XYZ
+  model: z = a*x + b*y + c
+  coefficients: {a: null, b: null, c: null}
+  residual_m: {rms: null, mean: null, max_abs: null}
+  estimated_water_plane_tilt_deg: null
+scale_validation:
+  status: FAIL
+  reason: no XYZ output and no numeric water-ruler or tank dimension is registered for HomeTank_004
+  manual_geometry_applied_as_correction: false
+static_trial_result: STATIC_GEOMETRY_INVALID
+static_algorithm_validation_status: FAILED_AT_WASS_RECTIFICATION
+strict_calibration_status_preserved: CALIBRATION_QUALITY_FAIL
+approved_for_wass: false
+wave_run: false
+candidate_b_run: false
+candidate_c_run: false
