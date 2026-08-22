@@ -93,6 +93,8 @@ calibration:
   static_geometry_drift_classification: DIFFERENT_VISIBLE_RECONSTRUCTED_REGION
   wass_disparity_range_audit: wass_disparity_range_audit.md
   disparity_range_audit_classification: OTHER_MATCHING_INSTABILITY
+  wass_sgbm_parameter_audit: wass_sgbm_matching_parameter_audit.md
+  sgbm_parameter_audit_result: NO_VALIDATED_FORMAL_PARAMETER_CHANGE
   rectification_policy_compatible: false
   rectification_policy_test_status: ROI_INCOMPATIBILITY_RESOLVED_STEREO_PIPELINE_NOT_PASSED
   static_algorithm_validation_status: FAILED_AT_WASS_RECTIFICATION

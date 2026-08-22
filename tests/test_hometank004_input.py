@@ -22,6 +22,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "static_validation_summary.yaml", "static_validation_summary.md",
             "static_frame_geometry_diagnostic.md",
             "wass_disparity_range_audit.md",
+            "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
             "rectification_policy_compatibility.yaml",
             "rectification_policy_compatibility_report.md",
@@ -195,6 +196,19 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("| 1280 | 000000 | 92,829", report)
         self.assertIn("| 2560 | 000002 | 81,078", report)
         self.assertIn("OTHER_MATCHING_INSTABILITY", report)
+        self.assertIn("approved_for_wass=false", report)
+        self.assertIn("Wave remains prohibited", report)
+
+    def test_sgbm_parameter_audit_keeps_static_failure(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        report = (root / "wass_sgbm_matching_parameter_audit.md").read_text(encoding="utf-8")
+        self.assertIn("uniqueness `1, 5, 10, 15`", report)
+        self.assertIn("block size `7, 11, 15, 21`", report)
+        self.assertIn("`uniqueness=15, block=15`", report)
+        self.assertIn("22.975 mm", report)
+        self.assertIn("2.801 deg", report)
+        self.assertIn("no validated formal parameter change", report)
+        self.assertIn("STATIC_VALIDATION_FAIL", report)
         self.assertIn("approved_for_wass=false", report)
         self.assertIn("Wave remains prohibited", report)
 

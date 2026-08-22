@@ -81,6 +81,12 @@ points and physically invalid negative-Z components, so the final classification
 is `OTHER_MATCHING_INSTABILITY`; no formal WASS parameter was changed. See
 [wass_disparity_range_audit.md](wass_disparity_range_audit.md).
 
+The staged SGBM audit selected uniqueness 15 and block 15 as the best observed
+diagnostic pair, reducing median-Z spread to 22.975 mm and normal variation to
+2.801 degrees. Results remain boundary-clipped and are not a stable water
+reference; no formal matcher parameter was changed. See
+[wass_sgbm_matching_parameter_audit.md](wass_sgbm_matching_parameter_audit.md).
+
 The controlled A0-A3 matrix produced nonzero offline OpenCV ROIs for A0, A1,
 and A3, but production WASS hard-codes alpha=1/flags=0 and cannot represent any
 matrix entry. No WASS policy run or static reconstruction was fabricated.
