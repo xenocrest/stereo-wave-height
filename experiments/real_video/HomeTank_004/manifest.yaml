@@ -67,9 +67,15 @@ calibration:
   report: calibration_report.md
   coarse_geometry_candidates: coarse_geometry_candidates.yaml
   coarse_geometry_reassessment: coarse_geometry_reassessment.md
+  calibration_validation: calibration_validation.yaml
+  calibration_validation_report: calibration_validation.md
+  calibration_parameter_usage: calibration_parameter_usage.yaml
+  static_trial_plan: static_trial_plan.yaml
   coarse_fixed_calibration_allowed: true
   metrological_validity: false
-  next: STATIC_COARSE_GEOMETRY_SANITY_TRIAL
+  reconstruction_parameter_principle: CALIBRATION_FIRST
+  manual_geometry_role: PHYSICAL_SANITY_CHECK_ONLY
+  next: STATIC_TRIAL_WITH_CALIBRATION_PARAMETERS
 checkerboard:
   inner_corners: [9, 6]
   physical_squares: [10, 7]

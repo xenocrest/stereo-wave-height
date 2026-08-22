@@ -1,72 +1,70 @@
-schema_version: "1.0"
+schema_version: "2.0"
 experiment_id: HomeTank_004
+workflow_principle: MATURE_CALIBRATION_FIRST
 strict_calibration_status: CALIBRATION_QUALITY_FAIL
 approved_for_wass: false
 selection_data_policy: STATIC_ONLY
 wave_result_selection_forbidden: true
 purpose: ALGORITHM_CLOSURE_VALIDATION_ONLY
 metrological_validity: false
+manual_geometry_role: PHYSICAL_SANITY_CHECK_ONLY
+manual_geometry_must_not_override_calibration: true
 candidates:
-  - id: SPEC_COARSE
+  - id: FULL_CALIBRATION
+    role: PRIMARY_RECONSTRUCTION_CANDIDATE
     definition:
-      K0: [[1329.0, 0.0, 960.0], [0.0, 1329.0, 540.0], [0.0, 0.0, 1.0]]
-      D0: [0, 0, 0, 0, 0]
-      K1: [[1389.0, 0.0, 960.0], [0.0, 1389.0, 540.0], [0.0, 0.0, 1.0]]
-      D1: [0, 0, 0, 0, 0]
-      R_right_from_left: UNKNOWN
-      T_direction_right_from_left: UNKNOWN
-      baseline_m: 0.070
+      K0: CALIBRATION_RESULT_MONO_CAM0_K
+      D0: CALIBRATION_RESULT_MONO_CAM0_D
+      K1: CALIBRATION_RESULT_MONO_CAM1_K
+      D1: CALIBRATION_RESULT_MONO_CAM1_D
+      R_right_from_left: CALIBRATION_RESULT_STEREO_R
+      T_right_from_left_m: CALIBRATION_RESULT_STEREO_T
     provenance:
-      K0: DERIVED_FROM_ASSUMED_HFOV_71_5_DEG
-      D0: ASSUMED_ZERO_APPROXIMATION
-      K1: DERIVED_FROM_ASSUMED_HFOV_69_4_DEG
-      D1: ASSUMED_ZERO_APPROXIMATION
-      R_right_from_left: UNKNOWN_MANUAL_YAW_ROLL
-      T_direction_right_from_left: UNKNOWN_MEASUREMENT_CONVENTION
-      baseline_m: USER_SPECIFIED_CORRECTED
-    usability: USE_AS_COARSE_PRIOR
-    coarse_fixed_calibration_exportable: false
-    export_blocker: full R and T direction are not defined by equal pitch and baseline magnitude
-
-  - id: FAILED_CALIB_COARSE
-    definition_source: calibration_result.yaml
-    definition:
-      K0: DIAGNOSTIC_OPENCV_SOLUTION
-      D0: DIAGNOSTIC_OPENCV_SOLUTION
-      K1: DIAGNOSTIC_OPENCV_SOLUTION
-      D1: DIAGNOSTIC_OPENCV_SOLUTION
-      R_right_from_left: DIAGNOSTIC_OPENCV_SOLUTION
-      T_right_from_left_m: DIAGNOSTIC_OPENCV_SOLUTION
-    provenance:
-      all_parameters: FAILED_STRICT_OPENCV_CALIBRATION_DIAGNOSTIC
-      baseline_sanity: USER_SPECIFIED_MEASUREMENT_AGREEMENT
-    usability: USE_WITH_WARNING
+      all_parameters: OPENCV_OFFICIAL_CALIB3D_RESULT
+      source_file: calibration_result.yaml
+    purpose: test the complete calibration result without manual replacement
     coarse_fixed_calibration_exportable: true
     coarse_fixed_calibration_allowed: true
+    approved_for_wass: false
     metrological_validity: false
 
-  - id: HYBRID_COARSE
+  - id: CALIBRATION_ZERO_DISTORTION
+    role: DISTORTION_SENSITIVITY_CANDIDATE
+    definition:
+      K0: CALIBRATION_RESULT_MONO_CAM0_K
+      D0: [0, 0, 0, 0, 0]
+      K1: CALIBRATION_RESULT_MONO_CAM1_K
+      D1: [0, 0, 0, 0, 0]
+      R_right_from_left: CALIBRATION_RESULT_STEREO_R
+      T_right_from_left_m: CALIBRATION_RESULT_STEREO_T
+    provenance:
+      K0_K1_R_T: OPENCV_OFFICIAL_CALIB3D_RESULT
+      D0_D1: ZERO_APPROXIMATION_DIAGNOSTIC
+      source_file: calibration_result.yaml
+    purpose: test whether fitted distortion contaminates the static reconstruction
+    coarse_fixed_calibration_exportable: true
+    coarse_fixed_calibration_allowed: true
+    approved_for_wass: false
+    metrological_validity: false
+
+  - id: SPECIFICATION_INTRINSIC_REFERENCE
+    role: REFERENCE_ONLY_NOT_DEFAULT
     definition:
       K0: [[1329.0, 0.0, 960.0], [0.0, 1329.0, 540.0], [0.0, 0.0, 1.0]]
       D0: [0, 0, 0, 0, 0]
       K1: [[1389.0, 0.0, 960.0], [0.0, 1389.0, 540.0], [0.0, 0.0, 1.0]]
       D1: [0, 0, 0, 0, 0]
-      R_right_from_left:
-        - [0.9930873165486288, -0.020173468835128883, -0.11563136626971747]
-        - [-0.006391109959918555, 0.9743653510553748, -0.22488067141534496]
-        - [0.11720382000482622, 0.22406515529616422, 0.9675009409599465]
-      T_right_from_left_m: [-0.059985928369423014, 0.012828993396158781, -0.03372099236528733]
-      baseline_m: 0.070
+      R_right_from_left: CALIBRATION_RESULT_STEREO_R
+      T_right_from_left_m: CALIBRATION_RESULT_STEREO_T
     provenance:
       K0: DERIVED_FROM_ASSUMED_HFOV_71_5_DEG
       D0: ASSUMED_ZERO_APPROXIMATION
       K1: DERIVED_FROM_ASSUMED_HFOV_69_4_DEG
       D1: ASSUMED_ZERO_APPROXIMATION
-      R_right_from_left: FAILED_STRICT_OPENCV_CALIBRATION_DIAGNOSTIC
-      T_direction_right_from_left: FAILED_STRICT_OPENCV_CALIBRATION_DIAGNOSTIC
-      T_magnitude: USER_SPECIFIED_CORRECTED_BASELINE
-      rescaling_rule: T_hybrid = T_calibrated / norm(T_calibrated) * 0.070_m
-    usability: USE_WITH_WARNING
+      R_T: OPENCV_OFFICIAL_CALIB3D_RESULT_UNSCALED
+      source_file: calibration_result.yaml
+    purpose: specification-intrinsic reference; must not be selected as default
     coarse_fixed_calibration_exportable: true
     coarse_fixed_calibration_allowed: true
+    approved_for_wass: false
     metrological_validity: false

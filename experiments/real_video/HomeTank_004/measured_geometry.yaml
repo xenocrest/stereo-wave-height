@@ -1,6 +1,9 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
 status: CORRECTED_USER_MEASUREMENT
+purpose: PHYSICAL_SANITY_CHECK_ONLY
+reconstruction_parameter_source: false
+usage_note: manual measurements must not override calibrated K/D/R/T
 correction:
   correction_reason: previous manual geometry values contained a decimal-place / factor-of-10 transcription error
   corrected_from:

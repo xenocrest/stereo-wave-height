@@ -1,0 +1,23 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: PLANNED_NOT_RUN
+input_scope: STATIC_ONLY
+wave_data_allowed: false
+parameter_selection_cannot_use_wave_data: true
+run_wass_autocalibrate: false
+metrological_validity: false
+candidates:
+  - id: FULL_CALIBRATION
+    role: PRIMARY_RECONSTRUCTION_CANDIDATE
+  - id: CALIBRATION_ZERO_DISTORTION
+    role: DISTORTION_SENSITIVITY_CANDIDATE
+  - id: SPECIFICATION_INTRINSIC_REFERENCE
+    role: REFERENCE_ONLY_NOT_DEFAULT
+comparison_metrics:
+  - XYZ_POINT_COUNT
+  - STATIC_PLANE_RMS
+  - PLANE_TILT
+  - WATER_RULER_SCALE_CONSISTENCY
+  - RECONSTRUCTION_STABILITY
+selection_rule: compare candidates only on frozen static inputs; do not inspect wave reconstruction
+next: STATIC_TRIAL_WITH_CALIBRATION_PARAMETERS

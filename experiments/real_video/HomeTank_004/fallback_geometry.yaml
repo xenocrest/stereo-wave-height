@@ -1,10 +1,12 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
-status: COARSE_CANDIDATES_DEFINED
-purpose: COARSE_GEOMETRY_VALIDATION
+status: LEGACY_COARSE_REFERENCE_RETAINED
+purpose: PHYSICAL_SANITY_AND_SPECIFICATION_REFERENCE_ONLY
+superseded_for_reconstruction_by: CALIBRATION_FIRST_WORKFLOW
 metrological_validity: false
 run_wass_autocalibrate: false
-coarse_fixed_calibration_allowed: true
+coarse_fixed_calibration_allowed: false
+manual_values_must_not_override_calibrated_extrinsics: true
 baseline_m: {value: 0.070, provenance: USER_SPECIFIED, unit: m}
 cam0_height_to_static_water_m: {value: 0.190, provenance: USER_SPECIFIED, unit: m}
 cam1_height_to_static_water_m: {value: 0.170, provenance: USER_SPECIFIED, unit: m}

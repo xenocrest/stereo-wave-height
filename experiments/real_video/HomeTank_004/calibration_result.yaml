@@ -101,6 +101,10 @@ physical_sanity:
   interpretation: baseline scale is physically plausible; this does not approve the calibration
   rotation_check: WARNING_RELATIVE_ROTATION_14_65_DEG_NOT_INDEPENDENTLY_MEASURED
   approval_effect: FAIL
+physical_validation:
+  baseline: PASS
+engineering_interpretation: PHYSICALLY_CONSISTENT_BUT_NOT_METROLOGICAL
+reconstruction_parameter_principle: CALIBRATION_PARAMETERS_PRIMARY_MANUAL_MEASUREMENTS_SANITY_ONLY
 coarse_calibration_physical_plausibility: PASS_BASELINE_ONLY
 coarse_fixed_calibration_allowed: true
 metrological_validity: false

@@ -8,11 +8,15 @@
 
 `approved_for_wass = false`
 
-`NEXT = COARSE_GEOMETRY_VALIDATION`
+`NEXT = STATIC_TRIAL_WITH_CALIBRATION_PARAMETERS`
 
 This final strict mobile calibration attempt used only the frozen OpenCV
 official backend. It did not run WASS or introduce a detector, grid recovery,
 optimizer, flag search, or repeated outlier deletion.
+
+For subsequent engineering trials, calibrated K/D/R/T remain the primary
+reconstruction parameters. Manual geometry is an independent physical sanity
+check only and does not replace the calibrated translation.
 
 ## Detection and pairing
 

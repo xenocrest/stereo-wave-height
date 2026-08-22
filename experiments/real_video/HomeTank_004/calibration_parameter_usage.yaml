@@ -1,0 +1,30 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+principle: MATURE_CALIBRATION_FIRST
+strict_calibration_status: CALIBRATION_QUALITY_FAIL
+approved_for_wass: false
+parameters:
+  K0:
+    usage: USE_FOR_RECONSTRUCTION
+    source: OpenCV official calib3d calibration result
+  D0:
+    usage: TEST_REQUIRED
+    source: OpenCV official calib3d calibration result
+    comparison: ZERO_DISTORTION_DIAGNOSTIC
+  K1:
+    usage: USE_FOR_RECONSTRUCTION
+    source: OpenCV official calib3d calibration result
+  D1:
+    usage: TEST_REQUIRED
+    source: OpenCV official calib3d calibration result
+    comparison: ZERO_DISTORTION_DIAGNOSTIC
+  R_right_from_left:
+    usage: USE_FOR_RECONSTRUCTION
+    source: OpenCV official calib3d calibration result
+  T_right_from_left_m:
+    usage: USE_FOR_RECONSTRUCTION
+    source: OpenCV official calib3d calibration result
+    physical_sanity: BASELINE_MAGNITUDE_PASS
+manual_geometry:
+  usage: PHYSICAL_SANITY_CHECK_ONLY
+  may_override_calibration: false

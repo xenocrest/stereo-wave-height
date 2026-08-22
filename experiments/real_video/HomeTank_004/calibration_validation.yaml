@@ -1,0 +1,13 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+calibration_backend: OpenCV official calib3d
+calibrated_baseline_m: 0.06868471158474378
+measured_baseline_m: 0.070
+absolute_difference_m: 0.00131528841525623
+relative_error_percent: 1.8789834503660428
+baseline_validation: PASS
+interpretation: calibrated baseline is physically consistent with manual measurement
+scope: PHYSICAL_SANITY_CHECK_ONLY
+strict_calibration_status: CALIBRATION_QUALITY_FAIL
+approved_for_wass: false
+engineering_interpretation: PHYSICALLY_CONSISTENT_BUT_NOT_METROLOGICAL

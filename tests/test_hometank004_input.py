@@ -1,6 +1,4 @@
 from pathlib import Path
-import ast
-import re
 import unittest
 
 
@@ -13,7 +11,9 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "video_metadata_summary.yaml", "input_inspection.md",
             "calibration_detection_summary.yaml", "calibration_metrics.json",
             "calibration_report.md", "coarse_geometry_candidates.yaml",
-            "coarse_geometry_reassessment.md",
+            "coarse_geometry_reassessment.md", "calibration_validation.yaml",
+            "calibration_validation.md", "calibration_parameter_usage.yaml",
+            "static_trial_plan.yaml",
         }
         self.assertEqual({path.name for path in root.iterdir()}, expected)
         self.assertIn("CALIBRATION_QUALITY_FAIL", (root / "manifest.yaml").read_text(encoding="utf-8"))
@@ -41,12 +41,20 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
 
         candidates = (root / "coarse_geometry_candidates.yaml").read_text(encoding="utf-8")
         self.assertIn("metrological_validity: false", candidates)
-        self.assertRegex(candidates, r"(?s)id: SPEC_COARSE.*?coarse_fixed_calibration_exportable: false")
-        self.assertRegex(candidates, r"(?s)id: FAILED_CALIB_COARSE.*?coarse_fixed_calibration_exportable: true")
-        match = re.search(r"T_right_from_left_m: (\[[^\n]+\])", candidates)
-        self.assertIsNotNone(match)
-        hybrid_t = ast.literal_eval(match.group(1))
-        self.assertAlmostEqual(sum(value * value for value in hybrid_t) ** 0.5, 0.070)
+        self.assertIn("workflow_principle: MATURE_CALIBRATION_FIRST", candidates)
+        self.assertIn("id: FULL_CALIBRATION", candidates)
+        self.assertIn("id: CALIBRATION_ZERO_DISTORTION", candidates)
+        self.assertIn("id: SPECIFICATION_INTRINSIC_REFERENCE", candidates)
+        self.assertNotIn("T_hybrid", candidates)
+        self.assertNotIn("T_magnitude: USER_SPECIFIED", candidates)
+
+        usage = (root / "calibration_parameter_usage.yaml").read_text(encoding="utf-8")
+        self.assertIn("usage: PHYSICAL_SANITY_CHECK_ONLY", usage)
+        self.assertIn("may_override_calibration: false", usage)
+        plan = (root / "static_trial_plan.yaml").read_text(encoding="utf-8")
+        self.assertIn("status: PLANNED_NOT_RUN", plan)
+        self.assertIn("wave_data_allowed: false", plan)
+        self.assertIn("run_wass_autocalibrate: false", plan)
 
 
 if __name__ == "__main__":
