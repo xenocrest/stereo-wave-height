@@ -1,0 +1,68 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+candidate: FULL_CALIBRATION
+status: STATIC_VALIDATION_FAIL
+static_baseline_status: STATIC_BASELINE_UNSTABLE
+calibration_source: OpenCV
+calibration_parameters:
+  K0: UNCHANGED
+  D0: UNCHANGED
+  K1: UNCHANGED
+  D1: UNCHANGED
+  R: UNCHANGED
+  T: UNCHANGED
+  calibration_quality_status: CALIBRATION_QUALITY_FAIL
+  approved_for_wass: false
+wass_configuration:
+  rectification: {alpha: 0.0, zero_disparity: true}
+  plane_ransac:
+    sampling_mode: VALID_POINT_SAMPLING
+    iterations: 400
+    distance_threshold: 1.0
+    distance_threshold_unit: baseline_normalized_camera_coordinate
+  wave_run: false
+frames:
+  - frame_id: "000000"
+    timestamp: {cam0_s: 10.012256, cam1_s: 10.100267}
+    xyz_point_count: 167581
+    valid_point_count: 216874
+    water_plane_inliers: 167581
+    inlier_ratio: 1.0
+    mean_z_m: 0.2907236481
+    plane: {model: "z = a*x + b*y + c", a: 0.4604331984, b: 0.0784329395, c_m: 0.3971745173}
+    residual_m: {rms: 0.0022490853, mean_signed: -0.0000136872, max_absolute: 0.0742756764}
+  - frame_id: "000001"
+    timestamp: {cam0_s: 27.006311, cam1_s: 27.100722}
+    xyz_point_count: 33286
+    valid_point_count: 133968
+    water_plane_inliers: 33286
+    inlier_ratio: 1.0
+    mean_z_m: 0.3311206990
+    plane: {model: "z = a*x + b*y + c", a: 0.3409947789, b: 0.0361078488, c_m: 0.3878047532}
+    residual_m: {rms: 0.0021611379, mean_signed: -0.0000125689, max_absolute: 0.0330415440}
+  - frame_id: "000002"
+    timestamp: {cam0_s: 44.000511, cam1_s: 44.101167}
+    xyz_point_count: 34411
+    valid_point_count: 141950
+    water_plane_inliers: 34411
+    inlier_ratio: 1.0
+    mean_z_m: 0.2338873373
+    plane: {model: "z = a*x + b*y + c", a: 0.5856541884, b: -0.0393184049, c_m: 0.4008669322}
+    residual_m: {rms: 0.0020065347, mean_signed: -0.0000100089, max_absolute: 0.0119686252}
+stability:
+  maximum_plane_normal_angle_difference_deg: 12.16642043
+  plane_offset_c_range_m: 0.0130621790
+  mean_z_range_m: 0.0972333617
+  plane_rms_range_m: 0.0002425506
+  conclusion: STATIC_BASELINE_UNSTABLE
+scale_validation:
+  status: FAIL
+  calibrated_baseline_m: 0.06868471158474378
+  user_measured_baseline_m: 0.070
+  relative_difference: 0.0187898345
+  reconstruction_scale_modified: false
+  reason: No independent numeric tank dimension or ruler interval is registered for reconstructed-object scale validation.
+wave_stage:
+  authorized: false
+  reason: Static baseline is unstable; this task did not run wave reconstruction.
+runtime_equivalence_to_production_compiler_build: NOT_ESTABLISHED

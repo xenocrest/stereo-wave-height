@@ -19,6 +19,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "static_pointcloud_diagnosis.md",
             "plane_ransac_config.yaml", "plane_ransac_result.yaml",
             "plane_ransac_sampling_update.md",
+            "static_validation_summary.yaml", "static_validation_summary.md",
             "fixed_calibration_rectification_policy_audit.md",
             "rectification_policy_compatibility.yaml",
             "rectification_policy_compatibility_report.md",
@@ -156,6 +157,19 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("water_plane_status: STATIC_WATER_PLANE_DETECTED", result)
         self.assertIn("approved_for_wass: false", result)
         self.assertIn("No wave result was generated", report)
+
+    def test_static_validation_summary_freezes_unstable_baseline(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        summary = (root / "static_validation_summary.yaml").read_text(encoding="utf-8")
+        report = (root / "static_validation_summary.md").read_text(encoding="utf-8")
+        self.assertIn("status: STATIC_VALIDATION_FAIL", summary)
+        self.assertIn("conclusion: STATIC_BASELINE_UNSTABLE", summary)
+        self.assertEqual(summary.count("frame_id:"), 3)
+        self.assertIn("scale_validation:\n  status: FAIL", summary)
+        self.assertIn("approved_for_wass: false", summary)
+        self.assertIn("authorized: false", summary)
+        self.assertIn("No WASS stage was rerun", report)
+        self.assertIn("processing remains unauthorized", report)
 
 
 if __name__ == "__main__":

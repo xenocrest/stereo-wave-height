@@ -64,6 +64,11 @@ stereo and generated `mesh_cam.xyzC`; refined plane RMS was 2.2491, 2.1611 and
 `CALIBRATION_QUALITY_FAIL` and `approved_for_wass=false` remain unchanged. See
 [plane_ransac_sampling_update.md](plane_ransac_sampling_update.md).
 
+The frozen three-frame static comparison is `STATIC_VALIDATION_FAIL` and
+`STATIC_BASELINE_UNSTABLE`: maximum plane-normal variation is 12.1664 degrees
+and mean reconstructed Z spans 97.2334 mm. No wave processing is authorized.
+See [static_validation_summary.md](static_validation_summary.md).
+
 The controlled A0-A3 matrix produced nonzero offline OpenCV ROIs for A0, A1,
 and A3, but production WASS hard-codes alpha=1/flags=0 and cannot represent any
 matrix entry. No WASS policy run or static reconstruction was fabricated.
