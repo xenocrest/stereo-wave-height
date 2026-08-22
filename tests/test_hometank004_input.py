@@ -17,6 +17,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "static_trial_full_calibration.md", "fixed_calibration_rectification_audit.md",
             "rectification_policy.yaml", "rectification_policy_result.md",
             "static_pointcloud_diagnosis.md",
+            "plane_ransac_config.yaml", "plane_ransac_result.yaml",
+            "plane_ransac_sampling_update.md",
             "fixed_calibration_rectification_policy_audit.md",
             "rectification_policy_compatibility.yaml",
             "rectification_policy_compatibility_report.md",
@@ -140,6 +142,20 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "Wave remains prohibited",
         ):
             self.assertIn(required, report)
+
+    def test_valid_point_ransac_result_preserves_calibration_failure(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        config = (root / "plane_ransac_config.yaml").read_text(encoding="utf-8")
+        result = (root / "plane_ransac_result.yaml").read_text(encoding="utf-8")
+        report = (root / "plane_ransac_sampling_update.md").read_text(encoding="utf-8")
+        self.assertIn("sampling_mode: VALID_POINT_SAMPLING", config)
+        self.assertIn("iterations: 400", config)
+        self.assertIn("distance_threshold: 1.0", config)
+        self.assertIn("minimum_best_inliers: 33286", result)
+        self.assertIn("maximum_plane_rms_m: 0.0022490853", result)
+        self.assertIn("water_plane_status: STATIC_WATER_PLANE_DETECTED", result)
+        self.assertIn("approved_for_wass: false", result)
+        self.assertIn("No wave result was generated", report)
 
 
 if __name__ == "__main__":

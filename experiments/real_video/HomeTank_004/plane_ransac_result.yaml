@@ -1,0 +1,49 @@
+experiment: HomeTank_004
+candidate: FULL_CALIBRATION
+sampling_mode: VALID_POINT_SAMPLING
+iterations: 400
+distance_threshold: 1.0
+distance_threshold_unit: baseline_normalized_camera_coordinate
+calibration_status_preserved: CALIBRATION_QUALITY_FAIL
+approved_for_wass: false
+external_run: D:/stereo-wave-height-runs/HomeTank_004/static-full-calibration-valid-point-ransac-20260822
+runtime_equivalence_to_production_compiler_build: NOT_ESTABLISHED
+frames:
+  - frame_id: '000000'
+    valid_triangulated_points: 216874
+    connected_component_points: 167581
+    best_inliers: 167581
+    inlier_ratio_of_connected_component: 1.0
+    plane_z_ax_by_c_m: {a: 0.4604331984, b: 0.0784329395, c: 0.3971745173}
+    plane_rms_m: 0.0022490853
+    mean_signed_residual_m: -0.0000136872
+    max_absolute_residual_m: 0.0742756764
+    water_plane_status: PASS
+  - frame_id: '000001'
+    valid_triangulated_points: 133968
+    connected_component_points: 33286
+    best_inliers: 33286
+    inlier_ratio_of_connected_component: 1.0
+    plane_z_ax_by_c_m: {a: 0.3409947789, b: 0.0361078488, c: 0.3878047532}
+    plane_rms_m: 0.0021611379
+    mean_signed_residual_m: -0.0000125689
+    max_absolute_residual_m: 0.0330415440
+    water_plane_status: PASS
+  - frame_id: '000002'
+    valid_triangulated_points: 141950
+    connected_component_points: 34411
+    best_inliers: 34411
+    inlier_ratio_of_connected_component: 1.0
+    plane_z_ax_by_c_m: {a: 0.5856541884, b: -0.0393184049, c: 0.4008669322}
+    plane_rms_m: 0.0020065347
+    mean_signed_residual_m: -0.0000100089
+    max_absolute_residual_m: 0.0119686252
+    water_plane_status: PASS
+summary:
+  stereo_frames_passed: 3
+  stereo_frames_total: 3
+  minimum_best_inliers: 33286
+  maximum_plane_rms_m: 0.0022490853
+  water_plane_status: STATIC_WATER_PLANE_DETECTED
+  xyz_generated: true
+  wave_run: false

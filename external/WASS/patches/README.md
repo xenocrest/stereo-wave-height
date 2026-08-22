@@ -14,3 +14,9 @@ The defaults preserve WASS 1.11 behavior (`cv::stereoRectify` flags `0`, alpha
 `1.0`). The patch changes only rectification call policy and logging. It does
 not change `K`, `D`, `R`, `T`, matching, triangulation, filtering, or plane
 estimation.
+
+`plane_ransac_valid_point_sampling.patch` adds an optional
+`PLANE_RANSAC_SAMPLING_MODE`. Its default preserves full-image random sampling;
+the opt-in `VALID_POINT_SAMPLING` population contains only already-valid XYZ
+points. RANSAC rounds, distance threshold, plane model and per-point inlier
+comparison remain unchanged.

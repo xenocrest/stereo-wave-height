@@ -56,6 +56,14 @@ triplet in 400 rounds is approximately 80.96%. See
 [static_pointcloud_diagnosis.md](static_pointcloud_diagnosis.md). No parameter
 or historical status was changed.
 
+The controlled `VALID_POINT_SAMPLING` plane-extraction mode then retained all
+original RANSAC thresholds, rounds and inlier equations while drawing
+hypotheses from valid XYZ locations. All three static frames completed WASS
+stereo and generated `mesh_cam.xyzC`; refined plane RMS was 2.2491, 2.1611 and
+2.0065 mm. Status is `STATIC_WATER_PLANE_DETECTED`, while
+`CALIBRATION_QUALITY_FAIL` and `approved_for_wass=false` remain unchanged. See
+[plane_ransac_sampling_update.md](plane_ransac_sampling_update.md).
+
 The controlled A0-A3 matrix produced nonzero offline OpenCV ROIs for A0, A1,
 and A3, but production WASS hard-codes alpha=1/flags=0 and cannot represent any
 matrix entry. No WASS policy run or static reconstruction was fabricated.

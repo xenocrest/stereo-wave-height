@@ -1,0 +1,14 @@
+candidate: FULL_CALIBRATION
+plane_ransac:
+  sampling_mode: VALID_POINT_SAMPLING
+  iterations: 400
+  distance_threshold: 1.0
+  distance_threshold_unit: baseline_normalized_camera_coordinate
+source: CONTROLLED_EXPERIMENT
+status: EXECUTED_STATIC_ONLY
+frozen_inputs:
+  calibration_parameters_changed: false
+  rectification_policy_changed: false
+  stereo_parameters_changed: false
+  triangulation_changed: false
+  wave_run: false

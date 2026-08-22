@@ -1,0 +1,70 @@
+diff --git a/src/wass_stereo/PovMesh.h b/src/wass_stereo/PovMesh.h
+--- a/src/wass_stereo/PovMesh.h
++++ b/src/wass_stereo/PovMesh.h
+@@ -58,1 +58,2 @@ public:
+-    bool ransac_find_plane( const size_t n_ransac_rounds, const double distance_threshold );
++    bool ransac_find_plane( const size_t n_ransac_rounds, const double distance_threshold,
++                            const bool valid_point_sampling=false );
+diff --git a/src/wass_stereo/PovMesh.cpp b/src/wass_stereo/PovMesh.cpp
+--- a/src/wass_stereo/PovMesh.cpp
++++ b/src/wass_stereo/PovMesh.cpp
+@@ -668,1 +668,2 @@
+-bool PovMesh::ransac_find_plane( const size_t n_ransac_rounds, const double distance_threshold  )
++bool PovMesh::ransac_find_plane( const size_t n_ransac_rounds, const double distance_threshold,
++                                 const bool valid_point_sampling )
+@@ -678,1 +679,15 @@ bool PovMesh::ransac_find_plane
+     cv::Vec3d best_n;
++    std::vector<size_t> valid_indices;
++    if( valid_point_sampling )
++    {
++        valid_indices.reserve(NPTS);
++        for( size_t i=0; i<NPTS; ++i )
++            if( pImpl->PTc(i).valid ) valid_indices.push_back(i);
++        LOGI << "RANSAC sampling mode: VALID_POINT_SAMPLING ("
++             << valid_indices.size() << " valid points)";
++        if( valid_indices.size()<3 ) return false;
++    }
++    else
++    {
++        LOGI << "RANSAC sampling mode: FULL_IMAGE_RANDOM_SAMPLING";
++    }
+@@ -683,3 +698,16 @@ bool PovMesh::ransac_find_plane
+-         cv::Vec2i p1coord( rand()%iW, rand()%iH );
+-         cv::Vec2i p2coord( rand()%iW, rand()%iH );
+-         cv::Vec2i p3coord( rand()%iW, rand()%iH );
++        cv::Vec2i p1coord, p2coord, p3coord;
++        if( valid_point_sampling )
++        {
++            const size_t i1 = valid_indices[rand()%valid_indices.size()];
++            const size_t i2 = valid_indices[rand()%valid_indices.size()];
++            const size_t i3 = valid_indices[rand()%valid_indices.size()];
++            p1coord = cv::Vec2i(static_cast<int>(i1%iW), static_cast<int>(i1/iW));
++            p2coord = cv::Vec2i(static_cast<int>(i2%iW), static_cast<int>(i2/iW));
++            p3coord = cv::Vec2i(static_cast<int>(i3%iW), static_cast<int>(i3/iW));
++        }
++        else
++        {
++            p1coord = cv::Vec2i(rand()%iW, rand()%iH);
++            p2coord = cv::Vec2i(rand()%iW, rand()%iH);
++            p3coord = cv::Vec2i(rand()%iW, rand()%iH);
++        }
+@@ -758,1 +793,2 @@ bool PovMesh::ransac_find_plane
+-    if( best_inliers < NPTS/10 )
++    const size_t acceptance_population = valid_point_sampling ? valid_indices.size() : NPTS;
++    if( best_inliers < acceptance_population/10 )
+diff --git a/src/wass_stereo/wass_stereo.cpp b/src/wass_stereo/wass_stereo.cpp
+--- a/src/wass_stereo/wass_stereo.cpp
++++ b/src/wass_stereo/wass_stereo.cpp
+@@ -60,1 +60,2 @@
+ INCFG_REQUIRE( double, PLANE_RANSAC_THRESHOLD, 1.0, "RANSAC inlier threshold" )
++INCFG_REQUIRE( std::string, PLANE_RANSAC_SAMPLING_MODE, "FULL_IMAGE_RANDOM_SAMPLING", "Plane RANSAC sampling mode: FULL_IMAGE_RANDOM_SAMPLING or VALID_POINT_SAMPLING" )
+@@ -2035,1 +2036,8 @@
+-        if( !env.mesh->ransac_find_plane( INCFG_GET(PLANE_RANSAC_ROUNDS), INCFG_GET(PLANE_RANSAC_THRESHOLD) ) )
++        const std::string plane_sampling_mode = INCFG_GET(PLANE_RANSAC_SAMPLING_MODE);
++        if( plane_sampling_mode!="FULL_IMAGE_RANDOM_SAMPLING" && plane_sampling_mode!="VALID_POINT_SAMPLING" )
++        {
++            LOGE << "invalid PLANE_RANSAC_SAMPLING_MODE: " << plane_sampling_mode;
++            return -1;
++        }
++        if( !env.mesh->ransac_find_plane( INCFG_GET(PLANE_RANSAC_ROUNDS), INCFG_GET(PLANE_RANSAC_THRESHOLD),
++                plane_sampling_mode=="VALID_POINT_SAMPLING" ) )

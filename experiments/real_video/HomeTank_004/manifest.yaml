@@ -80,6 +80,11 @@ calibration:
   rectification_policy_config: rectification_policy.yaml
   rectification_policy_result: rectification_policy_result.md
   static_pointcloud_diagnosis: static_pointcloud_diagnosis.md
+  plane_ransac_config: plane_ransac_config.yaml
+  plane_ransac_result: plane_ransac_result.yaml
+  plane_ransac_sampling_report: plane_ransac_sampling_update.md
+  plane_ransac_sampling_mode: VALID_POINT_SAMPLING
+  static_water_plane_status: STATIC_WATER_PLANE_DETECTED
   rectification_policy_compatible: false
   rectification_policy_test_status: ROI_INCOMPATIBILITY_RESOLVED_STEREO_PIPELINE_NOT_PASSED
   static_algorithm_validation_status: FAILED_AT_WASS_RECTIFICATION
