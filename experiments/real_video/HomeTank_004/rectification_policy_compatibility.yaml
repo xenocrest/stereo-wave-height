@@ -1,0 +1,60 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+candidate: FULL_CALIBRATION
+candidate_parameters_changed: false
+calibration_result_changed: false
+wave_run: false
+autocalibrate_run: false
+production_wass:
+  version: 1.11_heads/master-0-g6b82aeb
+  policy_interface: NOT_RUNTIME_CONFIGURABLE
+  compiled_policy: {alpha: 1.0, flags: DEFAULT_0}
+  existing_compiled_policy_result: FAIL_ZERO_VALID_ROI
+test_matrix:
+  - test: A0
+    alpha: 0.0
+    flags: CALIB_ZERO_DISPARITY
+    opencv_stereo_rectify: PASS
+    left_roi: [0, 0, 1920, 1080]
+    right_roi: [0, 0, 1920, 1079]
+    epipole_left_px: [4277.6657, 134.7423]
+    epipole_right_px: [3786.6227, 28.8087]
+    wass_stereo: NOT_RUN_UNSUPPORTED_BY_PRODUCTION_RUNTIME_INTERFACE
+    return_code: null
+  - test: A1
+    alpha: 0.5
+    flags: CALIB_ZERO_DISPARITY
+    opencv_stereo_rectify: PASS
+    left_roi: [0, 200, 1232, 505]
+    right_roi: [0, 58, 1037, 548]
+    epipole_left_px: [4277.6657, 134.7423]
+    epipole_right_px: [3786.6227, 28.8087]
+    wass_stereo: NOT_RUN_UNSUPPORTED_BY_PRODUCTION_RUNTIME_INTERFACE
+    return_code: null
+  - test: A2
+    alpha: 1.0
+    flags: CALIB_ZERO_DISPARITY
+    opencv_stereo_rectify: PASS_ZERO_VALID_ROI
+    left_roi: [0, 0, 0, 0]
+    right_roi: [0, 0, 0, 0]
+    epipole_left_px: [4277.6657, 134.7423]
+    epipole_right_px: [3786.6227, 28.8087]
+    wass_stereo: NOT_RUN_UNSUPPORTED_BY_PRODUCTION_RUNTIME_INTERFACE
+    return_code: null
+  - test: A3
+    alpha: 0.0
+    flags: DEFAULT_0
+    opencv_stereo_rectify: PASS
+    left_roi: [0, 0, 1920, 1080]
+    right_roi: [0, 0, 1920, 1079]
+    epipole_left_px: [4277.6657, 134.7423]
+    epipole_right_px: [3786.6227, 28.8087]
+    wass_stereo: NOT_RUN_UNSUPPORTED_BY_PRODUCTION_RUNTIME_INTERFACE
+    return_code: null
+rectification_policy_compatible: false
+compatible_policy: null
+static_reconstruction_run: false
+xyz_point_count: null
+classification: BLOCKED_BY_PRODUCTION_WASS_POLICY_INTERFACE
+strict_calibration_status_preserved: CALIBRATION_QUALITY_FAIL
+approved_for_wass: false

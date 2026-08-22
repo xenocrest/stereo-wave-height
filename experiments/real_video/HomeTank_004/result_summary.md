@@ -40,3 +40,9 @@ returns full valid ROIs, while WASS flags=0/alpha=1 returns zero ROIs with eithe
 calibrated or zero distortion. Both finite epipoles are outside the source
 image. The immediate classification is
 `RECTIFICATION_POLICY_ROI_INCOMPATIBILITY`; no adapter change is indicated.
+
+The controlled A0-A3 matrix produced nonzero offline OpenCV ROIs for A0, A1,
+and A3, but production WASS hard-codes alpha=1/flags=0 and cannot represent any
+matrix entry. No WASS policy run or static reconstruction was fabricated.
+`rectification_policy_compatible=false` and the trial is
+`BLOCKED_BY_PRODUCTION_WASS_POLICY_INTERFACE`.

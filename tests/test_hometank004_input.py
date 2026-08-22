@@ -16,6 +16,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "static_trial_plan.yaml", "static_trial_full_calibration.yaml",
             "static_trial_full_calibration.md", "fixed_calibration_rectification_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
+            "rectification_policy_compatibility.yaml",
+            "rectification_policy_compatibility_report.md",
         }
         self.assertEqual({path.name for path in root.iterdir()}, expected)
         self.assertIn("CALIBRATION_QUALITY_FAIL", (root / "manifest.yaml").read_text(encoding="utf-8"))
@@ -91,6 +93,21 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "FAILED_AT_WASS_RECTIFICATION",
         ):
             self.assertIn(required, audit)
+
+    def test_policy_compatibility_result_is_fail_fast_not_fabricated(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        result = (root / "rectification_policy_compatibility.yaml").read_text(encoding="utf-8")
+        for required in (
+            "candidate: FULL_CALIBRATION",
+            "candidate_parameters_changed: false",
+            "policy_interface: NOT_RUNTIME_CONFIGURABLE",
+            "test: A0", "test: A1", "test: A2", "test: A3",
+            "rectification_policy_compatible: false",
+            "BLOCKED_BY_PRODUCTION_WASS_POLICY_INTERFACE",
+            "static_reconstruction_run: false",
+            "approved_for_wass: false",
+        ):
+            self.assertIn(required, result)
 
     def test_rectification_policy_audit_schema_preserves_candidate_a(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
