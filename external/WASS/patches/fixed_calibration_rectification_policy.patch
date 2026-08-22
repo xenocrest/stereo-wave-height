@@ -1,0 +1,20 @@
+diff --git a/src/wass_stereo/wass_stereo.cpp b/src/wass_stereo/wass_stereo.cpp
+index 6e05956..0000000 100644
+--- a/src/wass_stereo/wass_stereo.cpp
++++ b/src/wass_stereo/wass_stereo.cpp
+@@ -80,1 +80,3 @@ INCFG_REQUIRE( bool, USE_CUSTOM_STEREORECTIFY, false, "Use built-in stereorecti
+ INCFG_REQUIRE( bool, DISABLE_RECTIFY_ROI, false, "Disable automatic ROI computation during stereo rectification (only enabled if USE_CUSTOM_STEREORECTIFY=true)" )
++INCFG_REQUIRE( double, RECTIFICATION_ALPHA, 1.0, "OpenCV stereoRectify alpha (fixed-calibration policy; 0=crop, 1=retain all source pixels)" )
++INCFG_REQUIRE( bool, RECTIFICATION_ZERO_DISPARITY, false, "Pass cv::CALIB_ZERO_DISPARITY to OpenCV stereoRectify" )
+@@ -535,7 +537,12 @@ bool rectify( StereoEnvironment& env )
+         do
+         {
+-            cv::stereoRectify( env.intrinsics_left, env.undist, env.intrinsics_right, env.undist, imgsize, env.R, env.T, env.rec_R1, env.rec_R2, env.rec_P1, env.rec_P2, env.Q, 0, 1.0, imgsize, &(roi_left), &(roi_right) );
++            const int rectification_flags = INCFG_GET(RECTIFICATION_ZERO_DISPARITY) ? cv::CALIB_ZERO_DISPARITY : 0;
++            const double rectification_alpha = INCFG_GET(RECTIFICATION_ALPHA);
++            LOGI << "OpenCV rectification policy: alpha=" << rectification_alpha
++                 << ", flags=" << rectification_flags;
++            cv::stereoRectify( env.intrinsics_left, env.undist, env.intrinsics_right, env.undist, imgsize, env.R, env.T, env.rec_R1, env.rec_R2, env.rec_P1, env.rec_P2, env.Q, rectification_flags, rectification_alpha, imgsize, &(roi_left), &(roi_right) );
+             //std::cout << "P1: " << rec_P1 << std::endl;
+             //std::cout << "P2: " << rec_P2 << std::endl;
+             //std::cout << "Q: " << Q << std::endl;

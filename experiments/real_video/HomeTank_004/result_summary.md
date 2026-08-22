@@ -41,6 +41,13 @@ calibrated or zero distortion. Both finite epipoles are outside the source
 image. The immediate classification is
 `RECTIFICATION_POLICY_ROI_INCOMPATIBILITY`; no adapter change is indicated.
 
+The subsequent controlled A0 policy interface test (`alpha=0`,
+`CALIB_ZERO_DISPARITY`) generated a valid rectification map and reached dense
+stereo/triangulation, resolving the former ROI incompatibility. It then failed
+at plane RANSAC on the first static frame (400 rounds, zero inliers), so no XYZ
+result exists. This does not change `CALIBRATION_QUALITY_FAIL` or
+`approved_for_wass=false`; see [rectification_policy_result.md](rectification_policy_result.md).
+
 The controlled A0-A3 matrix produced nonzero offline OpenCV ROIs for A0, A1,
 and A3, but production WASS hard-codes alpha=1/flags=0 and cannot represent any
 matrix entry. No WASS policy run or static reconstruction was fabricated.

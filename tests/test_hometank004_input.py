@@ -15,6 +15,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "calibration_validation.md", "calibration_parameter_usage.yaml",
             "static_trial_plan.yaml", "static_trial_full_calibration.yaml",
             "static_trial_full_calibration.md", "fixed_calibration_rectification_audit.md",
+            "rectification_policy.yaml", "rectification_policy_result.md",
             "fixed_calibration_rectification_policy_audit.md",
             "rectification_policy_compatibility.yaml",
             "rectification_policy_compatibility_report.md",

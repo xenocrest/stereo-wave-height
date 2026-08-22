@@ -1,0 +1,32 @@
+candidate: FULL_CALIBRATION
+rectification:
+  alpha: 0.0
+  zero_disparity: true
+source: CONTROLLED_EXPERIMENT
+status: RECTIFICATION_POLICY_APPLIED_STEREO_FAILED_AT_PLANE_RANSAC
+rectification_policy_test_status: ROI_INCOMPATIBILITY_RESOLVED_STEREO_PIPELINE_NOT_PASSED
+calibration_parameters_changed: false
+wave_run: false
+external_run:
+  location: D:/stereo-wave-height-runs/HomeTank_004/static-full-calibration-policy-a0-20260822
+  runtime:
+    wass_commit: 6b82aebbf47a692b610fce7e6ea87b6123050c88
+    opencv: 4.6.0 modular production DLL set
+    compiler: MSVC 19.44.35228
+    numerical_equivalence_to_production_build: NOT_ESTABLISHED
+  reused_fixed_inputs:
+    prepare: PASS_REUSED
+    match: PASS_REUSED
+    autocalibrate: NOT_RUN
+  stereo:
+    status: FAIL
+    return_code: -1
+    last_completed_frame_id: '000000'
+    rectification: PASS
+    dense_stereo: PASS
+    triangulated_valid_points: 216874
+    largest_component_points: 167581
+    failure_stage: PLANE_RANSAC
+    ransac_rounds: 400
+    best_inliers: 0
+  xyz_generated: false
