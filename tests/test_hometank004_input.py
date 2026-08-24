@@ -28,6 +28,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "wave_reconstruction_report.md",
             "wave_height_validation.yaml", "wave_height_validation.md",
             "wave_height_timeseries.csv",
+            "ruler_reference.yaml", "ruler_validation.yaml", "ruler_validation.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
@@ -56,6 +57,18 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "validated_physical_wave_signal: false",
         ):
             self.assertIn(required, result)
+
+    def test_ruler_validation_requires_real_registered_reference(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        reference = (root / "ruler_reference.yaml").read_text(encoding="utf-8")
+        result = (root / "ruler_validation.yaml").read_text(encoding="utf-8")
+        self.assertIn("status: MANUAL_ROI_REQUIRED", reference)
+        self.assertIn("real_length_m: null", reference)
+        self.assertIn("automatic_detection_claimed: false", reference)
+        self.assertIn("status: RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED", result)
+        self.assertIn("relative_error: null", result)
+        self.assertIn("camera_z_used_as_height: false", result)
+        self.assertIn("historical_results_modified: false", result)
 
     def test_corrected_geometry_and_coarse_candidates_preserve_strict_failure(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"

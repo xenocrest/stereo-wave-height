@@ -1,0 +1,45 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+status: RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED
+method: RULER_BASED_PHYSICAL_VALIDATION
+inputs:
+  video_sources:
+    static: videos/static/
+    wave: videos/wave/
+  calibration: calibration_result.yaml
+  ruler_reference: ruler_reference.yaml
+  static_pointcloud_source: "D:/stereo-wave-height-runs/HomeTank_004/reconstruction-pipeline-20260824-retry2/pointcloud/"
+  wave_pointcloud_source: "D:/stereo-wave-height-runs/HomeTank_004/wave-reconstruction-pipeline-20260824/pointcloud/"
+  calibration_modified: false
+  wass_modified: false
+ruler:
+  physical_scale:
+    smallest_division_mm: 1.0
+    major_division_mm: 10.0
+  roi_status: MANUAL_ROI_REQUIRED
+  common_stereo_marks_status: NOT_CONFIRMED
+  pixel_xyz_association_status: NOT_AVAILABLE_IN_EXISTING_PIPELINE_OUTPUT
+scale_validation:
+  status: NOT_AVAILABLE
+  real_length_m: null
+  reconstructed_length_m: null
+  relative_error: null
+  reason: No manually registered common stereo endpoints or pixel-to-XYZ correspondence are available.
+water_height_validation:
+  formula: "h = n dot (P - P0) / norm(n)"
+  camera_z_used_as_height: false
+  status: NOT_AVAILABLE
+  frames: []
+  reason: No timestamped physical ruler waterline readings are registered.
+ruler_stability:
+  status: NOT_AVAILABLE
+  position_drift_m: null
+  relative_length_change: null
+drift_source:
+  classification: RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED
+  global_reconstruction_drift: NOT_EVALUATED
+  surface_matching_instability: NOT_EVALUATED
+  geometric_scale_error: NOT_EVALUATED
+  reason: The independent ruler observation is not yet registered to reconstructed 3-D points.
+historical_results_modified: false
+engineering_measurement_claimed: false

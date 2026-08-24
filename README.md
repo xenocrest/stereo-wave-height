@@ -50,6 +50,8 @@
 
 真实 wave 高度验证模块现已建立：它在共同物理观测域分别保留 raw 与分析性去漂移统计。HomeTank_004 可观察到候选时变信号，但受 97.233 mm 静水跨帧漂移及五帧短记录限制，状态保持 `WAVE_RESULT_NOT_VALIDATED`，不构成工程波高结论。
 
+HomeTank_004 已登记固定竖直刻度尺作为独立物理参考，用于后续验证双目三维尺度、静水漂移和波高。当前缺少双相机共同刻度 ROI、端点与像素到 XYZ 的关联，状态为 `RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED`，尚未形成工程测量结论。
+
 ### 真实视频成果索引
 
 | 内容 | 状态 | 文档 |
@@ -60,6 +62,7 @@
 | 静水三维重建 | 完成验证，跨帧未通过 | [Static validation summary](experiments/real_video/HomeTank_004/static_validation_summary.md) |
 | StereoSGBM 分析 | 进行中 | [SGBM matching parameter audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md) |
 | Wave 高度与漂移验证 | 方法完成，结果未验证 | [Wave height validation](experiments/real_video/HomeTank_004/wave_height_validation.md) |
+| 标尺独立物理验证 | 方法完成，等待人工参考注册 | [Ruler validation](experiments/real_video/HomeTank_004/ruler_validation.md) |
 
 ## 核心建模成果
 

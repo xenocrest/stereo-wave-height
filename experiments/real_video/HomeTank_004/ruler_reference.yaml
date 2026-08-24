@@ -1,0 +1,43 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+status: MANUAL_ROI_REQUIRED
+ruler:
+  enabled: true
+  reference:
+    type: vertical_ruler
+    installation: FIXED_VERTICAL_USER_REPORTED
+  image_roi:
+    x: null
+    y: null
+    width: null
+    height: null
+    unit: pixel
+    status: MANUAL_ROI_REQUIRED
+    coordinate_frame: CANONICAL_RECTIFIED_IMAGE
+  per_camera_visibility:
+    cam0_left: PARTIAL_AT_EXTREME_RIGHT_OR_NOT_CONFIRMABLE
+    cam1_right: VISIBLE
+    stereo_common_marks: NOT_CONFIRMED
+  scale:
+    smallest_division_mm: 1.0
+    major_division_mm: 10.0
+    source: USER_REPORTED_PHYSICAL_RULER
+    status: CONFIRMED_SPECIFICATION_NOT_YET_IMAGE_REGISTERED
+  validation_interval:
+    endpoint_a_mark: null
+    endpoint_b_mark: null
+    real_length_m: null
+    status: MANUAL_ENDPOINT_ANNOTATION_REQUIRED
+  water_level_readings:
+    status: MANUAL_READINGS_REQUIRED
+    unit: m
+    static: []
+    wave: []
+association_requirements:
+  pixel_to_xyz_index_available: false
+  required_next_input:
+    - Per-camera canonical ROI for the same visible ruler segment.
+    - Identical labelled ruler endpoints in both images and their real separation.
+    - Per-frame ruler waterline readings with timestamp/frame association.
+  automatic_detection_claimed: false
+  reconstructed_values_must_not_be_rescaled_to_reference: true
