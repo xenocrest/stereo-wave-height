@@ -26,6 +26,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "reconstruction_pipeline.yaml", "reconstruction_run_report.md",
             "static_reference_plane.yaml", "wave_reconstruction_pipeline.yaml",
             "wave_reconstruction_report.md",
+            "wave_height_validation.yaml", "wave_height_validation.md",
+            "wave_height_timeseries.csv",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
@@ -40,6 +42,20 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             directory = root / "videos" / condition
             self.assertTrue(directory.is_dir())
             self.assertTrue((directory / ".gitkeep").is_file())
+
+    def test_wave_height_validation_preserves_static_failure(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        result = (root / "wave_height_validation.yaml").read_text(encoding="utf-8")
+        for required in (
+            "status: WAVE_RESULT_NOT_VALIDATED",
+            "static_validation_status: STATIC_VALIDATION_FAIL",
+            "wass_modified: false",
+            "status: NOT_AVAILABLE_NO_COMMON_RAW_SUPPORT",
+            "interpolation_used: false",
+            "status: NOT_AVAILABLE",
+            "validated_physical_wave_signal: false",
+        ):
+            self.assertIn(required, result)
 
     def test_corrected_geometry_and_coarse_candidates_preserve_strict_failure(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"

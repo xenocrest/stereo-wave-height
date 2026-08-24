@@ -1,0 +1,64 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+status: WAVE_RESULT_NOT_VALIDATED
+classification: WAVE_SIGNAL_CANDIDATE_WITH_UNRESOLVED_STATIC_DRIFT
+purpose: GENERAL_WAVE_HEIGHT_VALIDATION_METHOD
+pipeline:
+  wave_pipeline_status: WAVE_PIPELINE_COMPLETED_WITH_STATIC_WARNING
+  static_validation_status: STATIC_VALIDATION_FAIL
+  calibration_modified: false
+  wass_modified: false
+inputs:
+  static_result: "D:/stereo-wave-height-runs/HomeTank_004/reconstruction-pipeline-20260824-retry2/reconstruction_result.json"
+  wave_result: "D:/stereo-wave-height-runs/HomeTank_004/wave-reconstruction-pipeline-20260824/reconstruction_result.json"
+  reference_plane: static_reference_plane.yaml
+  height_representation: IRREGULAR_RAW_X_Y_H_OBSERVATIONS
+static_drift:
+  reference_frame: "000000"
+  mean_z_m: [0.2907236481, 0.3311206990, 0.2338873373]
+  signed_mean_z_drift_m: [0.0, 0.0403970509, -0.0568363108]
+  maximum_absolute_drift_m: 0.0568363108
+  rms_drift_m: 0.0402586966
+  peak_to_peak_m: 0.0972333617
+  fixed_roi_spatial_difference:
+    status: NOT_AVAILABLE_NO_COMMON_RAW_SUPPORT
+    reason: Three irregular static point clouds contain no shared raw observation support in their bounding-box intersection; no interpolation was introduced.
+  existing_per_frame_plane_rms_m: [0.0022490853, 0.0021611379, 0.0020065347]
+wave_roi:
+  definition: INTERSECTION_OF_PER_FRAME_VALID_XY_BOUNDING_BOXES
+  point_correspondence_claimed: false
+  interpolation_used: false
+  x_m: [-0.0959685801, -0.0600584115]
+  y_m: [-0.0942312478, 0.0059441898]
+  per_frame_raw_observation_count: [141887, 156062, 134061, 154168, 165664]
+wave_statistics:
+  frame_count: 5
+  duration_s: 0.4
+  raw_all_samples:
+    count: 751842
+    mean_m: -0.0040504434
+    rms_m: 0.0153137114
+    minimum_m: -0.0267670015
+    maximum_m: 0.0319451255
+    peak_to_peak_m: 0.0587121270
+    p95_absolute_m: 0.0241061718
+  temporal_spatial_mean:
+    values_m: [0.0224211623, -0.0070715900, -0.0123078486, 0.0001557478, -0.0211087941]
+    peak_to_peak_m: 0.0435299563
+    rms_relative_to_first_m: 0.0298882332
+  significant_wave_height:
+    status: NOT_AVAILABLE
+    reason: Five samples over 0.4 s do not contain enough independently identified complete waves.
+drift_corrected_analysis:
+  method: PER_FRAME_SPATIAL_MEAN_REMOVAL
+  formula: "H_prime(x,y,t) = H(x,y,t) - mean_xy(H(x,y,t))"
+  overwrites_raw_data: false
+  interpretation: ANALYSIS_ONLY_NOT_A_VALIDATED_WAVE_HEIGHT_PRODUCT
+  all_samples_rms_m: 0.0020153625
+  all_samples_peak_to_peak_m: 0.0168707155
+  all_samples_p95_absolute_m: 0.0038697359
+conclusion:
+  wave_like_temporal_variation_observed: true
+  validated_physical_wave_signal: false
+  reason: Wave temporal means vary, but the 43.53 mm range cannot be separated from the independently observed 97.23 mm static instability with this five-frame record.
+  industrial_accuracy: NOT_ESTABLISHED

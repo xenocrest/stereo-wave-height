@@ -48,6 +48,8 @@
 
 真实波浪视频解算阶段已经开始：HomeTank_004 的五帧 wave 时间序列已完成 WASS 与共享静水参考高度输出，但状态为 `WAVE_PIPELINE_COMPLETED_WITH_STATIC_WARNING`，不能解释为实测波高验收通过。
 
+真实 wave 高度验证模块现已建立：它在共同物理观测域分别保留 raw 与分析性去漂移统计。HomeTank_004 可观察到候选时变信号，但受 97.233 mm 静水跨帧漂移及五帧短记录限制，状态保持 `WAVE_RESULT_NOT_VALIDATED`，不构成工程波高结论。
+
 ### 真实视频成果索引
 
 | 内容 | 状态 | 文档 |
@@ -57,6 +59,7 @@
 | OpenCV → WASS 接口 | 完成 | [Fixed-calibration rectification policy audit](experiments/real_video/HomeTank_004/fixed_calibration_rectification_policy_audit.md) |
 | 静水三维重建 | 完成验证，跨帧未通过 | [Static validation summary](experiments/real_video/HomeTank_004/static_validation_summary.md) |
 | StereoSGBM 分析 | 进行中 | [SGBM matching parameter audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md) |
+| Wave 高度与漂移验证 | 方法完成，结果未验证 | [Wave height validation](experiments/real_video/HomeTank_004/wave_height_validation.md) |
 
 ## 核心建模成果
 
