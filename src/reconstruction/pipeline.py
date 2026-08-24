@@ -18,6 +18,7 @@ from .io import (
     ReconstructionConfig,
     extract_synchronized_frames,
     load_calibration,
+    load_reference_plane,
     load_reconstruction_config,
     verify_wass_calibration,
     write_ply,
@@ -81,12 +82,23 @@ class ReconstructionPipeline:
                 points_m, distance_threshold_m=self.config.surface_distance_threshold_m
             )
             decoded.append((frame, workdir, points_m, surface))
-        reference_surface = decoded[0][3]
-        reference_frame_id = str(decoded[0][0]["frame_id"])
+        if self.config.reference_plane_file is None:
+            reference_normal = decoded[0][3].normal
+            reference_offset_m = decoded[0][3].offset_m
+            reference_frame_id = str(decoded[0][0]["frame_id"])
+            reference_source = "first_configured_static_frame_fitted_plane"
+            reference_warning = None
+        else:
+            reference_normal, reference_offset_m, reference_data = load_reference_plane(
+                self.config.reference_plane_file
+            )
+            reference_frame_id = str(reference_data.get("frame_id", "UNKNOWN"))
+            reference_source = str(reference_data["source"])
+            reference_warning = reference_data.get("warning")
 
         for frame, workdir, points_m, surface in decoded:
             frame_id = frame["frame_id"]
-            reference_height_m = points_m @ reference_surface.normal + reference_surface.offset_m
+            reference_height_m = points_m @ reference_normal + reference_offset_m
             point_total += points_m.shape[0]
             write_xyz(pointcloud_dir / f"{frame_id}.xyz", points_m)
             write_ply(pointcloud_dir / f"{frame_id}.ply", points_m)
@@ -110,6 +122,13 @@ class ReconstructionPipeline:
                 original_right.save(rectified_dir / f"{frame_id}_right.png")
             disparity_source = workdir / "disparity_stereo_ouput.png"
             shutil.copy2(disparity_source, disparity_dir / f"{frame_id}.png")
+            with Image.open(disparity_source) as disparity_image:
+                disparity_visualization = np.asarray(disparity_image.convert("L"), dtype=np.float64)
+            stereo_log = (workdir / "wass_stereo_log.txt").read_text(encoding="utf-8")
+            valid_line = next(
+                (line for line in stereo_log.splitlines() if " valid points found" in line), None
+            )
+            valid_disparity_count = int(valid_line.split()[-4]) if valid_line else None
             frame_results.append({
                 "frame_id": frame_id,
                 "timestamp_ns": frame["timestamp_ns"],
@@ -123,13 +142,32 @@ class ReconstructionPipeline:
                 "water_plane_mean_residual_m": surface.mean_m,
                 "water_plane_max_absolute_residual_m": surface.max_absolute_m,
                 "water_mask_ratio": float(surface.water_mask.mean()),
+                "water_surface_point_count": int(np.count_nonzero(surface.water_mask)),
+                "disparity_statistics": {
+                    "absolute_numeric_status": "NOT_EXPORTED_BY_FROZEN_WASS_RUNTIME",
+                    "valid_triangulated_count": valid_disparity_count,
+                    "visualization_8bit": {
+                        "minimum": float(disparity_visualization.min()),
+                        "maximum": float(disparity_visualization.max()),
+                        "mean": float(disparity_visualization.mean()),
+                        "standard_deviation": float(disparity_visualization.std()),
+                    },
+                },
                 "height_reference_frame_id": reference_frame_id,
                 "height_range_m": [float(reference_height_m.min()), float(reference_height_m.max())],
+                "height_mean_m": float(reference_height_m.mean()),
+                "height_rms_m": float(np.sqrt(np.mean(reference_height_m**2))),
+                "height_max_absolute_m": float(np.max(np.abs(reference_height_m))),
                 "rectification_auto_swap_restored_to_input_roles": swapped,
             })
         result = {
             "schema_version": "1.0",
-            "status": "COMPLETED_DIAGNOSTIC_STATIC_UNSTABLE",
+            "status": (
+                "WAVE_PIPELINE_COMPLETED_WITH_STATIC_WARNING"
+                if self.config.run_type == "wave"
+                else "COMPLETED_DIAGNOSTIC_STATIC_UNSTABLE"
+            ),
+            "run_type": self.config.run_type,
             "stereo_backend": "wass",
             "frame_count": run.frame_count,
             "point_count": point_total,
@@ -141,10 +179,12 @@ class ReconstructionPipeline:
             },
             "height_representation": "irregular_point_samples_X_Y_H_no_interpolation",
             "height_reference": {
-                "method": "first_static_frame_fitted_plane",
+                "method": "external_static_reference_plane" if self.config.reference_plane_file else "first_static_frame_fitted_plane",
                 "frame_id": reference_frame_id,
-                "normal": reference_surface.normal.tolist(),
-                "offset_m": reference_surface.offset_m,
+                "normal": reference_normal.tolist(),
+                "offset_m": reference_offset_m,
+                "source": reference_source,
+                "warning": reference_warning,
             },
             "input": {"left_video": str(self.config.left_video), "right_video": str(self.config.right_video)},
             "calibration": {

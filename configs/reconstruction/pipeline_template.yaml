@@ -14,12 +14,14 @@ calibration:
   file: UNKNOWN
   quality_mode: require_approved
 processing:
+  run_type: static
   stereo_backend: wass
   fixed_calibration: true
   run_autocalibrate: false
   wass_runtime_binding: UNKNOWN
   wass_config_dir: UNKNOWN
   surface_distance_threshold_m: null
+  reference_plane_file: null
 output:
   directory: UNKNOWN
 notes:

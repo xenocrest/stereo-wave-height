@@ -1,0 +1,16 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+condition: static
+frame_id: "000000"
+unit: m
+coordinate_system: wass_camera_coordinates_scaled_by_calibrated_baseline
+source: "HomeTank_004 static end-to-end reconstruction, reconstruction-pipeline-20260824-retry2/reconstruction_result.json"
+calibration_source: OPENCV_K0_D0_K1_D1_R_T_UNCHANGED
+manual_geometry_used: false
+plane:
+  model: "normal dot [X,Y,Z] + offset_m = 0"
+  normal: [0.4266090565020204, 0.06757844167243465, 0.9019079039079221]
+  offset_m: -0.22467304473232508
+  residual_rms_m: 0.001550838758264436
+warning: STATIC_VALIDATION_FAIL; this reference enables diagnostic wave pipeline closure but is not a stable or metrologically approved Z0.
+status: STATIC_REFERENCE_WITH_WARNING

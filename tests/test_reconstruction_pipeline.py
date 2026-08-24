@@ -10,7 +10,7 @@ import unittest
 import numpy as np
 
 from adapters.wass.input import prepare_wass_workspace
-from reconstruction.io import load_calibration, verify_wass_calibration
+from reconstruction.io import load_calibration, load_reference_plane, verify_wass_calibration
 from reconstruction.surface import extract_planar_surface
 
 
@@ -62,6 +62,14 @@ class ReconstructionPipelineTests(unittest.TestCase):
             self.assertTrue(manifest["fixed_calibration_available"])
             self.assertTrue((prepared.calibration_dir / "ext_R.xml").is_file())
             self.assertTrue((prepared.calibration_dir / "ext_T.xml").is_file())
+
+    def test_static_reference_plane_is_normalized_and_traceable(self) -> None:
+        source = Path(__file__).parents[1] / "experiments" / "real_video" / "HomeTank_004" / "static_reference_plane.yaml"
+        normal, offset, metadata = load_reference_plane(source)
+        self.assertAlmostEqual(float(np.linalg.norm(normal)), 1.0)
+        self.assertAlmostEqual(offset, -0.22467304473232508)
+        self.assertEqual(metadata["status"], "STATIC_REFERENCE_WITH_WARNING")
+        self.assertIn("STATIC_VALIDATION_FAIL", metadata["warning"])
 
 
 if __name__ == "__main__":

@@ -17,7 +17,7 @@ def write_report(path: Path, result: dict[str, Any]) -> Path:
     """Render the uniform result summary without embedding large artifacts."""
     calibration = result["calibration"]
     lines = [
-        "# Stereo Reconstruction Report", "",
+        f"# {str(result.get('run_type', 'stereo')).title()} Stereo Reconstruction Report", "",
         "## 1. Input", "",
         f"- Left video: `{result['input']['left_video']}`",
         f"- Right video: `{result['input']['right_video']}`",
@@ -34,14 +34,15 @@ def write_report(path: Path, result: dict[str, Any]) -> Path:
         "- Autocalibration: not run",
         f"- Status: `{result['status']}`", "",
         "## 4. Point cloud and surface", "",
-        "| Frame | Points | Plane RMS (mm) | Water-mask ratio | Height min/max (mm) |",
+        "| Frame | Points | Plane RMS (mm) | Water points | H mean/RMS/max abs (mm) |",
         "|---|---:|---:|---:|---:|",
     ]
     for frame in result["frames"]:
         lines.append(
             f"| {frame['frame_id']} | {frame['point_count']:,} | "
-            f"{frame['water_plane_rms_m']*1000:.4f} | {frame['water_mask_ratio']:.6f} | "
-            f"{frame['height_range_m'][0]*1000:.3f} / {frame['height_range_m'][1]*1000:.3f} |"
+            f"{frame['water_plane_rms_m']*1000:.4f} | {frame['water_surface_point_count']:,} | "
+            f"{frame['height_mean_m']*1000:.3f} / {frame['height_rms_m']*1000:.3f} / "
+            f"{frame['height_max_absolute_m']*1000:.3f} |"
         )
     lines += ["", "## 5. Result boundary", "",
               "Heights are signed distances of WASS XYZ samples to the first configured static frame's fitted reference plane. "

@@ -40,6 +40,8 @@ class ReconstructionConfig:
     ffmpeg_executable: str
     output_directory: Path
     surface_distance_threshold_m: float
+    run_type: str
+    reference_plane_file: Path | None
 
 
 @dataclass(frozen=True)
@@ -125,6 +127,11 @@ def load_reconstruction_config(path: str | Path) -> ReconstructionConfig:
         ffmpeg_executable=os.path.expandvars(str(input_data["ffmpeg_executable"])),
         output_directory=_resolve(base, str(output["directory"]), "output.directory"),
         surface_distance_threshold_m=threshold,
+        run_type=str(processing.get("run_type", "static")),
+        reference_plane_file=(
+            _resolve(base, str(processing["reference_plane_file"]), "reference_plane_file")
+            if processing.get("reference_plane_file") else None
+        ),
     )
     for name, candidate in (
         ("left_video", config.left_video), ("right_video", config.right_video),
@@ -137,7 +144,30 @@ def load_reconstruction_config(path: str | Path) -> ReconstructionConfig:
         raise ValueError("canonical rotations must be 0/90/180/270 degrees")
     if config.calibration_quality_mode not in {"require_approved", "diagnostic_allow_failed_gate"}:
         raise ValueError("unsupported calibration quality_mode")
+    if config.run_type not in {"static", "wave"}:
+        raise ValueError("processing.run_type must be static or wave")
+    if config.run_type == "wave" and config.reference_plane_file is None:
+        raise ValueError("wave processing requires an explicit static reference_plane_file")
+    if config.reference_plane_file is not None and not config.reference_plane_file.is_file():
+        raise FileNotFoundError(f"reference_plane_file: {config.reference_plane_file}")
     return config
+
+
+def load_reference_plane(path: str | Path) -> tuple[np.ndarray, float, dict[str, Any]]:
+    """Load a normalized, metric static reference plane with provenance."""
+    source = Path(path).resolve()
+    data = _load_yaml(source)
+    plane = data.get("plane", {})
+    normal = np.asarray(plane.get("normal"), dtype=np.float64)
+    offset = float(plane.get("offset_m"))
+    if normal.shape != (3,) or not np.all(np.isfinite(normal)) or not np.isfinite(offset):
+        raise ValueError("reference plane must contain finite normal[3] and offset_m")
+    norm = float(np.linalg.norm(normal))
+    if not np.isclose(norm, 1.0, atol=1e-8):
+        raise ValueError("reference plane normal must already be normalized")
+    if data.get("unit") != "m" or not data.get("source"):
+        raise ValueError("reference plane requires metric unit and source provenance")
+    return normal, offset, data
 
 
 def load_calibration(path: str | Path, *, quality_mode: str) -> CalibrationParameters:
