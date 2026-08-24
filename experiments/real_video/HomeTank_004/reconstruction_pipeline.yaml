@@ -1,0 +1,33 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+status: DIAGNOSTIC_PIPELINE_CLOSURE_CONFIG
+input:
+  left_video: videos/static/static_cam0_iQOO_Neo5S.mp4
+  right_video: videos/static/static_cam1_iQOO_Z10_TurboPlus.mp4
+  ffmpeg_executable: "${FFMPEG_EXE}"
+  canonical_rotation_deg: {left: 180, right: 0}
+  pairing_basis: timestamp
+  frame_pairs:
+    - {frame_id: "000000", left_timestamp_s: 10.012256, right_timestamp_s: 10.100267, timestamp_ns: 10012256000}
+    - {frame_id: "000001", left_timestamp_s: 27.006311, right_timestamp_s: 27.100722, timestamp_ns: 27006311000}
+    - {frame_id: "000002", left_timestamp_s: 44.000511, right_timestamp_s: 44.101167, timestamp_ns: 44000511000}
+calibration:
+  file: calibration_result.yaml
+  quality_mode: diagnostic_allow_failed_gate
+  parameter_source: OPENCV_K0_D0_K1_D1_R_T_UNCHANGED
+  manual_geometry_used_for_reconstruction: false
+processing:
+  stereo_backend: wass
+  fixed_calibration: true
+  run_autocalibrate: false
+  wass_runtime_binding: "${WASS_RUNTIME_BINDING}"
+  wass_config_dir: "${HOMETANK004_WASS_CONFIG_DIR}"
+  surface_distance_threshold_m: 0.010
+  surface_distance_threshold_status: DIAGNOSTIC_OUTPUT_CLASSIFICATION_PARAMETER
+output:
+  directory: "${STEREO_WAVE_OUTPUT_DIR}"
+validation_boundary:
+  purpose: PIPELINE_CLOSURE_ONLY
+  static_stability_status: FAIL_PRESERVED
+  industrial_accuracy: NOT_ESTABLISHED
+  wave_run: false

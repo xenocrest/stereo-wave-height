@@ -19,6 +19,8 @@ REQUIRED_WASS_CONFIG_FILES = (
     "stereo_config.txt",
 )
 
+OPTIONAL_FIXED_CALIBRATION_FILES = ("ext_R.xml", "ext_T.xml")
+
 
 @dataclass(frozen=True)
 class PreparedWassWorkspace:
@@ -106,6 +108,15 @@ def prepare_wass_workspace(
         shutil.copy2(source, target)
         config_records[name] = {"path": target.relative_to(root).as_posix(), "sha256": _sha256(target)}
 
+    fixed_present = [name for name in OPTIONAL_FIXED_CALIBRATION_FILES if (config_source / name).is_file()]
+    if fixed_present and len(fixed_present) != len(OPTIONAL_FIXED_CALIBRATION_FILES):
+        raise FileNotFoundError("fixed calibration requires both ext_R.xml and ext_T.xml")
+    for name in fixed_present:
+        source = config_source / name
+        target = config_target / name
+        shutil.copy2(source, target)
+        config_records[name] = {"path": target.relative_to(root).as_posix(), "sha256": _sha256(target)}
+
     frame_records: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
     seen_timestamps: set[int] = set()
@@ -156,6 +167,7 @@ def prepare_wass_workspace(
         "ground_truth_exposed_to_wass": False,
         "config_status": "caller_supplied_verified_wass_v1_5",
         "calibration_provenance": payload.get("calibration_provenance"),
+        "fixed_calibration_available": len(fixed_present) == 2,
         "config": config_records,
         "frames": frame_records,
     }

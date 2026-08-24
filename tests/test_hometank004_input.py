@@ -23,6 +23,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "static_frame_geometry_diagnostic.md",
             "static_frame_consistency_diagnostic.yaml",
             "static_frame_consistency_diagnostic.md",
+            "reconstruction_pipeline.yaml", "reconstruction_run_report.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
@@ -207,6 +208,18 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("18.8618%", report)
         self.assertIn("`MIXED`", report)
         self.assertIn("wave 仍禁止", report)
+
+    def test_reconstruction_run_preserves_failure_gates(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        config = (root / "reconstruction_pipeline.yaml").read_text(encoding="utf-8")
+        report = (root / "reconstruction_run_report.md").read_text(encoding="utf-8")
+        self.assertIn("stereo_backend: wass", config)
+        self.assertIn("run_autocalibrate: false", config)
+        self.assertIn("manual_geometry_used_for_reconstruction: false", config)
+        self.assertIn("COMPLETED_DIAGNOSTIC_STATIC_UNSTABLE", report)
+        self.assertIn("378,468", report)
+        self.assertIn("static_stability = FAIL_PRESERVED", report)
+        self.assertIn("wave remains not run", report)
 
     def test_disparity_range_audit_rejects_blind_range_expansion(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"

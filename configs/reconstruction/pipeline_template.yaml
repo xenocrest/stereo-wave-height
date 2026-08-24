@@ -1,0 +1,28 @@
+schema_version: "1.0"
+status: TEMPLATE
+input:
+  left_video: UNKNOWN
+  right_video: UNKNOWN
+  ffmpeg_executable: UNKNOWN
+  canonical_rotation_deg: {left: 0, right: 0}
+  frame_pairs:
+    - frame_id: "000000"
+      left_timestamp_s: null
+      right_timestamp_s: null
+      timestamp_ns: null
+calibration:
+  file: UNKNOWN
+  quality_mode: require_approved
+processing:
+  stereo_backend: wass
+  fixed_calibration: true
+  run_autocalibrate: false
+  wass_runtime_binding: UNKNOWN
+  wass_config_dir: UNKNOWN
+  surface_distance_threshold_m: null
+output:
+  directory: UNKNOWN
+notes:
+  - All UNKNOWN/null fields must be explicitly supplied before execution.
+  - Manual geometry must not replace OpenCV K/D/R/T.
+  - The WASS config directory must contain K/D/R/T identical to calibration.file.

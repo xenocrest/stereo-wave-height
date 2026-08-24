@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 import subprocess
+import shutil
 from typing import Sequence
 
 from .runtime import WassRuntimeBinding
@@ -148,3 +149,53 @@ class WassRunner:
                 stage="stereo", workspace=workspace, frame_id=frame["frame_id"],
             )
         return WassRunResult(workspace, ("prepare", "match", "autocalibrate", "stereo"), len(frames))
+
+    def run_fixed_calibration(self, workspace_root: str | Path) -> WassRunResult:
+        """Run prepare/match/stereo while preserving caller-supplied fixed R/T.
+
+        ``wass_match`` remains a correspondence diagnostic but may write pose
+        files.  The verified ``ext_R.xml`` and ``ext_T.xml`` are therefore
+        restored into every workdir before stereo.  Autocalibration is never
+        invoked by this method.
+        """
+        workspace = Path(workspace_root).resolve()
+        manifest_path = workspace / "wass_input_manifest.json"
+        if not manifest_path.is_file():
+            raise FileNotFoundError(manifest_path)
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        frames = manifest.get("frames")
+        if not isinstance(frames, list) or not frames:
+            raise ValueError("WASS input manifest has no frames")
+        if manifest.get("fixed_calibration_available") is not True:
+            raise ValueError("fixed-calibration run requires verified ext_R.xml and ext_T.xml")
+        matcher_config = workspace / manifest["config"]["matcher_config.txt"]["path"]
+        stereo_config = workspace / manifest["config"]["stereo_config.txt"]["path"]
+        calibration_dir = workspace / "config"
+
+        for frame in frames:
+            frame_id = frame["frame_id"]
+            workdir = workspace / frame["workdir"]
+            if workdir.exists():
+                raise FileExistsError(f"prepare workdir already exists: {workdir}")
+            self._execute(
+                self._command("prepare", [
+                    "--workdir", str(workdir), "--calibdir", str(calibration_dir),
+                    "--c0", str(workspace / frame["cam0"]), "--c1", str(workspace / frame["cam1"]),
+                ]),
+                stage="prepare", workspace=workspace, frame_id=frame_id,
+            )
+        for frame in frames:
+            frame_id = frame["frame_id"]
+            workdir = workspace / frame["workdir"]
+            self._execute(
+                self._command("match", [str(matcher_config), str(workdir)]),
+                stage="match", workspace=workspace, frame_id=frame_id,
+            )
+            for name in ("ext_R.xml", "ext_T.xml"):
+                shutil.copy2(calibration_dir / name, workdir / name)
+        for frame in frames:
+            self._execute(
+                self._command("stereo", [str(stereo_config), str(workspace / frame["workdir"])]),
+                stage="stereo", workspace=workspace, frame_id=frame["frame_id"],
+            )
+        return WassRunResult(workspace, ("prepare", "match", "stereo"), len(frames))
