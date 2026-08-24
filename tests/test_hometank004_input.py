@@ -21,6 +21,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "plane_ransac_sampling_update.md",
             "static_validation_summary.yaml", "static_validation_summary.md",
             "static_frame_geometry_diagnostic.md",
+            "static_frame_consistency_diagnostic.yaml",
+            "static_frame_consistency_diagnostic.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
@@ -185,6 +187,26 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("STATIC_VALIDATION_FAIL", report)
         self.assertIn("approved_for_wass=false", report)
         self.assertIn("Wave remains prohibited", report)
+
+    def test_static_frame_consistency_diagnostic_is_read_only_and_general(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        result = (root / "static_frame_consistency_diagnostic.yaml").read_text(encoding="utf-8")
+        report = (root / "static_frame_consistency_diagnostic.md").read_text(encoding="utf-8")
+        for required in (
+            "classification: MIXED_IMAGE_VARIATION_AND_MATCHING_INSTABILITY",
+            "wass_configuration: UNCHANGED",
+            "autocalibration_run: false",
+            "wave_run: false",
+            "numeric_histogram_status: NOT_AVAILABLE_FROM_FROZEN_RUNTIME",
+            "final: MIXED",
+            "static_validation: STATIC_VALIDATION_FAIL",
+            "approved_for_wass: false",
+        ):
+            self.assertIn(required, result)
+        self.assertIn("不针对手机设备优化", report)
+        self.assertIn("18.8618%", report)
+        self.assertIn("`MIXED`", report)
+        self.assertIn("wave 仍禁止", report)
 
     def test_disparity_range_audit_rejects_blind_range_expansion(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"

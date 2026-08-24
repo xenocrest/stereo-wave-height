@@ -37,6 +37,17 @@ from .virtual_stereo_geometry import (
     theoretical_pinhole_projection,
     triangulate_parallel_downward_stereo,
 )
+from .static_consistency import (
+    DepthDriftSummary,
+    DistributionSummary,
+    PlaneGeometry,
+    depth_drift,
+    distribution_summary,
+    histogram_total_variation,
+    mask_overlap,
+    normalized_histogram,
+    plane_geometry,
+)
 
 __all__ = [
     "ConstantHeightResult",
@@ -73,4 +84,13 @@ __all__ = [
     "closure_metrics",
     "theoretical_pinhole_projection",
     "triangulate_parallel_downward_stereo",
+    "DepthDriftSummary",
+    "DistributionSummary",
+    "PlaneGeometry",
+    "depth_drift",
+    "distribution_summary",
+    "histogram_total_variation",
+    "mask_overlap",
+    "normalized_histogram",
+    "plane_geometry",
 ]

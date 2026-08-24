@@ -1,0 +1,95 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+diagnostic: STATIC_FRAME_CONSISTENCY_DIAGNOSTIC
+status: COMPLETE
+classification: MIXED_IMAGE_VARIATION_AND_MATCHING_INSTABILITY
+purpose: GENERAL_REAL_STEREO_DIAGNOSTIC_FOR_FUTURE_PROFESSIONAL_SYSTEMS
+frozen_conditions:
+  calibration: {K0: UNCHANGED, D0: UNCHANGED, K1: UNCHANGED, D1: UNCHANGED, R: UNCHANGED, T: UNCHANGED}
+  rectification: {alpha: 0.0, zero_disparity: true, unchanged_for_all_frames: true}
+  wass_configuration: UNCHANGED
+  autocalibration_run: false
+  wave_run: false
+source_artifacts:
+  runtime_root: "D:/stereo-wave-height-runs/HomeTank_004/static-full-calibration-valid-point-ransac-20260822"
+  committed_evidence:
+    - static_frame_geometry_diagnostic.md
+    - static_validation_summary.yaml
+    - wass_disparity_range_audit.md
+  rectified_image_artifact: stereo.jpg
+  rectified_artifact_order: "computational left (original cam1/right), computational right (original cam0/left); WASS auto-swap confirmed"
+  valid_disparity_mask: "valid byte plane in WASSPCZ1 precluster_depth.bin"
+image_statistics:
+  histogram:
+    bins: 16
+    value_range: [0, 256]
+    normalization: probability
+  frames:
+    - frame_id: "000000"
+      computational_left_cam1: {mean: 106.934056, std: 49.777356, min: 0, max: 255}
+      computational_right_cam0: {mean: 126.707694, std: 53.903556, min: 0, max: 222}
+      computational_left_cam1_histogram: [0.03657070, 0.12503713, 0.04633873, 0.04112510, 0.07317323, 0.00911121, 0.02634500, 0.08550588, 0.25442612, 0.29850887, 0.00372589, 0.00005980, 0.00001929, 0.00001784, 0.00001399, 0.00002122]
+      computational_right_cam0_histogram: [0.01644097, 0.11631125, 0.03001109, 0.01884790, 0.07902344, 0.02023389, 0.01291811, 0.01109954, 0.04198978, 0.36156636, 0.19028839, 0.09326871, 0.00799865, 0.00000193, 0.0, 0.0]
+    - frame_id: "000001"
+      computational_left_cam1: {mean: 111.801086, std: 52.126407, min: 0, max: 237}
+      computational_right_cam0: {mean: 114.236301, std: 52.204354, min: 0, max: 195}
+      computational_left_cam1_histogram: [0.04539738, 0.11065345, 0.04257089, 0.03938127, 0.07750193, 0.01001399, 0.01739246, 0.04306424, 0.20224441, 0.32006125, 0.09158275, 0.00009211, 0.00001591, 0.00001640, 0.00001157, 0.0]
+      computational_right_cam0_histogram: [0.07905961, 0.07554061, 0.02333960, 0.02526331, 0.07868152, 0.01480951, 0.00771171, 0.06907890, 0.28710214, 0.17379099, 0.14194493, 0.02367332, 0.00000386, 0.0, 0.0, 0.0]
+    - frame_id: "000002"
+      computational_left_cam1: {mean: 109.033083, std: 50.524374, min: 0, max: 194}
+      computational_right_cam0: {mean: 113.045413, std: 51.647002, min: 0, max: 195}
+      computational_left_cam1_histogram: [0.04878762, 0.10747251, 0.04353395, 0.03906588, 0.07722946, 0.01011381, 0.02955922, 0.05535108, 0.23059317, 0.32503713, 0.03317323, 0.00007957, 0.00000338, 0.0, 0.0, 0.0]
+      computational_right_cam0_histogram: [0.08217110, 0.07304253, 0.02372155, 0.02532552, 0.07724537, 0.01489198, 0.01014805, 0.09212240, 0.27991657, 0.16796055, 0.14278839, 0.01066262, 0.00000338, 0.0, 0.0, 0.0]
+  pairwise_histogram_total_variation:
+    - {frames: ["000000", "000001"], computational_left_cam1: 0.20297309, computational_right_cam0: 0.40217641}
+    - {frames: ["000000", "000002"], computational_left_cam1: 0.13567178, computational_right_cam0: 0.42415027}
+    - {frames: ["000001", "000002"], computational_left_cam1: 0.11641590, computational_right_cam0: 0.06452836}
+matching_support:
+  image_pixel_count: 2073600
+  frames:
+    - {frame_id: "000000", valid_count: 216874, valid_ratio: 0.10458816}
+    - {frame_id: "000001", valid_count: 133968, valid_ratio: 0.06460648}
+    - {frame_id: "000002", valid_count: 141950, valid_ratio: 0.06845583}
+  pairwise_iou:
+    - {frames: ["000000", "000001"], intersection_count: 55674, union_count: 295168, overlap: 0.18861801}
+    - {frames: ["000000", "000002"], intersection_count: 57062, union_count: 301762, overlap: 0.18909604}
+    - {frames: ["000001", "000002"], intersection_count: 62915, union_count: 213003, overlap: 0.29537143}
+disparity_distribution:
+  unit: px
+  kind: EFFECTIVE_RECTIFIED_DISPARITY_OF_VALID_TRIANGULATED_POINTS
+  raw_sgbm_float_exported: false
+  numeric_histogram_status: NOT_AVAILABLE_FROM_FROZEN_RUNTIME
+  scaled_png_used_as_numeric_histogram: false
+  frames:
+    - {frame_id: "000000", count: 216874, min: UNKNOWN, max: UNKNOWN, mean: 585.2716, median: 639.5457, p5: 262.4985, p95: 640.5586, saturation_indicator: true}
+    - {frame_id: "000001", count: 133968, min: UNKNOWN, max: UNKNOWN, mean: 488.8168, median: 629.6289, p5: 48.4831, p95: 640.5543, saturation_indicator: true}
+    - {frame_id: "000002", count: 141950, min: UNKNOWN, max: UNKNOWN, mean: 478.1076, median: 627.5800, p5: 58.6234, p95: 640.5536, saturation_indicator: true}
+depth_drift:
+  reference_frame: "000000"
+  final_xyz_mean_z_m:
+    - {frame_id: "000000", mean_z_m: 0.2907236481, delta_from_reference_m: 0.0}
+    - {frame_id: "000001", mean_z_m: 0.3311206990, delta_from_reference_m: 0.0403970509}
+    - {frame_id: "000002", mean_z_m: 0.2338873373, delta_from_reference_m: -0.0568363108}
+  common_lattice_precluster_depth:
+    unit: m
+    scale_source: "OpenCV calibrated baseline norm 0.06868471158474378 m applied to WASS baseline-normalized depth"
+    comparisons:
+      - {frame_id: "000001", common_count: 55674, mean_delta_m: -0.03486746, rms_delta_m: 0.71275118, p95_absolute_delta_m: 0.49563852}
+      - {frame_id: "000002", common_count: 57062, mean_delta_m: -0.02757742, rms_delta_m: 0.69334272, p95_absolute_delta_m: 0.29906837}
+plane_stability:
+  implicit_model: "normal dot [x,y,z] + offset = 0"
+  frames:
+    - {frame_id: "000000", normal: [-0.41717297, -0.07106373, 0.90604451], tilt_deg: 25.03566934, offset_m: -0.35985779, residual_rms_m: 0.00224909}
+    - {frame_id: "000001", normal: [-0.32255827, -0.03415561, 0.94593317], tilt_deg: 18.92690188, offset_m: -0.36683738, residual_rms_m: 0.00216114}
+    - {frame_id: "000002", normal: [-0.50507388, 0.03390858, 0.86240975], tilt_deg: 30.41176397, offset_m: -0.34571155, residual_rms_m: 0.00200653}
+  maximum_pairwise_normal_angle_deg: 12.16642043
+  offset_range_m: 0.02112583
+conclusion:
+  primary: MATCHING_INSTABILITY
+  contributing: IMAGE_VARIATION
+  calibration_geometry_uncertainty: PRESENT_BUT_NOT_FRAME_DEPENDENT
+  final: MIXED
+historical_status_preserved:
+  calibration_quality: CALIBRATION_QUALITY_FAIL
+  static_validation: STATIC_VALIDATION_FAIL
+  approved_for_wass: false
