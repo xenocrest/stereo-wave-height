@@ -28,6 +28,8 @@ $$
 
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
+当前新增：[双目系统参数设计模型](docs/stereo_system_design/disparity_depth_model.md)，用于指导未来专业双目相机选型和部署参数设计。
+
 ## 2. 为什么采用双目、WASS 和静水参考
 
 ### 2.1 双目测量

@@ -15,6 +15,8 @@
 
 项目路线、模型体系、Case 0/1/2 结果、结论边界和下一步工作的长期汇报入口见 [项目宏观汇报](PROJECT_OVERVIEW.md)。
 
+当前新增：[双目系统参数设计模型](docs/stereo_system_design/disparity_depth_model.md)，用于指导未来专业双目相机选型和部署参数设计。
+
 ## 当前项目状态
 
 当前阶段：**低成本真实双目视频验证阶段（HomeTank_004）**。
