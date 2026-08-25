@@ -1,0 +1,83 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: ANALYSIS_COMPLETE_EXECUTION_BLOCKED_BY_FRAME_SYNC_AND_ROI_CAPABILITY
+principles:
+  wass_core_modified: false
+  calibration_modified: false
+  historical_results_modified: false
+  ruler_used: false
+baseline:
+  measured_frame_count: 3
+  mean_seconds_per_frame: 25.3110146
+  minimum_seconds_per_frame: 23.1740781
+  maximum_seconds_per_frame: 29.2042569
+  five_frame_output_bytes: 380287736
+  mean_output_bytes_per_frame: 76057547.2
+roi_analysis:
+  full_image_mode:
+    status: BASELINE_MEASURED
+    match_seconds_mean: 11.54713997
+    stereo_internal_seconds_mean: 13.13646667
+    total_seconds_mean: 25.3110146
+  water_roi_mode:
+    status: NOT_RUN_UNSUPPORTED_AS_PRE_MATCH_OPTIMIZATION
+    physical_water_image_roi: null
+    physical_water_roi_status: MANUAL_REGISTRATION_REQUIRED
+    official_stereo_mask_available: true
+    official_triangulation_bbox_available: true
+    pre_match_compute_reduction_available: false
+    input_crop_allowed: false
+    reason: Cropping would change image geometry/K; stereo masks and TRIANG_BBOX do not reduce the match bottleneck.
+  quality_comparison:
+    xyz_point_change: null
+    plane_rms_change_m: null
+    height_range_change_m: null
+    status: NOT_AVAILABLE_EXPERIMENT_NOT_RUN
+output_mode_analysis:
+  diagnostic_five_frame_bytes: 380287736
+  production_retained_five_frame_bytes: 92397710
+  production_retained_percent: 24.29678931
+  storage_reduction_percent: 75.70321069
+  retained:
+    - compressed height samples
+    - pixel-XYZ correspondence
+    - metric XYZ
+    - wave CSV/JSON and reports
+  checkpoint_prunable:
+    - ASCII PLY duplicate
+    - rectified diagnostic PNG
+    - disparity visualization PNG
+    - extracted frame copies
+    - WASS workdir/debug artifacts
+  raw_videos_pruned: false
+  measured_three_frame_output_seconds:
+    diagnostic_xyz_and_ply_mean: 0.49309217
+    production_xyz_only_mean: 0.26730043
+    difference_mean: -0.22579174
+  estimated_component_total_seconds_per_frame: 25.08522286
+  note: Runtime comparison changes only project output serialization; WASS compute is unchanged.
+batch:
+  code_status: IMPLEMENTED_AND_UNIT_TESTED
+  supports_frame_range: true
+  supports_gap_free_batches: true
+  supports_verified_checkpoint_resume: true
+  supports_result_json_merge: true
+  merge_order: [timestamp_ns, frame_id]
+  live_100_frame_execution: false
+hundred_frame_preflight:
+  requested_frames: 100
+  baseline_runtime_estimate_s: 2531.10146
+  baseline_runtime_estimate_minutes: 42.1850243
+  baseline_storage_estimate_bytes: 7605754720
+  production_retained_storage_estimate_bytes: 1847954200
+  available_D_drive_bytes: 64979804160
+  storage_status: CAPACITY_AVAILABLE
+  frame_level_sync_status: SYNC_NOT_ESTABLISHED
+  execution_status: BLOCKED_FRAME_LEVEL_SYNCHRONIZATION
+  completed_frames: 0
+  result_consistency_status: NOT_AVAILABLE_NO_100_FRAME_RUN
+conclusion:
+  real_time_claimed: false
+  industrial_performance_claimed: false
+  production_mode_ready_for_long_run: false
+  next_step: Register a physical water ROI only if upstream WASS supports geometry-preserving pre-match masking, and establish frame-level timestamps before a 100-frame controlled run.

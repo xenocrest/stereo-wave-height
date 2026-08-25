@@ -36,6 +36,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "wave_accuracy_validation_report.md",
             "wass_performance_profile.json", "wass_performance_profile.md",
             "sync_report.yaml", "video_synchronization_report.md",
+            "wass_production_mode_analysis.yaml", "wass_production_mode_analysis.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",

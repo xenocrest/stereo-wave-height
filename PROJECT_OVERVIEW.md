@@ -48,6 +48,8 @@ Wave 展示接口现已形成统一 CSV/JSON：每帧保留物理 ROI、时间�
 
 工程化诊断现已加入 WASS 分阶段计时和光源事件同步接口。HomeTank_004 固定三帧的组件总耗时平均为 25.31 s/frame：`match` 平均 11.55 s，是主要稳定瓶颈；Z-gap、离群点和平面阶段组成的 stereo 后处理平均 8.31 s，且造成主要帧间波动。两路 wave 视频的 10 Hz 亮度序列匹配到 10 个同极性事件，得到 $t_{right}-t_{left}=0.000$ s、残差 RMS 0.0548 s；这只建立粗时间关系，约 60 FPS 的帧级对应仍为 `SYNC_NOT_ESTABLISHED`。性能与同步分析均不改变 WASS、标定或高度结果，也不构成实时或工业性能声明。
 
+Production mode 工程框架进一步把 ROI capability、输出保留和批次恢复显式化。现有 WASS mask/triangulation bbox 不作用于主要的 `match` 阶段，且当前没有人工注册的双相机水面 ROI，因此没有伪造 ROI 加速对比。保留 height、pixel–XYZ、metric XYZ 与结果文件并在验证 checkpoint 后裁剪重复/诊断产物，可把五帧保留量减少约75.7%，但组件总耗时估计只从25.311降至25.085 s/frame。100帧容量预检通过，执行仍因帧级同步未建立而阻塞；所以目前只有可测试的批处理/合并框架，没有生产加速或重建一致性实测结论。
+
 ## 2. 为什么采用双目、WASS 和静水参考
 
 ### 2.1 双目测量

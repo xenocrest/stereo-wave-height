@@ -60,6 +60,8 @@ Wave 结果输出现已统一为物理 ROI 的逐帧 CSV 与机器可读 JSON，
 
 当前进入工程化分析阶段：新增通用 WASS 分阶段性能剖析与基于光源变化的视频同步分析。HomeTank_004 三帧组件计时平均为 25.31 s/frame，主要瓶颈是 `match`，其次是 stereo 后处理；光源事件建立了 0.1 s 分辨率的粗时间关系，但尚未建立约 60 FPS 的逐帧精确同步。以上工具服务未来专业双目相机部署，不代表实时运行或工业同步已经实现。
 
+WASS production mode 分析框架现已建立：支持显式 ROI capability 检查、诊断/生产输出保留策略、可恢复批次和结果合并。现有输出策略可将五帧保留量减少约 75.7%，但不会改变 WASS 计算；当前 WASS ROI 入口不能降低主要的 `match` 耗时。100 帧实跑因帧级同步尚未建立而未启动，不能宣称已经取得生产模式加速或结果一致性结论。
+
 ### 真实视频成果索引
 
 | 内容 | 状态 | 文档 |
@@ -76,6 +78,7 @@ Wave 结果输出现已统一为物理 ROI 的逐帧 CSV 与机器可读 JSON，
 | 长时间 wave 全帧验证 | 资源/同步预检阻塞 | [Accuracy validation report](experiments/real_video/HomeTank_004/wave_accuracy_validation_report.md) |
 | WASS 性能剖析 | 三帧实测完成 | [Performance profile](experiments/real_video/HomeTank_004/wass_performance_profile.md) |
 | 光源事件同步分析 | 粗同步完成，帧级未建立 | [Synchronization report](experiments/real_video/HomeTank_004/video_synchronization_report.md) |
+| WASS production mode | 框架完成，100帧受同步门阻塞 | [Production mode analysis](experiments/real_video/HomeTank_004/wass_production_mode_analysis.md) |
 
 ## 核心建模成果
 

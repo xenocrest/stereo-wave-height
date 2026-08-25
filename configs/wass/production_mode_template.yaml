@@ -1,0 +1,29 @@
+schema_version: "1.0"
+mode: production
+roi_experiment:
+  enabled: false
+  image_roi: null
+  status: MANUAL_PHYSICAL_WATER_ROI_REQUIRED
+  pre_match_compute_reduction_supported: false
+  note: WASS stereo masks and TRIANG_BBOX limit downstream support but do not reduce the match stage.
+output:
+  retain:
+    - height/*.npz
+    - pixel_xyz/*.npz
+    - pointcloud/*.xyz
+    - wave_timeseries.csv
+    - wave_result.json
+  prune_after_verified_checkpoint:
+    - pointcloud/*.ply
+    - rectified/*.png
+    - disparity/*.png
+    - dataset extracted frames
+    - WASS work directories and debug images
+  raw_videos_affected: false
+batch:
+  frame_start: null
+  frame_stop_exclusive: null
+  batch_size: 500
+  resume_from_verified_checkpoints: true
+  merge_key: [timestamp_ns, frame_id]
+  frame_level_synchronization_required: true
