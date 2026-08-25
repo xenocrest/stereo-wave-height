@@ -4,6 +4,8 @@
 
 This module establishes an independent physical-reference method for validating stereo scale, static stability and water height. It is camera-independent and intended to migrate unchanged to a synchronized industrial stereo rig. It does not modify OpenCV `K/D/R/T`, manual geometry, WASS, historical XYZ results, or height values.
 
+Ruler validation is independent from reconstruction: `src/reconstruction` does not load this report, `ruler_reference.yaml`, ruler ROIs, tick values or waterline readings. The newly preserved pixel–XYZ output makes a future downstream association possible, but the ruler never participates in stereo, XYZ generation, reference-plane construction or height computation.
+
 Inputs reviewed:
 
 - HomeTank_004 static and wave videos;
@@ -15,7 +17,7 @@ Final status: **`RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED`**.
 
 ## 2. Ruler observation status
 
-The right rectified camera clearly shows the vertical ruler. In the reviewed left rectified frames, the ruler is at the extreme right boundary or the same labelled interval cannot be confirmed. The existing pipeline stores XYZ coordinates but not the source-pixel index for each XYZ point. Therefore an identical physical ruler segment cannot yet be selected in both images and linked to its reconstructed endpoints.
+The right rectified camera clearly shows the vertical ruler. In the reviewed left rectified frames, the ruler is at the extreme right boundary or the same labelled interval cannot be confirmed. The pipeline now stores projected pixel–XYZ correspondence for final reconstructed points, but the ruler is not confirmed to survive WASS's water-plane/component filtering. Therefore an identical physical ruler segment still cannot be selected and linked to reconstructed endpoints.
 
 | Item | Value |
 |---|---|
@@ -26,7 +28,7 @@ The right rectified camera clearly shows the vertical ruler. In the reviewed lef
 | cam0/left visibility | partial/edge, common marks unconfirmed |
 | canonical ROI | `MANUAL_ROI_REQUIRED` |
 | common stereo endpoints | `NOT_CONFIRMED` |
-| pixel-to-XYZ association | unavailable in existing output |
+| pixel-to-XYZ association | available for retained final points; ruler-point retention unconfirmed |
 
 No ROI coordinates or ruler readings are guessed from visual inspection. The pending fields are recorded as `null` in [ruler_reference.yaml](ruler_reference.yaml).
 

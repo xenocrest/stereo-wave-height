@@ -52,6 +52,8 @@
 
 HomeTank_004 已登记固定竖直刻度尺作为独立物理参考，用于后续验证双目三维尺度、静水漂移和波高。当前缺少双相机共同刻度 ROI、端点与像素到 XYZ 的关联，状态为 `RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED`，尚未形成工程测量结论。
 
+重建基础接口现已补齐：WASS `mesh_cam.xyzC` 通过每帧 `P0cam` 保存 rectified pixel–XYZ 对应，水面高度统一由三维点到参考平面的有符号正交距离计算。该流程只使用双目图像、标定和 WASS 输出；标尺保持完全独立的下游验证工具。
+
 ### 真实视频成果索引
 
 | 内容 | 状态 | 文档 |
@@ -63,6 +65,7 @@ HomeTank_004 已登记固定竖直刻度尺作为独立物理参考，用于后�
 | StereoSGBM 分析 | 进行中 | [SGBM matching parameter audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md) |
 | Wave 高度与漂移验证 | 方法完成，结果未验证 | [Wave height validation](experiments/real_video/HomeTank_004/wave_height_validation.md) |
 | 标尺独立物理验证 | 方法完成，等待人工参考注册 | [Ruler validation](experiments/real_video/HomeTank_004/ruler_validation.md) |
+| Pixel–XYZ 与平面法向高度 | 基础接口完成 | [HomeTank_004 result](experiments/real_video/HomeTank_004/pixel_xyz_height_result.md) |
 
 ## 核心建模成果
 

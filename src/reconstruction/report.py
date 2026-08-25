@@ -34,12 +34,13 @@ def write_report(path: Path, result: dict[str, Any]) -> Path:
         "- Autocalibration: not run",
         f"- Status: `{result['status']}`", "",
         "## 4. Point cloud and surface", "",
-        "| Frame | Points | Plane RMS (mm) | Water points | H mean/RMS/max abs (mm) |",
-        "|---|---:|---:|---:|---:|",
+        "| Frame | Points | Pixel–XYZ pairs | Plane RMS (mm) | Water points | H mean/RMS/max abs (mm) |",
+        "|---|---:|---:|---:|---:|---:|",
     ]
     for frame in result["frames"]:
         lines.append(
             f"| {frame['frame_id']} | {frame['point_count']:,} | "
+            f"{frame['pixel_xyz_correspondence_count']:,} | "
             f"{frame['water_plane_rms_m']*1000:.4f} | {frame['water_surface_point_count']:,} | "
             f"{frame['height_mean_m']*1000:.3f} / {frame['height_rms_m']*1000:.3f} / "
             f"{frame['height_max_absolute_m']*1000:.3f} |"

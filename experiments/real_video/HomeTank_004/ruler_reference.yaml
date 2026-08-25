@@ -34,10 +34,13 @@ ruler:
     static: []
     wave: []
 association_requirements:
-  pixel_to_xyz_index_available: false
+  pixel_xyz_correspondence_available: true
+  pixel_xyz_coordinate_system: wass_rectified_computational_cam0__input_right
+  ruler_points_present_in_final_water_mesh: NOT_CONFIRMED
   required_next_input:
     - Per-camera canonical ROI for the same visible ruler segment.
     - Identical labelled ruler endpoints in both images and their real separation.
+    - Confirm that ruler endpoints survive into an eligible WASS 3-D output rather than only the water mesh.
     - Per-frame ruler waterline readings with timestamp/frame association.
   automatic_detection_claimed: false
   reconstructed_values_must_not_be_rescaled_to_reference: true

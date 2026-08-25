@@ -12,19 +12,21 @@ inputs:
   wave_pointcloud_source: "D:/stereo-wave-height-runs/HomeTank_004/wave-reconstruction-pipeline-20260824/pointcloud/"
   calibration_modified: false
   wass_modified: false
+  reconstruction_calls_ruler_validation: false
 ruler:
   physical_scale:
     smallest_division_mm: 1.0
     major_division_mm: 10.0
   roi_status: MANUAL_ROI_REQUIRED
   common_stereo_marks_status: NOT_CONFIRMED
-  pixel_xyz_association_status: NOT_AVAILABLE_IN_EXISTING_PIPELINE_OUTPUT
+  pixel_xyz_association_status: AVAILABLE_FOR_FINAL_RECONSTRUCTED_POINTS
+  ruler_endpoint_xyz_status: NOT_AVAILABLE_RULER_RETENTION_UNCONFIRMED
 scale_validation:
   status: NOT_AVAILABLE
   real_length_m: null
   reconstructed_length_m: null
   relative_error: null
-  reason: No manually registered common stereo endpoints or pixel-to-XYZ correspondence are available.
+  reason: No manually registered endpoints exist and ruler retention in the final reconstructed water-point output is unconfirmed.
 water_height_validation:
   formula: "h = n dot (P - P0) / norm(n)"
   camera_z_used_as_height: false

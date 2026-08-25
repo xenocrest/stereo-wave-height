@@ -1,0 +1,46 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+status: PIXEL_XYZ_HEIGHT_FOUNDATION_COMPLETED_WITH_EXISTING_WARNINGS
+source_run: "D:/stereo-wave-height-runs/HomeTank_004/wave-reconstruction-pipeline-20260824"
+reconstruction_inputs:
+  stereo_images: true
+  calibration_K_D_R_T: UNCHANGED
+  wass_output: mesh_cam.xyzC
+  ruler_data_used: false
+pixel_xyz:
+  method: PROJECT_UNSCALED_WASS_CAMERA_POINTS_WITH_PER_WORKDIR_P0CAM
+  pixel_coordinate_system: wass_rectified_computational_cam0__input_right
+  reason_for_input_right: WASS runtime auto-swapped the input roles for stereo computation; the role is recorded rather than hidden.
+  original_unrectified_pixel_claimed: false
+  point_order_guess_used: false
+  total_correspondence_count: 955521
+  per_frame_count: [142444, 221307, 191312, 201904, 198554]
+  query_policy: NEAREST_OBSERVED_PIXEL_WITH_CALLER_SUPPLIED_RADIUS
+height:
+  method: SIGNED_ORTHOGONAL_DISTANCE_TO_STATIC_REFERENCE_PLANE
+  formula: "H = (n dot P + D) / norm(n)"
+  camera_z_used_as_height: false
+  reference_plane:
+    normal: [0.4266090565020204, 0.06757844167243465, 0.9019079039079221]
+    offset_m: -0.22467304473232508
+    source: static_reference_plane.yaml
+    warning: STATIC_VALIDATION_FAIL
+  range_m: [-0.026767001507027516, 0.09313716476601924]
+  maximum_difference_from_existing_pipeline_height_m: 0.0
+xyz:
+  point_count: 955521
+  range_m:
+    x: [-0.15186848097250047, -0.010289579425290317]
+    y: [-0.0944556006830576, 0.008201070675180052]
+    z: [0.24881473121721995, 0.3649748465090844]
+frames:
+  - {frame_id: "000000", correspondence_count: 142444, u_px: [912.6009122, 1071.9959977], v_px: [348.8720231, 781.2445643], height_m: [0.0168825151, 0.0496534010]}
+  - {frame_id: "000001", correspondence_count: 221307, u_px: [687.6743582, 1114.5319334], v_px: [304.3077220, 785.2412534], height_m: [-0.0133842613, 0.0351863405]}
+  - {frame_id: "000002", correspondence_count: 191312, u_px: [671.4788188, 1210.8126764], v_px: [293.0576786, 783.7535393], height_m: [-0.0166197286, 0.0472694211]}
+  - {frame_id: "000003", correspondence_count: 201904, u_px: [714.6419609, 1272.1880140], v_px: [313.8407213, 773.9937911], height_m: [-0.0077129984, 0.0931371648]}
+  - {frame_id: "000004", correspondence_count: 198554, u_px: [818.7300018, 1145.5236517], v_px: [276.5304013, 779.8383645], height_m: [-0.0267670015, 0.0386987105]}
+validation_boundaries:
+  static_stability: FAIL_PRESERVED
+  calibration_quality: FAIL_PRESERVED
+  physical_wave_accuracy: NOT_ESTABLISHED
+  ruler_validation: INDEPENDENT_NOT_CALLED

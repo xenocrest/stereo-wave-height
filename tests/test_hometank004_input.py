@@ -29,6 +29,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "wave_height_validation.yaml", "wave_height_validation.md",
             "wave_height_timeseries.csv",
             "ruler_reference.yaml", "ruler_validation.yaml", "ruler_validation.md",
+            "pixel_xyz_height_result.yaml", "pixel_xyz_height_result.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
@@ -65,10 +66,21 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("status: MANUAL_ROI_REQUIRED", reference)
         self.assertIn("real_length_m: null", reference)
         self.assertIn("automatic_detection_claimed: false", reference)
+        self.assertIn("pixel_xyz_correspondence_available: true", reference)
         self.assertIn("status: RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED", result)
         self.assertIn("relative_error: null", result)
         self.assertIn("camera_z_used_as_height: false", result)
         self.assertIn("historical_results_modified: false", result)
+        self.assertIn("reconstruction_calls_ruler_validation: false", result)
+
+    def test_pixel_xyz_height_result_preserves_validation_warnings(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        result = (root / "pixel_xyz_height_result.yaml").read_text(encoding="utf-8")
+        self.assertIn("total_correspondence_count: 955521", result)
+        self.assertIn("camera_z_used_as_height: false", result)
+        self.assertIn("maximum_difference_from_existing_pipeline_height_m: 0.0", result)
+        self.assertIn("ruler_validation: INDEPENDENT_NOT_CALLED", result)
+        self.assertIn("static_stability: FAIL_PRESERVED", result)
 
     def test_corrected_geometry_and_coarse_candidates_preserve_strict_failure(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"

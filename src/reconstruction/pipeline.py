@@ -24,6 +24,8 @@ from .io import (
     write_ply,
     write_xyz,
 )
+from .height import height_from_plane
+from .pixel_xyz import load_projection_matrix, project_wass_points, save_pixel_xyz
 from .report import write_report, write_result_json
 from .surface import extract_planar_surface
 
@@ -70,7 +72,8 @@ class ReconstructionPipeline:
         point_total = 0
         rectified_dir, disparity_dir = output / "rectified", output / "disparity"
         pointcloud_dir, height_dir = output / "pointcloud", output / "height"
-        for directory in (rectified_dir, disparity_dir, pointcloud_dir, height_dir):
+        pixel_xyz_dir = output / "pixel_xyz"
+        for directory in (rectified_dir, disparity_dir, pointcloud_dir, height_dir, pixel_xyz_dir):
             directory.mkdir(parents=True, exist_ok=True)
         manifest = json.loads((workspace / "wass_input_manifest.json").read_text(encoding="utf-8"))
         decoded: list[tuple[dict[str, object], Path, np.ndarray, object]] = []
@@ -81,10 +84,10 @@ class ReconstructionPipeline:
             surface = extract_planar_surface(
                 points_m, distance_threshold_m=self.config.surface_distance_threshold_m
             )
-            decoded.append((frame, workdir, points_m, surface))
+            decoded.append((frame, workdir, cloud, points_m, surface))
         if self.config.reference_plane_file is None:
-            reference_normal = decoded[0][3].normal
-            reference_offset_m = decoded[0][3].offset_m
+            reference_normal = decoded[0][4].normal
+            reference_offset_m = decoded[0][4].offset_m
             reference_frame_id = str(decoded[0][0]["frame_id"])
             reference_source = "first_configured_static_frame_fitted_plane"
             reference_warning = None
@@ -96,9 +99,9 @@ class ReconstructionPipeline:
             reference_source = str(reference_data["source"])
             reference_warning = reference_data.get("warning")
 
-        for frame, workdir, points_m, surface in decoded:
+        for frame, workdir, cloud, points_m, surface in decoded:
             frame_id = frame["frame_id"]
-            reference_height_m = points_m @ reference_normal + reference_offset_m
+            reference_height_m = height_from_plane(points_m, reference_normal, reference_offset_m)
             point_total += points_m.shape[0]
             write_xyz(pointcloud_dir / f"{frame_id}.xyz", points_m)
             write_ply(pointcloud_dir / f"{frame_id}.ply", points_m)
@@ -120,6 +123,14 @@ class ReconstructionPipeline:
                 original_right = computational_left if swapped else computational_right
                 original_left.save(rectified_dir / f"{frame_id}_left.png")
                 original_right.save(rectified_dir / f"{frame_id}_right.png")
+            pixel_role = "input_right" if swapped else "input_left"
+            correspondence = project_wass_points(
+                cloud.points_camera,
+                points_m,
+                load_projection_matrix(workdir / "P0cam.txt"),
+                pixel_coordinate_system=f"wass_rectified_computational_cam0__{pixel_role}",
+            )
+            save_pixel_xyz(pixel_xyz_dir / f"{frame_id}_pixel_xyz.npz", correspondence)
             disparity_source = workdir / "disparity_stereo_ouput.png"
             shutil.copy2(disparity_source, disparity_dir / f"{frame_id}.png")
             with Image.open(disparity_source) as disparity_image:
@@ -158,6 +169,9 @@ class ReconstructionPipeline:
                 "height_mean_m": float(reference_height_m.mean()),
                 "height_rms_m": float(np.sqrt(np.mean(reference_height_m**2))),
                 "height_max_absolute_m": float(np.max(np.abs(reference_height_m))),
+                "pixel_xyz_correspondence_count": int(correspondence.xyz_m.shape[0]),
+                "pixel_xyz_coordinate_system": correspondence.pixel_coordinate_system,
+                "pixel_xyz_method": "project mesh_cam camera coordinates with per-workdir P0cam",
                 "rectification_auto_swap_restored_to_input_roles": swapped,
             })
         result = {
@@ -178,6 +192,13 @@ class ReconstructionPipeline:
                 "maximum": max(frame["height_range_m"][1] for frame in frame_results),
             },
             "height_representation": "irregular_point_samples_X_Y_H_no_interpolation",
+            "pixel_xyz": {
+                "count": point_total,
+                "storage": "pixel_xyz/<frame_id>_pixel_xyz.npz",
+                "method": "project unscaled mesh_cam camera coordinates with per-workdir P0cam",
+                "coordinate_system_is_recorded_per_frame": True,
+                "original_unrectified_pixel_claimed": False,
+            },
             "height_reference": {
                 "method": "external_static_reference_plane" if self.config.reference_plane_file else "first_static_frame_fitted_plane",
                 "frame_id": reference_frame_id,

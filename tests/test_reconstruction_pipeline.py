@@ -11,6 +11,7 @@ import numpy as np
 
 from adapters.wass.input import prepare_wass_workspace
 from reconstruction.io import load_calibration, load_reference_plane, verify_wass_calibration
+from reconstruction.height import height_from_plane
 from reconstruction.surface import extract_planar_surface
 
 
@@ -23,6 +24,13 @@ class ReconstructionPipelineTests(unittest.TestCase):
         self.assertLess(result.rms_m, 1e-12)
         self.assertTrue(np.all(result.water_mask))
         self.assertLess(np.max(np.abs(result.residual_m)), 1e-12)
+
+    def test_height_module_matches_normalized_plane_equation(self) -> None:
+        points = np.asarray([[0.0, 0.0, 2.0], [0.0, 0.0, 3.0]])
+        np.testing.assert_allclose(
+            height_from_plane(points, np.asarray([0.0, 0.0, 2.0]), -4.0),
+            [0.0, 1.0],
+        )
 
     def test_failed_quality_gate_requires_explicit_diagnostic_mode(self) -> None:
         source = Path(__file__).parents[1] / "experiments" / "real_video" / "HomeTank_004" / "calibration_result.yaml"
