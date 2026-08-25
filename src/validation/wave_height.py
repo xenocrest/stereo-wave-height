@@ -32,6 +32,14 @@ class PhysicalRoi:
     y_max_m: float
 
 
+def physical_roi_from_xywh(*, x_m: float, y_m: float, width_m: float, height_m: float) -> PhysicalRoi:
+    """Build a metric analysis ROI from origin and positive extent."""
+    values = np.asarray([x_m, y_m, width_m, height_m], dtype=np.float64)
+    if not np.all(np.isfinite(values)) or width_m <= 0 or height_m <= 0:
+        raise ValueError("physical ROI origin must be finite and extents must be positive")
+    return PhysicalRoi(float(x_m), float(x_m + width_m), float(y_m), float(y_m + height_m))
+
+
 def load_height_samples(path: str | Path) -> HeightSamples:
     """Load one pipeline NPZ without modifying or filling its observations."""
     with np.load(Path(path), allow_pickle=False) as data:

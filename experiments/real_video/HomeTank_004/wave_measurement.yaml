@@ -1,0 +1,27 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+wave_measurement:
+  roi:
+    coordinate_system: METRIC_RECONSTRUCTION_XY
+    unit: m
+    x: -0.09596858006966999
+    y: -0.09423124777568712
+    width: 0.03591016860939298
+    height: 0.10017543753811984
+    source: INTERSECTION_OF_FIVE_FRAME_RAW_OBSERVATION_BOUNDING_BOXES
+    applies_to_wass: false
+    interpolation_used: false
+  time_series:
+    statistic: SPATIAL_MEAN_OF_RAW_VALID_HEIGHT_SAMPLES
+    height_unit: m
+  drift_analysis:
+    method: CENTERED_MOVING_AVERAGE_SUBTRACTION
+    window_frames: 3
+    edge_policy: TRUNCATED_WINDOW
+    status: DIAGNOSTIC_DISPLAY_PARAMETER_NOT_PHYSICALLY_VALIDATED
+    overwrites_raw: false
+    warning: Five frames over 0.4 s are insufficient to establish a physical low-frequency drift cutoff.
+validation_boundary:
+  long_duration_output: NOT_ESTABLISHED_ONLY_FIVE_FRAMES
+  static_stability: FAIL_PRESERVED
+  physical_wave_accuracy: NOT_ESTABLISHED

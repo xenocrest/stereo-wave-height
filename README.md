@@ -54,6 +54,8 @@ HomeTank_004 已登记固定竖直刻度尺作为独立物理参考，用于后�
 
 重建基础接口现已补齐：WASS `mesh_cam.xyzC` 通过每帧 `P0cam` 保存 rectified pixel–XYZ 对应，水面高度统一由三维点到参考平面的有符号正交距离计算。该流程只使用双目图像、标定和 WASS 输出；标尺保持完全独立的下游验证工具。
 
+Wave 结果输出现已统一为物理 ROI 的逐帧 CSV 与机器可读 JSON，包含有效点数、均值、中位数、RMS、P5/P95、范围及不覆盖 raw 的漂移分析序列；独立标尺接口在无人工读数时明确返回 `MANUAL_REFERENCE_REQUIRED`。当前仅有五帧诊断子集，尚未证明长时间稳定或工程测量精度。
+
 ### 真实视频成果索引
 
 | 内容 | 状态 | 文档 |
@@ -66,6 +68,7 @@ HomeTank_004 已登记固定竖直刻度尺作为独立物理参考，用于后�
 | Wave 高度与漂移验证 | 方法完成，结果未验证 | [Wave height validation](experiments/real_video/HomeTank_004/wave_height_validation.md) |
 | 标尺独立物理验证 | 方法完成，等待人工参考注册 | [Ruler validation](experiments/real_video/HomeTank_004/ruler_validation.md) |
 | Pixel–XYZ 与平面法向高度 | 基础接口完成 | [HomeTank_004 result](experiments/real_video/HomeTank_004/pixel_xyz_height_result.md) |
+| Wave CSV/JSON 与独立验证接口 | 输出完成，物理验证待人工参考 | [Final wave output](experiments/real_video/HomeTank_004/wave_height_final_report.md) |
 
 ## 核心建模成果
 

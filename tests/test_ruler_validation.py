@@ -10,6 +10,7 @@ from src.validation.ruler_validation import (
     signed_plane_height,
     validate_ruler_scale,
     validate_water_height,
+    validation_error_metrics,
 )
 
 
@@ -59,6 +60,13 @@ class RulerValidationTests(unittest.TestCase):
             validate_ruler_scale(np.zeros(3), np.ones(3), 0.0)
         with self.assertRaises(ValueError):
             signed_plane_height(np.zeros(3), np.zeros(3), np.zeros(3))
+
+    def test_independent_reference_error_metrics(self) -> None:
+        result = validation_error_metrics(np.array([0.0, 0.02]), np.array([0.0, 0.01]))
+        self.assertEqual(result.count, 2)
+        self.assertAlmostEqual(result.rmse_m, np.sqrt(0.00005))
+        self.assertAlmostEqual(result.mae_m, 0.005)
+        self.assertAlmostEqual(result.maximum_absolute_error_m, 0.01)
 
 
 if __name__ == "__main__":

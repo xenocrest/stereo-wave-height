@@ -39,6 +39,16 @@ class HeightValidation:
     signed_error_m: float
 
 
+@dataclass(frozen=True)
+class ValidationErrorMetrics:
+    """Independent reconstructed-versus-physical reference errors in metres."""
+
+    count: int
+    rmse_m: float
+    mae_m: float
+    maximum_absolute_error_m: float
+
+
 def _finite_vector(value: np.ndarray, name: str) -> np.ndarray:
     vector = np.asarray(value, dtype=np.float64)
     if vector.shape != (3,) or not np.all(np.isfinite(vector)):
@@ -93,6 +103,23 @@ def validate_water_height(ruler_height_m: float, reconstructed_height_m: float) 
         ruler_height_m=float(ruler_height_m),
         reconstructed_height_m=float(reconstructed_height_m),
         signed_error_m=float(reconstructed_height_m - ruler_height_m),
+    )
+
+
+def validation_error_metrics(reconstructed_height_m: np.ndarray, real_height_m: np.ndarray) -> ValidationErrorMetrics:
+    """Evaluate algorithm output against separately supplied manual truth."""
+    reconstructed = np.asarray(reconstructed_height_m, dtype=np.float64)
+    real = np.asarray(real_height_m, dtype=np.float64)
+    if reconstructed.ndim != 1 or reconstructed.shape != real.shape or reconstructed.size == 0:
+        raise ValueError("reconstructed and real height arrays must have equal non-empty shape")
+    if not np.all(np.isfinite(reconstructed)) or not np.all(np.isfinite(real)):
+        raise ValueError("height arrays must be finite")
+    error = reconstructed - real
+    return ValidationErrorMetrics(
+        count=int(error.size),
+        rmse_m=float(np.sqrt(np.mean(error**2))),
+        mae_m=float(np.mean(np.abs(error))),
+        maximum_absolute_error_m=float(np.max(np.abs(error))),
     )
 
 

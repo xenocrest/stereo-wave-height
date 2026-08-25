@@ -1,0 +1,17 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+status: MANUAL_REFERENCE_REQUIRED
+reference_type: INDEPENDENT_VERTICAL_RULER
+unit: mm
+participates_in_reconstruction: false
+participates_in_wass: false
+participates_in_height_calculation: false
+measurements: []
+required_fields_per_measurement:
+  - frame_id
+  - timestamp_ns
+  - real_height_mm
+provenance_required:
+  observer: null
+  annotation_method: null
+  annotation_date: null

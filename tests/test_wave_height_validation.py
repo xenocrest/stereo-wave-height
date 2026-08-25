@@ -13,8 +13,13 @@ from src.validation.wave_height import (
     drift_correct_spatial_mean,
     load_height_samples,
     roi_mask,
+    physical_roi_from_xywh,
 )
-from src.validation.wave_statistics import height_statistics, significant_wave_height
+from src.validation.wave_statistics import (
+    height_statistics,
+    remove_low_frequency_drift,
+    significant_wave_height,
+)
 
 
 class WaveHeightValidationTests(unittest.TestCase):
@@ -36,6 +41,9 @@ class WaveHeightValidationTests(unittest.TestCase):
         stats = height_statistics(np.array([-1.0, 1.0]))
         self.assertEqual(stats.rms, 1.0)
         self.assertEqual(stats.peak_to_peak, 2.0)
+        self.assertEqual(stats.median, 0.0)
+        self.assertAlmostEqual(stats.p5, -0.9)
+        self.assertAlmostEqual(stats.p95, 0.9)
         drift = temporal_mean_drift([np.array([0.0, 0.0]), np.array([2.0, 2.0])])
         self.assertEqual(drift.signed_drift, (0.0, 2.0))
         self.assertAlmostEqual(drift.rms, np.sqrt(2.0))
@@ -55,6 +63,16 @@ class WaveHeightValidationTests(unittest.TestCase):
             np.savez(bad, x_m=[0.0])
             with self.assertRaises(ValueError):
                 load_height_samples(bad)
+
+    def test_xywh_roi_and_low_frequency_result_preserve_raw(self) -> None:
+        roi = physical_roi_from_xywh(x_m=1.0, y_m=2.0, width_m=3.0, height_m=4.0)
+        self.assertEqual((roi.x_min_m, roi.x_max_m, roi.y_min_m, roi.y_max_m), (1.0, 4.0, 2.0, 6.0))
+        raw = np.asarray([1.0, 2.0, 9.0, 4.0, 5.0])
+        baseline, filtered = remove_low_frequency_drift(raw, window_frames=3)
+        np.testing.assert_array_equal(raw, [1.0, 2.0, 9.0, 4.0, 5.0])
+        np.testing.assert_allclose(filtered, raw - baseline)
+        with self.assertRaises(ValueError):
+            remove_low_frequency_drift(raw, window_frames=4)
 
 
 if __name__ == "__main__":

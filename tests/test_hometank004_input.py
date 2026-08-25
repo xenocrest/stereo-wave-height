@@ -30,6 +30,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "wave_height_timeseries.csv",
             "ruler_reference.yaml", "ruler_validation.yaml", "ruler_validation.md",
             "pixel_xyz_height_result.yaml", "pixel_xyz_height_result.md",
+            "wave_measurement.yaml", "ruler_measurement.yaml",
+            "wave_timeseries.csv", "wave_result.json", "wave_height_final_report.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
@@ -81,6 +83,20 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         self.assertIn("maximum_difference_from_existing_pipeline_height_m: 0.0", result)
         self.assertIn("ruler_validation: INDEPENDENT_NOT_CALLED", result)
         self.assertIn("static_stability: FAIL_PRESERVED", result)
+
+    def test_complete_wave_output_keeps_ruler_independent(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        import json
+        result = json.loads((root / "wave_result.json").read_text(encoding="utf-8"))
+        self.assertEqual(result["frame_count"], 5)
+        self.assertEqual(len(result["height_series"]), 5)
+        self.assertEqual(result["validation_status"], "MANUAL_REFERENCE_REQUIRED")
+        self.assertTrue(result["ruler_independent"])
+        self.assertFalse(result["roi"]["applies_to_wass"])
+        self.assertFalse(result["filter"]["raw_overwritten"])
+        ruler = (root / "ruler_measurement.yaml").read_text(encoding="utf-8")
+        self.assertIn("participates_in_reconstruction: false", ruler)
+        self.assertIn("measurements: []", ruler)
 
     def test_corrected_geometry_and_coarse_candidates_preserve_strict_failure(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
