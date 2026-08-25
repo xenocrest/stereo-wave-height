@@ -34,6 +34,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "wave_timeseries.csv", "wave_result.json", "wave_height_final_report.md",
             "long_duration_wave_run.yaml", "long_duration_wave_validation.yaml",
             "wave_accuracy_validation_report.md",
+            "wass_performance_profile.json", "wass_performance_profile.md",
+            "sync_report.yaml", "video_synchronization_report.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",

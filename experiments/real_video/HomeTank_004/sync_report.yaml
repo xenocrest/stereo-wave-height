@@ -1,0 +1,48 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: SYNC_ESTABLISHED_COARSE_BY_LIGHT_EVENTS
+frame_level_status: SYNC_NOT_ESTABLISHED
+purpose: TIME_RELATION_ANALYSIS_ONLY
+participates_in_wass: false
+participates_in_height_calculation: false
+videos:
+  left:
+    path: videos/wave/wave_cam0_iQOO_Neo5S.mp4
+    role: LEFT
+    frame_count: 9556
+    average_fps: 59.28870921
+    duration_s: 161.177400
+  right:
+    path: videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4
+    role: RIGHT
+    frame_count: 9670
+    average_fps: 59.99843644
+    duration_s: 161.170867
+brightness_sampling:
+  method: whole-frame grayscale mean after read-only 64x36 decode
+  sample_rate_hz: 10.0
+  temporal_resolution_s: 0.1
+  left_sample_count: 1612
+  right_sample_count: 1612
+  detector:
+    sigma_multiplier: 6.0
+    minimum_change_intensity: 3.0
+    minimum_separation_s: 0.5
+events:
+  left_candidate_count: 41
+  right_candidate_count: 20
+  matched_same_polarity_count: 10
+  matched_time_differences_s: [-0.1, 0.0, 0.0, -0.1, -0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
+synchronization:
+  offset_definition: t_right_minus_t_left
+  estimated_offset_s: 0.0
+  residual_rms_s: 0.0547722558
+  event_match_confidence: HIGH
+  frame_accurate_confidence: LOW
+  matched_events: 10
+  timestamps_modified: false
+limitations:
+  - The 10 Hz brightness trace establishes only a coarse relationship with 0.1 s sampling resolution.
+  - It does not establish a frame-accurate mapping for approximately 60 FPS videos.
+  - Whole-frame brightness transitions can include scene changes in addition to the fixed source.
+next_requirement: Use a higher-rate registered light ROI or hardware timestamps/trigger for frame-level synchronization.

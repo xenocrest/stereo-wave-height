@@ -58,6 +58,8 @@ Wave 结果输出现已统一为物理 ROI 的逐帧 CSV 与机器可读 JSON，
 
 完整 161 s wave 全帧运行已完成资源与同步预检，但尚未执行：按现有实测产物模式预计至少 46.29 小时和约 726.83 GB，而预检时 D 盘仅余 65.05 GB；两路约 60 FPS 视频的完整时间映射也未验证。状态为 `BLOCKED_RESOURCE_AND_SYNCHRONIZATION_PREFLIGHT`，未用降采样或五帧结果冒充长时间完成。
 
+当前进入工程化分析阶段：新增通用 WASS 分阶段性能剖析与基于光源变化的视频同步分析。HomeTank_004 三帧组件计时平均为 25.31 s/frame，主要瓶颈是 `match`，其次是 stereo 后处理；光源事件建立了 0.1 s 分辨率的粗时间关系，但尚未建立约 60 FPS 的逐帧精确同步。以上工具服务未来专业双目相机部署，不代表实时运行或工业同步已经实现。
+
 ### 真实视频成果索引
 
 | 内容 | 状态 | 文档 |
@@ -72,6 +74,8 @@ Wave 结果输出现已统一为物理 ROI 的逐帧 CSV 与机器可读 JSON，
 | Pixel–XYZ 与平面法向高度 | 基础接口完成 | [HomeTank_004 result](experiments/real_video/HomeTank_004/pixel_xyz_height_result.md) |
 | Wave CSV/JSON 与独立验证接口 | 输出完成，物理验证待人工参考 | [Final wave output](experiments/real_video/HomeTank_004/wave_height_final_report.md) |
 | 长时间 wave 全帧验证 | 资源/同步预检阻塞 | [Accuracy validation report](experiments/real_video/HomeTank_004/wave_accuracy_validation_report.md) |
+| WASS 性能剖析 | 三帧实测完成 | [Performance profile](experiments/real_video/HomeTank_004/wass_performance_profile.md) |
+| 光源事件同步分析 | 粗同步完成，帧级未建立 | [Synchronization report](experiments/real_video/HomeTank_004/video_synchronization_report.md) |
 
 ## 核心建模成果
 

@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "HomeTank_004",
+  "status": "PROFILE_COMPLETED",
+  "scope": "three fixed wave frames; profiling only; reconstruction outputs unchanged",
+  "frame_ids": ["000000", "000001", "000002"],
+  "measurement_provenance": {
+    "prepare_match": "isolated wall-clock rerun of unchanged WASS commands on identical PNG inputs",
+    "stereo": "WASS internal timing tables from the existing completed wave run",
+    "output": "wall-clock read of mesh_cam.xyzC plus metric ASCII XYZ and PLY writes",
+    "input_hashes_changed": false,
+    "wass_modified": false
+  },
+  "frames": [
+    {"frame_id": "000000", "prepare_seconds": 0.1396802, "match_seconds": 11.2406697, "rectification_seconds": 0.0186528, "dense_stereo_seconds": 4.07814, "stereo_seconds": 4.0967928, "triangulation_seconds": 0.33278, "stereo_postprocessing_seconds": 12.945805, "output_seconds": 0.3861070, "stereo_internal_total_seconds": 17.4378, "total_seconds": 29.2042569},
+    {"frame_id": "000001", "prepare_seconds": 0.1263727, "match_seconds": 11.4968947, "rectification_seconds": 0.0195037, "dense_stereo_seconds": 4.06194, "stereo_seconds": 4.0814437, "triangulation_seconds": 1.29922, "stereo_postprocessing_seconds": 5.905856, "output_seconds": 0.5847414, "stereo_internal_total_seconds": 11.3467, "total_seconds": 23.5547088},
+    {"frame_id": "000002", "prepare_seconds": 0.1368945, "match_seconds": 11.9038555, "rectification_seconds": 0.0197343, "dense_stereo_seconds": 4.10957, "stereo_seconds": 4.1293043, "triangulation_seconds": 0.35253, "stereo_postprocessing_seconds": 6.081596, "output_seconds": 0.5084281, "stereo_internal_total_seconds": 10.6249, "total_seconds": 23.1740781}
+  ],
+  "summary_seconds": {
+    "prepare": {"mean": 0.1343158, "minimum": 0.1263727, "maximum": 0.1396802},
+    "match": {"mean": 11.54713997, "minimum": 11.2406697, "maximum": 11.9038555},
+    "stereo_rectification_and_dense": {"mean": 4.1025136, "minimum": 4.0814437, "maximum": 4.1293043},
+    "triangulation": {"mean": 0.66151, "minimum": 0.33278, "maximum": 1.29922},
+    "stereo_postprocessing": {"mean": 8.31108567, "minimum": 5.905856, "maximum": 12.945805},
+    "output": {"mean": 0.49309217, "minimum": 0.386107, "maximum": 0.5847414},
+    "total": {"mean": 25.3110146, "minimum": 23.1740781, "maximum": 29.2042569}
+  },
+  "primary_bottleneck": "MATCH",
+  "secondary_bottleneck": "STEREO_POSTPROCESSING",
+  "note": "The total is a traceable component sum, not a single enclosing stopwatch measurement. Stereo postprocessing is reported separately so Z-gap, outlier removal and plane stages are not hidden."
+}
