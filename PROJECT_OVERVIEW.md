@@ -4,7 +4,7 @@
 
 ## 1. 项目目标
 
-本项目希望建立一套可追溯的双目水面三维形态与高度测量流程。当前主线以一组同步双目图像为输入，调用外部双目重建引擎 WASS 得到单时刻水面三维高程，再用独立参考水面计算相对高度：
+本项目希望建立一套可追溯的双目水面三维形态与高度测量流程。最终产品以左右双目视频为输入；用户在软件中播放视频并选择目标时间，系统提取该时刻的同步帧对，调用 WASS 完成一次单帧三维解算，再用独立参考水面计算相对高度：
 
 $$
 H(x,y)=Z(x,y)-Z_0(x,y).
@@ -19,7 +19,7 @@ $$
 ```text
 Phase 1  理论模型与合成数据仿真验证（已完成）
   -> Phase 2  真实双目系统标定与 WASS 三维重建（已完成首轮闭环）
-  -> Phase 3  单帧水面三维测量系统（当前主线）
+  -> Phase 3  视频输入的按需单帧水面三维测量系统（当前主线）
   -> Phase 4  高度计算与独立物理误差验证
   -> Phase 5  结果展示软件
   -> Phase 6  专业双目相机工程迁移
@@ -27,9 +27,9 @@ Phase 1  理论模型与合成数据仿真验证（已完成）
 Extension: Wave video analysis
 ```
 
-项目最终工程形式是 `专业双目相机 -> 同步左右图像 -> 标定参数 -> WASS/XYZ -> 水面高度 -> 结果展示`，不是实时波浪视频处理系统。当前主流程只要求一组同步双目图像；该图像对可由专业相机直接采集，也可从已有视频按已验证时间关系抽取。视频不再是主流程的必要形态。
+项目最终工程形式是 `专业双目相机采集左右视频 -> 软件加载与播放 -> 用户选择时间 t -> 提取 I_left(t)/I_right(t) -> 标定参数 -> WASS/XYZ -> pixel–XYZ -> H(x,y) -> 点云/高度图/统计展示`。视频是最终输入载体，但计算单位是用户选择的一组同步帧，不是实时逐帧重建。
 
-阶段调整不删除任何已有工作。HomeTank_004、wave 高度、同步、长时批处理与 production mode 继续作为真实输入证据和动态测量 Extension；它们不再决定单帧专业测量主线能否继续。
+阶段调整不删除任何已有工作。同步模块为播放器选择的左右时刻建立对应关系，但不参与 WASS、三角化或高度计算；wave、长时批处理和性能模块继续作为动态测量 Extension。Production mode 服务单帧结果保存、任务状态与软件接口，并保留未来批量能力。
 
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
@@ -305,15 +305,15 @@ HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/righ
 
 建议按以下门控顺序推进：
 
-1. **单帧测量主线。**以一组同步左右图像完成固定标定 WASS、XYZ、pixel–XYZ、水面高度和质量报告；不要求连续视频。
+1. **按需单帧测量主线。**加载左右视频，由用户选择目标时间并提取同步帧对，再完成固定标定 WASS、XYZ、pixel–XYZ、水面高度和质量报告；不实时逐帧运行 WASS。
 2. **独立物理验证。**标尺或其他参考只在重建结束后比较误差，不参与解算。
 3. **设备迁移。**确认专业相机、镜头、硬件同步、照明、安装和计算设备的准确型号与接口，并复用同一帧对接口。
 4. **实机双目标定。**完成内参、畸变、外参、真实基线、硬件触发、帧配对和漂移验证。
 5. **静水与人工波。**建立独立静水 `Z0`，从静水、固定高度和规则人工波逐级验证，并与独立物理参考比较；最终 1 cm 目标只在此专业设备阶段正式验收。
 6. **真实环境扩展。**评估水面反光、折射、泡沫、纹理退化、环境光、振动和更大距离，重新建立误差预算与部署边界。
-7. **结果展示软件。**建设未来最终 `.exe` 的 V0.x 原型。单帧文件、视频抽帧与未来工业相机只在输入层不同，从统一双目帧对象以后共享标定、WASS、XYZ、`Z0/H`、QA、可视化和导出。该程序不是手机专用 Demo，也不以实时处理为当前承诺。
+7. **结果展示软件。**建设未来最终 `.exe`：视频层负责左右视频，交互层负责播放、时间选择和暂停，计算层负责同步帧提取、标定、WASS、XYZ 和 Height，展示层负责点云、高度图、统计与误差结果。该程序不是手机专用 Demo，也不以实时处理为承诺。
 
-项目主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Single-frame Surface Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。Wave video analysis 是 Extension；真实视频层不会回写或覆盖既有仿真历史。详细协议见 [真实视频验证](docs/real_video_validation/README.md)。
+项目主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Video-based On-demand Single-frame Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。Wave video analysis 是 Extension；真实视频层不会回写或覆盖既有仿真历史。详细协议见 [真实视频验证](docs/real_video_validation/README.md)。
 
 完整用户汇报 DOCX/Markdown 仅保存在本地，不进入本仓库；大型 PNG、原始双目图像、`xyzC`、NetCDF 和 WASS 运行目录同样不得提交。
 

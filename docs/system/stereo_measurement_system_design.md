@@ -2,15 +2,15 @@
 
 ## 1. 项目目标
 
-本系统当前以一组同步双目图像为输入，通过 WASS 完成单时刻水面三维重建，在统一坐标与物理尺度下得到水面高程 `Z(x,y)`；再使用独立参考水面 `Z0(x,y)`，最终输出：
+本系统最终以左右双目视频为输入。用户在软件播放器中选择目标时间 `t`，系统根据已验证的左右时间关系提取 `I_left(t)` 和 `I_right(t)`，再按需调用 WASS 完成一次单时刻水面三维重建，在统一坐标与物理尺度下得到水面高程 `Z(x,y)`；使用独立参考水面 `Z0(x,y)` 后输出：
 
 $$
 H(x,y)=Z(x,y)-Z_0(x,y)
 $$
 
-其中 `x,y` 为水平坐标（m），`Z`、`Z0` 和 `H` 单位均为 m。时间维 `t` 属于 wave video Extension。近期目标是建立面向专业双目相机的单帧水面三维形态与高度测量系统；1 cm 是待独立物理验证的目标，不是当前性能声明。
+其中 `x,y` 为水平坐标（m），`Z`、`Z0` 和 `H` 单位均为 m。这里的 `t` 只用于视频选帧；单次结果仍为 `H(x,y)`。连续时间高度 `H(x,y,t)` 属于 wave video Extension。近期目标是建立 Video-based on-demand single-frame stereo measurement system；1 cm 是待独立物理验证的目标，不是当前性能声明。
 
-采购前理想仿真和低成本真实视频第一轮闭环已经完成。当前主线是单帧测量、独立物理验证和专业相机迁移；视频、同步、长时批处理和动态波高保留为扩展层。WASS 仍保持外部只读，专业设备阶段的精度目标仍待实测。
+采购前理想仿真和低成本真实视频第一轮闭环已经完成。当前主线是视频加载、交互选时刻、同步帧提取、按需单帧测量、独立验证和专业相机迁移。同步模块服务选帧但不进入重建数值链；连续 wave、长时批处理和动态波高保留为扩展层。WASS 仍保持外部只读。
 
 ## 2. WASS 框架定位
 
@@ -85,7 +85,10 @@ $$
 
 ```text
 实验配置与版本冻结
-  → 专业相机硬触发采集一组同步 left/right 图像
+  → 专业相机采集 left/right 视频
+  → 软件加载视频并建立左右时间对应
+  → 用户播放、选择并暂停于目标时间 t
+  → 提取 I_left(t), I_right(t)
   → 帧对身份/时间戳一致性检查
   → Bayer 数据固定转换为 8-bit 灰度无损图像
   → 相机内参文件和 WASS 工作目录
@@ -104,7 +107,7 @@ $$
 
 ### 6.1 输入
 
-- 一组同步左右图像及不可重复的帧对 ID；
+- 左右视频、用户选择时间 `t`、对应同步帧及不可重复的帧对 ID；
 - 原始触发计数、设备/主机时间戳和丢帧记录；
 - 两相机内参、畸变参数和标定报告；
 - 镜头、曝光、增益、分辨率、基线、工作距离和环境元数据；
@@ -163,21 +166,37 @@ $$
 
 层间接口必须显式记录坐标系、单位、数组形状、无效值、质量掩膜、时间戳和版本。任何自动过滤都必须可追溯，不能静默删除失败帧或用插值值冒充有效测量。
 
-### 8.1 通用输入与同步边界
+### 8.1 最终软件的输入、交互、计算与展示边界
 
 ```text
-StereoImagePairSource (当前主线：已同步 left/right 图像文件)
-        ┐
-        ├─> StereoFramePair -> Calibration -> WASS -> XYZ/Grid -> Z0/H -> QA/Export
-        ├─ LiveStereoCameraSource (未来专业相机同步采集)
-        └─ StereoVideoSource (Extension：从已验证时间关系抽取帧对)
+视频层
+  StereoVideoSource(left video, right video)
+        ↓
+交互层
+  Video Player → Time Selection → Pause / Submit Measurement
+        ↓
+计算层
+  Time Mapping → StereoFramePair(I_left(t), I_right(t))
+  → Calibration → WASS → XYZ → Pixel–XYZ → H(x,y)
+        ↓
+展示层
+  Point Cloud → 3D Surface → Height Map → Statistics / QA / Export
 ```
 
-`StereoFramePair` 之后的处理不得识别手机或 MER2 型号。专业相机优先以硬触发和硬件时间戳直接产生同步帧对；视频扩展只有在时间关系经过验证后才能抽取同一时刻的左右图像。当前不实现 rolling-shutter 亚毫秒校正，也不编写未经验证的 Galaxy SDK 代码。
+`StereoFramePair` 之后的处理不得识别手机或相机型号。同步模块只负责把用户时间映射成左右视频时间并选择帧；它不得修改图像、WASS、XYZ 或高度。专业相机优先使用硬触发和硬件时间戳写入视频时间轴。若同步置信度不足，按需任务必须拒绝运行，不能假设左右帧号相同。
 
 ### 8.2 桌面程序 V0.x
 
-桌面程序暂用名称 **Stereo Wave Height Measurement System**。V0.x 结果展示骨架包含 Input、Calibration、Reconstruction、3D Surface、Height Map、Point Height、QA / Export 页面；Synchronization 页面服务视频 Extension 和硬件状态。GUI 读取统一结果，不承诺实时 WASS。缺失或未知 metadata 必须显式失败/显示 `UNKNOWN`，不得自动猜测。
+桌面程序暂用名称 **Stereo Wave Height Measurement System**。V0.x 包含 Video Input/Player、Time Selection、Calibration、On-demand Reconstruction、3D Surface、Height Map、Point Height、QA / Export 页面。用户播放视频时不运行 WASS；只有暂停并提交目标时间后才创建单帧任务。GUI 读取统一任务结果，缺失或未知 metadata 必须显式失败/显示 `UNKNOWN`。
+
+### 8.3 既有模块的产品角色
+
+| 模块 | 当前角色 | 禁止越界 |
+|---|---|---|
+| 视频同步 | 确定 `t` 对应的左右视频时间与帧 | 不进入 WASS、XYZ 或高度计算 |
+| Production mode | 单帧结果保存、任务状态、恢复与软件接口 | 不修改 WASS 数值结果 |
+| Wave/长时处理 | 未来连续动态测量 Extension | 不作为当前交付阻塞项 |
+| 标尺验证 | 重建完成后的 Independent Validation | 不进入匹配、三角化、参考面或高度计算 |
 
 ## 9. 设计约束与当前未知项
 

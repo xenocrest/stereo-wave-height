@@ -1,9 +1,11 @@
 # stereo-wave-height
 
-基于 WASS（Waves Acquisition Stereo System）的双目水面三维形态与高度测量研究项目。当前工程主线以专业双目相机获得的一组同步左右图像为输入，将 WASS 重建结果转换为统一坐标系中的水面高程，并相对独立参考水面计算高度：
+基于 WASS（Waves Acquisition Stereo System）的双目水面三维形态与高度测量研究项目。最终产品定位为**双目视频输入的按需单帧测量与展示软件**：用户加载左右视频、选择目标时刻，系统提取该时刻的同步帧对并运行一次 WASS 解算。
 
 ```text
-一组同步双目图像（left image + right image）
+双目视频（left video + right video）
+  → 用户播放、选择并暂停于目标时间 t
+  → 同步帧提取 I_left(t), I_right(t)
   → WASS 三维重建 Z(x, y)
   → 坐标、尺度与质量字段适配
   → 静水参考 Z0(x, y)
@@ -19,14 +21,14 @@
 
 ## 当前项目状态
 
-当前阶段：**Phase 3：面向专业双目相机的单帧水面三维测量系统**。
+当前阶段：**Phase 3：视频输入的按需单帧水面三维测量系统**（Video-based on-demand single-frame stereo measurement system）。
 
-当前主流程输入是一组同步双目图像。它既可以由专业双目相机直接同步采集，也可以从已有双目视频中按已验证的时间关系抽取；后者只是输入来源，不要求系统以连续视频或实时方式运行。路线统一为：
+当前产品输入是左右双目视频，解算单位是一组目标时刻的同步帧。视频保留采集、回放和时刻选择能力；WASS 不随播放实时运行，只在用户发起按需任务后处理所选帧对。路线统一为：
 
 ```text
 Phase 1  理论模型与合成数据仿真验证（已完成）
   → Phase 2  真实双目系统标定与 WASS 三维重建（已完成首轮闭环）
-  → Phase 3  单帧水面三维测量系统（当前主线）
+  → Phase 3  视频输入的按需单帧水面三维测量系统（当前主线）
   → Phase 4  高度计算与独立物理误差验证
   → Phase 5  结果展示软件
   → Phase 6  专业双目相机工程迁移
@@ -34,7 +36,7 @@ Phase 1  理论模型与合成数据仿真验证（已完成）
 Extension: Wave video analysis
 ```
 
-项目定位不是实时波浪视频处理系统。连续视频、同步分析、长时批处理和 production mode 均保留为未来动态测量与工程扩展基础。
+项目定位不是实时视频三维重建系统。视频同步用于确定左右时间对应关系，但不进入 WASS、XYZ 或高度计算；连续 wave、长时批处理与性能分析保留为未来动态测量 Extension。Production mode 当前服务单帧结果保存、按需任务管理和软件接口，并为后续批量扩展保留能力。
 
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
@@ -147,7 +149,7 @@ WASS production mode 分析框架现已建立：支持显式 ROI capability 检�
 - 水槽静水/人工波实验及独立参考对比；
 - 1 cm 目标的实测验收。
 
-统一主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Single-frame Surface Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。真实视频协议和 wave 时间序列作为扩展证据保留，见 [real-video feasibility validation](docs/real_video_validation/README.md)。
+统一主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Video-based On-demand Single-frame Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。真实视频是最终输入载体；连续 wave 时间序列仍作为扩展证据保留，见 [real-video feasibility validation](docs/real_video_validation/README.md)。
 
 Case 0/1/2 是静水零场、固定非零高度和动态正弦规则波三个逐级验证场景，并非三种“波”。三级理想仿真已形成软件全链路闭环；详细结果见 [项目宏观汇报](PROJECT_OVERVIEW.md)。这不代表真实相机、水槽或海面已达到 1 cm：真实标定、同步、畸变、噪声、反光和振动等仍待验证。
 
@@ -155,7 +157,7 @@ Case 0/1/2 是静水零场、固定非零高度和动态正弦规则波三个逐
 
 - `docs/`：项目计划、系统设计、数学模型、数据规范、仿真方案和 WASS 集成分析；
 - `src/`：本项目自有的仿真、适配、静水参考、高度解算与指标代码；
-- `src/input/` 与 `src/synchronization/`：通用视频/未来实时相机输入边界、双目帧对象和时间映射；
+- `src/input/` 与 `src/synchronization/`：双目视频、播放器时刻选择、同步帧对象和时间映射边界；同步结果不进入重建数值计算；
 - `src/application/`：未来最终桌面程序的 V0.x 骨架，不是手机专用 Demo；
 - `configs/`：候选设备、仿真和实验配置模板；
 - `tests/`：自动化测试；

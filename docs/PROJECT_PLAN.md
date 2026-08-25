@@ -2,12 +2,14 @@
 
 ## 1. 项目定位
 
-`stereo-wave-height` 是独立的双目水面测量科研项目。项目以 WASS（Waves Acquisition Stereo System）为核心外部依赖，建立从一组同步双目图像到可追溯水面三维形态与高度的完整研究与验证体系。
+`stereo-wave-height` 是独立的双目水面测量科研项目。项目以 WASS（Waves Acquisition Stereo System）为核心外部依赖，最终交付双目视频输入的按需单帧水面测量与展示软件。
 
 项目最终目标为：
 
 ```text
-一组同步双目图像
+左右双目视频
+  → 用户选择目标时间 t
+  → 提取同步图像 I_left(t), I_right(t)
   → 水面三维重建 Z(x,y)
   → 独立静水面参考 Z0(x,y)
   → 相对静水面高度 H(x,y)=Z(x,y)-Z0(x,y)
@@ -20,7 +22,7 @@
 ```text
 Phase 1  理论模型与合成数据仿真验证
   → Phase 2  真实双目系统标定与 WASS 三维重建
-  → Phase 3  单帧水面三维测量系统（当前主线）
+  → Phase 3  视频输入的按需单帧水面三维测量系统（当前主线）
   → Phase 4  高度计算与独立物理误差验证
   → Phase 5  结果展示软件
   → Phase 6  专业双目相机工程迁移
@@ -30,7 +32,7 @@ Extension: Wave video analysis
 
 路线中的“1 cm 级”是待验证目标，不是当前已达到的性能声明。理论误差预算、候选硬件条件和验收指标见 [WASS 水槽尺度适配论证](wass/lab_scale_adaptation.md) 与 [1 cm 误差预算](wass/one_cm_error_budget.md)。
 
-统一产品路线为 `Theory/Simulation -> Real Stereo Calibration/WASS -> Single-frame Surface Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。手机不是独立路线或最终设备，只提供历史真实输入验证。同步帧对既可由专业相机直接采集，也可从已有视频抽取；连续处理不是主线要求。
+统一产品路线为 `Theory/Simulation -> Real Stereo Calibration/WASS -> Video-based On-demand Single-frame Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。手机不是独立路线或最终设备，只提供历史真实输入验证。视频是最终输入载体；用户选择时刻后只解算对应的一组同步帧，不实时逐帧运行 WASS。
 
 ## 3. 阶段任务
 
@@ -64,13 +66,15 @@ Extension: Wave video analysis
 
 阶段出口：小型数据端到端重建成功，输入、配置、版本和输出可复现；尚不要求达到 1 cm。
 
-### Phase 3：单帧水面三维测量系统（当前主线）
+### Phase 3：视频输入的按需单帧水面三维测量系统（当前主线）
 
-目标是把一组同步左右图像稳定转换为可追溯的 XYZ、水面形态和 `H(x,y)`，不要求连续视频或实时处理。
+英文：Video-based on-demand single-frame stereo measurement system。
+
+目标是加载左右视频，让用户播放并选择目标时间，提取对应同步帧对，再稳定转换为可追溯的 XYZ、水面形态和 `H(x,y)`。视频连续存在，但 WASS 只响应按需单帧任务，不要求实时处理。
 
 主要任务：
 
-- 定义 left/right 单帧输入、标定版本、坐标、单位和质量元数据；
+- 定义 left/right video、用户目标时间、同步帧提取、标定版本、坐标、单位和质量元数据；
 - 运行固定标定 WASS，输出 XYZ、pixel–XYZ 和有效支持；
 - 建立独立参考水面并计算沿其法向的 `H(x,y)`；
 - 输出点云、高度图、质量状态和机器可读结果；
@@ -105,15 +109,15 @@ Extension: Wave video analysis
 
 ### Phase 5：结果展示软件
 
-目标是以统一 JSON/点云/高度产品驱动三维表面、高度图、点位查询、QA 和导出，不把 GUI 与重建算法耦合，也不承诺实时处理。
+目标是以统一 JSON/点云/高度产品驱动最终软件：视频层加载左右视频；交互层提供播放、时间选择和暂停；计算层执行同步帧提取、标定加载、WASS、XYZ 和 Height；展示层提供三维表面、高度图、统计、QA 和导出。GUI 不与重建算法耦合，也不承诺实时处理。
 
 ### Phase 6：专业双目相机工程迁移
 
-目标是接入专业相机、镜头、刚性基线和硬触发，同步采集单帧对并复用 Phase 3–5 接口；重新完成标定、尺度、环境和独立物理验证。
+目标是接入专业相机、镜头、刚性基线和硬触发，采集带可靠时间对应的左右视频并复用 Phase 3–5 接口；重新完成标定、尺度、环境和独立物理验证。
 
 ### Extension：Wave video analysis
 
-保留现有 wave、高度时间序列、视频同步、长时批处理、性能与 production mode 模块，用于未来动态水面研究。Extension 不删除历史失败或结果，也不阻塞当前单帧主线。
+保留现有 wave、高度时间序列、长时批处理与性能模块，用于未来动态水面研究。视频同步是主产品选帧所需的时间映射边界，但其数值不进入 WASS、XYZ 或高度计算；连续 wave 分析仍为 Extension。Production mode 当前负责单帧结果保存、按需任务管理和软件接口，并保留未来批量能力。
 
 标尺数据仅用于结果验证，不参与任何三维重建和高度计算流程。Ruler data is only used for independent validation and is not included in the reconstruction pipeline.
 
@@ -161,7 +165,7 @@ Extension: Wave video analysis
 - 原始不规则波 IRR-1 在自动标定阶段 FAIL/BLOCKED；冻结 AC-10D 适配后的 IRR-1A 通过，RMSE 2.368 mm、最大误差 8.732 mm，原失败不被覆盖；
 - 工作距离 D1/D0/D2 分别为 FAIL/PASS/BLOCKED；固定 2.00 m 的基线 B1/B0/B2 全部 PASS；交叉点 XZ-1 `(B=0.25 m,Z=2.50 m)` PASS；
 - **采购前核心理想仿真验证已完成。**现有部署证据只包含两个单因素切片和一个交叉点，不构成完整参数图或最优参数证明；
-- **低成本真实视频第一轮闭环已完成，当前主线已调整为单帧专业测量。**HomeTank_004 已完成视频采集、OpenCV 标定、固定参数 WASS、单帧静水平面和五帧 wave Extension；跨帧失败状态继续保留；
+- **低成本真实视频第一轮闭环已完成，当前主线已调整为视频输入的按需单帧测量。**HomeTank_004 已完成视频采集、OpenCV 标定、固定参数 WASS、单帧静水平面和五帧 wave Extension；跨帧失败状态继续保留；
 - HomeTank_002 的白底线格已完成补救尝试：半自动投影线格恢复在双相机多帧得到完整 9 x 6 / 54 点，故 `custom_planar_grid_recovery=PASS`；但仅 9 对完整视图、3 组独立姿态，且靶板部分姿态可见弯曲，单目/双目/极线质量均失败。K/D/R/T 已拒绝，状态仍为 `CALIBRATION_DATA_INSUFFICIENT`，未运行 WASS；
 - 已将 HomeTank_002 教训固化为通用标定基础设施：录像前 Gate A 检查双侧 54/54 与画质，录像后 Gate B 基于图像几何去重独立姿态并检查位置/尺度/方向覆盖；
 - HomeTank_003 已执行真实标定 Gate：0.5 s 全段抽样与一次 10 Hz 针对性补扫均得到 cam0 完整棋盘检测 0，故双侧候选和独立姿态均为 0；分类 `CALIBRATION_DATASET_INSUFFICIENT`、`approved_for_wass=false`，未求 K/D/R/T，static/wave 仅登记未处理；
@@ -171,7 +175,7 @@ Extension: Wave video analysis
 
 下一阶段按以下门控顺序推进：
 
-- 单帧结果 schema、质量门和展示接口冻结；
+- 视频播放器目标时间、同步帧提取、单帧结果 schema、质量门和展示接口冻结；
 - 独立物理参考协议与误差报告冻结；
 - 专业相机、镜头、硬触发、照明、安装与计算设备选型；
 - 实机双目标定与同步验证；
