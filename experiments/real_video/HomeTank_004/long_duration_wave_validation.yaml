@@ -1,0 +1,25 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+status: LONG_DURATION_RESULT_NOT_AVAILABLE
+run_status: BLOCKED_RESOURCE_AND_SYNCHRONIZATION_PREFLIGHT
+wave_result:
+  frame_count: 0
+  success_ratio: null
+  height_range_m: null
+  raw_timeseries: null
+  diagnostic_filtered_timeseries: null
+stability:
+  low_frequency_drift: null
+  short_period_variation: null
+independent_ruler_validation:
+  input: ruler_measurement.yaml
+  status: MANUAL_REFERENCE_REQUIRED
+  participates_in_reconstruction: false
+  matched_reference_count: 0
+  error:
+    rmse_m: null
+    mae_m: null
+    maximum_absolute_error_m: null
+    mean_bias_m: null
+historical_five_frame_result_preserved: true
+engineering_accuracy_claimed: false

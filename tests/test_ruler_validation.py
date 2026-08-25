@@ -67,6 +67,7 @@ class RulerValidationTests(unittest.TestCase):
         self.assertAlmostEqual(result.rmse_m, np.sqrt(0.00005))
         self.assertAlmostEqual(result.mae_m, 0.005)
         self.assertAlmostEqual(result.maximum_absolute_error_m, 0.01)
+        self.assertAlmostEqual(result.mean_bias_m, 0.005)
 
 
 if __name__ == "__main__":

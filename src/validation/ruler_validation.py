@@ -47,6 +47,7 @@ class ValidationErrorMetrics:
     rmse_m: float
     mae_m: float
     maximum_absolute_error_m: float
+    mean_bias_m: float
 
 
 def _finite_vector(value: np.ndarray, name: str) -> np.ndarray:
@@ -120,6 +121,7 @@ def validation_error_metrics(reconstructed_height_m: np.ndarray, real_height_m: 
         rmse_m=float(np.sqrt(np.mean(error**2))),
         mae_m=float(np.mean(np.abs(error))),
         maximum_absolute_error_m=float(np.max(np.abs(error))),
+        mean_bias_m=float(np.mean(error)),
     )
 
 

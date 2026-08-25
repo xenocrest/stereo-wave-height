@@ -56,6 +56,8 @@ HomeTank_004 已登记固定竖直刻度尺作为独立物理参考，用于后�
 
 Wave 结果输出现已统一为物理 ROI 的逐帧 CSV 与机器可读 JSON，包含有效点数、均值、中位数、RMS、P5/P95、范围及不覆盖 raw 的漂移分析序列；独立标尺接口在无人工读数时明确返回 `MANUAL_REFERENCE_REQUIRED`。当前仅有五帧诊断子集，尚未证明长时间稳定或工程测量精度。
 
+完整 161 s wave 全帧运行已完成资源与同步预检，但尚未执行：按现有实测产物模式预计至少 46.29 小时和约 726.83 GB，而预检时 D 盘仅余 65.05 GB；两路约 60 FPS 视频的完整时间映射也未验证。状态为 `BLOCKED_RESOURCE_AND_SYNCHRONIZATION_PREFLIGHT`，未用降采样或五帧结果冒充长时间完成。
+
 ### 真实视频成果索引
 
 | 内容 | 状态 | 文档 |
@@ -69,6 +71,7 @@ Wave 结果输出现已统一为物理 ROI 的逐帧 CSV 与机器可读 JSON，
 | 标尺独立物理验证 | 方法完成，等待人工参考注册 | [Ruler validation](experiments/real_video/HomeTank_004/ruler_validation.md) |
 | Pixel–XYZ 与平面法向高度 | 基础接口完成 | [HomeTank_004 result](experiments/real_video/HomeTank_004/pixel_xyz_height_result.md) |
 | Wave CSV/JSON 与独立验证接口 | 输出完成，物理验证待人工参考 | [Final wave output](experiments/real_video/HomeTank_004/wave_height_final_report.md) |
+| 长时间 wave 全帧验证 | 资源/同步预检阻塞 | [Accuracy validation report](experiments/real_video/HomeTank_004/wave_accuracy_validation_report.md) |
 
 ## 核心建模成果
 

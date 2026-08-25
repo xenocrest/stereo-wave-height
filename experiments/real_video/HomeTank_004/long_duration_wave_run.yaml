@@ -1,0 +1,44 @@
+schema_version: "1.0"
+experiment: HomeTank_004
+status: BLOCKED_RESOURCE_AND_SYNCHRONIZATION_PREFLIGHT
+requested_scope:
+  processing: COMPLETE_WAVE_VIDEO_EVERY_FRAME
+  downsampling_allowed: false
+  cam0_left:
+    duration_s: 161.177400
+    frame_count: 9556
+    average_fps: 59.28870921
+  cam1_right:
+    duration_s: 161.170867
+    frame_count: 9670
+    average_fps: 59.99843644
+  planned_pair_count_upper_bound: 9556
+synchronization:
+  existing_status: CANDIDATE_OFFSET_ZERO_CONFIDENCE_MEDIUM
+  full_sequence_timestamp_mapping: NOT_VALIDATED
+  frame_index_pairing_allowed: false
+resource_preflight:
+  source_run: wave-reconstruction-pipeline-20260824
+  measured_wass_stereo_seconds_per_frame: 17.4378
+  measured_wass_workdir_bytes_per_frame_mean: 44989050.8
+  measured_total_run_bytes_per_frame: 76059935.6
+  estimated_wass_stereo_runtime_hours_lower_bound: 46.2876713
+  estimated_wass_workdir_storage_gb: 429.9153599
+  estimated_total_output_storage_gb: 726.8287446
+  available_D_drive_bytes_at_preflight: 65053192192
+  available_D_drive_gib_at_preflight: 60.59
+  status: BLOCKED_INSUFFICIENT_STORAGE
+execution:
+  started: false
+  completed_frames: 0
+  failure_stage: CAPACITY_AND_FULL_SEQUENCE_SYNCHRONIZATION_PREFLIGHT
+  reason: Starting an unsupervised run requiring approximately 727 GB with approximately 65 GB free would exhaust the drive; full-rate timestamp pairing is also not validated.
+resumable_plan:
+  supported_by_code: true
+  batch_size_example_frames: 100
+  batch_count_for_9556_frames: 96
+  note: Batch size is an execution example, not authorization to downsample or delete outputs.
+unchanged_inputs:
+  calibration_K_D_R_T: true
+  wass_configuration: true
+  ruler_used_by_reconstruction: false

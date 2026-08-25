@@ -32,6 +32,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "pixel_xyz_height_result.yaml", "pixel_xyz_height_result.md",
             "wave_measurement.yaml", "ruler_measurement.yaml",
             "wave_timeseries.csv", "wave_result.json", "wave_height_final_report.md",
+            "long_duration_wave_run.yaml", "long_duration_wave_validation.yaml",
+            "wave_accuracy_validation_report.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",
@@ -97,6 +99,19 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
         ruler = (root / "ruler_measurement.yaml").read_text(encoding="utf-8")
         self.assertIn("participates_in_reconstruction: false", ruler)
         self.assertIn("measurements: []", ruler)
+
+    def test_long_duration_run_is_not_fabricated_when_capacity_is_blocked(self):
+        root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
+        run = (root / "long_duration_wave_run.yaml").read_text(encoding="utf-8")
+        validation = (root / "long_duration_wave_validation.yaml").read_text(encoding="utf-8")
+        self.assertIn("status: BLOCKED_RESOURCE_AND_SYNCHRONIZATION_PREFLIGHT", run)
+        self.assertIn("completed_frames: 0", run)
+        self.assertIn("downsampling_allowed: false", run)
+        self.assertIn("status: BLOCKED_INSUFFICIENT_STORAGE", run)
+        self.assertIn("status: LONG_DURATION_RESULT_NOT_AVAILABLE", validation)
+        self.assertIn("status: MANUAL_REFERENCE_REQUIRED", validation)
+        self.assertIn("rmse_m: null", validation)
+        self.assertIn("engineering_accuracy_claimed: false", validation)
 
     def test_corrected_geometry_and_coarse_candidates_preserve_strict_failure(self):
         root = Path(__file__).resolve().parents[1] / "experiments" / "real_video" / "HomeTank_004"
