@@ -1,17 +1,17 @@
 # stereo-wave-height
 
-基于 WASS（Waves Acquisition Stereo System）的双目水面三维重建与高度场解算研究项目。项目以同步双目影像为输入，将 WASS 重建结果转换为统一坐标系中的水面高程，并以独立静水参考计算相对高度：
+基于 WASS（Waves Acquisition Stereo System）的双目水面三维形态与高度测量研究项目。当前工程主线以专业双目相机获得的一组同步左右图像为输入，将 WASS 重建结果转换为统一坐标系中的水面高程，并相对独立参考水面计算高度：
 
 ```text
-同步双目影像
-  → WASS 三维重建 Z(x, y, t)
+一组同步双目图像（left image + right image）
+  → WASS 三维重建 Z(x, y)
   → 坐标、尺度与质量字段适配
   → 静水参考 Z0(x, y)
-  → 高度场 H(x, y, t) = Z(x, y, t) - Z0(x, y)
+  → 高度场 H(x, y) = Z(x, y) - Z0(x, y)
   → 误差指标与验收报告
 ```
 
-近期研究目标是在实验室人工波条件下验证厘米级高度解算。这里的“1 cm 级”是待实验验证的验收目标，并非当前已经达到的性能声明。
+近期研究目标是以专业双目相机完成单时刻水面三维测量和独立物理误差验证。这里的“1 cm 级”是待实验验证的验收目标，并非当前已经达到的性能声明。
 
 项目路线、模型体系、Case 0/1/2 结果、结论边界和下一步工作的长期汇报入口见 [项目宏观汇报](PROJECT_OVERVIEW.md)。
 
@@ -19,7 +19,22 @@
 
 ## 当前项目状态
 
-当前阶段：**低成本真实双目视频验证阶段（HomeTank_004）**。
+当前阶段：**Phase 3：面向专业双目相机的单帧水面三维测量系统**。
+
+当前主流程输入是一组同步双目图像。它既可以由专业双目相机直接同步采集，也可以从已有双目视频中按已验证的时间关系抽取；后者只是输入来源，不要求系统以连续视频或实时方式运行。路线统一为：
+
+```text
+Phase 1  理论模型与合成数据仿真验证（已完成）
+  → Phase 2  真实双目系统标定与 WASS 三维重建（已完成首轮闭环）
+  → Phase 3  单帧水面三维测量系统（当前主线）
+  → Phase 4  高度计算与独立物理误差验证
+  → Phase 5  结果展示软件
+  → Phase 6  专业双目相机工程迁移
+
+Extension: Wave video analysis
+```
+
+项目定位不是实时波浪视频处理系统。连续视频、同步分析、长时批处理和 production mode 均保留为未来动态测量与工程扩展基础。
 
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
@@ -40,7 +55,7 @@
    - WASS 的 prepare、match、rectification、dense stereo、triangulation 和单帧静水面检测已跑通；
    - 当前瓶颈是跨帧静水深度稳定性不足，正式状态保持 `STATIC_VALIDATION_FAIL`。
 
-当前主要原因证据为：近距离拍摄使有效视差接近 StereoSGBM 搜索范围上界，水面弱纹理造成匹配支持区域变化，手机 autofocus/EIS 等成像链变化仍待进一步确认。参数审计已证明盲目扩大 disparity 范围或单独调整 uniqueness/block size 不能恢复稳定静水基准。尚未运行 wave。
+当前主要原因证据为：近距离拍摄使有效视差接近 StereoSGBM 搜索范围上界，水面弱纹理造成匹配支持区域变化，手机 autofocus/EIS 等成像链变化仍待进一步确认。参数审计已证明盲目扩大 disparity 范围或单独调整 uniqueness/block size 不能恢复稳定静水基准。五帧 wave Extension 已运行，但不改变静水失败结论。
 
 真实视频闭环已完成第一轮验证，当前进行面向后续专业双目系统的静水帧一致性分析。
 
@@ -51,6 +66,8 @@
 真实 wave 高度验证模块现已建立：它在共同物理观测域分别保留 raw 与分析性去漂移统计。HomeTank_004 可观察到候选时变信号，但受 97.233 mm 静水跨帧漂移及五帧短记录限制，状态保持 `WAVE_RESULT_NOT_VALIDATED`，不构成工程波高结论。
 
 HomeTank_004 已登记固定竖直刻度尺作为独立物理参考，用于后续验证双目三维尺度、静水漂移和波高。当前缺少双相机共同刻度 ROI、端点与像素到 XYZ 的关联，状态为 `RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED`，尚未形成工程测量结论。
+
+**标尺数据仅用于结果验证，不参与任何三维重建和高度计算流程。Ruler data is only used for independent validation and is not included in the reconstruction pipeline.** 它不进入 WASS、匹配、三角化、参考面生成或 `H(x,y)` 计算。
 
 重建基础接口现已补齐：WASS `mesh_cam.xyzC` 通过每帧 `P0cam` 保存 rectified pixel–XYZ 对应，水面高度统一由三维点到参考平面的有符号正交距离计算。该流程只使用双目图像、标定和 WASS 输出；标尺保持完全独立的下游验证工具。
 
@@ -130,7 +147,7 @@ WASS production mode 分析框架现已建立：支持显式 ROI capability 检�
 - 水槽静水/人工波实验及独立参考对比；
 - 1 cm 目标的实测验收。
 
-统一路线为：`Synthetic Stereo -> Low-cost Real Stereo Video -> Professional Stereo Camera -> Physical Accuracy Validation -> Desktop Engineering`。桌面程序 V0.x 从现在开始建设，但最终工程化与正式验收仍属于专业相机阶段。真实视频协议见 [real-video feasibility validation](docs/real_video_validation/README.md)。
+统一主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Single-frame Surface Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。真实视频协议和 wave 时间序列作为扩展证据保留，见 [real-video feasibility validation](docs/real_video_validation/README.md)。
 
 Case 0/1/2 是静水零场、固定非零高度和动态正弦规则波三个逐级验证场景，并非三种“波”。三级理想仿真已形成软件全链路闭环；详细结果见 [项目宏观汇报](PROJECT_OVERVIEW.md)。这不代表真实相机、水槽或海面已达到 1 cm：真实标定、同步、畸变、噪声、反光和振动等仍待验证。
 

@@ -22,7 +22,7 @@
 ## 2. 系统与数据流
 
 - [双目测波系统总体设计](system/stereo_measurement_system_design.md)：端到端系统架构；
-- [桌面程序 V0.x 架构](system/desktop_application_architecture.md)：通用视频/未来实时相机输入、同步和 GUI 边界；
+- [桌面程序 V0.x 架构](system/desktop_application_architecture.md)：单帧结果展示、专业相机输入与视频 Extension 边界；
 - [数据流设计](system/data_flow_design.md)：各阶段输入输出、单位闸门与数据谱系；
 - [统一坐标与时间体系](data_model/coordinate_system.md)：图像、相机、世界和规则网格坐标定义；
 - [双目图像数据集规范](data_model/stereo_image_dataset_spec.md)；
@@ -72,7 +72,7 @@
 - [HomeTank_004 静水验证](../experiments/real_video/HomeTank_004/static_validation_summary.md)：单帧平面恢复完成，跨帧静水基准未通过；
 - [HomeTank_004 SGBM 参数审计](../experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md)：完成 uniqueness/block size 分阶段诊断，尚无可批准的正式参数变更。
 
-该阶段使用现有双手机作为低成本 `Stereo Video File` 输入。HomeTank_004 已完成第一轮真实视频输入、OpenCV 标定、固定参数 WASS 接入和静水单帧重建闭环，当前进入跨帧匹配稳定性优化；不执行 1 cm 精度验收，尚未运行 wave。
+该历史阶段使用现有双手机作为低成本 `Stereo Video File` 输入。HomeTank_004 已完成真实视频输入、OpenCV 标定、固定参数 WASS、静水单帧和五帧 wave Extension 闭环；当前项目主线已转为专业双目相机单帧测量，既有跨帧失败与动态模块继续保留。
 
 ## 6. 当前验证结果
 
@@ -108,4 +108,6 @@
 - 专业设备条件下的畸变、噪声、反光、振动等因素已经完成验证；
 - 手机数据或候选工业相机已经达到 1 cm 实测精度。
 
-下一步先关闭 HomeTank_004 的 rectified 图像尺度、极线残差和共同纹理支持问题，得到稳定静水参考后才允许处理 wave 视频；随后进入专业设备采购、硬件同步标定和人工波物理验收。
+下一步冻结单帧输入—WASS—XYZ—高度—QA 接口，建立独立物理误差验证与结果展示，再迁移专业相机、硬触发和刚性安装。Wave 视频、同步、长时批处理和 production mode 作为 Extension 继续研究，不删除既有结果。
+
+标尺数据仅用于结果验证，不参与任何三维重建和高度计算流程。Ruler data is only used for independent validation and is not included in the reconstruction pipeline.

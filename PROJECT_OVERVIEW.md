@@ -4,27 +4,32 @@
 
 ## 1. 项目目标
 
-本项目希望建立一套可追溯的双目水面三维重建与高度场解算流程。系统以同步双目图像为输入，调用外部双目重建引擎 WASS 得到水面三维高程，再用独立静水参考计算相对水面高度：
+本项目希望建立一套可追溯的双目水面三维形态与高度测量流程。当前主线以一组同步双目图像为输入，调用外部双目重建引擎 WASS 得到单时刻水面三维高程，再用独立参考水面计算相对高度：
 
 $$
-H(x,y,t)=Z(x,y,t)-Z_0(x,y).
+H(x,y)=Z(x,y)-Z_0(x,y).
 $$
 
-其中，`Z(x,y,t)` 是动态水面高程，`Z0(x,y)` 是同一坐标、尺度和网格上的独立静水参考，`H(x,y,t)` 是项目最终关心的相对静水面高度场，长度单位统一为 m。
+其中，`Z(x,y)` 是被测时刻的水面高程，`Z0(x,y)` 是同一坐标、尺度和网格上的独立参考水面，`H(x,y)` 是项目最终关心的相对水面高度场，长度单位统一为 m。带时间维的 `Z(x,y,t)` 与 `H(x,y,t)` 保留给 Wave video analysis Extension。
 
-近期目标是在实验室人工波条件下验证约 1 cm 级高度解算；长期目标是在重新设计部署几何、误差预算并完成现场独立验证后扩展到真实海面。这里的“1 cm 级”目前是验收目标和理想仿真软件链结论，**不是实物系统已经达到的精度声明**。
+近期目标是以专业双目相机完成单时刻水面测量和独立物理误差验证；长期再扩展动态与真实海面。这里的“1 cm 级”目前是验收目标和理想仿真软件链结论，**不是实物系统已经达到的精度声明**。
 
-项目当前路线为：
+项目当前路线已调整为：
 
 ```text
-理论模型建立
-  -> WASS 仿真验证（已完成）
-  -> 低成本真实双目视频验证（当前阶段）
-  -> 静水稳定重建优化
-  -> 人工波实验
-  -> 专业工业双目相机接入
-  -> 工程化验证
+Phase 1  理论模型与合成数据仿真验证（已完成）
+  -> Phase 2  真实双目系统标定与 WASS 三维重建（已完成首轮闭环）
+  -> Phase 3  单帧水面三维测量系统（当前主线）
+  -> Phase 4  高度计算与独立物理误差验证
+  -> Phase 5  结果展示软件
+  -> Phase 6  专业双目相机工程迁移
+
+Extension: Wave video analysis
 ```
+
+项目最终工程形式是 `专业双目相机 -> 同步左右图像 -> 标定参数 -> WASS/XYZ -> 水面高度 -> 结果展示`，不是实时波浪视频处理系统。当前主流程只要求一组同步双目图像；该图像对可由专业相机直接采集，也可从已有视频按已验证时间关系抽取。视频不再是主流程的必要形态。
+
+阶段调整不删除任何已有工作。HomeTank_004、wave 高度、同步、长时批处理与 production mode 继续作为真实输入证据和动态测量 Extension；它们不再决定单帧专业测量主线能否继续。
 
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
@@ -39,6 +44,8 @@ $$
 波高与稳定性评价接口已经建立，能够在明确的共同物理观测域输出 raw 时间序列、RMS、peak-to-peak 和分析性去均值结果，并在记录不足时拒绝生成显著波高。HomeTank_004 的五帧结果呈现候选时变信号，但 43.530 mm 的波形均值变化不能与 97.233 mm 静水漂移分离，因此正式状态为 `WAVE_RESULT_NOT_VALIDATED`，后续仍需稳定静水基准、长时间同步序列和独立物理参考。
 
 HomeTank_004 画面中的固定竖直刻度尺已纳入独立物理参考体系。通用模块可计算已注册三维刻度端点的尺度误差、沿水面法向的水位误差，并依据标尺位置/长度稳定性区分全局漂移、表面匹配不稳定和尺度错误。当前双相机共同 ROI、刻度端点及像素—XYZ 关联尚未人工登记，因此只完成方法接口，实验状态为 `RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED`，不宣称工程测量完成。
+
+标尺边界固定为：**标尺数据仅用于结果验证，不参与任何三维重建和高度计算流程。Ruler data is only used for independent validation and is not included in the reconstruction pipeline.** 它不能向 WASS、XYZ、参考平面或高度结果反馈参数。
 
 通用重建输出进一步保存 WASS rectified computational camera 像素与米制 XYZ 的投影对应，并将高度计算独立为点到参考平面的有符号正交距离模块。HomeTank_004 五帧共验证 955,521 组对应，重算高度与既有结果差异为 0 m。标尺数据没有进入该链，只在下游承担独立物理验证。
 
@@ -251,7 +258,7 @@ $$
 
 ## 9. HomeTank_004 真实视频实验总结
 
-HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/right）作为低成本双目视频输入。六段 calibration/static/wave 视频已在同一 rig setup 下完成采集；当前只处理了 calibration 与 static，wave 仍未运行。
+HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/right）作为低成本双目视频输入。六段 calibration/static/wave 视频已在同一 rig setup 下完成采集；calibration、static 单帧重建和五帧 wave 扩展闭环均已执行，完整长时 wave 仍受资源与帧级同步门阻塞。
 
 已经完成：
 
@@ -264,7 +271,7 @@ HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/righ
 
 当前瓶颈是 **StereoSGBM 匹配稳定性**。三帧均能形成约 2.0--2.25 mm RMS 的单帧平面，但原冻结配置下平均 Z 跨帧变化约 97.23 mm、最大平面法向差约 12.17 deg。有效视差靠近 640 px 搜索上界；扩大范围会增加错误匹配，调整 uniqueness/block size 虽能缩小波动，却只保留靠近边界的窄支持区域，尚不能建立可靠静水参考。
 
-因此 `CALIBRATION_QUALITY_FAIL`、`STATIC_VALIDATION_FAIL` 和 `approved_for_wass=false` 均保持。后续先基于已知物理参数检查 rectified 图像尺度、极线残差和共同纹理支持；只有静水跨帧稳定后才允许进入 wave 视频验证。详细证据见 [HomeTank_004 static summary](experiments/real_video/HomeTank_004/static_validation_summary.md) 和 [SGBM audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md)。
+因此 `CALIBRATION_QUALITY_FAIL`、`STATIC_VALIDATION_FAIL` 和 `approved_for_wass=false` 均保持。五帧 wave 只证明扩展软件链闭环，不改变这些质量门。单帧主线下一步转向专业双目相机与独立物理验证；动态视频问题继续在 Extension 中保留。详细证据见 [HomeTank_004 static summary](experiments/real_video/HomeTank_004/static_validation_summary.md) 和 [SGBM audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md)。
 
 ## 10. 当前已经证明什么
 
@@ -298,15 +305,15 @@ HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/righ
 
 建议按以下门控顺序推进：
 
-1. **低成本真实视频门。**HomeTank_004 已完成采集、标定、固定参数 WASS 接入和第一轮静水重建；当前关闭跨帧匹配稳定性问题。目标是 synthetic-to-real transfer 的可解释性，不是手机精度或 1 cm 验收。
-2. **人工波视频。**只有静水基准稳定后才处理已登记的 wave 视频，避免用动态结果反向调节静水参数。
-3. **设备采购。**手机真实视频门通过后，确认专业相机、镜头、硬件同步、照明、安装和计算设备的准确型号与接口。
+1. **单帧测量主线。**以一组同步左右图像完成固定标定 WASS、XYZ、pixel–XYZ、水面高度和质量报告；不要求连续视频。
+2. **独立物理验证。**标尺或其他参考只在重建结束后比较误差，不参与解算。
+3. **设备迁移。**确认专业相机、镜头、硬件同步、照明、安装和计算设备的准确型号与接口，并复用同一帧对接口。
 4. **实机双目标定。**完成内参、畸变、外参、真实基线、硬件触发、帧配对和漂移验证。
 5. **静水与人工波。**建立独立静水 `Z0`，从静水、固定高度和规则人工波逐级验证，并与独立物理参考比较；最终 1 cm 目标只在此专业设备阶段正式验收。
 6. **真实环境扩展。**评估水面反光、折射、泡沫、纹理退化、环境光、振动和更大距离，重新建立误差预算与部署边界。
-7. **本地桌面软件。**从现在开始建设未来最终 `.exe` 的 V0.x 原型。视频文件与未来实时工业相机只在输入层不同，从统一双目帧对象以后共享标定、同步、WASS、网格、`Z0/H`、QA、可视化和导出。该程序不是手机专用 Demo。
+7. **结果展示软件。**建设未来最终 `.exe` 的 V0.x 原型。单帧文件、视频抽帧与未来工业相机只在输入层不同，从统一双目帧对象以后共享标定、WASS、XYZ、`Z0/H`、QA、可视化和导出。该程序不是手机专用 Demo，也不以实时处理为当前承诺。
 
-项目连续路线为：`Ideal Simulation -> WASS/Parameter Validation -> Real-video Feasibility -> Professional Camera -> Physical Validation -> Engineering`。新增真实视频层不会回写或覆盖既有仿真历史。详细协议见 [真实视频验证](docs/real_video_validation/README.md)。
+项目主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Single-frame Surface Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。Wave video analysis 是 Extension；真实视频层不会回写或覆盖既有仿真历史。详细协议见 [真实视频验证](docs/real_video_validation/README.md)。
 
 完整用户汇报 DOCX/Markdown 仅保存在本地，不进入本仓库；大型 PNG、原始双目图像、`xyzC`、NetCDF 和 WASS 运行目录同样不得提交。
 
