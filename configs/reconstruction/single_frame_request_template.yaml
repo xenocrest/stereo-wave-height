@@ -1,0 +1,31 @@
+schema_version: "1.0"
+input_mode: video_time
+input:
+  left_video: null
+  right_video: null
+  target_time_s: null
+  canonical_rotation_deg: {left: 0, right: 0}
+synchronization:
+  model: "t_right = a * t_left + b"
+  a: null
+  b_s: null
+  source: UNKNOWN
+  confidence: UNKNOWN
+  frame_level_established: false
+calibration:
+  source: null
+  parameters: OPENCV_K0_D0_K1_D1_R_T_UNCHANGED
+  manual_geometry_used: false
+processing:
+  backend: wass
+  fixed_calibration: true
+  run_autocalibrate: false
+  wass_config_dir: null
+  wass_runtime_binding: null
+  reference_plane_file: null
+  reference_plane_source: current_frame_fit_or_static_reference_must_be_explicit
+output:
+  directory: null
+validation_boundary:
+  ruler_participates_in_reconstruction: false
+  physical_accuracy_status: PHYSICAL_ACCURACY_NOT_ESTABLISHED

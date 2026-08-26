@@ -38,6 +38,8 @@ Extension: Wave video analysis
 
 项目定位不是实时视频三维重建系统。视频同步用于确定左右时间对应关系，但不进入 WASS、XYZ 或高度计算；连续 wave、长时批处理与性能分析保留为未来动态测量 Extension。Production mode 当前服务单帧结果保存、按需任务管理和软件接口，并为后续批量扩展保留能力。
 
+Phase 3 核心后端现已从路线设计进入实现：统一请求同时支持“已明确同步的左右图片”和“左右视频 + 用户目标时间”。视频模式使用实际 decoded PTS、显式 $t_R=a t_L+b$ 模型和帧周期质量门选择帧；质量门失败时在 WASS 前终止。HomeTank_004 仍只有粗同步，因此正确返回 `FRAME_LEVEL_SYNC_NOT_ESTABLISHED`，尚未形成单帧真实重建新结果。
+
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
 1. **OpenCV 官方双目标定流程接入**
@@ -98,6 +100,7 @@ WASS production mode 分析框架现已建立：支持显式 ROI capability 检�
 | WASS 性能剖析 | 三帧实测完成 | [Performance profile](experiments/real_video/HomeTank_004/wass_performance_profile.md) |
 | 光源事件同步分析 | 粗同步完成，帧级未建立 | [Synchronization report](experiments/real_video/HomeTank_004/video_synchronization_report.md) |
 | WASS production mode | 框架完成，100帧受同步门阻塞 | [Production mode analysis](experiments/real_video/HomeTank_004/wass_production_mode_analysis.md) |
+| 按需单帧后端 | 接口完成，HomeTank_004 受帧级同步门阻塞 | [Single-frame backend validation](experiments/real_video/HomeTank_004/single_frame_backend_validation.md) |
 
 ## 核心建模成果
 

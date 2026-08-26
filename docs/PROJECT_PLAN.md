@@ -82,6 +82,8 @@ Extension: Wave video analysis
 
 阶段出口：同一帧对可重复生成可审计结果；此出口不等于精度验收通过。
 
+当前实现状态：request/result、decoded PTS 最近帧选择、帧周期同步质量门、canonical 图像输出以及既有 fixed-calibration pipeline 编排已经完成。HomeTank_004 的现有 10 Hz 粗同步不能通过帧级门，因此真实 WASS 样例在同步阶段停止；这不被伪装为 Phase 3 通过。
+
 ### 历史验证层 Phase 2-RV：采购前真实视频可行性门
 
 该门位于理想仿真完成之后、专业设备采购之前，并与 Phase 2 的数据接入工作衔接；现作为已完成的历史真实输入验证层保留，不改变 Phase 3–6 主线顺序：

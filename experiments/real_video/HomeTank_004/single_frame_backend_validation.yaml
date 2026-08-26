@@ -1,0 +1,62 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+starting_head: 1443d8ba1fee6f803a17dc4deb633e73a7e2aca8
+backend: On-demand Single-frame Stereo Measurement Backend
+status: FRAME_LEVEL_SYNC_NOT_ESTABLISHED
+input_modes:
+  image_pair: IMPLEMENTED
+  video_time: IMPLEMENTED_WITH_STRICT_SYNC_GATE
+time_model:
+  equation: "t_right = a * t_left + b"
+  a: 1.0
+  b_s: 0.0
+  source: sync_report.yaml coarse light-event result
+  event_count: 10
+  fit_residual_rmse_s: 0.0547722558
+  model_confidence: HIGH_FOR_COARSE_EVENTS_ONLY
+  frame_level_established: false
+quality_gate:
+  frame_period_definition: minimum of left/right local median decoded PTS intervals
+  pass: absolute_pair_residual <= 0.5 * frame_period AND frame_level_model_established
+  warning: 0.5 * frame_period < absolute_pair_residual <= frame_period AND frame_level_model_established
+  failure: coarse_or_unvalidated_mapping_always_fails
+samples:
+  static:
+    requested_time_s: 10.012256
+    synchronization_model: NOT_AVAILABLE_FOR_STATIC_VIDEO_AT_FRAME_LEVEL
+    status: FRAME_LEVEL_SYNC_NOT_ESTABLISHED
+    actual_left_timestamp_s: null
+    actual_right_timestamp_s: null
+    pair_residual_ms: null
+    wass_run: false
+  wave:
+    requested_time_s: 20.0
+    left_frame_id: pts_1800169
+    right_frame_id: pts_1800048
+    actual_left_timestamp_s: 20.001878
+    actual_right_timestamp_s: 20.000533
+    pair_residual_ms: -1.3450000000005957
+    local_frame_period_ms: 16.65599999999756
+    residual_only_would_meet_half_period: true
+    status: FRAME_LEVEL_SYNC_NOT_ESTABLISHED
+    reason: Small nearest-PTS residual cannot upgrade a coarse 10 Hz event model to frame-level evidence.
+    selected_pair_written: false
+    wass_run: false
+reconstruction:
+  prepare: NOT_RUN_SYNC_GATE
+  match: NOT_RUN_SYNC_GATE
+  stereo: NOT_RUN_SYNC_GATE
+  autocalibrate: PROHIBITED
+  xyz_point_count: null
+  pixel_xyz_count: null
+  reference_plane_source: null
+  height_range_m: null
+  plane_rms_m: null
+  wass_seconds: null
+qa:
+  pipeline_status: FRAME_LEVEL_SYNC_NOT_ESTABLISHED
+  height_status: NOT_AVAILABLE
+  physical_accuracy_status: PHYSICAL_ACCURACY_NOT_ESTABLISHED
+  ruler_independent: true
+external_diagnostic_output: D:/stereo-wave-height-runs/HomeTank_004/single-frame-on-demand-sync-gate-20260826
+large_artifacts_committed: false

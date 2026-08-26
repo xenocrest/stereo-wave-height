@@ -31,6 +31,8 @@ Extension: Wave video analysis
 
 阶段调整不删除任何已有工作。同步模块为播放器选择的左右时刻建立对应关系，但不参与 WASS、三角化或高度计算；wave、长时批处理和性能模块继续作为动态测量 Extension。Production mode 服务单帧结果保存、任务状态与软件接口，并保留未来批量能力。
 
+Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pair，以及 left/right video + target time。后者读取 decoded PTS，使用有来源和置信度的 $t_R=a t_L+b$ 模型选择最近帧，并以实际帧周期建立质量门；只有通过后才进入既有 fixed-calibration WASS pipeline。HomeTank_004 在 20.0 s 的最近 PTS 残差虽为 -1.345 ms，但同步模型仍仅来自 10 Hz 粗光源事件，因此状态严格保持 `FRAME_LEVEL_SYNC_NOT_ESTABLISHED`，WASS 未运行。
+
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
 当前新增：[双目系统参数设计模型](docs/stereo_system_design/disparity_depth_model.md)，用于指导未来专业双目相机选型和部署参数设计。

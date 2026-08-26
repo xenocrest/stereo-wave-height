@@ -185,6 +185,8 @@ $$
 
 `StereoFramePair` 之后的处理不得识别手机或相机型号。同步模块只负责把用户时间映射成左右视频时间并选择帧；它不得修改图像、WASS、XYZ 或高度。专业相机优先使用硬触发和硬件时间戳写入视频时间轴。若同步置信度不足，按需任务必须拒绝运行，不能假设左右帧号相同。
 
+核心后端使用 `SingleFrameMeasurementRequest → SingleFrameMeasurementResult` 边界。结果 JSON 直接提供请求/实际时间、pair residual、帧 ID、标定来源、XYZ 和 pixel–XYZ 数量、参考平面、高度统计、QA、警告及输出路径；GUI 不需要解析 WASS 原始日志。请求支持 `image_pair` 与 `video_time`，两种模式在生成 canonical selected pair 后共享同一 fixed-calibration reconstruction pipeline，且永不调用 `wass_autocalibrate`。
+
 ### 8.2 桌面程序 V0.x
 
 桌面程序暂用名称 **Stereo Wave Height Measurement System**。V0.x 包含 Video Input/Player、Time Selection、Calibration、On-demand Reconstruction、3D Surface、Height Map、Point Height、QA / Export 页面。用户播放视频时不运行 WASS；只有暂停并提交目标时间后才创建单帧任务。GUI 读取统一任务结果，缺失或未知 metadata 必须显式失败/显示 `UNKNOWN`。
