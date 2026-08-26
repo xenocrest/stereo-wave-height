@@ -40,6 +40,8 @@ Extension: Wave video analysis
 
 Phase 3 核心后端现已从路线设计进入实现：统一请求同时支持“已明确同步的左右图片”和“左右视频 + 用户目标时间”。视频模式使用实际 decoded PTS、显式 $t_R=a t_L+b$ 模型和帧周期质量门选择帧；质量门失败时在 WASS 前终止。HomeTank_004 仍只有粗同步，因此正确返回 `FRAME_LEVEL_SYNC_NOT_ESTABLISHED`，尚未形成单帧真实重建新结果。
 
+HomeTank_004 已进一步完成全帧 PTS 亮度精化：static 仅匹配 2 个共同边沿，wave 匹配 5 个但事件残差 P95 为 13.291 ms（实际帧周期 16.656 ms）。两者仍不足以建立无歧义帧级映射，因此 WASS 质量门继续生效；下一步需要人工确认固定光源 ROI，或在专业系统使用硬触发/硬件时间戳。
+
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
 1. **OpenCV 官方双目标定流程接入**
@@ -101,6 +103,7 @@ WASS production mode 分析框架现已建立：支持显式 ROI capability 检�
 | 光源事件同步分析 | 粗同步完成，帧级未建立 | [Synchronization report](experiments/real_video/HomeTank_004/video_synchronization_report.md) |
 | WASS production mode | 框架完成，100帧受同步门阻塞 | [Production mode analysis](experiments/real_video/HomeTank_004/wass_production_mode_analysis.md) |
 | 按需单帧后端 | 接口完成，HomeTank_004 受帧级同步门阻塞 | [Single-frame backend validation](experiments/real_video/HomeTank_004/single_frame_backend_validation.md) |
+| 帧级同步精化 | 全帧 PTS 已分析，证据仍不足 | [Frame-level synchronization](experiments/real_video/HomeTank_004/frame_level_synchronization.md) |
 
 ## 核心建模成果
 

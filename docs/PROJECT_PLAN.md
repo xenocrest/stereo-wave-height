@@ -84,6 +84,8 @@ Extension: Wave video analysis
 
 当前实现状态：request/result、decoded PTS 最近帧选择、帧周期同步质量门、canonical 图像输出以及既有 fixed-calibration pipeline 编排已经完成。HomeTank_004 的现有 10 Hz 粗同步不能通过帧级门，因此真实 WASS 样例在同步阶段停止；这不被伪装为 Phase 3 通过。
 
+帧级精化状态：已使用全部 decoded-frame PTS 建立约 60 FPS 亮度序列，并分别拟合 static/wave 时钟关系。static 事件不足，wave 残差只达到 warning，故总体仍为 `FRAME_LEVEL_SYNC_NOT_ESTABLISHED`。保持下一阶段入口为“获得固定光源 ROI 的可验证事件证据，或换用硬件同步来源”。
+
 ### 历史验证层 Phase 2-RV：采购前真实视频可行性门
 
 该门位于理想仿真完成之后、专业设备采购之前，并与 Phase 2 的数据接入工作衔接；现作为已完成的历史真实输入验证层保留，不改变 Phase 3–6 主线顺序：

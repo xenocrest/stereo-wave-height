@@ -33,6 +33,8 @@ Extension: Wave video analysis
 
 Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pair，以及 left/right video + target time。后者读取 decoded PTS，使用有来源和置信度的 $t_R=a t_L+b$ 模型选择最近帧，并以实际帧周期建立质量门；只有通过后才进入既有 fixed-calibration WASS pipeline。HomeTank_004 在 20.0 s 的最近 PTS 残差虽为 -1.345 ms，但同步模型仍仅来自 10 Hz 粗光源事件，因此状态严格保持 `FRAME_LEVEL_SYNC_NOT_ESTABLISHED`，WASS 未运行。
 
+随后完成的逐帧 PTS 精化没有掩盖阻塞：static 只有 2 个匹配事件；wave 的 5 个匹配事件仅达到 `FRAME_LEVEL_SYNC_WARNING`，P95 残差为 13.291 ms，相对于 16.656 ms 帧周期仍不足以构成可靠帧级证据。两个测试时刻均在 WASS 前停止。固定光源 ROI 的人工确认或未来硬件同步是下一项输入条件，而不是通过修改重建参数规避。
+
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
 当前新增：[双目系统参数设计模型](docs/stereo_system_design/disparity_depth_model.md)，用于指导未来专业双目相机选型和部署参数设计。

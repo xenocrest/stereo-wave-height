@@ -38,6 +38,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "sync_report.yaml", "video_synchronization_report.md",
             "wass_production_mode_analysis.yaml", "wass_production_mode_analysis.md",
             "single_frame_backend_validation.yaml", "single_frame_backend_validation.md",
+            "frame_level_synchronization.yaml", "frame_level_synchronization.md",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",
             "fixed_calibration_rectification_policy_audit.md",

@@ -1,0 +1,73 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+starting_head: 706f32df7c3e38e56b23741c9a05e75479cf012e
+purpose: FRAME_LEVEL_SYNCHRONIZATION_EVIDENCE_ONLY
+coarse_history_preserved: sync_report.yaml
+brightness_observation:
+  source: every decoded frame at its actual PTS
+  spatial_measure: whole-frame mean luma at 64x36
+  smoothing_frames: 3
+  subframe_refinement: LINEAR_HALF_LEVEL_CROSSING
+  fixed_light_roi: null
+  fixed_light_roi_status: MANUAL_LIGHT_ROI_REQUIRED_FOR_STRONGER_EVIDENCE
+quality_rule:
+  established: matched_events >= 3 and residual_P95 <= 0.5_frame and residual_max <= 1_frame
+  warning: matched_events >= 3 and residual_P95 <= 1_frame and residual_max <= 1_frame
+  authorization: warning does not authorize WASS because the existing backend requires an established frame-level model
+model_selection:
+  candidates: [OFFSET_ONLY, AFFINE]
+  affine_minimum_events: 3
+  affine_minimum_rms_improvement_fraction: 0.20
+static:
+  inputs:
+    left: videos/static/static_cam0_iQOO_Neo5S.mp4
+    right: videos/static/static_cam1_iQOO_Z10_TurboPlus.mp4
+  decoded_frames: {left: 3245, right: 3281}
+  detected_events: {left: 2, right: 10}
+  matched_events: 2
+  model: {type: OFFSET_ONLY, a: 1.0, b_s: -0.02018575}
+  residual:
+    rms_s: 0.00910275
+    median_absolute_s: 0.00910275
+    p95_absolute_s: 0.00910275
+    max_absolute_s: 0.00910275
+  frame_period_s: 0.016656
+  classification: FRAME_LEVEL_SYNC_NOT_ESTABLISHED
+  target:
+    requested_left_s: 10.012256
+    left: {pts: 901103, actual_s: 10.012256}
+    right: {pts: 900024, actual_s: 10.000267}
+    pair_residual_s: 0.00819675
+    gate: FRAME_LEVEL_SYNC_NOT_ESTABLISHED
+  wass_run: false
+wave:
+  inputs:
+    left: videos/wave/wave_cam0_iQOO_Neo5S.mp4
+    right: videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4
+  decoded_frames: {left: 9556, right: 9670}
+  detected_events: {left: 8, right: 6}
+  matched_events: 5
+  offset_model: {a: 1.0, b_s: -0.0654055, residual_rms_s: 0.008564146}
+  affine_candidate: {a: 0.999978519, b_s: -0.065909778, residual_rms_s: 0.008278070}
+  selected_model: {type: OFFSET_ONLY, a: 1.0, b_s: -0.0654055}
+  model_selection_reason: affine RMS improvement 0.033 is below required 0.20
+  residual:
+    rms_s: 0.008564146
+    median_absolute_s: 0.0075115
+    p95_absolute_s: 0.0132913
+    max_absolute_s: 0.0139335
+  frame_period_s: 0.016656
+  classification: FRAME_LEVEL_SYNC_WARNING
+  target:
+    requested_left_s: 20.0
+    left: {pts: 1800169, actual_s: 20.001878}
+    right: {pts: 1794048, actual_s: 19.933867}
+    pair_residual_s: -0.0026055
+    gate: FRAME_LEVEL_SYNC_NOT_ESTABLISHED
+  wass_run: false
+overall:
+  frame_level_synchronization_established: false
+  wass_authorized_samples: 0
+  next_requirement: manually registered fixed-light ROI or hardware trigger/timestamps
+  ruler_used: false
+  large_artifacts_committed: false

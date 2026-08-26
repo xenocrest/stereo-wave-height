@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 from PIL import Image
@@ -11,6 +12,7 @@ from PIL import Image
 from src.reconstruction.single_frame import (
     SingleFrameMeasurementRequest,
     SingleFrameMeasurementResult,
+    SingleFrameMeasurementBackend,
     SynchronizationSpec,
     canonicalize_image_pair,
 )
@@ -92,6 +94,32 @@ class SingleFrameMeasurementTests(unittest.TestCase):
             text = source.read_text(encoding="utf-8").lower()
             self.assertNotIn("import ruler", text, source)
             self.assertNotIn("from validation.ruler", text, source)
+
+    @patch("src.reconstruction.single_frame.probe_video_pts_window")
+    def test_quality_gate_prevents_wass_for_coarse_model(self, probe) -> None:
+        probe.return_value = tuple(
+            VideoFrameTimestamp(index, value) for index, value in enumerate((0.98, 1.0, 1.02))
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            left, right = root / "left.mp4", root / "right.mp4"
+            calibration, binding = root / "calibration.yaml", root / "runtime.json"
+            for path in (left, right, calibration, binding):
+                path.write_bytes(b"test")
+            config = root / "wass"; config.mkdir()
+            request = SingleFrameMeasurementRequest(
+                input_mode="video_time", output_dir=root / "output",
+                calibration_source=calibration, wass_config_dir=config,
+                wass_runtime_binding=binding, ffmpeg_executable=Path("ffmpeg"),
+                synchronization_source="coarse_light_events", left_video=left,
+                right_video=right, target_time_s=1.0,
+                synchronization=SynchronizationSpec(1.0, 0.0, "coarse", "HIGH", False, 10, .05, .1),
+            )
+            def forbidden_pipeline(_config):
+                raise AssertionError("WASS pipeline must not be constructed")
+            result = SingleFrameMeasurementBackend(pipeline_factory=forbidden_pipeline).run(request)
+            self.assertEqual(result.status, "FRAME_LEVEL_SYNC_NOT_ESTABLISHED")
+            self.assertIsNone(result.xyz_point_count)
 
 
 if __name__ == "__main__":
