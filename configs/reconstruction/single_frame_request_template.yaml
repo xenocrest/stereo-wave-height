@@ -12,6 +12,11 @@ synchronization:
   source: UNKNOWN
   confidence: UNKNOWN
   frame_level_established: false
+on_demand_sync_tolerance:
+  status: ON_DEMAND_SYNC_TOLERANCE_NOT_ESTABLISHED
+  strict_max_abs_frames: null
+  warning_max_abs_frames: null
+  evidence_source: UNKNOWN
 calibration:
   source: null
   parameters: OPENCV_K0_D0_K1_D1_R_T_UNCHANGED

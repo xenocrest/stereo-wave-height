@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import subprocess
 
 import numpy as np
 from PIL import Image
@@ -17,7 +18,8 @@ from src.reconstruction.single_frame import (
     canonicalize_image_pair,
 )
 from src.synchronization.affine import AffineTimeMapping
-from src.synchronization.frame_selection import VideoFrameTimestamp, nearest_frame, select_timestamp_pair
+from src.synchronization.frame_selection import VideoFrameTimestamp, extract_frame_by_pts, nearest_frame, select_timestamp_pair
+from src.synchronization.tolerance import OnDemandSyncTolerancePolicy
 
 
 class SingleFrameMeasurementTests(unittest.TestCase):
@@ -88,12 +90,49 @@ class SingleFrameMeasurementTests(unittest.TestCase):
             )
             json.dumps(result.to_dict())
 
+    @patch("src.synchronization.frame_selection.subprocess.run")
+    def test_exact_pts_filter_is_passed_without_shell_escape_corruption(self, run) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "frame.png"
+            def complete(argv, **_kwargs):
+                output.write_bytes(b"png")
+                return subprocess.CompletedProcess(argv, 0, "", "")
+            run.side_effect = complete
+            extract_frame_by_pts(
+                "video.mp4", output, ffmpeg_executable="ffmpeg",
+                frame=VideoFrameTimestamp(901103, 10.012256), rotation_deg=180,
+            )
+            argv = run.call_args.args[0]
+            self.assertIn("select='eq(pts,901103)',hflip,vflip,format=gray", argv)
+
     def test_ruler_has_no_reverse_dependency_into_reconstruction(self) -> None:
         reconstruction = Path(__file__).resolve().parents[1] / "src" / "reconstruction"
         for source in reconstruction.glob("*.py"):
             text = source.read_text(encoding="utf-8").lower()
             self.assertNotIn("import ruler", text, source)
             self.assertNotIn("from validation.ruler", text, source)
+
+    def test_request_serializes_engineering_tolerance_without_ruler_data(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            left, right, calibration, binding = [
+                root / name for name in ("left.mp4", "right.mp4", "cal.yaml", "runtime.json")
+            ]
+            for path in (left, right, calibration, binding):
+                path.write_bytes(b"test")
+            wass = root / "wass"; wass.mkdir()
+            request = SingleFrameMeasurementRequest(
+                input_mode="video_time", output_dir=root / "out", calibration_source=calibration,
+                wass_config_dir=wass, wass_runtime_binding=binding, ffmpeg_executable=Path("ffmpeg"),
+                synchronization_source="events", left_video=left, right_video=right, target_time_s=1.0,
+                synchronization=SynchronizationSpec(1, 0, "events", "MEDIUM", False, 3, .01, .02),
+                synchronization_tolerance=OnDemandSyncTolerancePolicy(
+                    "ON_DEMAND_SYNC_TOLERANCE_ESTABLISHED", 0, 1, "controlled test"
+                ),
+            )
+            payload = json.dumps(request.to_dict()).lower()
+            self.assertIn("strict_max_abs_frames", payload)
+            self.assertNotIn("ruler", payload)
 
     @patch("src.reconstruction.single_frame.probe_video_pts_window")
     def test_quality_gate_prevents_wass_for_coarse_model(self, probe) -> None:

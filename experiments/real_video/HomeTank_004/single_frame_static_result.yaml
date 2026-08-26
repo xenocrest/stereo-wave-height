@@ -1,0 +1,14 @@
+schema_version: "1.0"
+status: SINGLE_FRAME_PIPELINE_PASS_WITH_SYNC_WARNING
+sync_status: SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT
+requested_time_s: 10.012256
+left_actual_s: 10.012256
+right_actual_s: 10.000267
+pair_residual_ms: 8.19675
+xyz_point_count: 167422
+pixel_xyz_count: 167422
+xyz_range_m: {x: [-0.095162996, -0.031920426], y: [-0.094517233, 0.009467183], z: [0.282887263, 0.338043259]}
+reference_plane_source: current_frame_fit
+plane_rms_m: 0.002508891
+height: {unit: m, valid_count: 167422, min: -0.003526045, p5: -0.001782165, median: -0.000429912, p95: 0.002970820, max: 0.054135220, mean: 0.0, rms: 0.002508891}
+physical_accuracy_status: PHYSICAL_ACCURACY_NOT_ESTABLISHED

@@ -42,6 +42,8 @@ Phase 3 核心后端现已从路线设计进入实现：统一请求同时支持
 
 HomeTank_004 已进一步完成全帧 PTS 亮度精化：static 仅匹配 2 个共同边沿，wave 匹配 5 个但事件残差 P95 为 13.291 ms（实际帧周期 16.656 ms）。两者仍不足以建立无歧义帧级映射，因此 WASS 质量门继续生效；下一步需要人工确认固定光源 ROI，或在专业系统使用硬触发/硬件时间戳。
 
+在保留上述严格同步结论的同时，已用 $R_{-3}\ldots R_{+3}$ 共 14 组真实 WASS 重建建立按需工程容差：模型预测的 $R_0$ 为 `ACCEPTED`，相邻 ±1 帧为 `WARNING`，$|k|\ge2$ 为 `REJECTED`。正式 static/wave 样例均固定选择 $R_0$ 并完成 XYZ、pixel–XYZ 与 H(x,y)，但物理精度仍未验证。
+
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
 1. **OpenCV 官方双目标定流程接入**
@@ -104,6 +106,7 @@ WASS production mode 分析框架现已建立：支持显式 ROI capability 检�
 | WASS production mode | 框架完成，100帧受同步门阻塞 | [Production mode analysis](experiments/real_video/HomeTank_004/wass_production_mode_analysis.md) |
 | 按需单帧后端 | 接口完成，HomeTank_004 受帧级同步门阻塞 | [Single-frame backend validation](experiments/real_video/HomeTank_004/single_frame_backend_validation.md) |
 | 帧级同步精化 | 全帧 PTS 已分析，证据仍不足 | [Frame-level synchronization](experiments/real_video/HomeTank_004/frame_level_synchronization.md) |
+| 按需同步容差 | 14组WASS完成，R0正式样例闭环 | [Sync tolerance validation](experiments/real_video/HomeTank_004/sync_tolerance_validation.md) |
 
 ## 核心建模成果
 

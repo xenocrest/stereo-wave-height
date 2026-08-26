@@ -136,12 +136,12 @@ def extract_frame_by_pts(
         raise ValueError("rotation_deg must be 0/90/180/270")
     orientation = {
         0: "format=gray",
-        90: "select='eq(pts\\,{pts})',transpose=1,format=gray",
-        180: "select='eq(pts\\,{pts})',hflip,vflip,format=gray",
-        270: "select='eq(pts\\,{pts})',transpose=2,format=gray",
+        90: "select='eq(pts,{pts})',transpose=1,format=gray",
+        180: "select='eq(pts,{pts})',hflip,vflip,format=gray",
+        270: "select='eq(pts,{pts})',transpose=2,format=gray",
     }[rotation]
     if rotation == 0:
-        orientation = "select='eq(pts\\,{pts})',format=gray"
+        orientation = "select='eq(pts,{pts})',format=gray"
     filter_value = orientation.format(pts=frame.pts)
     target = Path(destination)
     target.parent.mkdir(parents=True, exist_ok=True)

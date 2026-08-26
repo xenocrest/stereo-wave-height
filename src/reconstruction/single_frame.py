@@ -21,6 +21,7 @@ from synchronization.frame_selection import (
     probe_video_pts_window,
     select_timestamp_pair,
 )
+from synchronization.tolerance import OnDemandSyncTolerancePolicy
 
 from .io import FrameRequest, ReconstructionConfig
 from .pipeline import ReconstructionPipeline, ReconstructionRunResult
@@ -68,6 +69,7 @@ class SingleFrameMeasurementRequest:
     calibration_quality_mode: str = "require_approved"
     reference_plane_file: Path | None = None
     surface_distance_threshold_m: float = 0.01
+    synchronization_tolerance: OnDemandSyncTolerancePolicy | None = None
 
     def __post_init__(self) -> None:
         if self.input_mode not in {"image_pair", "video_time"}:
@@ -83,6 +85,8 @@ class SingleFrameMeasurementRequest:
                 raise ValueError("image_pair mode requires left_image and right_image")
             if self.target_time_s is not None or self.synchronization is not None:
                 raise ValueError("already synchronized image_pair must not carry a video clock model")
+            if self.synchronization_tolerance is not None:
+                raise ValueError("image_pair mode does not require a video synchronization tolerance")
         else:
             if self.left_video is None or self.right_video is None or self.target_time_s is None:
                 raise ValueError("video_time mode requires two videos and target_time_s")
@@ -267,6 +271,7 @@ class SingleFrameMeasurementBackend:
         selected = output / "selected_pair"
         left_png, right_png = selected / "left.png", selected / "right.png"
         selection: SelectedTimestampPair | None = None
+        engineering_sync_status: str | None = None
 
         if request.input_mode == "video_time":
             assert request.left_video is not None and request.right_video is not None
@@ -287,7 +292,10 @@ class SingleFrameMeasurementBackend:
                 frame_level_mapping_established=request.synchronization.frame_level_established,
             )
             if selection.quality_status in {"FRAME_LEVEL_SYNC_NOT_ESTABLISHED", "FRAME_PAIR_SYNC_FAILED"}:
-                return self._blocked_result(request, selection)
+                policy = request.synchronization_tolerance
+                if policy is None or policy.classify(0) != "ACCEPTED":
+                    return self._blocked_result(request, selection)
+                engineering_sync_status = "SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT"
             extract_frame_by_pts(
                 request.left_video, left_png, ffmpeg_executable=request.ffmpeg_executable,
                 frame=selection.left, rotation_deg=request.left_rotation_deg,
@@ -316,6 +324,10 @@ class SingleFrameMeasurementBackend:
             "synchronization_source": request.synchronization_source,
             "synchronization_model": asdict(request.synchronization) if request.synchronization else None,
             "orientation": {"left_rotation_deg": request.left_rotation_deg, "right_rotation_deg": request.right_rotation_deg},
+            "engineering_sync_status": engineering_sync_status,
+            "synchronization_tolerance": (
+                request.synchronization_tolerance.to_dict() if request.synchronization_tolerance else None
+            ),
         }
         (selected / "pair_metadata.json").write_text(
             json.dumps(pair_metadata, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
@@ -359,7 +371,9 @@ class SingleFrameMeasurementBackend:
         reconstructed = json.loads(run.result_json.read_text(encoding="utf-8"))
         frame = reconstructed["frames"][0]
         reference = reconstructed["height_reference"]
-        sync_warning = selection is not None and selection.quality_status == "FRAME_PAIR_SYNC_WARNING"
+        sync_warning = selection is not None and (
+            selection.quality_status == "FRAME_PAIR_SYNC_WARNING" or engineering_sync_status is not None
+        )
         result = SingleFrameMeasurementResult(
             status="SINGLE_FRAME_PIPELINE_PASS_WITH_SYNC_WARNING" if sync_warning else "SINGLE_FRAME_PIPELINE_PASS",
             requested_time_s=request.target_time_s,
@@ -382,7 +396,11 @@ class SingleFrameMeasurementBackend:
             wass_seconds=wass_seconds,
             qa_status="HEIGHT_RESULT_AVAILABLE_NOT_PHYSICALLY_VALIDATED",
             physical_accuracy_status="PHYSICAL_ACCURACY_NOT_ESTABLISHED",
-            warnings=tuple(filter(None, ["Frame pair passed with synchronization warning." if sync_warning else None])),
+            warnings=tuple(filter(None, [
+                "Strict frame-level synchronization remains unproven; R0 is accepted by the controlled on-demand tolerance policy."
+                if engineering_sync_status else
+                ("Frame pair passed with synchronization warning." if sync_warning else None)
+            ])),
             output_paths={
                 "selected_pair": "selected_pair", "pointcloud": "reconstruction/pointcloud",
                 "height": "reconstruction/height", "pixel_xyz": "reconstruction/pixel_xyz",

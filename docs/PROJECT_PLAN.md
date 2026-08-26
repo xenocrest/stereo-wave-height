@@ -86,6 +86,8 @@ Extension: Wave video analysis
 
 帧级精化状态：已使用全部 decoded-frame PTS 建立约 60 FPS 亮度序列，并分别拟合 static/wave 时钟关系。static 事件不足，wave 残差只达到 warning，故总体仍为 `FRAME_LEVEL_SYNC_NOT_ESTABLISHED`。保持下一阶段入口为“获得固定光源 ROI 的可验证事件证据，或换用硬件同步来源”。
 
+工程容差状态：在不改变标定、WASS、平面或高度模型的条件下完成 static/wave 各 7 个右帧 offset。结果建立 `R0=ACCEPTED`、`±1=WARNING`、`|k|≥2=REJECTED` 的按需门，并已由 R0 完成两个正式后端样例。该门服务任务调度，不等同于严格同步或物理精度通过。
+
 ### 历史验证层 Phase 2-RV：采购前真实视频可行性门
 
 该门位于理想仿真完成之后、专业设备采购之前，并与 Phase 2 的数据接入工作衔接；现作为已完成的历史真实输入验证层保留，不改变 Phase 3–6 主线顺序：

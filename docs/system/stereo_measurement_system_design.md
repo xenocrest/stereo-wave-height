@@ -187,6 +187,8 @@ $$
 
 核心后端使用 `SingleFrameMeasurementRequest → SingleFrameMeasurementResult` 边界。结果 JSON 直接提供请求/实际时间、pair residual、帧 ID、标定来源、XYZ 和 pixel–XYZ 数量、参考平面、高度统计、QA、警告及输出路径；GUI 不需要解析 WASS 原始日志。请求支持 `image_pair` 与 `video_time`，两种模式在生成 canonical selected pair 后共享同一 fixed-calibration reconstruction pipeline，且永不调用 `wass_autocalibrate`。
 
+同步门区分两类证据：严格帧级同步诊断与受控重建建立的按需工程容差。后者只允许时间模型预测的 R0 自动进入计算，±1 帧仅作 warning/敏感性边界，绝不根据重建结果反向选帧；超出已验证边界必须拒绝。该策略不改变时间戳、图像、WASS或高度数值。
+
 ### 8.2 桌面程序 V0.x
 
 桌面程序暂用名称 **Stereo Wave Height Measurement System**。V0.x 包含 Video Input/Player、Time Selection、Calibration、On-demand Reconstruction、3D Surface、Height Map、Point Height、QA / Export 页面。用户播放视频时不运行 WASS；只有暂停并提交目标时间后才创建单帧任务。GUI 读取统一任务结果，缺失或未知 metadata 必须显式失败/显示 `UNKNOWN`。

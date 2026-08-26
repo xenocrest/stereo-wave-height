@@ -35,6 +35,8 @@ Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pa
 
 随后完成的逐帧 PTS 精化没有掩盖阻塞：static 只有 2 个匹配事件；wave 的 5 个匹配事件仅达到 `FRAME_LEVEL_SYNC_WARNING`，P95 残差为 13.291 ms，相对于 16.656 ms 帧周期仍不足以构成可靠帧级证据。两个测试时刻均在 WASS 前停止。固定光源 ROI 的人工确认或未来硬件同步是下一项输入条件，而不是通过修改重建参数规避。
 
+进一步的 14 组受控 WASS 敏感性实验建立了独立的按需工程门，并未覆盖严格同步历史：$R_0$ 接受、±1 帧警告、$|k|\ge2$ 拒绝。正式选择规则永远取时间模型预测的 $R_0$，不得按重建效果选优。HomeTank_004 的 static 和 wave R0 均已通过现有 video-mode backend 输出 XYZ、pixel–XYZ 与 H(x,y)，状态仍带同步警告且 `PHYSICAL_ACCURACY_NOT_ESTABLISHED`。
+
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
 当前新增：[双目系统参数设计模型](docs/stereo_system_design/disparity_depth_model.md)，用于指导未来专业双目相机选型和部署参数设计。

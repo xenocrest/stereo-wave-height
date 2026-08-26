@@ -1,0 +1,10 @@
+schema_version: "1.0"
+status: ON_DEMAND_SYNC_TOLERANCE_ESTABLISHED
+scope: on-demand single-frame candidate relative to time-model-predicted R0
+strict_max_abs_frames: 0
+warning_max_abs_frames: 1
+reject_min_abs_frames: 2
+evidence: sync_tolerance_validation.yaml
+strict_frame_level_sync_status: NOT_ESTABLISHED_PRESERVED
+formal_selection: R0_ONLY_NEVER_SELECT_BY_RECONSTRUCTION_RESULT
+ruler_used: false

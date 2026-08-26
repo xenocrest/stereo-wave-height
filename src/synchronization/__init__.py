@@ -13,6 +13,12 @@ from .video_sync import (
     pair_frame_level_events,
     synchronization_residual_statistics,
 )
+from .tolerance import (
+    FrameOffsetCandidate,
+    OnDemandSyncTolerancePolicy,
+    generate_frame_offset_candidates,
+    select_formal_candidate,
+)
 
 __all__ = [
     "AffineTimeMapping",
@@ -33,4 +39,8 @@ __all__ = [
     "fit_frame_level_sync_model",
     "pair_frame_level_events",
     "synchronization_residual_statistics",
+    "FrameOffsetCandidate",
+    "OnDemandSyncTolerancePolicy",
+    "generate_frame_offset_candidates",
+    "select_formal_candidate",
 ]

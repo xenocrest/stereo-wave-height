@@ -1,0 +1,43 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+starting_head: 1fecd36471c291753d8c5c66884b4cc386f7c280
+status: ON_DEMAND_SYNC_TOLERANCE_ESTABLISHED
+controlled_variable: right decoded frame offset relative to model-predicted R0
+fixed: [K0, D0, K1, D1, R, T, rectification_policy, WASS_config, plane_RANSAC, height_definition]
+frame_period_s: {static: 0.016667, wave: 0.016667}
+timing_note: prepare and match wall times were not instrumented in this run; total and WASS stereo internal time are retained externally
+policy:
+  strict: offset_frames == 0
+  warning: abs(offset_frames) == 1
+  rejected: abs(offset_frames) >= 2
+  reason: all 14 WASS calls completed, but abs(offset)>=2 contains 56.6/71.0 degree plane failures and 0.39-0.59 m abnormal heights
+static:
+  target_s: 10.012256
+  left: {pts: 901103, actual_s: 10.012256}
+  candidates:
+    - {k: -3, right_pts: 895524, right_s: 9.950267, dt_ms: -41.803, rho: 2.508, wass: PASS, matches: 34, xyz: 165437, plane_rms_mm: 6.688, normal_change_deg: 56.061, h_median_mm: -1.154, h_rms_mm: 6.688}
+    - {k: -2, right_pts: 897024, right_s: 9.966933, dt_ms: -25.137, rho: 1.508, wass: PASS, matches: 42, xyz: 166494, plane_rms_mm: 6.789, normal_change_deg: 56.621, h_median_mm: -1.202, h_rms_mm: 6.789}
+    - {k: -1, right_pts: 898524, right_s: 9.983600, dt_ms: -8.470, rho: 0.508, wass: PASS, matches: 41, xyz: 166523, plane_rms_mm: 1.718, normal_change_deg: 0.265, h_median_mm: -0.354, h_rms_mm: 1.718}
+    - {k: 0, right_pts: 900024, right_s: 10.000267, dt_ms: 8.197, rho: 0.492, wass: PASS, matches: 41, xyz: 167422, plane_rms_mm: 2.509, normal_change_deg: 0.000, h_median_mm: -0.430, h_rms_mm: 2.509}
+    - {k: 1, right_pts: 901524, right_s: 10.016933, dt_ms: 24.863, rho: 1.492, wass: PASS, matches: 46, xyz: 161381, plane_rms_mm: 1.844, normal_change_deg: 0.201, h_median_mm: -0.386, h_rms_mm: 1.844}
+    - {k: 2, right_pts: 903024, right_s: 10.033600, dt_ms: 41.530, rho: 2.492, wass: PASS, matches: 43, xyz: 165385, plane_rms_mm: 4.510, normal_change_deg: 3.219, h_median_mm: -0.631, h_rms_mm: 4.510}
+    - {k: 3, right_pts: 904524, right_s: 10.050267, dt_ms: 58.197, rho: 3.492, wass: PASS, matches: 35, xyz: 167485, plane_rms_mm: 1.996, normal_change_deg: 1.267, h_median_mm: -0.337, h_rms_mm: 1.996}
+wave:
+  target_s: 20.0
+  left: {pts: 1800169, actual_s: 20.001878}
+  candidates:
+    - {k: -3, right_pts: 1789548, right_s: 19.883867, dt_ms: -52.606, rho: 3.156, wass: PASS, matches: 29, xyz: 74785, plane_rms_mm: 6.828, normal_change_deg: 83.436, h_median_mm: -588.562, h_rms_mm: 588.995}
+    - {k: -2, right_pts: 1791048, right_s: 19.900533, dt_ms: -35.940, rho: 2.156, wass: PASS, matches: 33, xyz: 75696, plane_rms_mm: 1.619, normal_change_deg: 7.301, h_median_mm: 40.743, h_rms_mm: 40.833}
+    - {k: -1, right_pts: 1792548, right_s: 19.917200, dt_ms: -19.272, rho: 1.156, wass: PASS, matches: 28, xyz: 87122, plane_rms_mm: 1.850, normal_change_deg: 4.420, h_median_mm: 24.954, h_rms_mm: 25.113}
+    - {k: 0, right_pts: 1794048, right_s: 19.933867, dt_ms: -2.606, rho: 0.156, wass: PASS, matches: 34, xyz: 86911, plane_rms_mm: 1.500, normal_change_deg: 0.000, h_median_mm: -5.865, h_rms_mm: 5.887}
+    - {k: 1, right_pts: 1795548, right_s: 19.950533, dt_ms: 14.060, rho: 0.844, wass: PASS, matches: 34, xyz: 91889, plane_rms_mm: 3.321, normal_change_deg: 1.576, h_median_mm: 3.370, h_rms_mm: 5.108}
+    - {k: 2, right_pts: 1797048, right_s: 19.967200, dt_ms: 30.727, rho: 1.844, wass: PASS, matches: 33, xyz: 123457, plane_rms_mm: 4.824, normal_change_deg: 70.970, h_median_mm: -393.357, h_rms_mm: 393.606}
+    - {k: 3, right_pts: 1798548, right_s: 19.983867, dt_ms: 47.394, rho: 2.844, wass: PASS, matches: 41, xyz: 130966, plane_rms_mm: 6.420, normal_change_deg: 4.524, h_median_mm: 20.262, h_rms_mm: 21.319}
+formal_r0:
+  static: {status: SINGLE_FRAME_PIPELINE_PASS_WITH_SYNC_WARNING, xyz: 167422, pixel_xyz: 167422, height_range_m: [-0.003526045, 0.054135220], plane_rms_m: 0.002508891, reference_plane: current_frame_fit}
+  wave: {status: SINGLE_FRAME_PIPELINE_PASS_WITH_SYNC_WARNING, xyz: 86911, pixel_xyz: 86911, height_range_m: [-0.008399723, 0.007737717], plane_rms_m: 0.001499967, reference_plane: static_reference}
+boundaries:
+  physical_accuracy: PHYSICAL_ACCURACY_NOT_ESTABLISHED
+  strict_frame_sync: NOT_ESTABLISHED_PRESERVED
+  ruler_used: false
+  large_artifacts_committed: false
