@@ -1,0 +1,59 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+audit_scope: FROZEN_PHASE3_R0_RESULTS_ONLY
+status: HEIGHT_DISTRIBUTION_CHARACTERIZED
+phase4_readiness: READY_FOR_INDEPENDENT_PHYSICAL_VALIDATION_WITH_QA_WARNING
+ruler_data_read: false
+pixel_coordinate_system: wass_rectified_computational_cam0__input_right
+unsupported_pixel_semantics: NaN_or_absent_never_zero
+static:
+  valid_points: 167422
+  unique_observed_pixels: 33990
+  support_bbox_xywh: [911, 320, 285, 474]
+  raw_height_range_mm: {min: -3.526045, max: 54.135220}
+  robust_height_range_p1_p99_mm: {low: -2.398325, high: 8.315919}
+  robust_height_range_p5_p95_mm: {low: -1.782165, high: 2.970820}
+  percentiles_mm: {p0_1: -3.101526, p1: -2.398325, p5: -1.782165, p25: -0.967802, p50: -0.429912, p75: 0.320523, p95: 2.970820, p99: 8.315919, p99_9: 50.288104}
+  mean_mm: 0.0
+  standard_deviation_mm: 2.508891
+  rms_mm: 2.508891
+  iqr_mm: 1.288325
+  tails:
+    gt_5_mm: {count: 3107, percent: 1.855790}
+    gt_10_mm: {count: 443, percent: 0.264601}
+    gt_20_mm: {count: 248, percent: 0.148129}
+    gt_30_mm: {count: 225, percent: 0.134391}
+    gt_40_mm: {count: 224, percent: 0.133794}
+    gt_50_mm: {count: 218, percent: 0.130210}
+  maximum_exact_point_count: 1
+  edge_distance_px: {body_median: 3.0, gt_10mm_median: 1.414214, gt_10mm_p25: 1.0, gt_10mm_p75: 2.0}
+  gt_10mm_components: {count: 24, largest_pixels: 53, largest_fraction: 0.335443, bbox_xywh: [1096, 690, 17, 6], singleton_count: 7}
+  abnormal_xyz_range_m: {x: [-0.081236564, -0.031920426], y: [-0.084604313, 0.000789577], z: [0.302445906, 0.338043259]}
+wave:
+  valid_points: 86911
+  unique_observed_pixels: 18169
+  support_reduction_vs_static_percent: {points: 48.088662, unique_pixels: 46.546043}
+  support_bbox_xywh: [944, 304, 130, 406]
+  raw_height_range_mm: {min: -8.399723, max: 7.737717}
+  robust_height_range_p1_p99_mm: {low: -7.858652, high: 0.220299}
+  robust_height_range_p5_p95_mm: {low: -7.559021, high: -2.885963}
+  percentiles_mm: {p0_1: -8.243897, p1: -7.858652, p5: -7.559021, p25: -6.713702, p50: -5.864901, p75: -5.015254, p95: -2.885963, p99: 0.220299, p99_9: 5.127307}
+  mean_mm: -5.672101
+  median_mm: -5.864901
+  standard_deviation_mm: 1.575574
+  rms_mm: 5.886864
+  iqr_mm: 1.698448
+  deviation_from_median_tails:
+    gt_5_mm: {count: 1800, percent: 2.071084}
+    gt_10_mm: {count: 99, percent: 0.113910}
+    gt_20_mm: {count: 0, percent: 0.0}
+    gt_30_mm: {count: 0, percent: 0.0}
+    gt_50_mm: {count: 0, percent: 0.0}
+  edge_distance_px: {body_median: 2.828427, gt_10mm_median: 3.162278, gt_10mm_p25: 2.236068, gt_10mm_p75: 3.383914}
+  gt_10mm_components: {count: 7, largest_pixels: 26, largest_fraction: 0.684211, bbox_xywh: [1009, 513, 10, 4], singleton_count: 3}
+  abnormal_xyz_range_m: {x: [-0.076411987, -0.061990315], y: [-0.073222677, -0.028586493], z: [0.288370019, 0.295200255]}
+interpretation:
+  static: "主体集中，正高尾部占比小且更靠近support边缘；不生成过滤后结果"
+  wave: "mean与median相差0.193mm，RMS主要由约-5.7mm整体偏置贡献；不解释为真实波高"
+  threshold_status: NO_PHYSICAL_ACCEPTANCE_THRESHOLD_DEFINED
+  algorithm_modified: false

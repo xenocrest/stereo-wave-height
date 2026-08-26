@@ -44,6 +44,8 @@ HomeTank_004 已进一步完成全帧 PTS 亮度精化：static 仅匹配 2 个�
 
 在保留上述严格同步结论的同时，已用 $R_{-3}\ldots R_{+3}$ 共 14 组真实 WASS 重建建立按需工程容差：模型预测的 $R_0$ 为 `ACCEPTED`，相邻 ±1 帧为 `WARNING`，$|k|\ge2$ 为 `REJECTED`。正式 static/wave 样例均固定选择 $R_0$ 并完成 XYZ、pixel–XYZ 与 H(x,y)，但物理精度仍未验证。
 
+Phase 3 正式 R0 结果现已完成纯观测分布 QA：raw range、P1–P99/P5–P95、尾部比例、像素空间连通性、support 边缘距离与异常 XYZ 范围均已冻结。当前状态为 `READY_FOR_INDEPENDENT_PHYSICAL_VALIDATION_WITH_QA_WARNING`；这表示可进入独立验证，不表示物理精度已经通过。
+
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
 1. **OpenCV 官方双目标定流程接入**
@@ -107,6 +109,7 @@ WASS production mode 分析框架现已建立：支持显式 ROI capability 检�
 | 按需单帧后端 | 接口完成，HomeTank_004 受帧级同步门阻塞 | [Single-frame backend validation](experiments/real_video/HomeTank_004/single_frame_backend_validation.md) |
 | 帧级同步精化 | 全帧 PTS 已分析，证据仍不足 | [Frame-level synchronization](experiments/real_video/HomeTank_004/frame_level_synchronization.md) |
 | 按需同步容差 | 14组WASS完成，R0正式样例闭环 | [Sync tolerance validation](experiments/real_video/HomeTank_004/sync_tolerance_validation.md) |
+| 单帧高度分布QA | 完成并冻结Phase 4基线 | [Height QA](experiments/real_video/HomeTank_004/single_frame_height_qa.md) |
 
 ## 核心建模成果
 

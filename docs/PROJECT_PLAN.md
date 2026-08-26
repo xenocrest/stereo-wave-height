@@ -88,6 +88,8 @@ Extension: Wave video analysis
 
 工程容差状态：在不改变标定、WASS、平面或高度模型的条件下完成 static/wave 各 7 个右帧 offset。结果建立 `R0=ACCEPTED`、`±1=WARNING`、`|k|≥2=REJECTED` 的按需门，并已由 R0 完成两个正式后端样例。该门服务任务调度，不等同于严格同步或物理精度通过。
 
+Phase 4 入口状态：正式 R0 的 raw/robust 高度分布、尾部、support edge、连通区域和 XYZ 关联已量化，并通过数组哈希冻结为独立验证基线。当前为 `READY_FOR_INDEPENDENT_PHYSICAL_VALIDATION_WITH_QA_WARNING`，不得用后续标尺数据反向修改这组算法结果。
+
 ### 历史验证层 Phase 2-RV：采购前真实视频可行性门
 
 该门位于理想仿真完成之后、专业设备采购之前，并与 Phase 2 的数据接入工作衔接；现作为已完成的历史真实输入验证层保留，不改变 Phase 3–6 主线顺序：

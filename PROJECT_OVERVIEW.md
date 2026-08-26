@@ -37,6 +37,8 @@ Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pa
 
 进一步的 14 组受控 WASS 敏感性实验建立了独立的按需工程门，并未覆盖严格同步历史：$R_0$ 接受、±1 帧警告、$|k|\ge2$ 拒绝。正式选择规则永远取时间模型预测的 $R_0$，不得按重建效果选优。HomeTank_004 的 static 和 wave R0 均已通过现有 video-mode backend 输出 XYZ、pixel–XYZ 与 H(x,y)，状态仍带同步警告且 `PHYSICAL_ACCURACY_NOT_ESTABLISHED`。
 
+在任何标尺数据进入前，正式 R0 高度数组已完成只读 QA 并以哈希冻结。Static 的 +54.135 mm raw max 来自小比例、靠近 support 边缘的正尾部；Wave 分布主要呈整体负偏置，但未据此解释物理波高。项目现为 `READY_FOR_INDEPENDENT_PHYSICAL_VALIDATION_WITH_QA_WARNING`，Phase 4 尚未完成。
+
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
 当前新增：[双目系统参数设计模型](docs/stereo_system_design/disparity_depth_model.md)，用于指导未来专业双目相机选型和部署参数设计。

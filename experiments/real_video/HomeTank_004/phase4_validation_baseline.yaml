@@ -1,0 +1,38 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: READY_FOR_INDEPENDENT_PHYSICAL_VALIDATION_WITH_QA_WARNING
+FROZEN_FOR_INDEPENDENT_VALIDATION: true
+frozen_source_commit: 450d34b8eef1f9ce0b840ba89ef5555f0cdb1f0e
+audit_result: single_frame_height_qa.yaml
+calibration:
+  identifier: calibration_result.yaml
+  sha256: 0C590C1124E98A1C1B0DC419D4005CE5D30B27A1076EAA893427A023DFE23129
+sync_policy:
+  identifier: sync_tolerance_policy.yaml
+  sha256: 94179ABBA0EB7187F9BC75EA780B86F79A4B1053E62ECDCE2CFFAE1EA3FC120E
+  strict_frame_level_sync: NOT_ESTABLISHED_PRESERVED
+static:
+  result_identifier: single_frame_static_result.yaml
+  target_timestamp_s: 10.012256
+  reference_plane_identifier: current_frame_fit
+  height_array_sha256: B57113FE200ED593C95AE8BEEE7E7016CF13F595268FFD4F911EFB70B046FF9D
+  valid_points: 167422
+  raw_height_range_mm: [-3.526045, 54.135220]
+  robust_height_range_p1_p99_mm: [-2.398325, 8.315919]
+  robust_height_range_p5_p95_mm: [-1.782165, 2.970820]
+  qa_status: HEIGHT_DISTRIBUTION_CHARACTERIZED_WITH_POSITIVE_EDGE_ASSOCIATED_TAIL
+wave:
+  result_identifier: single_frame_wave_result.yaml
+  target_timestamp_s: 20.0
+  reference_plane_identifier: static_reference_plane.yaml
+  reference_plane_sha256: 061066D0E53E94FDFCC385983183A3B4C8FD8850F83FAA1B86494084D11FC8A6
+  height_array_sha256: BD99D0CD2B45C1E56753ECA3DF6DA1A7E2676944D86A829F098DBA8E83BC7E10
+  valid_points: 86911
+  raw_height_range_mm: [-8.399723, 7.737717]
+  robust_height_range_p1_p99_mm: [-7.858652, 0.220299]
+  robust_height_range_p5_p95_mm: [-7.559021, -2.885963]
+  qa_status: HEIGHT_DISTRIBUTION_CHARACTERIZED_WITH_OVERALL_OFFSET
+validation_boundary:
+  ruler_data_used_to_create_baseline: false
+  algorithm_changes_after_freeze_allowed: false
+  physical_accuracy: PHYSICAL_ACCURACY_NOT_ESTABLISHED
