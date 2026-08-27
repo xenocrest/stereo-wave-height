@@ -44,7 +44,7 @@ HomeTank_004 已进一步完成全帧 PTS 亮度精化：static 仅匹配 2 个�
 
 在保留上述严格同步结论的同时，已用 $R_{-3}\ldots R_{+3}$ 共 14 组真实 WASS 重建建立按需工程容差：模型预测的 $R_0$ 为 `ACCEPTED`，相邻 ±1 帧为 `WARNING`，$|k|\ge2$ 为 `REJECTED`。正式 static/wave 样例均固定选择 $R_0$ 并完成 XYZ、pixel–XYZ 与 H(x,y)，但物理精度仍未验证。
 
-Phase 3 正式 R0 结果现已完成纯观测分布 QA：raw range、P1–P99/P5–P95、尾部比例、像素空间连通性、support 边缘距离与异常 XYZ 范围均已冻结。Phase 4 独立验证 workflow 已建立并绑定 [冻结基线](experiments/real_video/HomeTank_004/phase4_validation_baseline.yaml)；当前没有人工标尺读数，状态为 `MANUAL_REFERENCE_REQUIRED`，物理精度仍未建立。
+Phase 3 正式 R0 结果现已完成纯观测分布 QA：raw range、P1–P99/P5–P95、尾部比例、像素空间连通性、support 边缘距离与异常 XYZ 范围均已冻结。Phase 4 独立验证 workflow 已绑定 [冻结基线](experiments/real_video/HomeTank_004/phase4_validation_baseline.yaml)；用户已提供 cam1 的 Static/Wave 标尺读数，当前等待在冻结 rectified 参考图上人工点击验证位置，状态为 `MANUAL_REFERENCE_LOCATION_REQUIRED`，物理精度仍未建立。
 
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 

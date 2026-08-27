@@ -80,10 +80,12 @@ class SingleFramePhysicalValidationTests(unittest.TestCase):
         for source in Path("src/reconstruction").glob("*.py"):
             self.assertNotIn("ruler_validation", source.read_text(encoding="utf-8"))
 
-    def test_manual_unknowns_are_null_not_zero(self) -> None:
+    def test_known_ruler_values_do_not_replace_unknown_pixels_with_zero(self) -> None:
         text = Path("experiments/real_video/HomeTank_004/ruler_measurement.yaml").read_text(encoding="utf-8")
-        self.assertIn("ruler_value_mm: null", text)
-        self.assertNotIn("ruler_value_mm: 0", text)
+        self.assertIn("ruler_value_mm: 9.1", text)
+        self.assertIn("ruler_value_mm: 9.2", text)
+        self.assertEqual(text.count("waterline_pixel: {u_px: null, v_px: null}"), 2)
+        self.assertNotIn("waterline_pixel: {u_px: 0", text)
 
     def test_complete_comparison_uses_wave_local_height_not_static_or_global_mean(self) -> None:
         static = FrozenObservedHeight(np.array([1.0]), np.array([1.0]), np.array([0.0]), "rectified_cam0")

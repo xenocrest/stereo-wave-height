@@ -1,0 +1,44 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+validation_id: HomeTank_004_Phase4_R0
+status: MANUAL_REFERENCE_LOCATION_REQUIRED
+camera: cam1
+frozen_baseline: ../phase4_validation_baseline.yaml
+frozen_pixel_xyz_coordinate_system: wass_rectified_computational_cam0__input_right
+mapping:
+  status: DIRECT_COORDINATE_IDENTITY_CONFIRMED
+  reason: WASS auto-swapped inputs; computational cam0 is input_right/cam1, and exported reference is frozen rectified input-right image.
+  resolution_scaling_used: false
+  homography_used: false
+static:
+  target_time_s: 10.012256
+  source_frame_id: pts_900024
+  source_pts_s: 10.000267
+  source_video_role: cam1_right
+  canonical_rotation_deg: 0
+  canonical_reference_image: static_cam1_canonical.png
+  canonical_image_sha256: 6CE01364ABFFFC31BED54665F5B036F6CB8A9EC66EEC9FC294CC221A83CE6D83
+  reference_image: static_cam1_reference.png
+  reference_image_sha256: 0BF5B4B04C45631F339D18E6E4F48307A52460D2A406429DF77AA6544F7D37CC
+  source_coordinate_system: wass_rectified_computational_cam0__input_right
+  image_width_px: 1920
+  image_height_px: 1080
+  clicked_pixel: {u_px: null, v_px: null}
+  pixel_uncertainty_px: null
+  confirmed_by_user: false
+wave:
+  target_time_s: 20.000000
+  source_frame_id: pts_1794048
+  source_pts_s: 19.933867
+  source_video_role: cam1_right
+  canonical_rotation_deg: 0
+  canonical_reference_image: wave_cam1_canonical.png
+  canonical_image_sha256: 9256A0BA457CA8C96386C95A5333B0FA920D22C589F3842D02E72DE8AFA84203
+  reference_image: wave_cam1_reference.png
+  reference_image_sha256: A7E3F6A2A447E503D5A51B534B8924F9DFF3A32EA88EF062313C9A8954B1482D
+  source_coordinate_system: wass_rectified_computational_cam0__input_right
+  image_width_px: 1920
+  image_height_px: 1080
+  clicked_pixel: {u_px: null, v_px: null}
+  pixel_uncertainty_px: null
+  confirmed_by_user: false

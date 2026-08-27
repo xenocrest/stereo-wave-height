@@ -1,6 +1,6 @@
 # HomeTank_004 Phase 4 Independent Physical Validation
 
-Status: **`MANUAL_REFERENCE_REQUIRED`**
+Status: **`MANUAL_REFERENCE_LOCATION_REQUIRED`**
 
 ## Boundary and baseline
 
@@ -36,6 +36,10 @@ With aligned signs, `e = H_stereo_local - delta_H_ruler`; absolute error is `|e|
 
 Ruler reading uncertainty, pixel-location sensitivity and local stereo spread are reported separately. No combined uncertainty is fabricated without a justified model.
 
+## Frozen cam1 reference mapping
+
+The user selected `cam1`. In both frozen R0 runs WASS logged `auto-swapping left-right images`; therefore computational cam0 is the original input-right/cam1 image. The frozen pixel–XYZ system is `wass_rectified_computational_cam0__input_right`. The exported `*_cam1_reference.png` files are exact copies of the frozen `rectified/000000_right.png` outputs, so clicks on them are direct coordinates in the pixel–XYZ system. No resizing, homography or newly derived rectification is used. The `*_canonical.png` copies are identity aids only and must not be clicked for XYZ lookup.
+
 ## Current result
 
-No Static or Wave manual ruler reading, reading uncertainty, waterline pixel or scale direction exists in the repository. Therefore no physical error is calculated and physical accuracy remains **`PHYSICAL_ACCURACY_NOT_ESTABLISHED`**. See [manual_ruler_measurement_instructions.md](manual_ruler_measurement_instructions.md) for the minimum user input.
+The user supplied Static `9.1 ± 1.0 mm`, Wave `9.2 ± 2.0 mm`, camera `cam1`, and reported that ruler values increase upward. The nominal reading difference is 0.1 mm, smaller than the individual reading uncertainties, so relative percentage error will not be treated as a stable primary measure. Waterline pixels and their uncertainties remain `null`; therefore no physical error is calculated and physical accuracy remains **`PHYSICAL_ACCURACY_NOT_ESTABLISHED`**. See [manual_ruler_measurement_instructions.md](manual_ruler_measurement_instructions.md) for the two click commands.

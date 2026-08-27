@@ -46,6 +46,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "phase4_validation_baseline.yaml",
             "phase4_independent_validation.yaml", "phase4_independent_validation.md",
             "manual_ruler_measurement_instructions.md",
+            "manual_reference",
             "qa_assets",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",

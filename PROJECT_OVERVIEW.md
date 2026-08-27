@@ -37,7 +37,7 @@ Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pa
 
 进一步的 14 组受控 WASS 敏感性实验建立了独立的按需工程门，并未覆盖严格同步历史：$R_0$ 接受、±1 帧警告、$|k|\ge2$ 拒绝。正式选择规则永远取时间模型预测的 $R_0$，不得按重建效果选优。HomeTank_004 的 static 和 wave R0 均已通过现有 video-mode backend 输出 XYZ、pixel–XYZ 与 H(x,y)，状态仍带同步警告且 `PHYSICAL_ACCURACY_NOT_ESTABLISHED`。
 
-在任何标尺数据进入前，正式 R0 高度数组已完成只读 QA 并以哈希冻结。Static 的 +54.135 mm raw max 来自小比例、靠近 support 边缘的正尾部；Wave 分布主要呈整体负偏置，但未据此解释物理波高。Phase 4 的单向独立验证 workflow 现已建立：只读取冻结结果和人工标尺真值，并以局部已观测 pixel–XYZ 高度作比较，不插值、不反馈调参。当前缺少人工读数和像素定位，状态为 `MANUAL_REFERENCE_REQUIRED`，物理精度尚未建立。
+在任何标尺数据进入前，正式 R0 高度数组已完成只读 QA 并以哈希冻结。Static 的 +54.135 mm raw max 来自小比例、靠近 support 边缘的正尾部；Wave 分布主要呈整体负偏置，但未据此解释物理波高。Phase 4 的单向独立验证 workflow 只读取冻结结果和人工标尺真值，并以局部已观测 pixel–XYZ 高度作比较，不插值、不反馈调参。cam1 的两次人工读数现已登记，冻结 rectified 参考图与最小点击工具已建立；当前等待人工点击位置，状态为 `MANUAL_REFERENCE_LOCATION_REQUIRED`，物理精度尚未建立。
 
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 

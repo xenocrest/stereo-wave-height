@@ -1,7 +1,7 @@
 schema_version: "2.0"
 validation_id: HomeTank_004_Phase4_R0
 experiment_id: HomeTank_004
-status: MANUAL_REFERENCE_REQUIRED
+status: MANUAL_REFERENCE_LOCATION_REQUIRED
 reference_type: INDEPENDENT_VERTICAL_RULER
 # Compatibility field for the earlier long-duration validation interface.
 # Phase 4 formal R0 measurements are the explicit static/wave records below.
@@ -18,23 +18,25 @@ dependency_boundary:
 measurement_convention:
   algorithm_height: signed_plane_normal_height
   ruler_delta: direction_sign_times_wave_minus_static
-  ruler_scale_direction: null
+  ruler_scale_direction: increasing_upward
+  algorithm_positive_height_mapping: null
+  algorithm_positive_height_mapping_status: TODO_CONFIRM_PHYSICAL_UP_AGAINST_FROZEN_PLANE_NORMAL
   ruler_scale_direction_allowed:
-    - INCREASES_WITH_POSITIVE_HEIGHT
-    - DECREASES_WITH_POSITIVE_HEIGHT
-  camera_for_manual_reading: null
+    - increasing_upward
+    - increasing_downward
+  camera_for_manual_reading: cam1
   camera_allowed: [cam0, cam1]
 static:
   requested_time_s: 10.012256
-  ruler_value_mm: null
-  ruler_value_uncertainty_mm: null
+  ruler_value_mm: 9.1
+  ruler_value_uncertainty_mm: 1.0
   waterline_pixel: {u_px: null, v_px: null}
   waterline_pixel_uncertainty_px: null
   notes: null
 wave:
   requested_time_s: 20.000000
-  ruler_value_mm: null
-  ruler_value_uncertainty_mm: null
+  ruler_value_mm: 9.2
+  ruler_value_uncertainty_mm: 2.0
   waterline_pixel: {u_px: null, v_px: null}
   waterline_pixel_uncertainty_px: null
   notes: null
@@ -52,7 +54,7 @@ comparison:
   stereo_local_uncertainty_mm: null
   absolute_error_mm: null
   relative_error_percent: null
-  status: MANUAL_REFERENCE_REQUIRED
+  status: MANUAL_REFERENCE_LOCATION_REQUIRED
 uncertainty:
   ruler_reading: REPORTED_SEPARATELY
   pixel_location_sensitivity: REPORTED_SEPARATELY
@@ -62,4 +64,6 @@ uncertainty:
 provenance:
   observer: null
   annotation_method: MANUAL_VISUAL_READING
-  annotation_date: null
+  annotation_date: "2026-08-27"
+  ruler_value_source: manual_user_reading
+  camera_selection_source: user_specified

@@ -1,7 +1,7 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
 phase: Phase 4
-status: MANUAL_REFERENCE_REQUIRED
+status: MANUAL_REFERENCE_LOCATION_REQUIRED
 baseline_binding:
   file: phase4_validation_baseline.yaml
   frozen: true
@@ -10,7 +10,12 @@ inputs:
   frozen_static_result: single_frame_static_result.yaml
   frozen_wave_result: single_frame_wave_result.yaml
   manual_reference: ruler_measurement.yaml
-  ruler_values_present: false
+  ruler_values_present: true
+  camera_for_manual_reading: cam1
+  static_ruler_value_mm: 9.1
+  wave_ruler_value_mm: 9.2
+  ruler_scale_direction: increasing_upward
+  manual_location_file: manual_reference/manual_reference_points.yaml
 validation_data_flow:
   - frozen_reconstruction_outputs
   - manual_ruler_measurement
