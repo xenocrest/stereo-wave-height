@@ -16,6 +16,9 @@ inputs:
   wave_ruler_value_mm: 9.2
   ruler_scale_direction: increasing_upward
   manual_location_file: manual_reference/manual_reference_points.yaml
+  manual_click_coordinate_system: canonical_cam1
+  frozen_query_coordinate_system: wass_rectified_computational_cam0__input_right
+  coordinate_mapping: two_stage_opencv_undistortPoints_frozen_prepare_and_rectification
 validation_data_flow:
   - frozen_reconstruction_outputs
   - manual_ruler_measurement

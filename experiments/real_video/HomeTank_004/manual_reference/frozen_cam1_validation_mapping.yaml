@@ -1,0 +1,37 @@
+schema_version: 1
+status: FROZEN_VALIDATION_MAPPING
+coordinate_mapping: canonical_cam1_to_wass_rectified_computational_cam0
+wass_role_mapping:
+  computational_cam0: input_right_cam1
+image_size_px: [1920, 1080]
+source_calibration: ../calibration_result.yaml
+source_rectification_policy: ../rectification_policy.yaml
+prepare_undistortion:
+  implementation: OpenCV initUndistortRectifyMap / undistortPoints
+  K1:
+    - [1540.820849209382, 0.0, 1045.672210930653]
+    - [0.0, 1523.9518756486245, 608.5890665247778]
+    - [0.0, 0.0, 1.0]
+  D1: [0.19899213500290663, -0.4520725281648086, 0.025399617020145093, 0.035831490163472576, 0.4450934421632416]
+  R: identity
+  P: K1
+stereo_rectification:
+  implementation: OpenCV 4.6.0 stereoRectify, then initUndistortRectifyMap / undistortPoints
+  input_distortion: zero_after_prepare
+  policy: {alpha: 0.0, zero_disparity: true}
+  role_conversion: inverse_frozen_extrinsics_for_cam1_as_computational_cam0
+  R_computational_cam0:
+    - [0.8569418338489002, -0.18327133423083955, 0.4817284623612475]
+    - [0.12462930774023896, 0.9805905879096619, 0.15135928962297776]
+    - [-0.5001182150770683, -0.06966862243672933, 0.8631500761720963]
+  P_computational_cam0:
+    - [3252.301572577315, 0.0, -198.98192882537842, 0.0]
+    - [0.0, 3252.301572577315, 431.23265838623047, 0.0]
+    - [0.0, 0.0, 1.0, 0.0]
+verification:
+  evidence_scope: frozen_R0_workdir_intermediates_inspected_outside_git
+  frozen_prepare_image_identity: work/000000_wd/undistorted/00000001.png
+  frozen_rectified_image_identity: work/000000_wd/rectified/000000_right.png
+  method: ORB correspondence between reproduced and frozen WASS rectified image
+  matched_keypoint_displacement_px: {median: 0.0, p95: 0.0}
+  note: local_reports paths identify evidence and are intentionally not committed

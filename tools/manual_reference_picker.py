@@ -16,6 +16,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Pick one manual validation pixel; no automatic detection is performed.")
     parser.add_argument("--image", required=True, type=Path)
     parser.add_argument("--label", required=True, choices=("static", "wave"))
+    parser.add_argument("--coordinate-system", required=True, choices=("canonical_cam1",))
     parser.add_argument("--points-file", required=True, type=Path)
     args = parser.parse_args()
 
@@ -73,7 +74,7 @@ def main() -> int:
     u_px, v_px = selected[0]
     serialize_confirmed_point(
         args.points_file, label=args.label, u_px=u_px, v_px=v_px,
-        image_width_px=width, image_height_px=height,
+        image_width_px=width, image_height_px=height, coordinate_system=args.coordinate_system,
     )
     print(f"confirmed {args.label}: u={u_px}, v={v_px}")
     print("pixel uncertainty remains null; fill it manually in the YAML")

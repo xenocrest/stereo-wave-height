@@ -6,24 +6,43 @@ camera: cam1
 frozen_baseline: ../phase4_validation_baseline.yaml
 frozen_pixel_xyz_coordinate_system: wass_rectified_computational_cam0__input_right
 mapping:
-  status: DIRECT_COORDINATE_IDENTITY_CONFIRMED
-  reason: WASS auto-swapped inputs; computational cam0 is input_right/cam1, and exported reference is frozen rectified input-right image.
+  status: OPENCV_UNDISTORT_RECTIFY_CONFIRMED
+  method: two_stage_cv2.undistortPoints
+  calibration_file: ../calibration_result.yaml
+  frozen_mapping_file: frozen_cam1_validation_mapping.yaml
+  frozen_parameters: [K1, D1, prepare_P_equals_K1, zero_distortion_stereo_R_cam0, zero_distortion_stereo_P_cam0]
+  wass_auto_swap: true
+  reason: WASS auto-swapped inputs; original-right/cam1 R2 is computational-cam0 rectification and P1 is the shared zero-disparity projection.
   resolution_scaling_used: false
   homography_used: false
+  forward_map_inversion_used: false
+  diagnostic_points_total: 49
+  diagnostic_points_inside_rectified_image: 11
+  roundtrip_error_px: {mean: 0.0000423728, p95: 0.0001105161, max: 0.0001508291}
 static:
   target_time_s: 10.012256
   source_frame_id: pts_900024
   source_pts_s: 10.000267
   source_video_role: cam1_right
+  source_video: ../videos/static/static_cam1_iQOO_Z10_TurboPlus.mp4
+  source_video_codec: hevc
+  source_video_pixel_format: yuv420p
+  source_video_color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+  raw_to_canonical_transform: identity
+  extraction: ffmpeg_exact_select_eq_pts_900024_noautorotate_rgb24
   canonical_rotation_deg: 0
-  canonical_reference_image: static_cam1_canonical.png
-  canonical_image_sha256: 6CE01364ABFFFC31BED54665F5B036F6CB8A9EC66EEC9FC294CC221A83CE6D83
-  reference_image: static_cam1_reference.png
-  reference_image_sha256: 0BF5B4B04C45631F339D18E6E4F48307A52460D2A406429DF77AA6544F7D37CC
-  source_coordinate_system: wass_rectified_computational_cam0__input_right
+  raw_reference_image: static_cam1_canonical_reference.png
+  canonical_reference_image: static_cam1_canonical_reference.png
+  canonical_image_sha256: 02EACA31A2B9C769CD729B5306BAE20D575237AA89013079BCD71B7361AAC997
+  rectified_reference_image: static_cam1_reference.png
+  rectified_image_sha256: 0BF5B4B04C45631F339D18E6E4F48307A52460D2A406429DF77AA6544F7D37CC
+  source_coordinate_system: canonical_cam1
   image_width_px: 1920
   image_height_px: 1080
-  clicked_pixel: {u_px: null, v_px: null}
+  clicked_pixel_canonical: {u_px: null, v_px: null}
+  mapped_pixel_rectified: {u_px: null, v_px: null}
+  mapping_method: opencv_undistort_rectify
+  mapping_roundtrip_error_px: null
   pixel_uncertainty_px: null
   confirmed_by_user: false
 wave:
@@ -31,14 +50,24 @@ wave:
   source_frame_id: pts_1794048
   source_pts_s: 19.933867
   source_video_role: cam1_right
+  source_video: ../videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4
+  source_video_codec: hevc
+  source_video_pixel_format: yuv420p
+  source_video_color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+  raw_to_canonical_transform: identity
+  extraction: ffmpeg_exact_select_eq_pts_1794048_noautorotate_rgb24
   canonical_rotation_deg: 0
-  canonical_reference_image: wave_cam1_canonical.png
-  canonical_image_sha256: 9256A0BA457CA8C96386C95A5333B0FA920D22C589F3842D02E72DE8AFA84203
-  reference_image: wave_cam1_reference.png
-  reference_image_sha256: A7E3F6A2A447E503D5A51B534B8924F9DFF3A32EA88EF062313C9A8954B1482D
-  source_coordinate_system: wass_rectified_computational_cam0__input_right
+  raw_reference_image: wave_cam1_canonical_reference.png
+  canonical_reference_image: wave_cam1_canonical_reference.png
+  canonical_image_sha256: 438856E40EA0D8B423256F665FA4868FF57DB6EE86ACE5E2BC0B449C59CFCED6
+  rectified_reference_image: wave_cam1_reference.png
+  rectified_image_sha256: A7E3F6A2A447E503D5A51B534B8924F9DFF3A32EA88EF062313C9A8954B1482D
+  source_coordinate_system: canonical_cam1
   image_width_px: 1920
   image_height_px: 1080
-  clicked_pixel: {u_px: null, v_px: null}
+  clicked_pixel_canonical: {u_px: null, v_px: null}
+  mapped_pixel_rectified: {u_px: null, v_px: null}
+  mapping_method: opencv_undistort_rectify
+  mapping_roundtrip_error_px: null
   pixel_uncertainty_px: null
   confirmed_by_user: false
