@@ -44,6 +44,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "single_frame_wave_result.yaml", "single_frame_wave_report.md",
             "single_frame_height_qa.yaml", "single_frame_height_qa.md",
             "phase4_validation_baseline.yaml",
+            "phase4_independent_validation.yaml", "phase4_independent_validation.md",
+            "manual_ruler_measurement_instructions.md",
             "qa_assets",
             "wass_disparity_range_audit.md",
             "wass_sgbm_matching_parameter_audit.md",

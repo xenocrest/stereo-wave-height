@@ -1,0 +1,29 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+phase: Phase 4
+status: MANUAL_REFERENCE_REQUIRED
+baseline_binding:
+  file: phase4_validation_baseline.yaml
+  frozen: true
+  source_commit: 450d34b8eef1f9ce0b840ba89ef5555f0cdb1f0e
+inputs:
+  frozen_static_result: single_frame_static_result.yaml
+  frozen_wave_result: single_frame_wave_result.yaml
+  manual_reference: ruler_measurement.yaml
+  ruler_values_present: false
+validation_data_flow:
+  - frozen_reconstruction_outputs
+  - manual_ruler_measurement
+  - physical_quantity_alignment
+  - local_observed_height_readout
+  - independent_error_report
+algorithm_inputs_from_ruler: false
+comparison:
+  ruler_delta_mm: null
+  stereo_local_height_mm: null
+  signed_error_mm: null
+  absolute_error_mm: null
+  relative_error_percent: null
+physical_accuracy_status: PHYSICAL_ACCURACY_NOT_ESTABLISHED
+frozen_algorithm_results_modified: false
+ruler_value_inferred: false

@@ -88,7 +88,7 @@ Extension: Wave video analysis
 
 工程容差状态：在不改变标定、WASS、平面或高度模型的条件下完成 static/wave 各 7 个右帧 offset。结果建立 `R0=ACCEPTED`、`±1=WARNING`、`|k|≥2=REJECTED` 的按需门，并已由 R0 完成两个正式后端样例。该门服务任务调度，不等同于严格同步或物理精度通过。
 
-Phase 4 入口状态：正式 R0 的 raw/robust 高度分布、尾部、support edge、连通区域和 XYZ 关联已量化，并通过数组哈希冻结为独立验证基线。当前为 `READY_FOR_INDEPENDENT_PHYSICAL_VALIDATION_WITH_QA_WARNING`，不得用后续标尺数据反向修改这组算法结果。
+Phase 4 入口状态：正式 R0 的 raw/robust 高度分布、尾部、support edge、连通区域和 XYZ 关联已量化，并通过数组哈希冻结为独立验证基线。独立验证 workflow 已建立并强制单向依赖；当前为 `MANUAL_REFERENCE_REQUIRED`，等待 Static 10.012256 s 与 Wave 20.000000 s 的人工标尺读数、读数不确定度、同一相机水面线像素和刻度方向。不得用后续标尺数据反向修改这组算法结果。
 
 ### 历史验证层 Phase 2-RV：采购前真实视频可行性门
 
@@ -109,6 +109,7 @@ Phase 4 入口状态：正式 R0 的 raw/robust 高度分布、尾部、support 
 主要任务：
 
 - 冻结重建输出后再登记标尺或其他独立参考；
+- 使用人工标注位置查询冻结 pixel–XYZ/height 中已有观测，以局部中位数作验证读数并同时保留最近点、支持数和局部离散度；附近无观测时明确失败，不插值；
 - 比较真实长度/高度与重建结果，报告 RMSE、MAE、偏差和最大误差；
 - 禁止参考值进入 WASS、三角化、参考面或高度计算；
 - 只有满足预注册门限才能声明精度目标通过。

@@ -37,7 +37,7 @@ Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pa
 
 进一步的 14 组受控 WASS 敏感性实验建立了独立的按需工程门，并未覆盖严格同步历史：$R_0$ 接受、±1 帧警告、$|k|\ge2$ 拒绝。正式选择规则永远取时间模型预测的 $R_0$，不得按重建效果选优。HomeTank_004 的 static 和 wave R0 均已通过现有 video-mode backend 输出 XYZ、pixel–XYZ 与 H(x,y)，状态仍带同步警告且 `PHYSICAL_ACCURACY_NOT_ESTABLISHED`。
 
-在任何标尺数据进入前，正式 R0 高度数组已完成只读 QA 并以哈希冻结。Static 的 +54.135 mm raw max 来自小比例、靠近 support 边缘的正尾部；Wave 分布主要呈整体负偏置，但未据此解释物理波高。项目现为 `READY_FOR_INDEPENDENT_PHYSICAL_VALIDATION_WITH_QA_WARNING`，Phase 4 尚未完成。
+在任何标尺数据进入前，正式 R0 高度数组已完成只读 QA 并以哈希冻结。Static 的 +54.135 mm raw max 来自小比例、靠近 support 边缘的正尾部；Wave 分布主要呈整体负偏置，但未据此解释物理波高。Phase 4 的单向独立验证 workflow 现已建立：只读取冻结结果和人工标尺真值，并以局部已观测 pixel–XYZ 高度作比较，不插值、不反馈调参。当前缺少人工读数和像素定位，状态为 `MANUAL_REFERENCE_REQUIRED`，物理精度尚未建立。
 
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
@@ -51,7 +51,7 @@ Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pa
 
 波高与稳定性评价接口已经建立，能够在明确的共同物理观测域输出 raw 时间序列、RMS、peak-to-peak 和分析性去均值结果，并在记录不足时拒绝生成显著波高。HomeTank_004 的五帧结果呈现候选时变信号，但 43.530 mm 的波形均值变化不能与 97.233 mm 静水漂移分离，因此正式状态为 `WAVE_RESULT_NOT_VALIDATED`，后续仍需稳定静水基准、长时间同步序列和独立物理参考。
 
-HomeTank_004 画面中的固定竖直刻度尺已纳入独立物理参考体系。通用模块可计算已注册三维刻度端点的尺度误差、沿水面法向的水位误差，并依据标尺位置/长度稳定性区分全局漂移、表面匹配不稳定和尺度错误。当前双相机共同 ROI、刻度端点及像素—XYZ 关联尚未人工登记，因此只完成方法接口，实验状态为 `RULER_VALIDATION_INCOMPLETE_MANUAL_REFERENCE_REQUIRED`，不宣称工程测量完成。
+HomeTank_004 画面中的固定竖直刻度尺已纳入独立物理参考体系。Phase 4 正式比较定义为人工 Static/Wave 水面线读数差与相同正方向下的重建局部平面法向高度；不能用 camera Z 或全局高度均值代替。人工只需选择一个可清晰读尺的相机、登记两个读数及不确定度、两个水面线像素和刻度方向。当前这些字段均为空，故保持 `MANUAL_REFERENCE_REQUIRED`，不宣称工程测量完成。
 
 标尺边界固定为：**标尺数据仅用于结果验证，不参与任何三维重建和高度计算流程。Ruler data is only used for independent validation and is not included in the reconstruction pipeline.** 它不能向 WASS、XYZ、参考平面或高度结果反馈参数。
 

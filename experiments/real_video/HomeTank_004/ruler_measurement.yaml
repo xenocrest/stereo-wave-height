@@ -1,17 +1,65 @@
-schema_version: "1.0"
-experiment: HomeTank_004
+schema_version: "2.0"
+validation_id: HomeTank_004_Phase4_R0
+experiment_id: HomeTank_004
 status: MANUAL_REFERENCE_REQUIRED
 reference_type: INDEPENDENT_VERTICAL_RULER
-unit: mm
-participates_in_reconstruction: false
-participates_in_wass: false
-participates_in_height_calculation: false
+# Compatibility field for the earlier long-duration validation interface.
+# Phase 4 formal R0 measurements are the explicit static/wave records below.
 measurements: []
-required_fields_per_measurement:
-  - frame_id
-  - timestamp_ns
-  - real_height_mm
-provenance_required:
+baseline_binding:
+  file: phase4_validation_baseline.yaml
+  frozen_required: true
+  expected_source_commit: 450d34b8eef1f9ce0b840ba89ef5555f0cdb1f0e
+dependency_boundary:
+  participates_in_reconstruction: false
+  participates_in_wass: false
+  participates_in_height_calculation: false
+  selection_occurs_after_reconstruction: true
+measurement_convention:
+  algorithm_height: signed_plane_normal_height
+  ruler_delta: direction_sign_times_wave_minus_static
+  ruler_scale_direction: null
+  ruler_scale_direction_allowed:
+    - INCREASES_WITH_POSITIVE_HEIGHT
+    - DECREASES_WITH_POSITIVE_HEIGHT
+  camera_for_manual_reading: null
+  camera_allowed: [cam0, cam1]
+static:
+  requested_time_s: 10.012256
+  ruler_value_mm: null
+  ruler_value_uncertainty_mm: null
+  waterline_pixel: {u_px: null, v_px: null}
+  waterline_pixel_uncertainty_px: null
+  notes: null
+wave:
+  requested_time_s: 20.000000
+  ruler_value_mm: null
+  ruler_value_uncertainty_mm: null
+  waterline_pixel: {u_px: null, v_px: null}
+  waterline_pixel_uncertainty_px: null
+  notes: null
+readout_policy:
+  nearest_observed_maximum_distance_px: null
+  local_neighborhood_radius_px: null
+  minimum_local_point_count: null
+  status: TODO_REQUIRES_MANUAL_PIXEL_UNCERTAINTY_AND_SAMPLING_DENSITY
+comparison:
+  ruler_delta_mm: null
+  stereo_local_height_mm: null
+  nearest_point_height_mm: null
+  local_point_count: null
+  local_spread_mm: null
+  stereo_local_uncertainty_mm: null
+  absolute_error_mm: null
+  relative_error_percent: null
+  status: MANUAL_REFERENCE_REQUIRED
+uncertainty:
+  ruler_reading: REPORTED_SEPARATELY
+  pixel_location_sensitivity: REPORTED_SEPARATELY
+  local_stereo_spread: REPORTED_SEPARATELY
+  combined_uncertainty: null
+  combined_uncertainty_status: NOT_COMPUTED_NO_JUSTIFIED_MODEL
+provenance:
   observer: null
-  annotation_method: null
+  annotation_method: MANUAL_VISUAL_READING
   annotation_date: null
