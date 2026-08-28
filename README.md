@@ -44,7 +44,7 @@ HomeTank_004 已进一步完成全帧 PTS 亮度精化：static 仅匹配 2 个�
 
 在保留上述严格同步结论的同时，已用 $R_{-3}\ldots R_{+3}$ 共 14 组真实 WASS 重建建立按需工程容差：模型预测的 $R_0$ 为 `ACCEPTED`，相邻 ±1 帧为 `WARNING`，$|k|\ge2$ 为 `REJECTED`。正式 static/wave 样例均固定选择 $R_0$ 并完成 XYZ、pixel–XYZ 与 H(x,y)，但物理精度仍未验证。
 
-Phase 3 正式 R0 结果现已完成纯观测分布 QA：raw range、P1–P99/P5–P95、尾部比例、像素空间连通性、support 边缘距离与异常 XYZ 范围均已冻结。Phase 4 独立验证 workflow 已绑定 [冻结基线](experiments/real_video/HomeTank_004/phase4_validation_baseline.yaml)；用户已提供 cam1 的 Static/Wave 标尺读数，当前等待在冻结 rectified 参考图上人工点击验证位置，状态为 `MANUAL_REFERENCE_LOCATION_REQUIRED`，物理精度仍未建立。
+Phase 3 正式 R0 结果现已完成纯观测分布 QA：raw range、P1–P99/P5–P95、尾部比例、像素空间连通性、support 边缘距离与异常 XYZ 范围均已冻结。Phase 4 首个独立物理验证样例已在不修改重建的前提下完成：冻结局部高度变化为 `-5.7672 mm`，独立标尺变化为 `+0.1 mm`，绝对差异为 `5.8672 mm`。但标尺变化远小于其约 `2.236 mm` 的描述性 RSS 不确定度，且 Wave 局部支持较稀疏，因此本样例不能建立物理精度结论。
 
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
@@ -99,7 +99,7 @@ WASS production mode 分析框架现已建立：支持显式 ROI capability 检�
 | 静水三维重建 | 完成验证，跨帧未通过 | [Static validation summary](experiments/real_video/HomeTank_004/static_validation_summary.md) |
 | StereoSGBM 分析 | 进行中 | [SGBM matching parameter audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md) |
 | Wave 高度与漂移验证 | 方法完成，结果未验证 | [Wave height validation](experiments/real_video/HomeTank_004/wave_height_validation.md) |
-| 标尺独立物理验证 | Phase 4 workflow完成，等待人工读数 | [Phase 4 validation](experiments/real_video/HomeTank_004/phase4_independent_validation.md) |
+| 标尺独立物理验证 | 首个冻结样例完成，参考变化过小，精度未建立 | [Phase 4 validation](experiments/real_video/HomeTank_004/phase4_physical_validation.md) |
 | Pixel–XYZ 与平面法向高度 | 基础接口完成 | [HomeTank_004 result](experiments/real_video/HomeTank_004/pixel_xyz_height_result.md) |
 | Wave CSV/JSON 与独立验证接口 | 输出完成，物理验证待人工参考 | [Final wave output](experiments/real_video/HomeTank_004/wave_height_final_report.md) |
 | 长时间 wave 全帧验证 | 资源/同步预检阻塞 | [Accuracy validation report](experiments/real_video/HomeTank_004/wave_accuracy_validation_report.md) |

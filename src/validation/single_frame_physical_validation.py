@@ -44,6 +44,15 @@ class LocalHeightReadout:
     neighborhood_radius_px: float
     local_spread_m: float
     support_sufficient: bool
+    requested_pixel: tuple[float, float] | None = None
+    nearest_pixel: tuple[float, float] | None = None
+    nearest_xyz_m: tuple[float, float, float] | None = None
+    local_min_height_m: float | None = None
+    local_max_height_m: float | None = None
+    local_mean_height_m: float | None = None
+    local_std_height_m: float | None = None
+    local_p5_height_m: float | None = None
+    local_p95_height_m: float | None = None
 
 
 @dataclass(frozen=True)
@@ -63,6 +72,7 @@ class FrozenObservedHeight:
     v_px: np.ndarray
     height_m: np.ndarray
     pixel_coordinate_system: str
+    xyz_m: np.ndarray | None = None
 
 
 @dataclass(frozen=True)
@@ -113,16 +123,17 @@ def load_frozen_observed_height(
             raise ValueError("frozen observation schema is incomplete")
         u = np.asarray(pixel_data["u_px"], dtype=np.float64)
         v = np.asarray(pixel_data["v_px"], dtype=np.float64)
+        xyz = np.asarray(pixel_data["xyz_m"], dtype=np.float64)
         height = np.asarray(height_data["height_m"], dtype=np.float64)
         mask = np.asarray(height_data["water_mask"], dtype=bool)
         coordinate_system = str(pixel_data["pixel_coordinate_system"])
-    if u.shape != v.shape or u.shape != height.shape or mask.shape != height.shape:
+    if u.shape != v.shape or u.shape != height.shape or mask.shape != height.shape or xyz.shape != (u.size, 3):
         raise ValueError("pixel, height and mask arrays are not aligned")
     if not np.all(mask):
-        u, v, height = u[mask], v[mask], height[mask]
+        u, v, height, xyz = u[mask], v[mask], height[mask], xyz[mask]
     if u.size == 0 or not coordinate_system:
         raise ValueError("frozen observation contains no usable data or coordinate system")
-    return FrozenObservedHeight(u.copy(), v.copy(), height.copy(), coordinate_system)
+    return FrozenObservedHeight(u.copy(), v.copy(), height.copy(), coordinate_system, xyz.copy())
 
 
 def ruler_delta_m(
@@ -152,15 +163,19 @@ def query_local_observed_height(
     maximum_nearest_distance_px: float,
     neighborhood_radius_px: float,
     minimum_local_points: int,
+    xyz_m: np.ndarray | None = None,
 ) -> LocalHeightReadout:
     """Read observed heights near a pixel without interpolation or point creation."""
     u = np.asarray(u_px, dtype=np.float64)
     v = np.asarray(v_px, dtype=np.float64)
     height = np.asarray(height_m, dtype=np.float64)
+    xyz = None if xyz_m is None else np.asarray(xyz_m, dtype=np.float64)
     if u.ndim != 1 or u.shape != v.shape or u.shape != height.shape or u.size == 0:
         raise ValueError("pixel and height arrays must have equal non-empty one-dimensional shape")
     if not np.all(np.isfinite(u)) or not np.all(np.isfinite(v)) or not np.all(np.isfinite(height)):
         raise ValueError("pixel and height arrays must contain only finite observed values")
+    if xyz is not None and (xyz.shape != (u.size, 3) or not np.all(np.isfinite(xyz))):
+        raise ValueError("XYZ must have finite shape [point,3] aligned with pixels")
     scalars = (query_u_px, query_v_px, maximum_nearest_distance_px, neighborhood_radius_px)
     if not all(np.isfinite(value) for value in scalars):
         raise ValueError("query and distance values must be finite")
@@ -187,6 +202,15 @@ def query_local_observed_height(
         neighborhood_radius_px=float(neighborhood_radius_px),
         local_spread_m=spread,
         support_sufficient=bool(local.size >= minimum_local_points),
+        requested_pixel=(float(query_u_px), float(query_v_px)),
+        nearest_pixel=(float(u[nearest_index]), float(v[nearest_index])),
+        nearest_xyz_m=None if xyz is None else tuple(float(value) for value in xyz[nearest_index]),
+        local_min_height_m=float(np.min(local)),
+        local_max_height_m=float(np.max(local)),
+        local_mean_height_m=float(np.mean(local)),
+        local_std_height_m=float(np.std(local)),
+        local_p5_height_m=float(np.percentile(local, 5)),
+        local_p95_height_m=float(np.percentile(local, 95)),
     )
 
 
@@ -225,9 +249,9 @@ def compare_frozen_single_frames(
 ) -> IndependentValidationResult:
     """Compare the frozen local wave height with an independent ruler delta.
 
-    The static pixel is queried to establish that the reference location has
-    observed support.  The formal stereo value is the Wave R0 height, which is
-    already defined relative to the frozen static reference plane.
+    Both independently selected locations are queried.  The formal stereo
+    change is the Wave local median minus the Static local median; neither a
+    global mean nor a ruler-derived correction enters the calculation.
     """
     if static_observation.pixel_coordinate_system != wave_observation.pixel_coordinate_system:
         raise ValueError("Static and Wave pixel coordinate systems differ")
@@ -242,6 +266,7 @@ def compare_frozen_single_frames(
         static_observation.height_m,
         query_u_px=static_pixel[0],
         query_v_px=static_pixel[1],
+        xyz_m=static_observation.xyz_m,
         **common,
     )
     wave_readout = query_local_observed_height(
@@ -250,11 +275,13 @@ def compare_frozen_single_frames(
         wave_observation.height_m,
         query_u_px=wave_pixel[0],
         query_v_px=wave_pixel[1],
+        xyz_m=wave_observation.xyz_m,
         **common,
     )
     ruler_height = ruler_delta_m(static_value_mm, wave_value_mm, direction)
+    stereo_delta = wave_readout.local_median_height_m - static_readout.local_median_height_m
     error = physical_error(
-        wave_readout.local_median_height_m,
+        stereo_delta,
         ruler_height,
         relative_error_minimum_reference_m=relative_error_minimum_reference_m,
     )
@@ -266,7 +293,7 @@ def compare_frozen_single_frames(
     return IndependentValidationResult(
         status=status,
         ruler_delta_height_m=ruler_height,
-        stereo_local_height_m=wave_readout.local_median_height_m,
+        stereo_local_height_m=stereo_delta,
         static_support=static_readout,
         wave_readout=wave_readout,
         error=error,

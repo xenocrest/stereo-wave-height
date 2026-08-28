@@ -1,7 +1,7 @@
-schema_version: "1.0"
+schema_version: '1.0'
 experiment_id: HomeTank_004
 validation_id: HomeTank_004_Phase4_R0
-status: MANUAL_REFERENCE_LOCATION_REQUIRED
+status: USER_REFERENCE_POINTS_CONFIRMED
 camera: cam1
 frozen_baseline: ../phase4_validation_baseline.yaml
 frozen_pixel_xyz_coordinate_system: wass_rectified_computational_cam0__input_right
@@ -10,15 +10,24 @@ mapping:
   method: two_stage_cv2.undistortPoints
   calibration_file: ../calibration_result.yaml
   frozen_mapping_file: frozen_cam1_validation_mapping.yaml
-  frozen_parameters: [K1, D1, prepare_P_equals_K1, zero_distortion_stereo_R_cam0, zero_distortion_stereo_P_cam0]
+  frozen_parameters:
+  - K1
+  - D1
+  - prepare_P_equals_K1
+  - zero_distortion_stereo_R_cam0
+  - zero_distortion_stereo_P_cam0
   wass_auto_swap: true
-  reason: WASS auto-swapped inputs; original-right/cam1 R2 is computational-cam0 rectification and P1 is the shared zero-disparity projection.
+  reason: WASS auto-swapped inputs; original-right/cam1 R2 is computational-cam0 rectification
+    and P1 is the shared zero-disparity projection.
   resolution_scaling_used: false
   homography_used: false
   forward_map_inversion_used: false
   diagnostic_points_total: 49
   diagnostic_points_inside_rectified_image: 11
-  roundtrip_error_px: {mean: 0.0000423728, p95: 0.0001105161, max: 0.0001508291}
+  roundtrip_error_px:
+    mean: 4.23728e-05
+    p95: 0.0001105161
+    max: 0.0001508291
 static:
   target_time_s: 10.012256
   source_frame_id: pts_900024
@@ -27,7 +36,11 @@ static:
   source_video: ../videos/static/static_cam1_iQOO_Z10_TurboPlus.mp4
   source_video_codec: hevc
   source_video_pixel_format: yuv420p
-  source_video_color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+  source_video_color:
+    range: tv
+    space: bt709
+    transfer: bt709
+    primaries: bt709
   raw_to_canonical_transform: identity
   extraction: ffmpeg_exact_select_eq_pts_900024_noautorotate_rgb24
   canonical_rotation_deg: 0
@@ -39,21 +52,30 @@ static:
   source_coordinate_system: canonical_cam1
   image_width_px: 1920
   image_height_px: 1080
-  clicked_pixel_canonical: {u_px: null, v_px: null}
-  mapped_pixel_rectified: {u_px: null, v_px: null}
+  clicked_pixel_canonical:
+    u_px: 798
+    v_px: 414
+  mapped_pixel_rectified:
+    u_px: 1045.0863196816092
+    v_px: 442.40716024823024
   mapping_method: opencv_undistort_rectify
-  mapping_roundtrip_error_px: null
-  pixel_uncertainty_px: null
-  confirmed_by_user: false
+  mapping_roundtrip_error_px: 1.11110271964005e-05
+  pixel_uncertainty_px: 1.0
+  confirmed_by_user: true
+  provenance: MANUAL_USER_REFERENCE
 wave:
-  target_time_s: 20.000000
+  target_time_s: 20.0
   source_frame_id: pts_1794048
   source_pts_s: 19.933867
   source_video_role: cam1_right
   source_video: ../videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4
   source_video_codec: hevc
   source_video_pixel_format: yuv420p
-  source_video_color: {range: tv, space: bt709, transfer: bt709, primaries: bt709}
+  source_video_color:
+    range: tv
+    space: bt709
+    transfer: bt709
+    primaries: bt709
   raw_to_canonical_transform: identity
   extraction: ffmpeg_exact_select_eq_pts_1794048_noautorotate_rgb24
   canonical_rotation_deg: 0
@@ -65,9 +87,14 @@ wave:
   source_coordinate_system: canonical_cam1
   image_width_px: 1920
   image_height_px: 1080
-  clicked_pixel_canonical: {u_px: null, v_px: null}
-  mapped_pixel_rectified: {u_px: null, v_px: null}
+  clicked_pixel_canonical:
+    u_px: 800
+    v_px: 414
+  mapped_pixel_rectified:
+    u_px: 1049.8397792973112
+    v_px: 443.0297464542036
   mapping_method: opencv_undistort_rectify
-  mapping_roundtrip_error_px: null
-  pixel_uncertainty_px: null
-  confirmed_by_user: false
+  mapping_roundtrip_error_px: 2.721823563513072e-06
+  pixel_uncertainty_px: 1.0
+  confirmed_by_user: true
+  provenance: MANUAL_USER_REFERENCE

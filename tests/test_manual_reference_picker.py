@@ -20,7 +20,7 @@ from src.validation.manual_reference import (
 
 
 class ManualReferencePickerTests(unittest.TestCase):
-    def test_repository_template_preserves_frozen_identity_and_unknown_point(self) -> None:
+    def test_repository_record_preserves_frozen_identity_and_confirmed_point(self) -> None:
         path = Path("experiments/real_video/HomeTank_004/manual_reference/manual_reference_points.yaml")
         data = yaml.safe_load(path.read_text(encoding="utf-8"))
         self.assertEqual(data["camera"], "cam1")
@@ -28,10 +28,10 @@ class ManualReferencePickerTests(unittest.TestCase):
         self.assertEqual(data["static"]["source_frame_id"], "pts_900024")
         self.assertEqual(data["wave"]["source_frame_id"], "pts_1794048")
         self.assertEqual(data["static"]["canonical_rotation_deg"], 0)
-        self.assertIsNone(data["static"]["clicked_pixel_canonical"]["u_px"])
-        self.assertIsNone(data["static"]["mapped_pixel_rectified"]["u_px"])
-        self.assertIsNone(data["wave"]["pixel_uncertainty_px"])
-        self.assertFalse(data["static"]["confirmed_by_user"])
+        self.assertEqual(data["static"]["clicked_pixel_canonical"], {"u_px": 798, "v_px": 414})
+        self.assertIsNotNone(data["static"]["mapped_pixel_rectified"]["u_px"])
+        self.assertEqual(data["wave"]["pixel_uncertainty_px"], 1.0)
+        self.assertTrue(data["static"]["confirmed_by_user"])
         self.assertEqual(data["static"]["raw_to_canonical_transform"], "identity")
         self.assertEqual(data["static"]["raw_reference_image"], data["static"]["canonical_reference_image"])
         root = path.parent
@@ -67,8 +67,8 @@ class ManualReferencePickerTests(unittest.TestCase):
             self.assertEqual(data["static"]["clicked_pixel_canonical"], {"u_px": 800, "v_px": 420})
             self.assertAlmostEqual(data["static"]["mapped_pixel_rectified"]["u_px"], 1047.85534870, places=5)
             self.assertTrue(data["static"]["confirmed_by_user"])
-            self.assertIsNone(data["static"]["pixel_uncertainty_px"])
-            self.assertFalse(data["wave"]["confirmed_by_user"])
+            self.assertEqual(data["static"]["pixel_uncertainty_px"], 1.0)
+            self.assertTrue(data["wave"]["confirmed_by_user"])
 
     @unittest.skipUnless(importlib.util.find_spec("cv2"), "OpenCV Python binding is optional in the base test runtime")
     def test_opencv_cam1_mapping_and_roundtrip(self) -> None:

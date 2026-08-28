@@ -1,7 +1,7 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
 phase: Phase 4
-status: MANUAL_REFERENCE_LOCATION_REQUIRED
+status: PHYSICAL_VALIDATION_COMPLETED_WITH_WARNING
 baseline_binding:
   file: phase4_validation_baseline.yaml
   frozen: true
@@ -27,11 +27,13 @@ validation_data_flow:
   - independent_error_report
 algorithm_inputs_from_ruler: false
 comparison:
-  ruler_delta_mm: null
-  stereo_local_height_mm: null
-  signed_error_mm: null
-  absolute_error_mm: null
+  ruler_delta_mm: 0.1
+  stereo_local_height_mm: -5.767183268293882
+  signed_error_mm: -5.867183268293882
+  absolute_error_mm: 5.867183268293882
   relative_error_percent: null
+  relative_error_reason: RELATIVE_ERROR_NOT_MEANINGFUL_NEAR_ZERO_REFERENCE
+  result_file: phase4_physical_validation.yaml
 physical_accuracy_status: PHYSICAL_ACCURACY_NOT_ESTABLISHED
 frozen_algorithm_results_modified: false
 ruler_value_inferred: false

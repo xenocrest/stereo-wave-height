@@ -1,7 +1,7 @@
 schema_version: "2.0"
 validation_id: HomeTank_004_Phase4_R0
 experiment_id: HomeTank_004
-status: MANUAL_REFERENCE_LOCATION_REQUIRED
+status: MANUAL_USER_REFERENCE_COMPLETE
 reference_type: INDEPENDENT_VERTICAL_RULER
 # Compatibility field for the earlier long-duration validation interface.
 # Phase 4 formal R0 measurements are the explicit static/wave records below.
@@ -19,8 +19,8 @@ measurement_convention:
   algorithm_height: signed_plane_normal_height
   ruler_delta: direction_sign_times_wave_minus_static
   ruler_scale_direction: increasing_upward
-  algorithm_positive_height_mapping: null
-  algorithm_positive_height_mapping_status: TODO_CONFIRM_PHYSICAL_UP_AGAINST_FROZEN_PLANE_NORMAL
+  algorithm_positive_height_mapping: increasing_ruler_value_is_positive_change_for_this_validation
+  algorithm_positive_height_mapping_status: USER_SPECIFIED_INCREASING_UPWARD
   ruler_scale_direction_allowed:
     - increasing_upward
     - increasing_downward
@@ -30,39 +30,46 @@ static:
   requested_time_s: 10.012256
   ruler_value_mm: 9.1
   ruler_value_uncertainty_mm: 1.0
-  waterline_pixel: {u_px: null, v_px: null}
-  waterline_pixel_uncertainty_px: null
-  notes: null
+  waterline_pixel: {u_px: 798, v_px: 414}
+  waterline_pixel_coordinate_system: canonical_cam1
+  waterline_pixel_uncertainty_px: 1.0
+  notes: MANUAL_USER_REFERENCE
 wave:
   requested_time_s: 20.000000
   ruler_value_mm: 9.2
   ruler_value_uncertainty_mm: 2.0
-  waterline_pixel: {u_px: null, v_px: null}
-  waterline_pixel_uncertainty_px: null
-  notes: null
+  waterline_pixel: {u_px: 800, v_px: 414}
+  waterline_pixel_coordinate_system: canonical_cam1
+  waterline_pixel_uncertainty_px: 1.0
+  notes: MANUAL_USER_REFERENCE
 readout_policy:
-  nearest_observed_maximum_distance_px: null
-  local_neighborhood_radius_px: null
-  minimum_local_point_count: null
-  status: TODO_REQUIRES_MANUAL_PIXEL_UNCERTAINTY_AND_SAMPLING_DENSITY
+  nearest_observed_maximum_distance_px: 2.0
+  local_neighborhood_radius_px: 3.0
+  minimum_local_point_count: 20
+  status: VALIDATION_ONLY_POLICY_FROZEN_AFTER_SUPPORT_DENSITY_AUDIT
+  basis: "2 px is the smallest integer gate covering both center-query nearest distances (0.0762/1.5181 px) and equals twice the manual 1 px uncertainty; 3 px is three times that uncertainty and contains 126/30 observed points. No height value was used to select either threshold."
 comparison:
-  ruler_delta_mm: null
-  stereo_local_height_mm: null
-  nearest_point_height_mm: null
-  local_point_count: null
-  local_spread_mm: null
+  ruler_delta_mm: 0.1
+  stereo_delta_mm: -5.767183268293882
+  nearest_point_height_mm: {static: 0.11232450215739598, wave: -5.715135151588891}
+  local_point_count: {static: 126, wave: 30}
+  local_spread_mad_mm: {static: 0.1090564420717921, wave: 0.015764242122337513}
   stereo_local_uncertainty_mm: null
-  absolute_error_mm: null
+  signed_error_mm: -5.867183268293882
+  absolute_error_mm: 5.867183268293882
   relative_error_percent: null
-  status: MANUAL_REFERENCE_LOCATION_REQUIRED
+  relative_error_reason: RELATIVE_ERROR_NOT_MEANINGFUL_NEAR_ZERO_REFERENCE
+  status: PHYSICAL_VALIDATION_COMPLETED_WITH_WARNING
 uncertainty:
   ruler_reading: REPORTED_SEPARATELY
   pixel_location_sensitivity: REPORTED_SEPARATELY
   local_stereo_spread: REPORTED_SEPARATELY
   combined_uncertainty: null
   combined_uncertainty_status: NOT_COMPUTED_NO_JUSTIFIED_MODEL
+  ruler_delta_simple_rss_mm: 2.23606797749979
+  ruler_delta_simple_rss_note: descriptive only; assumes independent manual reading errors
 provenance:
-  observer: null
+  observer: user
   annotation_method: MANUAL_VISUAL_READING
   annotation_date: "2026-08-27"
   ruler_value_source: manual_user_reading

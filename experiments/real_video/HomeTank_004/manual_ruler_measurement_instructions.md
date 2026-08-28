@@ -1,6 +1,8 @@
 # HomeTank_004 Phase 4 人工标尺读数说明
 
-状态：`MANUAL_REFERENCE_LOCATION_REQUIRED`
+状态：`MANUAL_USER_REFERENCE_COMPLETE`
+
+Static `(798, 414)`、Wave `(800, 414)` 及两者 ±1 px 定位不确定度已由用户确认并写入记录。以下命令仅保留为可追溯操作说明；当前冻结验证不得重新点击或覆盖这些坐标。
 
 请只查看冻结的正式 R0 图像，不要调整同步、标定、WASS、参考平面或高度结果。
 
@@ -11,11 +13,11 @@
 | Static R0 | 10.012256 s |
 | Wave R0 | 20.000000 s |
 
-用户已提供：读取相机 `cam1`；Static `9.1 ± 1.0 mm`；Wave `9.2 ± 2.0 mm`；标尺数值向上增大。当前只缺两个水面线像素和人工像素定位不确定度。
+用户已提供：读取相机 `cam1`；Static `9.1 ± 1.0 mm`；Wave `9.2 ± 2.0 mm`；标尺数值向上增大；两个水面线像素定位不确定度均为 ±1 px。
 
 ## 点击操作
 
-在仓库根目录打开 PowerShell，依次执行：
+如未来创建新的、独立冻结的验证样例，可在仓库根目录打开 PowerShell，按相同流程执行：
 
 ```powershell
 $env:PYTHONPATH = "src"

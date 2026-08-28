@@ -1,6 +1,6 @@
 # HomeTank_004 Phase 4 Independent Physical Validation
 
-Status: **`MANUAL_REFERENCE_LOCATION_REQUIRED`**
+Status: **`PHYSICAL_VALIDATION_COMPLETED_WITH_WARNING`**
 
 ## Boundary and baseline
 
@@ -28,7 +28,7 @@ Camera Z is not compared with the ruler. The ruler provides the change between t
 - Use local median height as the comparison value only when the explicitly configured neighborhood has sufficient support.
 - Save neighborhood point count, radius and median absolute deviation as local spread.
 
-The distance gate, neighborhood radius and minimum point count remain `null`: the manual pixel uncertainty and local sampling density needed to justify them have not yet been supplied.
+After the user supplied ±1 px localization uncertainty, a support-only audit fixed the validation query policy at a 2 px nearest-distance gate, 3 px neighborhood radius and 20-point local-support minimum. These are validation-only settings; height values were not used to select them.
 
 ## Error and uncertainty
 
@@ -46,4 +46,4 @@ The cam1 source is HEVC Main, `yuv420p`, TV range, BT.709 primaries/transfer/mat
 
 ## Current result
 
-The user supplied Static `9.1 ± 1.0 mm`, Wave `9.2 ± 2.0 mm`, camera `cam1`, and reported that ruler values increase upward. The nominal reading difference is 0.1 mm, smaller than the individual reading uncertainties, so relative percentage error will not be treated as a stable primary measure. Waterline pixels and their uncertainties remain `null`; therefore no physical error is calculated and physical accuracy remains **`PHYSICAL_ACCURACY_NOT_ESTABLISHED`**. See [manual_ruler_measurement_instructions.md](manual_ruler_measurement_instructions.md) for the two click commands.
+The user confirmed Static `(798, 414)` and Wave `(800, 414)` canonical cam1 pixels with ±1 px uncertainty. The frozen local medians are `0.0500 mm` and `-5.7172 mm`, giving `ΔH_stereo = -5.7672 mm`. The ruler change is `+0.1 mm`, so the signed discrepancy is `-5.8672 mm` and the absolute discrepancy is `5.8672 mm`. Relative error remains `null` because the reference change is near zero. The simple descriptive RSS of the two independent ruler-reading uncertainties is `2.236 mm`, far above the 0.1 mm change; physical accuracy therefore remains **`PHYSICAL_ACCURACY_NOT_ESTABLISHED`**. Full results and sensitivity evidence are in [phase4_physical_validation.md](phase4_physical_validation.md).

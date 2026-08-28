@@ -1,0 +1,97 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+validation_id: HomeTank_004_Phase4_R0
+status: PHYSICAL_VALIDATION_COMPLETED_WITH_WARNING
+classification: PHYSICAL_VALIDATION_COMPLETED_BUT_REFERENCE_CHANGE_TOO_SMALL_FOR_STRONG_ACCURACY_CLAIM
+execution_date: "2026-08-27"
+scope: DOWNSTREAM_VALIDATION_ONLY
+baseline:
+  file: phase4_validation_baseline.yaml
+  frozen: true
+  frozen_source_commit: 450d34b8eef1f9ce0b840ba89ef5555f0cdb1f0e
+  static_height_sha256: B57113FE200ED593C95AE8BEEE7E7016CF13F595268FFD4F911EFB70B046FF9D
+  wave_height_sha256: BD99D0CD2B45C1E56753ECA3DF6DA1A7E2676944D86A829F098DBA8E83BC7E10
+  hashes_verified: true
+  reconstruction_modified: false
+  wass_rerun: false
+coordinate_mapping:
+  source: canonical_cam1
+  target: wass_rectified_computational_cam0__input_right
+  wass_role: computational_cam0_equals_input_right_equals_cam1
+  method: two_stage_opencv_undistortPoints_frozen_prepare_and_rectification
+  diagnostic_roundtrip_error_px: {mean: 0.0000423728, p95: 0.0001105161, max: 0.0001508291}
+query_policy:
+  nearest_distance_gate_px: 2.0
+  neighborhood_radius_px: 3.0
+  minimum_local_points: 20
+  selection_used_height_values: false
+  basis: "The 2 px gate is the smallest integer covering the audited center-query distances 0.0762/1.5181 px and is twice the manual ±1 px uncertainty. The 3 px neighborhood is three times the uncertainty and contains 126/30 original observations."
+static:
+  target_time_s: 10.012256
+  source_frame: {id: pts_900024, pts_s: 10.000267}
+  ruler: {value_mm: 9.1, uncertainty_mm: 1.0, provenance: MANUAL_USER_REFERENCE}
+  canonical_pixel: {u_px: 798, v_px: 414, uncertainty_px: 1.0}
+  rectified_pixel: {u_px: 1045.0863196816092, v_px: 442.40716024823024}
+  mapping_roundtrip_error_px: 0.0000111110271964005
+  nearest:
+    observed_pixel: {u_px: 1045.0395048525972, v_px: 442.34708757512135}
+    distance_px: 0.07616005691874944
+    xyz_m: [-0.06450971323422575, -0.06595356082298365, 0.2914303221568483]
+    height_mm: 0.11232450215739598
+  local:
+    point_count: 126
+    support_sufficient: true
+    height_mm: {min: -0.31019788029762463, max: 0.5161909925937569, mean: 0.10145586930524846, median: 0.049969568968771805, std: 0.19670005053958287, mad: 0.1090564420717921, p5: -0.17181838947392253, p95: 0.4729912761942817}
+  pixel_sensitivity_3x3:
+    successful_queries: 9
+    failed_queries: 0
+    local_median_height_mm: {min: -0.08657842065534771, max: 0.5237308398138296, range: 0.6103092604691773, std: 0.23988495485106856}
+wave:
+  target_time_s: 20.0
+  source_frame: {id: pts_1794048, pts_s: 19.933867}
+  ruler: {value_mm: 9.2, uncertainty_mm: 2.0, provenance: MANUAL_USER_REFERENCE}
+  canonical_pixel: {u_px: 800, v_px: 414, uncertainty_px: 1.0}
+  rectified_pixel: {u_px: 1049.8397792973112, v_px: 443.0297464542036}
+  mapping_roundtrip_error_px: 0.000002721823563513072
+  nearest:
+    observed_pixel: {u_px: 1051.3540323350437, v_px: 442.921724629746}
+    distance_px: 1.5181011088992755
+    xyz_m: [-0.06295136028795882, -0.06236091391623567, 0.27722096934628376]
+    height_mm: -5.715135151588891
+  local:
+    point_count: 30
+    support_sufficient: true
+    height_mm: {min: -5.767760560626972, max: -5.6905878329853445, mean: -5.720518207768092, median: -5.717213699325111, std: 0.02025719574371526, mad: 0.015764242122337513, p5: -5.7577653662773605, p95: -5.6942661063974755}
+  pixel_sensitivity_3x3:
+    successful_queries: 7
+    failed_queries: 2
+    locally_sufficient_queries: 6
+    local_median_height_mm: {min: -5.793411690334343, max: -5.681000365219361, range: 0.11241132511498275, std: 0.037051360251346414}
+    warning: TWO_PERTURBED_LOCATIONS_HAVE_NO_OBSERVATION_WITHIN_2_PX_AND_ONE_HAS_ONLY_17_LOCAL_POINTS
+comparison:
+  definition: delta_H_stereo_equals_wave_local_median_minus_static_local_median
+  ruler_delta_mm: 0.1
+  ruler_delta_simple_rss_uncertainty_mm: 2.23606797749979
+  ruler_uncertainty_note: assumes independent manual reading errors and is descriptive, not a confidence interval
+  stereo_delta_mm: -5.767183268293882
+  signed_error_mm: -5.867183268293882
+  absolute_error_mm: 5.867183268293882
+  relative_error_percent: null
+  relative_error_reason: RELATIVE_ERROR_NOT_MEANINGFUL_NEAR_ZERO_REFERENCE
+  accuracy_established: false
+  limitation: ruler delta is much smaller than its descriptive RSS uncertainty
+uncertainty_reporting:
+  ruler_static_mm: 1.0
+  ruler_wave_mm: 2.0
+  ruler_delta_simple_rss_mm: 2.23606797749979
+  pixel_location_px: 1.0
+  mapping_numerical_max_px: 0.0001508291
+  local_stereo_spread_reported_separately: true
+  combined_total_uncertainty: null
+  combined_total_uncertainty_reason: NO_JUSTIFIED_COMMON_PROBABILISTIC_MODEL
+boundaries:
+  ruler_used_in_reconstruction: false
+  clicks_optimized_against_result: false
+  interpolation_used: false
+  new_xyz_generated: false
+  physical_accuracy_pass_claimed: false
