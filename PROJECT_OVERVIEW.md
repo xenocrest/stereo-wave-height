@@ -39,6 +39,8 @@ Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pa
 
 在任何标尺数据进入前，正式 R0 高度数组已完成只读 QA 并以哈希冻结。Static 的 +54.135 mm raw max 来自小比例、靠近 support 边缘的正尾部；Wave 分布主要呈整体负偏置，但未据此解释物理波高。Phase 4 首个单向独立验证样例已完成：只查询人工确认位置附近的冻结 pixel–XYZ，不插值、不反馈调参。局部 stereo 变化为 `-5.7672 mm`，独立标尺变化为 `+0.1 mm`，绝对差异 `5.8672 mm`；但参考变化远小于人工读尺不确定度，故流程完成而物理精度仍未建立。
 
+为提高独立验证判别力，Case 2 已从 canonical Wave 视频中按纯图像变化准备 6 个相互分离的候选，并逐一确认 R0 工程同步可用性。候选阶段不读取 WASS、XYZ、H、OCR 或标尺读数，也不运行重建。Case 1 不覆盖；Case 2 当前停在 `PHASE4_CASE2_CANDIDATE_SELECTION_REQUIRED`，等待用户独立选择最终时刻。
+
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 
 当前新增：[双目系统参数设计模型](docs/stereo_system_design/disparity_depth_model.md)，用于指导未来专业双目相机选型和部署参数设计。

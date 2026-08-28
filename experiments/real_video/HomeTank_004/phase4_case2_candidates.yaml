@@ -1,0 +1,141 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+validation_case: Phase4_Case2
+status: PHASE4_CASE2_CANDIDATE_SELECTION_REQUIRED
+purpose: prepare visually discriminative Wave candidates before any reconstruction
+case1_preservation:
+  result: phase4_physical_validation.yaml
+  classification: PHYSICAL_VALIDATION_COMPLETED_BUT_REFERENCE_CHANGE_TOO_SMALL_FOR_STRONG_ACCURACY_CLAIM
+  ruler_delta_mm: 0.1
+  absolute_discrepancy_mm: 5.867183268293882
+  modified: false
+candidate_source:
+  video: videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4
+  camera_role: cam1_right
+  canonical_rotation_deg: 0
+  decoded_sample_rate_hz: 5.0
+  score_image_size_px: [320, 180]
+  score_roi_xywh_px_at_score_resolution: [45, 35, 240, 120]
+  score: mean_absolute_frame_difference_from_20s_reference_after_per_frame_roi_median_removal
+  reference_time_s: 20.0
+  temporal_nms_s: 1.0
+  screening: top image-change candidates were visually screened only for retained full-frame water/ruler visibility and distinct episodes
+  reconstruction_outputs_read: false
+  ruler_ocr_used: false
+  ruler_values_used: false
+  final_candidate_selected_automatically: false
+synchronization:
+  model: {type: OFFSET_ONLY_R0, a: 1.0, b_s: -0.0654055}
+  source: frame_level_synchronization.yaml
+  tolerance_policy: sync_tolerance_policy.yaml
+  strict_frame_level_sync_status: NOT_ESTABLISHED_PRESERVED
+  availability_check_only: true
+preview:
+  geometry: full_frame_scaled_without_crop
+  source_resolution_px: [1920, 1080]
+  preview_resolution_px: [960, 540]
+  display_scale: 0.5
+  formal_validation_coordinate_input: false
+  contact_sheet: phase4_case2_candidate_frames/phase4_case2_candidates_contact_sheet.png
+candidates:
+  - id: candidate_01
+    canonical_rotation_deg: 0
+    category: HIGH_MOTION_CANDIDATE
+    image_change_score: 16.144479166666667
+    sample_cam1_time_s: 25.2
+    requested_left_time_s: 25.2654055
+    actual_cam1_pts: 2268060
+    actual_cam1_time_s: 25.200667
+    cam1_frame_identity: pts_2268060
+    left_r0: {pts: 2274006, time_s: 25.266733}
+    right_r0: {pts: 2268060, time_s: 25.200667}
+    pair_residual_s: -0.0006605
+    pair_residual_frames: 0.0396554
+    sync_status: SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT
+    preview: phase4_case2_candidate_frames/candidate_01_t25.265406.png
+    preview_sha256: 412675BCC8CCE8336E98FC0115B5F62634D432031F6C12F0BFC201329B491D85
+  - id: candidate_02
+    canonical_rotation_deg: 0
+    category: IMAGE_CHANGE_CANDIDATE
+    image_change_score: 14.1359375
+    sample_cam1_time_s: 29.4
+    requested_left_time_s: 29.4654055
+    actual_cam1_pts: 2646070
+    actual_cam1_time_s: 29.400778
+    cam1_frame_identity: pts_2646070
+    left_r0: {pts: 2651866, time_s: 29.465178}
+    right_r0: {pts: 2646070, time_s: 29.400778}
+    pair_residual_s: 0.0010055
+    pair_residual_frames: 0.0603686
+    sync_status: SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT
+    preview: phase4_case2_candidate_frames/candidate_02_t29.465406.png
+    preview_sha256: 94A170E775D5E8413C345BA067578D23385C5AA2766DDA4BBC66D327407F8A76
+  - id: candidate_03
+    canonical_rotation_deg: 0
+    category: HIGH_MOTION_CANDIDATE
+    image_change_score: 14.783958333333333
+    sample_cam1_time_s: 89.2
+    requested_left_time_s: 89.2654055
+    actual_cam1_pts: 8028214
+    actual_cam1_time_s: 89.202378
+    cam1_frame_identity: pts_8028214
+    left_r0: {pts: 8033491, time_s: 89.261011}
+    right_r0: {pts: 8028214, time_s: 89.202378}
+    pair_residual_s: 0.0067725
+    pair_residual_frames: 0.4066102
+    sync_status: SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT
+    preview: phase4_case2_candidate_frames/candidate_03_t89.265406.png
+    preview_sha256: 2650CF268ED47F247FFDF3CDF78961D332333C334FEAF4E028F89ED3A527A366
+  - id: candidate_04
+    canonical_rotation_deg: 0
+    category: IMAGE_CHANGE_CANDIDATE
+    image_change_score: 14.207916666666666
+    sample_cam1_time_s: 94.6
+    requested_left_time_s: 94.6654055
+    actual_cam1_pts: 8512727
+    actual_cam1_time_s: 94.585856
+    cam1_frame_identity: pts_8512727
+    left_r0: {pts: 8519332, time_s: 94.659244}
+    right_r0: {pts: 8512727, time_s: 94.585856}
+    pair_residual_s: -0.0079825
+    pair_residual_frames: 0.4792567
+    sync_status: SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT
+    preview: phase4_case2_candidate_frames/candidate_04_t94.665405.png
+    preview_sha256: A0AAF216265D3BB371420B6E51E0B1D09DCD409F0E36112A9247CF3530E8AF75
+  - id: candidate_05
+    canonical_rotation_deg: 0
+    category: IMAGE_CHANGE_CANDIDATE
+    image_change_score: 14.508333333333333
+    sample_cam1_time_s: 116.2
+    requested_left_time_s: 116.2654055
+    actual_cam1_pts: 10458279
+    actual_cam1_time_s: 116.2031
+    cam1_frame_identity: pts_10458279
+    left_r0: {pts: 10464162, time_s: 116.268467}
+    right_r0: {pts: 10458279, time_s: 116.2031}
+    pair_residual_s: 0.0000385
+    pair_residual_frames: 0.0023115
+    sync_status: SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT
+    preview: phase4_case2_candidate_frames/candidate_05_t116.265406.png
+    preview_sha256: F7116A70D14926EBF7B38D1845624F2E7A2E5C2A6BD7A252042DFC0E8E99C2D0
+  - id: candidate_06
+    canonical_rotation_deg: 0
+    category: IMAGE_CHANGE_CANDIDATE
+    image_change_score: 14.051527777777778
+    sample_cam1_time_s: 136.8
+    requested_left_time_s: 136.8654055
+    actual_cam1_pts: 12312329
+    actual_cam1_time_s: 136.803656
+    cam1_frame_identity: pts_12312329
+    left_r0: {pts: 12317508, time_s: 136.8612}
+    right_r0: {pts: 12312329, time_s: 136.803656}
+    pair_residual_s: 0.0078615
+    pair_residual_frames: 0.4719921
+    sync_status: SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT
+    preview: phase4_case2_candidate_frames/candidate_06_t136.865406.png
+    preview_sha256: 6160C44941A010BD56A96FE30D753E3B94B198CBBE6C491DFB2A1E3C1CCEB500
+execution_boundary:
+  candidate_wass_runs: 0
+  selected_candidate: null
+  case2_baseline_created: false
+  next_action: USER_SELECT_ONE_CANDIDATE_ID
