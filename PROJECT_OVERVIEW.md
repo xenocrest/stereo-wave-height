@@ -39,7 +39,7 @@ Phase 3 的核心后端已经实现两种统一入口：明确同步的 image pa
 
 在任何标尺数据进入前，正式 R0 高度数组已完成只读 QA 并以哈希冻结。Static 的 +54.135 mm raw max 来自小比例、靠近 support 边缘的正尾部；Wave 分布主要呈整体负偏置，但未据此解释物理波高。Phase 4 首个单向独立验证样例已完成：只查询人工确认位置附近的冻结 pixel–XYZ，不插值、不反馈调参。局部 stereo 变化为 `-5.7672 mm`，独立标尺变化为 `+0.1 mm`，绝对差异 `5.8672 mm`；但参考变化远小于人工读尺不确定度，故流程完成而物理精度仍未建立。
 
-为提高独立验证判别力，Case 2 从 canonical Wave 视频中按纯图像变化准备候选后，由用户仅依据画面可读性选定 `candidate_02`。只对该候选运行了一次冻结配置的正式 WASS；XYZ、pixel–XYZ、高度 QA 和关键数组哈希已固化，其他候选未运行，Case 1 未覆盖。当前停在 `CASE2_MANUAL_REFERENCE_REQUIRED`，等待用户对正式原尺寸 cam1 帧独立读取尺值和点击水面线；尚不计算物理误差，也不宣称 Case 2 参考变化足够。
+为提高独立验证判别力，Case 2 由用户仅依据画面可读性选定 `candidate_02`，并在人工数据进入前冻结一次正式 WASS 输出。用户随后登记 Static/Wave `9.1/9.6 mm` 与 canonical 点击 `(798,414)/(799,396)`；五项 artifact 哈希均保持一致。Case 2 Wave 点击映射准确，但距最近冻结观测 `15.4946 px`，超过既定 2 px gate，±1 px 九点也全部失败，因此分类为 `CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL`。没有扩大 gate、插值或用全局高度替代局部测量，物理误差无法计算；Case 1 仍未覆盖。
 
 阶段计划详见 [项目计划](docs/PROJECT_PLAN.md)，核心模型的快速导航见 [建模成果总览](docs/MODEL_OVERVIEW.md)。
 

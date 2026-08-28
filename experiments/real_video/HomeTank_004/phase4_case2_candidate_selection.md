@@ -1,6 +1,6 @@
 # HomeTank_004 Phase 4 Case 2 Candidate Selection
 
-Status: `CASE2_MANUAL_REFERENCE_REQUIRED`
+Status: `CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL`
 
 ## Purpose and boundary
 
@@ -40,4 +40,4 @@ Only the selected R0 pair ran through the existing single-frame backend and rece
 
 ## Stop point
 
-The formal candidate_02 reconstruction and QA are frozen. Work now stops pending the user's independent ruler reading and waterline click on the formal full-resolution reference image.
+The formal candidate_02 reconstruction and QA remain frozen. The user supplied the independent ruler reading and click, but the mapped Wave location has no frozen observation within the pre-existing 2 px gate. Work stops at `CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL`; no wider search, interpolation, candidate replacement or tuning is performed.

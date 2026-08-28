@@ -90,7 +90,7 @@ Extension: Wave video analysis
 
 Phase 4 首个冻结样例已完成独立物理比较。cam1 的 Static 9.1 ± 1.0 mm、Wave 9.2 ± 2.0 mm、人工像素和“向上增大”方向均已登记；冻结局部 stereo 变化为 -5.7672 mm，标尺变化为 +0.1 mm，绝对差异 5.8672 mm。由于参考变化远小于读尺不确定度且 Wave 局部支持偏稀，该样例只证明验证流程闭环，不能建立物理精度。不得用标尺结果反向修改冻结算法结果。
 
-第二个验证样例已由用户在纯图像候选中选定 `candidate_02`。该 Wave 时刻只运行一次冻结配置的正式 WASS，并已冻结 XYZ、pixel–XYZ、高度 QA 与关键哈希；Static 直接复用首个样例的冻结基线。当前为 `CASE2_MANUAL_REFERENCE_REQUIRED`，等待独立尺值与水面线点击，未计算物理误差。
+第二个验证样例由用户在纯图像候选中选定 `candidate_02`，并在人工数据进入前冻结一次正式 WASS。独立尺值与点击已登记且五项哈希通过，但 Wave 点击映射后距最近原始 pixel–XYZ 观测 15.4946 px，超过预先固定的 2 px gate；±1 px 九点全部失败。状态为 `CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL`，不扩大 gate、不插值，物理误差保持不可用。
 
 ### 历史验证层 Phase 2-RV：采购前真实视频可行性门
 

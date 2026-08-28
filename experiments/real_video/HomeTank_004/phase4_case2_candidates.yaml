@@ -1,7 +1,7 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
 validation_case: Phase4_Case2
-status: CASE2_MANUAL_REFERENCE_REQUIRED
+status: CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL
 purpose: prepare visually discriminative Wave candidates before any reconstruction
 case1_preservation:
   result: phase4_physical_validation.yaml
@@ -141,4 +141,4 @@ execution_boundary:
   other_candidate_wass_runs: 0
   case2_baseline_created: true
   baseline: phase4_validation_case2_baseline.yaml
-  next_action: USER_PROVIDE_CASE2_RULER_READING_AND_WATERLINE_PIXEL
+  next_action: REVIEW_FROZEN_LOCAL_OBSERVATION_SUPPORT_LIMITATION

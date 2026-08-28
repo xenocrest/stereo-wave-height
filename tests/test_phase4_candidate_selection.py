@@ -44,7 +44,7 @@ class Phase4CandidateSelectionTests(unittest.TestCase):
         root = Path("experiments/real_video/HomeTank_004")
         case2 = yaml.safe_load((root / "phase4_case2_candidates.yaml").read_text(encoding="utf-8"))
         case1 = yaml.safe_load((root / "phase4_physical_validation.yaml").read_text(encoding="utf-8"))
-        self.assertEqual(case2["status"], "CASE2_MANUAL_REFERENCE_REQUIRED")
+        self.assertEqual(case2["status"], "CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL")
         self.assertEqual(len(case2["candidates"]), 6)
         self.assertTrue(all(item["canonical_rotation_deg"] == 0 for item in case2["candidates"]))
         self.assertTrue(all(item["sync_status"] == "SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT" for item in case2["candidates"]))

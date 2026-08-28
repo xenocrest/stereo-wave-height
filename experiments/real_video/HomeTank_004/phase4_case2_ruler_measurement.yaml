@@ -1,7 +1,7 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
 case_id: phase4_case2
-status: CASE2_MANUAL_REFERENCE_REQUIRED
+status: USER_REFERENCE_CONFIRMED_QUERY_GATE_FAILED
 camera: cam1
 frozen_baseline: phase4_validation_case2_baseline.yaml
 mapping:
@@ -9,6 +9,8 @@ mapping:
   wass_auto_swap: true
 static:
   source: EXISTING_CASE1_MANUAL_REFERENCE
+  ruler_provenance: manual_user_reading
+  pixel_provenance: manual_user_click
   target_time_s: 10.012256
   source_frame_id: pts_900024
   source_coordinate_system: canonical_cam1
@@ -20,7 +22,7 @@ static:
   pixel_uncertainty_px: 1.0
   confirmed_by_user: true
 wave_case2:
-  source: MANUAL_USER_REFERENCE_REQUIRED
+  source: manual_user_reading_and_click
   requested_time_s: 29.4654055
   source_frame_id: pts_2646070
   source_pts_s: 29.400778
@@ -29,14 +31,18 @@ wave_case2:
   source_coordinate_system: canonical_cam1
   image_width_px: 1920
   image_height_px: 1080
-  ruler_value_mm: null
-  ruler_uncertainty_mm: null
-  clicked_pixel_canonical: null
-  mapped_pixel_rectified: null
-  mapping_roundtrip_error_px: null
-  pixel_uncertainty_px: null
-  confirmed_by_user: false
+  ruler_value_mm: 9.6
+  ruler_uncertainty_mm: 1.0
+  ruler_provenance: manual_user_reading
+  clicked_pixel_canonical: {u_px: 799, v_px: 396}
+  pixel_provenance: manual_user_click
+  mapped_pixel_rectified: {u_px: 1053.399225242184, v_px: 402.45596253946093}
+  mapping_roundtrip_error_px: 0.000012677300887690015
+  pixel_uncertainty_px: 1.0
+  waterline_visibility: basically_clear
+  confirmed_by_user: true
 boundaries:
   reconstruction_reads_this_file: false
   automatic_ruler_inference: false
   physical_error_computed: false
+  failure_reason: CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL

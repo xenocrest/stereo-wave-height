@@ -1,0 +1,95 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+case_id: phase4_case2
+status: PHYSICAL_VALIDATION_BLOCKED_AT_LOCAL_OBSERVATION_QUERY
+classification: CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL
+execution_date: "2026-08-28"
+scope: DOWNSTREAM_VALIDATION_ONLY
+frozen_baseline:
+  file: phase4_validation_case2_baseline.yaml
+  hashes_verified: true
+  reconstruction_modified: false
+  wass_rerun: false
+  artifacts:
+    height_npz_sha256: 635C74821FDBB2806BAEAB0332C7FFF842D661B97664649F26F1B97C22F2252D
+    pixel_xyz_npz_sha256: 6F21FEBA723FE01F48F24A3DBC0481E2AE5BA78AB28150DDAED9AC6572067719
+    xyz_text_sha256: E98195B51DD542CB30FCD8D980FF6067F169A108F6E60E3B56888A4016F9A2F0
+    mesh_cam_xyzc_sha256: E62C158D6DB4509C667A4F7767728EB864991017E1C7EBB3D136CAC6963CE2B3
+    canonical_cam1_png_sha256: 1112D9CEABB5D4E629933713D2F38A583830D21EE0ED92C2A409949293D6415D
+coordinate_mapping:
+  source: canonical_cam1
+  target: wass_rectified_computational_cam0__input_right
+  method: two_stage_opencv_4_6_undistortPoints_frozen_prepare_and_rectification
+  scaling_used: false
+  homography_used: false
+  manual_offset_used: false
+query_policy:
+  nearest_distance_gate_px: 2.0
+  neighborhood_radius_px: 3.0
+  minimum_local_points: 20
+  interpolation_used: false
+  gate_modified_after_result: false
+static:
+  ruler: {value_mm: 9.1, uncertainty_mm: 1.0, provenance: manual_user_reading}
+  canonical_pixel: {u_px: 798, v_px: 414, uncertainty_px: 1.0, provenance: manual_user_click}
+  rectified_pixel: {u_px: 1045.0863196816092, v_px: 442.40716024823024}
+  local_median_height_mm: 0.049969568968771805
+  local_point_count: 126
+  source: REUSED_CASE1_FROZEN_DOWNSTREAM_QUERY
+wave_case2:
+  ruler: {value_mm: 9.6, uncertainty_mm: 1.0, provenance: manual_user_reading}
+  waterline_visibility: basically_clear
+  canonical_pixel: {u_px: 799, v_px: 396, uncertainty_px: 1.0, provenance: manual_user_click}
+  rectified_pixel: {u_px: 1053.399225242184, v_px: 402.45596253946093}
+  mapping_roundtrip_error_px: 0.000012677300887690015
+  nearest_diagnostic:
+    accepted_by_gate: false
+    observed_pixel: {u_px: 1058.442408504646, v_px: 417.10688143780214}
+    distance_px: 15.494615903098357
+    xyz_m: [-0.0612037948778953, -0.0623385162873985, 0.2556160366148901]
+    height_mm: -24.453753917815096
+    note: reported for diagnosis only; excluded from formal comparison because distance exceeds 2 px
+  local:
+    point_count_within_3px: 0
+    support_sufficient: false
+    median_height_mm: null
+    mad_mm: null
+    standard_deviation_mm: null
+    p5_mm: null
+    p95_mm: null
+  pixel_sensitivity_3x3:
+    attempted_queries: 9
+    passed_distance_gate: 0
+    locally_sufficient_queries: 0
+    nearest_distance_range_px: [12.481628133651936, 18.55996402778123]
+    local_median_height_range_mm: null
+    center_result_replaced_by_neighbor: false
+reference_comparison:
+  ruler_delta_mm: 0.5
+  descriptive_rss_uncertainty_mm: 1.4142135623730951
+  descriptive_rss_is_confidence_interval: false
+  reference_signal_to_rss_ratio: 0.35355339059327373
+  stereo_delta_mm: null
+  signed_error_mm: null
+  absolute_error_mm: null
+  relative_error_percent: null
+  relative_error_reason: RELATIVE_ERROR_NOT_MEANINGFUL_WHEN_REFERENCE_CHANGE_IS_SMALL_RELATIVE_TO_MEASUREMENT_UNCERTAINTY
+  error_unavailable_reason: CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL
+global_height_context:
+  median_mm: -24.703814307018263
+  mean_mm: -24.38629494236755
+  rms_mm: 24.406974113276445
+  relationship_to_local_result: no accepted ruler-adjacent local observation exists; global statistics cannot replace the failed local query
+case1_preservation:
+  classification: PHYSICAL_VALIDATION_COMPLETED_BUT_REFERENCE_CHANGE_TOO_SMALL_FOR_STRONG_ACCURACY_CLAIM
+  ruler_delta_mm: 0.1
+  stereo_delta_mm: -5.767183268293882
+  absolute_error_mm: 5.867183268293882
+  unchanged: true
+boundaries:
+  ruler_used_in_reconstruction: false
+  clicked_location_optimized_against_height: false
+  reconstruction_parameters_modified: false
+  reference_plane_modified: false
+  candidate_reselected: false
+  physical_accuracy_claimed: false
