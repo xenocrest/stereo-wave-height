@@ -1,0 +1,197 @@
+schema_version: '1.0'
+experiment: FROZEN_WASS_SPATIAL_COMPLETION_HOLDOUT
+method: local_weighted_quadratic_surface_in_physical_XY
+config:
+  schema_version: '1.0'
+  holdout:
+    ratio: 0.005
+    maximum_test_points: 1000
+    seed: 20260828
+  mls:
+    radius_multiplier: 6.0
+    sigma_multiplier: 3.0
+    minimum_points: 12
+    maximum_neighbors: 64
+    maximum_condition_number: 100000000.0
+  frames:
+  - id: static_r0
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/sync-tolerance-formal-r0-20260826/static/reconstruction/height/000000_height_points.npz
+    sha256: B57113FE200ED593C95AE8BEEE7E7016CF13F595268FFD4F911EFB70B046FF9D
+  - id: wave_case1
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/sync-tolerance-formal-r0-20260826/wave/reconstruction/height/000000_height_points.npz
+    sha256: BD99D0CD2B45C1E56753ECA3DF6DA1A7E2676944D86A829F098DBA8E83BC7E10
+  - id: wave_case2
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828/reconstruction/height/000000_height_points.npz
+    sha256: 635C74821FDBB2806BAEAB0332C7FFF842D661B97664649F26F1B97C22F2252D
+  output_yaml: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/surface_completion_holdout_validation.yaml
+frames:
+  static_r0:
+    source_sha256: B57113FE200ED593C95AE8BEEE7E7016CF13F595268FFD4F911EFB70B046FF9D
+    test_point_count: 837
+    supported_prediction_count: 835
+    unsupported_count: 2
+    coverage_percent: 99.7610513739546
+    mae_m: 0.00045012975713459836
+    rmse_m: 0.001061140457304112
+    median_absolute_error_m: 0.00010127622816199231
+    p95_absolute_error_m: 0.001956303761045856
+    maximum_absolute_error_m: 0.009318552515390153
+    unsupported_reasons:
+      UNSUPPORTED_MINIMUM_POINTS: 2
+      UNSUPPORTED_ILL_CONDITIONED: 0
+    spacing_m:
+      p50: 9.332755584288639e-05
+      p90: 0.00010252767082201313
+      p95: 0.00010379775466279145
+    rules:
+      support_radius_m: 0.0006151660249320789
+      gaussian_sigma_m: 0.00030758301246603943
+      minimum_points: 12
+      maximum_neighbors: 64
+      maximum_condition_number: 100000000.0
+    strata:
+      near:
+        count: 421
+        mae_m: 0.0007851147991146608
+        rmse_m: 0.001452188854469355
+        median_absolute_error_m: 0.00036566944292517776
+        p95_absolute_error_m: 0.0031485855053006023
+        maximum_absolute_error_m: 0.009318552515390153
+        test_count: 421
+        supported_count: 421
+        coverage_percent: 100.0
+      medium:
+        count: 328
+        mae_m: 9.115604935212882e-05
+        rmse_m: 0.0003587622053145861
+        median_absolute_error_m: 4.192437620969576e-07
+        p95_absolute_error_m: 0.000401020200781426
+        maximum_absolute_error_m: 0.003999217550470089
+        test_count: 328
+        supported_count: 328
+        coverage_percent: 100.0
+      sparse:
+        count: 86
+        mae_m: 0.00017937014642580487
+        rmse_m: 0.00034408708235555215
+        median_absolute_error_m: 6.857580615626444e-05
+        p95_absolute_error_m: 0.0007302609445885832
+        maximum_absolute_error_m: 0.0016199733665816125
+        test_count: 88
+        supported_count: 86
+        coverage_percent: 97.72727272727273
+  wave_case1:
+    source_sha256: BD99D0CD2B45C1E56753ECA3DF6DA1A7E2676944D86A829F098DBA8E83BC7E10
+    test_point_count: 434
+    supported_prediction_count: 433
+    unsupported_count: 1
+    coverage_percent: 99.76958525345621
+    mae_m: 0.00036082698425475557
+    rmse_m: 0.0008031162971783079
+    median_absolute_error_m: 7.936638425946711e-05
+    p95_absolute_error_m: 0.0014685239157896626
+    maximum_absolute_error_m: 0.005562638615335168
+    unsupported_reasons:
+      UNSUPPORTED_MINIMUM_POINTS: 1
+      UNSUPPORTED_ILL_CONDITIONED: 0
+    spacing_m:
+      p50: 0.00010011223973126985
+      p90: 0.00010059767594966819
+      p95: 0.00010136998759049885
+    rules:
+      support_radius_m: 0.0006035860556980091
+      gaussian_sigma_m: 0.00030179302784900453
+      minimum_points: 12
+      maximum_neighbors: 64
+      maximum_condition_number: 100000000.0
+    strata:
+      near:
+        count: 221
+        mae_m: 0.0006361905128600751
+        rmse_m: 0.0011002648306091634
+        median_absolute_error_m: 0.0003384354357596868
+        p95_absolute_error_m: 0.002516711603640395
+        maximum_absolute_error_m: 0.005562638615335168
+        test_count: 221
+        supported_count: 221
+        coverage_percent: 100.0
+      medium:
+        count: 174
+        mae_m: 5.070969277895571e-05
+        rmse_m: 0.00012712966415537837
+        median_absolute_error_m: 1.2946819193766432e-07
+        p95_absolute_error_m: 0.00023516198647540376
+        maximum_absolute_error_m: 0.0010091815009718869
+        test_count: 174
+        supported_count: 174
+        coverage_percent: 100.0
+      sparse:
+        count: 38
+        mae_m: 0.00017938142886037426
+        rmse_m: 0.00048482823808887037
+        median_absolute_error_m: 3.917265705139167e-05
+        p95_absolute_error_m: 0.0006743321219936929
+        maximum_absolute_error_m: 0.0024832225771735847
+        test_count: 39
+        supported_count: 38
+        coverage_percent: 97.43589743589743
+  wave_case2:
+    source_sha256: 635C74821FDBB2806BAEAB0332C7FFF842D661B97664649F26F1B97C22F2252D
+    test_point_count: 177
+    supported_prediction_count: 177
+    unsupported_count: 0
+    coverage_percent: 100.0
+    mae_m: 0.00020392011635566492
+    rmse_m: 0.00042716491529345307
+    median_absolute_error_m: 4.208353736781176e-05
+    p95_absolute_error_m: 0.0008934700315989188
+    maximum_absolute_error_m: 0.002640549985572449
+    unsupported_reasons:
+      UNSUPPORTED_MINIMUM_POINTS: 0
+      UNSUPPORTED_ILL_CONDITIONED: 0
+    spacing_m:
+      p50: 9.707334263704743e-05
+      p90: 9.715955647616081e-05
+      p95: 9.762999360496599e-05
+    rules:
+      support_radius_m: 0.0005829573388569649
+      gaussian_sigma_m: 0.00029147866942848244
+      minimum_points: 12
+      maximum_neighbors: 64
+      maximum_condition_number: 100000000.0
+    strata:
+      near:
+        count: 95
+        mae_m: 0.00033651703975606735
+        rmse_m: 0.0005721219734330338
+        median_absolute_error_m: 0.00017394482595775237
+        p95_absolute_error_m: 0.0013231778455631824
+        maximum_absolute_error_m: 0.002640549985572449
+        test_count: 95
+        supported_count: 95
+        coverage_percent: 100.0
+      medium:
+        count: 66
+        mae_m: 3.656433539695156e-05
+        rmse_m: 0.00010734402741690017
+        median_absolute_error_m: 7.38485772533437e-08
+        p95_absolute_error_m: 0.00020800454380487127
+        maximum_absolute_error_m: 0.0006518948302145014
+        test_count: 66
+        supported_count: 66
+        coverage_percent: 100.0
+      sparse:
+        count: 16
+        mae_m: 0.00010696848012046794
+        rmse_m: 0.0001660059748703877
+        median_absolute_error_m: 4.450743078467795e-05
+        p95_absolute_error_m: 0.0003387001745779085
+        maximum_absolute_error_m: 0.0004119795315406516
+        test_count: 16
+        supported_count: 16
+        coverage_percent: 100.0
+classification: SPATIAL_SURFACE_COMPLETION_PROMISING
+classification_screen:
+  purpose: continue-or-stop research screen, not physical accuracy acceptance
+  promising: all frames coverage >=95%, RMSE <=2 mm, P95 absolute error <=3 mm
+  limited: promising screen fails but all near-support P95 absolute error <=3.5 mm

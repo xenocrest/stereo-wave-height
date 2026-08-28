@@ -1,0 +1,22 @@
+schema_version: "1.0"
+holdout:
+  ratio: 0.005
+  maximum_test_points: 1000
+  seed: 20260828
+mls:
+  radius_multiplier: 6.0
+  sigma_multiplier: 3.0
+  minimum_points: 12
+  maximum_neighbors: 64
+  maximum_condition_number: 100000000.0
+frames:
+  - id: static_r0
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/sync-tolerance-formal-r0-20260826/static/reconstruction/height/000000_height_points.npz
+    sha256: B57113FE200ED593C95AE8BEEE7E7016CF13F595268FFD4F911EFB70B046FF9D
+  - id: wave_case1
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/sync-tolerance-formal-r0-20260826/wave/reconstruction/height/000000_height_points.npz
+    sha256: BD99D0CD2B45C1E56753ECA3DF6DA1A7E2676944D86A829F098DBA8E83BC7E10
+  - id: wave_case2
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828/reconstruction/height/000000_height_points.npz
+    sha256: 635C74821FDBB2806BAEAB0332C7FFF842D661B97664649F26F1B97C22F2252D
+output_yaml: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/surface_completion_holdout_validation.yaml

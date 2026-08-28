@@ -51,6 +51,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "phase4_validation_case2_baseline.yaml", "phase4_validation_case2.md",
             "phase4_case2_ruler_measurement.yaml", "phase4_case2_manual_reference",
             "phase4_case2_physical_validation.yaml", "phase4_case2_physical_validation.md",
+            "surface_completion_holdout_config.yaml", "surface_completion_holdout_validation.yaml",
+            "surface_completion_holdout_validation.md",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",
