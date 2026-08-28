@@ -48,6 +48,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "phase4_physical_validation.yaml", "phase4_physical_validation.md",
             "phase4_case2_candidates.yaml", "phase4_case2_candidate_selection.md",
             "phase4_case2_candidate_frames",
+            "phase4_validation_case2_baseline.yaml", "phase4_validation_case2.md",
+            "phase4_case2_ruler_measurement.yaml", "phase4_case2_manual_reference",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",

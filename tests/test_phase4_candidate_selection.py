@@ -44,7 +44,7 @@ class Phase4CandidateSelectionTests(unittest.TestCase):
         root = Path("experiments/real_video/HomeTank_004")
         case2 = yaml.safe_load((root / "phase4_case2_candidates.yaml").read_text(encoding="utf-8"))
         case1 = yaml.safe_load((root / "phase4_physical_validation.yaml").read_text(encoding="utf-8"))
-        self.assertEqual(case2["status"], "PHASE4_CASE2_CANDIDATE_SELECTION_REQUIRED")
+        self.assertEqual(case2["status"], "CASE2_MANUAL_REFERENCE_REQUIRED")
         self.assertEqual(len(case2["candidates"]), 6)
         self.assertTrue(all(item["canonical_rotation_deg"] == 0 for item in case2["candidates"]))
         self.assertTrue(all(item["sync_status"] == "SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT" for item in case2["candidates"]))
@@ -53,6 +53,8 @@ class Phase4CandidateSelectionTests(unittest.TestCase):
             self.assertEqual(file_sha256(root / item["preview"]), item["preview_sha256"])
         self.assertEqual(case1["comparison"]["absolute_error_mm"], 5.867183268293882)
         self.assertIn("REFERENCE_CHANGE_TOO_SMALL", case1["classification"])
+        self.assertEqual(case2["execution_boundary"]["selected_candidate"], "candidate_02")
+        self.assertEqual(case2["execution_boundary"]["other_candidate_wass_runs"], 0)
 
     def test_candidate_selection_has_no_reconstruction_or_ruler_dependency(self) -> None:
         source = Path("src/validation/phase4_candidate_selection.py").read_text(encoding="utf-8")

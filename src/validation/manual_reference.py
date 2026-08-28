@@ -191,8 +191,8 @@ def serialize_confirmed_point(
     coordinate_system: str,
 ) -> None:
     """Persist one user-confirmed click while preserving uncertainty as manual input."""
-    if label not in {"static", "wave"}:
-        raise ValueError("label must be static or wave")
+    if label not in {"static", "wave", "wave_case2"}:
+        raise ValueError("label must be static, wave, or wave_case2")
     if not (0 <= u_px < image_width_px and 0 <= v_px < image_height_px):
         raise ValueError("clicked pixel lies outside the reference image")
     path = Path(points_file)

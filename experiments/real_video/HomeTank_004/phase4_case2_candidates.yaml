@@ -1,7 +1,7 @@
 schema_version: "1.0"
 experiment_id: HomeTank_004
 validation_case: Phase4_Case2
-status: PHASE4_CASE2_CANDIDATE_SELECTION_REQUIRED
+status: CASE2_MANUAL_REFERENCE_REQUIRED
 purpose: prepare visually discriminative Wave candidates before any reconstruction
 case1_preservation:
   result: phase4_physical_validation.yaml
@@ -24,6 +24,7 @@ candidate_source:
   ruler_ocr_used: false
   ruler_values_used: false
   final_candidate_selected_automatically: false
+  user_selected_candidate: candidate_02
 synchronization:
   model: {type: OFFSET_ONLY_R0, a: 1.0, b_s: -0.0654055}
   source: frame_level_synchronization.yaml
@@ -135,7 +136,9 @@ candidates:
     preview: phase4_case2_candidate_frames/candidate_06_t136.865406.png
     preview_sha256: 6160C44941A010BD56A96FE30D753E3B94B198CBBE6C491DFB2A1E3C1CCEB500
 execution_boundary:
-  candidate_wass_runs: 0
-  selected_candidate: null
-  case2_baseline_created: false
-  next_action: USER_SELECT_ONE_CANDIDATE_ID
+  candidate_wass_runs: 1
+  selected_candidate: candidate_02
+  other_candidate_wass_runs: 0
+  case2_baseline_created: true
+  baseline: phase4_validation_case2_baseline.yaml
+  next_action: USER_PROVIDE_CASE2_RULER_READING_AND_WATERLINE_PIXEL

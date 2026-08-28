@@ -46,7 +46,7 @@ HomeTank_004 已进一步完成全帧 PTS 亮度精化：static 仅匹配 2 个�
 
 Phase 3 正式 R0 结果现已完成纯观测分布 QA：raw range、P1–P99/P5–P95、尾部比例、像素空间连通性、support 边缘距离与异常 XYZ 范围均已冻结。Phase 4 首个独立物理验证样例已在不修改重建的前提下完成：冻结局部高度变化为 `-5.7672 mm`，独立标尺变化为 `+0.1 mm`，绝对差异为 `5.8672 mm`。但标尺变化远小于其约 `2.236 mm` 的描述性 RSS 不确定度，且 Wave 局部支持较稀疏，因此本样例不能建立物理精度结论。
 
-Case 1 完整保留。当前已仅依据 canonical Wave 画面变化和 R0 可用性准备 6 个 Case 2 候选，没有读取 WASS/XYZ/H 或标尺数值，也没有运行候选重建；状态为 `PHASE4_CASE2_CANDIDATE_SELECTION_REQUIRED`，等待用户从 [候选联系表](experiments/real_video/HomeTank_004/phase4_case2_candidate_frames/phase4_case2_candidates_contact_sheet.png) 中人工选择一个更有判别力的物理状态。
+Case 1 完整保留。用户已仅依据 canonical Wave 画面可读性选择 `candidate_02`；该时刻的一次正式 WASS 重建与只读高度 QA 已完成并以数组哈希冻结，其他候选未运行。Case 2 当前状态为 `CASE2_MANUAL_REFERENCE_REQUIRED`，等待用户在[正式原尺寸 cam1 图](experiments/real_video/HomeTank_004/phase4_case2_manual_reference/wave_case2_cam1_canonical_reference.png)中独立读取尺值并点击水面线；尚未计算物理误差。
 
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
@@ -102,7 +102,7 @@ WASS production mode 分析框架现已建立：支持显式 ROI capability 检�
 | StereoSGBM 分析 | 进行中 | [SGBM matching parameter audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md) |
 | Wave 高度与漂移验证 | 方法完成，结果未验证 | [Wave height validation](experiments/real_video/HomeTank_004/wave_height_validation.md) |
 | 标尺独立物理验证 | 首个冻结样例完成，参考变化过小，精度未建立 | [Phase 4 validation](experiments/real_video/HomeTank_004/phase4_physical_validation.md) |
-| Phase 4 Case 2 | 6 个图像域候选已准备，等待人工选择 | [Candidate selection](experiments/real_video/HomeTank_004/phase4_case2_candidate_selection.md) |
+| Phase 4 Case 2 | candidate_02 正式重建已冻结，等待人工尺值与点击 | [Case 2 baseline](experiments/real_video/HomeTank_004/phase4_validation_case2.md) |
 | Pixel–XYZ 与平面法向高度 | 基础接口完成 | [HomeTank_004 result](experiments/real_video/HomeTank_004/pixel_xyz_height_result.md) |
 | Wave CSV/JSON 与独立验证接口 | 输出完成，物理验证待人工参考 | [Final wave output](experiments/real_video/HomeTank_004/wave_height_final_report.md) |
 | 长时间 wave 全帧验证 | 资源/同步预检阻塞 | [Accuracy validation report](experiments/real_video/HomeTank_004/wave_accuracy_validation_report.md) |

@@ -15,7 +15,7 @@ from validation.manual_reference import serialize_confirmed_point
 def main() -> int:
     parser = argparse.ArgumentParser(description="Pick one manual validation pixel; no automatic detection is performed.")
     parser.add_argument("--image", required=True, type=Path)
-    parser.add_argument("--label", required=True, choices=("static", "wave"))
+    parser.add_argument("--label", required=True, choices=("static", "wave", "wave_case2"))
     parser.add_argument("--coordinate-system", required=True, choices=("canonical_cam1",))
     parser.add_argument("--points-file", required=True, type=Path)
     args = parser.parse_args()

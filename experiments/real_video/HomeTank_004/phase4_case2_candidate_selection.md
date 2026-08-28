@@ -1,12 +1,12 @@
 # HomeTank_004 Phase 4 Case 2 Candidate Selection
 
-Status: `PHASE4_CASE2_CANDIDATE_SELECTION_REQUIRED`
+Status: `CASE2_MANUAL_REFERENCE_REQUIRED`
 
 ## Purpose and boundary
 
 Case 1 remains unchanged: ruler delta `+0.1 mm`, absolute discrepancy `5.867183 mm`, classification `PHYSICAL_VALIDATION_COMPLETED_BUT_REFERENCE_CHANGE_TOO_SMALL_FOR_STRONG_ACCURACY_CLAIM`.
 
-Case 2 seeks a visually clearer, more discriminative physical state. Candidate preparation used only canonical cam1 video appearance and R0 synchronization availability. It did **not** read WASS output, XYZ, reconstructed height, ruler OCR, or ruler values. No candidate WASS run was performed, and this report does not choose a final frame.
+Case 2 sought a visually clearer physical state. Candidate preparation used only canonical cam1 video appearance and R0 synchronization availability. It did **not** read WASS output, XYZ, reconstructed height, ruler OCR, or ruler values. The user subsequently selected `candidate_02` solely from the visual previews; only that candidate received one formal WASS run.
 
 ## Image-only extraction method
 
@@ -27,17 +27,17 @@ The committed previews are exact-PTS cam1 frames, canonical rotation 0°, unifor
 
 All `accepted` entries mean R0 is available under the existing on-demand engineering tolerance. Strict frame-level synchronization remains unestablished and is not rewritten.
 
-## User selection instruction
+## User selection result
 
-Open [the contact sheet](phase4_case2_candidate_frames/phase4_case2_candidates_contact_sheet.png) or the individual full-frame previews. Select exactly one candidate using only these observations:
+The user selected `candidate_02` after reviewing [the contact sheet](phase4_case2_candidate_frames/phase4_case2_candidates_contact_sheet.png), using only these observations:
 
 1. The water surface is visibly different from the Static 9.1 mm state.
 2. The waterline beside the ruler is clear enough for a manual reading.
 3. Reflection, hand, or container motion does not fully obscure that location.
 4. Prefer an apparently larger physical water-level difference, but do not inspect any reconstruction result.
 
-Reply with one ID, for example `candidate_04`. After that choice, only the selected R0 pair will run through the existing single-frame backend and receive a new, separately named Case 2 frozen baseline. Case 1 will not be replaced.
+Only the selected R0 pair ran through the existing single-frame backend and received a separately named [Case 2 frozen baseline](phase4_validation_case2.md). Case 1 was not replaced; the remaining five candidates were not reconstructed.
 
 ## Stop point
 
-No final candidate is selected, no WASS run has occurred, and no Case 2 XYZ/H baseline exists. Work stops here pending the user's independent visual choice.
+The formal candidate_02 reconstruction and QA are frozen. Work now stops pending the user's independent ruler reading and waterline click on the formal full-resolution reference image.

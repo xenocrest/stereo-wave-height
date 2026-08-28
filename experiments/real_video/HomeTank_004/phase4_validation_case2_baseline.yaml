@@ -1,0 +1,108 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+case_id: phase4_case2
+status: CASE2_MANUAL_REFERENCE_REQUIRED
+frozen_for_independent_validation: true
+execution_date: "2026-08-28"
+run_root_outside_repository: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828
+case1_preservation:
+  baseline_file: phase4_validation_baseline.yaml
+  baseline_file_sha256: EABFC6FAEEFFC619909008D375DB8F3B05C28B3B8EA811B583ECE929FD7C3F7D
+  physical_validation_file: phase4_physical_validation.yaml
+  physical_validation_file_sha256: E2AA719C1C08673D06B4F888EFF06A4A2CA9952A81A89AA8C315046B2754D468
+  ruler_delta_mm: 0.1
+  absolute_discrepancy_mm: 5.867183268293882
+  classification: PHYSICAL_VALIDATION_COMPLETED_BUT_REFERENCE_CHANGE_TOO_SMALL_FOR_STRONG_ACCURACY_CLAIM
+  modified: false
+static:
+  reuse_existing_frozen_static: true
+  source_baseline: phase4_validation_baseline.yaml
+  target_time_s: 10.012256
+  source_frame_id: pts_900024
+  height_array_sha256: B57113FE200ED593C95AE8BEEE7E7016CF13F595268FFD4F911EFB70B046FF9D
+wave:
+  selected_candidate: candidate_02
+  selection_basis: USER_VISUAL_SELECTION_FROM_CANONICAL_IMAGE_PREVIEWS_ONLY
+  requested_time_s: 29.4654055
+  actual_left_pts: 2651866
+  actual_left_time_s: 29.465178
+  actual_right_pts: 2646070
+  actual_right_time_s: 29.400778
+  left_frame_id: pts_2651866
+  right_frame_id: pts_2646070
+  canonical_cam1_frame_identity: pts_2646070
+  canonical_rotation_deg: {left: 180, right: 0}
+  synchronization:
+    policy: R0_ENGINEERING_SYNC_SELECTION
+    pair_residual_s: 0.0010054999999979941
+    pair_residual_ms: 1.005499999997994
+    pair_residual_frames: 0.0603686
+    classification: SYNC_ACCEPTED_FOR_ON_DEMAND_MEASUREMENT
+    strict_frame_level_sync: NOT_ESTABLISHED_PRESERVED
+  calibration:
+    source: calibration_result.yaml
+    quality_mode: diagnostic_allow_failed_gate
+    modified: false
+  reference_plane:
+    source: static_reference_plane.yaml
+    sha256: 061066D0E53E94FDFCC385983183A3B4C8FD8850F83FAA1B86494084D11FC8A6
+    method: frozen_static_reference_plane
+    normal: [0.4266090565020204, 0.06757844167243465, 0.9019079039079221]
+    offset_m: -0.22467304473232508
+    wave_refit_as_zero: false
+  wass:
+    formal_runs_for_selected_candidate: 1
+    autocalibrate_run: false
+    prepare_status: PASS
+    match_status: PASS
+    stereo_status: PASS
+    retained_match_count: 33
+    retained_match_definition: epipolar_filter_inliers_from_matcher_stats_csv
+    total_reconstruction_time_s: 26.293511899999885
+    valid_triangulated_points: 134628
+    largest_connected_component_points: 35459
+  xyz:
+    valid_point_count: 35459
+    coordinate_system: wass_camera_coordinates_scaled_by_calibrated_baseline
+    unit: m
+    x_range_m: [-0.09203890103530626, -0.05849003617897831]
+    y_range_m: [-0.0623385162873985, -0.0364604698854778]
+    z_range_m: [0.2535909462165369, 0.27525991452116894]
+  pixel_xyz:
+    correspondence_count: 35459
+    coordinate_system: wass_rectified_computational_cam0__input_right
+  height:
+    definition: (normal dot P + offset_m) / norm(normal)
+    unit: m
+    valid_point_count: 35459
+    minimum_m: -0.025508714559869028
+    maximum_m: -0.01370255260173972
+    mean_m: -0.02438629494236755
+    median_m: -0.024703814307018263
+    standard_deviation_m: 0.001004492085586138
+    rms_m: 0.024406974113276445
+    p1_m: -0.0253387104738534
+    p5_m: -0.02519239268089583
+    p50_m: -0.024703814307018263
+    p95_m: -0.022621149490909067
+    p99_m: -0.02052462399398209
+  qa:
+    status: HEIGHT_DISTRIBUTION_CHARACTERIZED_WITH_OVERALL_OFFSET
+    raw_range_mm: [-25.508715, -13.702553]
+    robust_p1_p99_mm: [-25.338710, -20.524624]
+    robust_p5_p95_mm: [-25.192393, -22.621149]
+    deviation_from_median_gt_5mm_fraction: 0.004822471022871485
+    deviation_from_median_gt_10mm_fraction: 0.0006486364533686794
+    unique_observed_pixels: 8399
+    support_bbox_xywh: [908, 417, 168, 135]
+    overall_reconstruction_collapse_detected: false
+    interpretation: coherent narrow distribution with overall offset; no filtering or physical interpretation applied
+  array_hashes:
+    height_npz_sha256: 635C74821FDBB2806BAEAB0332C7FFF842D661B97664649F26F1B97C22F2252D
+    pixel_xyz_npz_sha256: 6F21FEBA723FE01F48F24A3DBC0481E2AE5BA78AB28150DDAED9AC6572067719
+    xyz_text_sha256: E98195B51DD542CB30FCD8D980FF6067F169A108F6E60E3B56888A4016F9A2F0
+    mesh_cam_xyzc_sha256: E62C158D6DB4509C667A4F7767728EB864991017E1C7EBB3D136CAC6963CE2B3
+    canonical_cam1_png_sha256: 1112D9CEABB5D4E629933713D2F38A583830D21EE0ED92C2A409949293D6415D
+manual_reference_used_in_reconstruction: false
+physical_error_computed: false
+stop_reason: CASE2_MANUAL_REFERENCE_REQUIRED
