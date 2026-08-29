@@ -329,6 +329,8 @@ HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/righ
 
 离线桌面 Demo Stage 1 已完成最小闭环：加载现有标定、选择双目视频、播放/暂停并选取时刻、异步调用冻结单帧 backend、显示原始帧/高度图/状态图和保留历史测量。叠加、逐像素查询、点云交互和选择性导出留待 Stage 2。
 
+Demo Stage 2 已完成透明高度叠加、canonical-cam1 pixel 的只读 XYZ/H/status 查询、原始 WASS 点云查看和安全 Session 导出。由此第一版离线演示 MVP 闭环并冻结；后续仅处理 coverage、precision、UX、visualization、robustness 与 packaging，不改变 MVP 数值主流程。
+
 项目主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Video-based On-demand Single-frame Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。Wave video analysis 是 Extension；真实视频层不会回写或覆盖既有仿真历史。详细协议见 [真实视频验证](docs/real_video_validation/README.md)。
 
 完整用户汇报 DOCX/Markdown 仅保存在本地，不进入本仓库；大型 PNG、原始双目图像、`xyzC`、NetCDF 和 WASS 运行目录同样不得提交。

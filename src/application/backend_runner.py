@@ -52,6 +52,11 @@ def parse_backend_result(output_directory: Path, *, display_name: str | None = N
         point_cloud_path=pointcloud if pointcloud.is_file() else None,
         created_time=datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
         summary_metadata=summary,
+        dense_npz_path=output / str(paths.get("npz", "dense_height/dense_height.npz")),
+        pixel_xyz_path=output / "reconstruction" / "pixel_xyz" / "000000_pixel_xyz.npz",
+        point_cloud_ply_path=output / "reconstruction" / "pointcloud" / "000000.ply",
+        report_path=output / "report" / "single_frame_report.md",
+        overlay_path=output / "dense_height" / "height_overlay.png",
     )
 
 

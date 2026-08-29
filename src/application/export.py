@@ -1,0 +1,49 @@
+"""Transactional export for selected GUI measurements."""
+from __future__ import annotations
+
+from datetime import datetime,timezone
+import json
+from pathlib import Path
+import shutil
+from typing import Iterable
+
+from .session import MeasurementRecord,MeasurementSession
+
+ARTIFACTS=(
+    ("selected_frame_path","selected_frame.png"),("overlay_path","height_overlay.png"),
+    ("dense_height_path","height_map.png"),("status_map_path","status_map.png"),
+    ("point_cloud_ply_path","point_cloud.ply"),("point_cloud_path","point_cloud.xyz"),
+    ("dense_npz_path","dense_height.npz"),("pixel_xyz_path","pixel_xyz.npz"),
+    ("unified_result_path","result.json"),("report_path","report.md"),
+)
+
+
+def export_session(session:MeasurementSession,destination:Path,records:Iterable[MeasurementRecord]|None=None,
+                   *,camera_models:dict[str,str]|None=None,calibration_reference:str|None=None) -> Path:
+    chosen=list(session.records if records is None else records)
+    destination=Path(destination).resolve(); session_dir=session.directory.resolve()
+    if destination==session_dir or session_dir in destination.parents:raise ValueError("export destination cannot be inside the temporary session")
+    final=destination/f"session_{session.session_id}"; staging=destination/f".session_{session.session_id}_staging"
+    if final.exists() or staging.exists():raise FileExistsError(f"export destination already exists: {final}")
+    staging.mkdir(parents=True)
+    manifest={"session_id":session.session_id,"created_at":datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
+              "camera_models":camera_models or {"left":"UNKNOWN","right":"UNKNOWN"},
+              "calibration_reference":calibration_reference or "UNKNOWN","measurement_count":len(chosen),"measurements":[]}
+    try:
+        for record in chosen:
+            folder=staging/f"measurement_{record.display_name}"; folder.mkdir(); copied=[]
+            for attribute,name in ARTIFACTS:
+                source=getattr(record,attribute,None)
+                if source is not None and Path(source).is_file():shutil.copy2(source,folder/name); copied.append(name)
+            item={"display_name":record.display_name,"target_time_sec":record.target_time_sec,"classification":record.summary_metadata.get("status"),"height_summary":record.summary_metadata.get("height_statistics"),"artifacts":copied}
+            (folder/"measurement_manifest.json").write_text(json.dumps(item,indent=2,ensure_ascii=False),encoding="utf-8"); manifest["measurements"].append(item)
+        (staging/"session_manifest.json").write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding="utf-8"); staging.rename(final)
+    except Exception:
+        shutil.rmtree(staging,ignore_errors=True); raise
+    return final
+
+
+def delete_session(session:MeasurementSession) -> None:
+    root=Path("D:/stereo-wave-height-runs/gui_sessions").resolve(); target=session.directory.resolve()
+    if target.parent!=root:raise ValueError("refusing to delete outside GUI session root")
+    shutil.rmtree(target)

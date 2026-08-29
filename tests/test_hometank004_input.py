@@ -60,6 +60,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "single_frame_dense_smoke_config.yaml",
             "single_frame_dense_backend_integration.yaml", "single_frame_dense_backend_integration.md",
             "demo_gui_stage1.md",
+            "demo_gui_stage2.md",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",

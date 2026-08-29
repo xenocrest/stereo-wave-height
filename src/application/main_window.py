@@ -12,6 +12,8 @@ import yaml
 from .backend_runner import FrozenBackendRunner
 from .session import MeasurementRecord, MeasurementSession
 from .video_tools import VideoMetadata, extract_frame, probe_video
+from .visualization import DenseMeasurementView, DisplayTransform, make_height_overlay
+from .export import delete_session, export_session
 
 
 class StereoWaveHeightApplication:
@@ -27,6 +29,8 @@ class StereoWaveHeightApplication:
         self.metadata: dict[str, VideoMetadata] = {}; self.current_time = 0.0
         self.playing = False; self.backend_running = False; self._photo: ImageTk.PhotoImage | None = None
         self.backend_started_at: float | None = None
+        self.display_transform: DisplayTransform | None = None; self.dense_view: DenseMeasurementView | None = None
+        self.viewing_result = False
         self._worker_messages: queue.Queue[tuple[str, Any]] = queue.Queue()
 
     def _var(self, key: str, value: str = "") -> tk.StringVar:
@@ -48,8 +52,10 @@ class StereoWaveHeightApplication:
         except Exception as error: messagebox.showerror(self.title, str(error))
 
     def _show_pil(self, image: Image.Image) -> None:
-        image.thumbnail((760, 440), Image.Resampling.LANCZOS); self._photo = ImageTk.PhotoImage(image)
-        self.image_label.configure(image=self._photo, text="")
+        source_width,source_height=image.size; canvas_width=max(self.image_canvas.winfo_width(),760); canvas_height=max(self.image_canvas.winfo_height(),440)
+        self.display_transform=DisplayTransform.fit(source_width,source_height,canvas_width,canvas_height)
+        image=image.resize((self.display_transform.display_width,self.display_transform.display_height),Image.Resampling.LANCZOS); self._photo=ImageTk.PhotoImage(image)
+        self.image_canvas.delete("all"); self.image_canvas.create_image(canvas_width/2,canvas_height/2,image=self._photo,anchor="center")
 
     def _show_video_frame(self, time_sec: float) -> None:
         path = self.variables["right_measurement"].get()
@@ -81,7 +87,7 @@ class StereoWaveHeightApplication:
 
     def _play(self) -> None:
         if not self.variables["right_measurement"].get(): messagebox.showwarning(self.title,"请先选择 RIGHT 测量视频。"); return
-        self.playing=True; self._log("play")
+        self.playing=True; self.viewing_result=False; self._log("play")
     def _pause(self) -> None: self.playing=False; self._log(f"pause at {self.current_time:.3f}s")
     def _seek(self,value:str) -> None:
         self.current_time=float(value); self.variables["time"].set(f"{self.current_time:.3f} s")
@@ -128,16 +134,74 @@ class StereoWaveHeightApplication:
                 f"H min/max/mean: {h.get('minimum')} / {h.get('maximum')} / {h.get('mean')} m\nWASS: {s.get('wass_seconds')} s | Dense: {d.get('generation_time_sec')} s | Total: {s.get('total_seconds')} s")
 
     def _show_record(self,record:MeasurementRecord) -> None:
-        self.active_record=record; self._show_mode(); self.summary_text.configure(state=tk.NORMAL); self.summary_text.delete("1.0",tk.END); self.summary_text.insert(tk.END,self._summary(record)); self.summary_text.configure(state=tk.DISABLED)
+        self.active_record=record; self.viewing_result=True
+        try:
+            self.dense_view=DenseMeasurementView(record.dense_npz_path,record.pixel_xyz_path,self.experiment/"manual_reference/frozen_cam1_validation_mapping.yaml")
+            if record.overlay_path and not record.overlay_path.is_file():make_height_overlay(record.selected_frame_path,record.dense_npz_path,float(self.variables["alpha"].get())/100).save(record.overlay_path)
+        except Exception as error:self.dense_view=None; self._log(f"measurement query load failed: {error}")
+        self.variables["mode"].set("高度叠加"); self._show_mode(); self.summary_text.configure(state=tk.NORMAL); self.summary_text.delete("1.0",tk.END); self.summary_text.insert(tk.END,self._summary(record)); self.summary_text.configure(state=tk.DISABLED)
+        self.pointcloud_button.configure(state=tk.NORMAL if record.point_cloud_path and record.point_cloud_path.is_file() else tk.DISABLED)
     def _show_mode(self) -> None:
         record=getattr(self,"active_record",None)
         if not record:return
-        path={"原始画面":record.selected_frame_path,"高度图":record.dense_height_path,"状态图":record.status_map_path}[self.variables["mode"].get()]
-        try:self._show_pil(Image.open(path).convert("RGB"))
+        mode=self.variables["mode"].get()
+        try:
+            if mode=="高度叠加":
+                image=make_height_overlay(record.selected_frame_path,record.dense_npz_path,float(self.variables["alpha"].get())/100)
+                if record.overlay_path:image.save(record.overlay_path)
+            else:image=Image.open({"原始画面":record.selected_frame_path,"高度图":record.dense_height_path,"状态图":record.status_map_path}[mode]).convert("RGB")
+            self._show_pil(image)
         except Exception as error:messagebox.showerror(self.title,f"无法加载结果图：{error}")
     def _history_selected(self,_event:object) -> None:
         selection=self.history.curselection()
         if selection:self._show_record(self.session.records[selection[0]])
+
+    def _hover(self,event:tk.Event) -> None:
+        if not self.viewing_result or self.dense_view is None or self.display_transform is None:return
+        pixel=self.display_transform.canvas_to_pixel(event.x,event.y)
+        if pixel is None:self.variables["pixel_info"].set("Pixel: outside image");return
+        query=self.dense_view.query(*pixel); xyz="N/A" if query.xyz_m is None else " / ".join(f"{value:.6f}" for value in query.xyz_m)+" m"
+        height="N/A" if query.height_mm is None else f"{query.height_mm:.3f} mm"
+        self.variables["pixel_info"].set(f"Pixel: {query.pixel}\nStatus: {query.status}\nSource: {query.source}\nXYZ: {xyz}\nH: {height}")
+
+    def _show_pointcloud(self) -> None:
+        record=getattr(self,"active_record",None)
+        if record is None or record.point_cloud_path is None:return
+        try:
+            import numpy as np; import matplotlib.pyplot as plt
+            xyz=np.loadtxt(record.point_cloud_path); step=max(1,len(xyz)//30000); shown=xyz[::step]
+            figure=plt.figure("Original WASS Observed Point Cloud"); axis=figure.add_subplot(111,projection="3d"); axis.scatter(shown[:,0],shown[:,1],shown[:,2],s=0.4)
+            axis.set_xlabel("X m"); axis.set_ylabel("Y m"); axis.set_zlabel("Z m"); figure.show(); self._log(f"point cloud viewer: {len(shown)} of {len(xyz)} original observations")
+        except Exception as error:messagebox.showerror(self.title,f"点云显示失败：{error}")
+
+    def _export_and_exit(self,records:list[MeasurementRecord]) -> None:
+        destination=filedialog.askdirectory(title="选择 Session 导出目录")
+        if not destination:return
+        try:
+            exported=export_session(self.session,Path(destination),records,
+                camera_models={"left":self.variables["left_model"].get(),"right":self.variables["right_model"].get()},
+                calibration_reference=self.variables["calibration_path"].get()); delete_session(self.session); messagebox.showinfo(self.title,f"导出完成：{exported}"); self.root.destroy()
+        except Exception as error:messagebox.showerror(self.title,f"导出失败，临时结果已保留：{error}")
+
+    def _selective_export(self,dialog:tk.Toplevel) -> None:
+        dialog.destroy(); chooser=tk.Toplevel(self.root); chooser.title("选择要导出的测量"); choices=[]
+        for record in self.session.records:
+            value=tk.BooleanVar(chooser,value=True); choices.append((value,record)); ttk.Checkbutton(chooser,text=record.display_name,variable=value).pack(anchor="w",padx=12,pady=3)
+        def proceed() -> None:
+            selected=[record for value,record in choices if value.get()]
+            if not selected:messagebox.showwarning(self.title,"至少选择一条测量记录。");return
+            chooser.destroy(); self._export_and_exit(selected)
+        ttk.Button(chooser,text="选择目标目录并导出",command=proceed).pack(pady=10)
+        ttk.Button(chooser,text="取消",command=chooser.destroy).pack(pady=3)
+
+    def _request_close(self) -> None:
+        if not self.session.records:self.root.destroy();return
+        dialog=tk.Toplevel(self.root); dialog.title("退出处理"); dialog.transient(self.root); dialog.grab_set(); ttk.Label(dialog,text="本次会话包含测量结果，请选择处理方式。",padding=15).pack()
+        ttk.Button(dialog,text="导出全部",command=lambda:(dialog.destroy(),self._export_and_exit(list(self.session.records)))).pack(fill="x",padx=18,pady=3)
+        ttk.Button(dialog,text="选择性导出",command=lambda:self._selective_export(dialog)).pack(fill="x",padx=18,pady=3)
+        def remove() -> None:
+            if messagebox.askyesno(self.title,"确认删除本次会话所有临时解算结果？"):delete_session(self.session);dialog.destroy();self.root.destroy()
+        ttk.Button(dialog,text="全部删除",command=remove).pack(fill="x",padx=18,pady=3); ttk.Button(dialog,text="取消退出",command=dialog.destroy).pack(fill="x",padx=18,pady=(3,15))
 
     def _build_camera_fields(self,parent:ttk.Frame) -> None:
         for column,(prefix,title) in enumerate((("left","LEFT / cam0"),("right","RIGHT / cam1"))):
@@ -157,11 +221,15 @@ class StereoWaveHeightApplication:
         top=ttk.LabelFrame(root,text="Camera / Calibration"); top.pack(fill="x",padx=8,pady=5); self._build_camera_fields(top)
         videos=ttk.Frame(root); videos.pack(fill="x",padx=8); self._video_row(videos,0,"left_calibration","LEFT calibration",True); self._video_row(videos,2,"right_calibration","RIGHT calibration",True); self._video_row(videos,4,"left_measurement","LEFT measurement"); self._video_row(videos,6,"right_measurement","RIGHT measurement"); ttk.Button(videos,text="运行双目标定（Stage 2）",state=tk.DISABLED).grid(row=0,column=4,padx=6)
         center=ttk.Panedwindow(root,orient=tk.HORIZONTAL); center.pack(fill="both",expand=True,padx=8,pady=5); image_box=ttk.LabelFrame(center,text="Main View: RIGHT / canonical cam1"); summary_box=ttk.LabelFrame(center,text="当前状态 / 解算摘要"); center.add(image_box,weight=3); center.add(summary_box,weight=1)
-        self.image_label=ttk.Label(image_box,text="请选择 RIGHT 测量视频",anchor="center"); self.image_label.pack(fill="both",expand=True); modes=ttk.Frame(image_box); modes.pack(fill="x"); self._var("mode","原始画面")
-        for mode in ("原始画面","高度图","状态图"):ttk.Radiobutton(modes,text=mode,value=mode,variable=self.variables["mode"],command=self._show_mode).pack(side="left")
+        self.image_canvas=tk.Canvas(image_box,background="#222",highlightthickness=0); self.image_canvas.pack(fill="both",expand=True); self.image_canvas.bind("<Motion>",self._hover)
+        modes=ttk.Frame(image_box); modes.pack(fill="x"); self._var("mode","原始画面")
+        for mode in ("原始画面","高度叠加","高度图","状态图"):ttk.Radiobutton(modes,text=mode,value=mode,variable=self.variables["mode"],command=self._show_mode).pack(side="left")
+        ttk.Label(modes,text="透明度").pack(side="left",padx=(20,2)); self._var("alpha","45"); ttk.Scale(modes,from_=0,to=100,variable=self.variables["alpha"],command=lambda _value:self._show_mode() if self.variables["mode"].get()=="高度叠加" else None).pack(side="left",fill="x",expand=True)
         self.summary_text=tk.Text(summary_box,width=42,height=22); self.summary_text.pack(fill="both",expand=True); self.summary_text.configure(state=tk.DISABLED)
+        ttk.Label(summary_box,text="Current Pixel",font=("TkDefaultFont",10,"bold")).pack(anchor="w",padx=5,pady=(6,0)); ttk.Label(summary_box,textvariable=self._var("pixel_info","Pixel: N/A"),justify="left").pack(anchor="w",padx=5)
+        self.pointcloud_button=ttk.Button(summary_box,text="显示三维点云",command=self._show_pointcloud,state=tk.DISABLED); self.pointcloud_button.pack(anchor="w",padx=5,pady=6)
         controls=ttk.Frame(root); controls.pack(fill="x",padx=8); ttk.Button(controls,text="Play",command=self._play).pack(side="left"); ttk.Button(controls,text="Pause",command=self._pause).pack(side="left"); self.timeline=ttk.Scale(controls,from_=0,to=1,command=self._seek); self.timeline.pack(side="left",fill="x",expand=True,padx=8); ttk.Label(controls,textvariable=self._var("time","0.000 s"),width=12).pack(side="left"); self.solve_button=ttk.Button(controls,text="解算当前帧",command=self._solve); self.solve_button.pack(side="left",padx=8); ttk.Label(controls,textvariable=self._var("run_status","就绪")).pack(side="left")
         bottom=ttk.Panedwindow(root,orient=tk.HORIZONTAL); bottom.pack(fill="x",padx=8,pady=5); history_box=ttk.LabelFrame(bottom,text="本次测量记录"); log_box=ttk.LabelFrame(bottom,text="Session log"); bottom.add(history_box,weight=1); bottom.add(log_box,weight=3); self.history=tk.Listbox(history_box,height=5); self.history.pack(fill="both",expand=True); self.history.bind("<<ListboxSelect>>",self._history_selected)
         for record in self.session.records:self.history.insert(tk.END,record.display_name)
-        self.log_text=tk.Text(log_box,height=5); self.log_text.pack(fill="both",expand=True); self._log(f"session directory: {self.session.directory}"); root.after(200,self._tick); return root
+        self.log_text=tk.Text(log_box,height=5); self.log_text.pack(fill="both",expand=True); self._log(f"session directory: {self.session.directory}"); root.protocol("WM_DELETE_WINDOW",self._request_close); root.after(200,self._tick); return root
     def run(self) -> None:(self.root or self.build()).mainloop()

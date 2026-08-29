@@ -6,6 +6,9 @@ import unittest
 from application.backend_runner import BackendResultError, parse_backend_result
 from application.backend_runner import FrozenBackendRunner
 from application.session import MeasurementRecord, MeasurementSession
+from application.export import export_session
+from application.visualization import DisplayTransform, DenseMeasurementView, make_height_overlay
+import numpy as np
 
 
 class DemoGuiStage1Tests(unittest.TestCase):
@@ -51,6 +54,48 @@ class DemoGuiStage1Tests(unittest.TestCase):
     def test_application_imports_without_opening_window(self):
         from application import StereoWaveHeightApplication
         self.assertTrue(callable(StereoWaveHeightApplication))
+
+    def test_canvas_mapping_accounts_for_letterbox(self):
+        transform=DisplayTransform.fit(1920,1080,1000,700)
+        self.assertIsNone(transform.canvas_to_pixel(500,20))
+        self.assertEqual(transform.canvas_to_pixel(500,350),(960,540))
+
+    def test_selective_export_copies_only_selected_record(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary); session=MeasurementSession(base/"sessions","s")
+            records=[]
+            for index,name in enumerate(("1.000s","2.000s")):
+                source=base/f"source{index}"; source.mkdir();
+                for filename in ("right.png","height.png","status.png","single_frame_result.json"):(source/filename).write_text(filename,encoding="utf-8")
+                record=MeasurementRecord(float(index+1),name,source,source/"single_frame_result.json",source/"right.png",source/"height.png",source/"status.png",None,"now",{"status":"OK"})
+                session.add(record); records.append(record)
+            exported=export_session(session,base/"exports",[records[1]])
+            self.assertFalse((exported/"measurement_1.000s").exists())
+            self.assertTrue((exported/"measurement_2.000s/selected_frame.png").is_file())
+            self.assertTrue(session.directory.exists())
+
+    def test_unsupported_hover_returns_na_not_zero(self):
+        view=DenseMeasurementView.__new__(DenseMeasurementView)
+        view.height=np.asarray([[np.nan]],dtype=np.float32); view.status=np.asarray([[0]],dtype=np.uint8); view.roi=np.asarray([[True]])
+        query=view.query(0,0)
+        self.assertEqual(query.status,"UNSUPPORTED"); self.assertIsNone(query.height_mm); self.assertIsNone(query.xyz_m)
+
+    def test_failed_export_preserves_temporary_session(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary); session=MeasurementSession(base/"sessions","s")
+            destination=base/"exports"; (destination/"session_s").mkdir(parents=True)
+            with self.assertRaises(FileExistsError): export_session(session,destination,[])
+            self.assertTrue(session.directory.is_dir())
+
+    def test_overlay_changes_only_valid_pixels(self):
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary); original=base/"original.png"; dense=base/"dense.npz"
+            Image.new("RGB",(2,1),(100,100,100)).save(original)
+            np.savez(dense,height_mm=np.asarray([[1.0,np.nan]],dtype=np.float32),status=np.asarray([[1,0]],dtype=np.uint8),valid_mask=np.asarray([[True,False]]),water_roi_mask=np.asarray([[True,True]]))
+            pixels=np.asarray(make_height_overlay(original,dense,0.45))
+            self.assertFalse(np.array_equal(pixels[0,0],[100,100,100]))
+            np.testing.assert_array_equal(pixels[0,1],[100,100,100])
 
 
 if __name__ == "__main__": unittest.main()

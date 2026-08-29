@@ -21,11 +21,17 @@ class MeasurementRecord:
     point_cloud_path: Path | None
     created_time: str
     summary_metadata: dict[str, Any] = field(default_factory=dict)
+    dense_npz_path: Path | None = None
+    pixel_xyz_path: Path | None = None
+    point_cloud_ply_path: Path | None = None
+    report_path: Path | None = None
+    overlay_path: Path | None = None
 
     def to_json(self) -> dict[str, Any]:
         data = asdict(self)
         for key in ("output_directory", "unified_result_path", "selected_frame_path",
-                    "dense_height_path", "status_map_path", "point_cloud_path"):
+                    "dense_height_path", "status_map_path", "point_cloud_path", "dense_npz_path",
+                    "pixel_xyz_path", "point_cloud_ply_path", "report_path", "overlay_path"):
             if data[key] is not None:
                 data[key] = str(data[key])
         return data
@@ -36,7 +42,8 @@ class MeasurementRecord:
         for key in ("output_directory", "unified_result_path", "selected_frame_path",
                     "dense_height_path", "status_map_path"):
             converted[key] = Path(converted[key])
-        converted["point_cloud_path"] = Path(converted["point_cloud_path"]) if converted.get("point_cloud_path") else None
+        for key in ("point_cloud_path", "dense_npz_path", "pixel_xyz_path", "point_cloud_ply_path", "report_path", "overlay_path"):
+            converted[key] = Path(converted[key]) if converted.get(key) else None
         return cls(**converted)
 
 
