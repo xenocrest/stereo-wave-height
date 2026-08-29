@@ -178,6 +178,7 @@ Case 0/1/2 是静水零场、固定非零高度和动态正弦规则波三个逐
 - `src/`：本项目自有的仿真、适配、静水参考、高度解算与指标代码；
 - `src/input/` 与 `src/synchronization/`：双目视频、播放器时刻选择、同步帧对象和时间映射边界；同步结果不进入重建数值计算；
 - `src/application/`：未来最终桌面程序的 V0.x 骨架，不是手机专用 Demo；
+- 离线桌面 Demo Stage 1 已可播放/暂停视频、选择时刻、异步调用冻结单帧 backend，并回载原图、高度图、状态图与历史测量记录；启动方式见 [Stage 1 报告](experiments/real_video/HomeTank_004/demo_gui_stage1.md)。
 - `configs/`：候选设备、仿真和实验配置模板；
 - `tests/`：自动化测试；
 - `experiments/`：可复现实验入口；当前包含 HomeTank_004 的小型配置、元数据和诊断报告，不包含原始 MP4 或大型重建产物；

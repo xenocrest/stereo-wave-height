@@ -327,6 +327,8 @@ HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/righ
 6. **真实环境扩展。**评估水面反光、折射、泡沫、纹理退化、环境光、振动和更大距离，重新建立误差预算与部署边界。
 7. **结果展示软件。**建设未来最终 `.exe`：视频层负责左右视频，交互层负责播放、时间选择和暂停，计算层负责同步帧提取、标定、WASS、XYZ 和 Height，展示层负责点云、高度图、统计与误差结果。该程序不是手机专用 Demo，也不以实时处理为承诺。
 
+离线桌面 Demo Stage 1 已完成最小闭环：加载现有标定、选择双目视频、播放/暂停并选取时刻、异步调用冻结单帧 backend、显示原始帧/高度图/状态图和保留历史测量。叠加、逐像素查询、点云交互和选择性导出留待 Stage 2。
+
 项目主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Video-based On-demand Single-frame Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。Wave video analysis 是 Extension；真实视频层不会回写或覆盖既有仿真历史。详细协议见 [真实视频验证](docs/real_video_validation/README.md)。
 
 完整用户汇报 DOCX/Markdown 仅保存在本地，不进入本仓库；大型 PNG、原始双目图像、`xyzC`、NetCDF 和 WASS 运行目录同样不得提交。
