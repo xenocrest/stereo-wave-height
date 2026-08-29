@@ -1,0 +1,110 @@
+metadata:
+  classification: DENSE_HEIGHT_MAP_MVP_COMPLETED
+  source_frame: HomeTank_004/wave/phase4_case2_candidate02/frame_000000
+  coordinate_system: wass_rectified_computational_cam0__input_right
+  output_pixel_system: canonical_cam1
+  reference_plane:
+    model: normal dot [X,Y,Z] + offset_m = 0
+    normal:
+    - 0.4266090565020204
+    - 0.06757844167243465
+    - 0.9019079039079221
+    offset_m: -0.22467304473232508
+    residual_rms_m: 0.001550838758264436
+  observation_gate_px: 2.0
+  metric_scale_source: frozen OpenCV calibrated baseline
+  calibrated_baseline_m: 0.0686847
+  p90_spacing_m: 0.00010723304988250655
+  maximum_gap_m: 0.0003216991496475197
+  completion_rule: hole_2 = 3 * frame P90 nearest-neighbor spacing
+resolution_px:
+- 1920
+- 1080
+water_roi_pixel_count: 2629
+status:
+  observed:
+    count: 1924
+    percent: 73.18372004564473
+  estimated:
+    count: 8
+    percent: 0.304298212248003
+  unsupported:
+    count: 697
+    percent: 26.511981742107267
+valid_height_mm:
+  minimum: -25.497047424316406
+  maximum: -17.266788482666016
+  mean: -24.32248306274414
+  median: -24.67182159423828
+generation_seconds: 2.4073662000000695
+diagnostics: {}
+unsupported_reasons:
+  UNSUPPORTED_GAP: 649
+  UNSUPPORTED_MINIMUM_POINTS: 30
+  UNSUPPORTED_NO_CONVERGENCE: 18
+unsupported_nearest_support_m:
+  minimum: 3.4840905724042574e-06
+  median: 0.000920630465536521
+  maximum: 0.005938955783303269
+case2_manual_point_check:
+  canonical_px:
+  - 799
+  - 396
+  status: UNSUPPORTED
+  height_mm: null
+  inside_water_roi: false
+small_holdout_qa:
+  test_point_count: 50
+  supported_prediction_count: 49
+  unsupported_count: 1
+  coverage_percent: 98.0
+  mae_m: 8.48886128651253e-05
+  rmse_m: 0.00030585045393276657
+  median_absolute_error_m: 2.6064617165803827e-06
+  p95_absolute_error_m: 0.00023832253417790638
+  maximum_absolute_error_m: 0.0020310642806358158
+  unsupported_reasons:
+    UNSUPPORTED_MINIMUM_POINTS: 1
+    UNSUPPORTED_ILL_CONDITIONED: 0
+  spacing_m:
+    p50: 0.00010689028199944261
+    p90: 0.00010723304988250655
+    p95: 0.00010766850928172767
+  rules:
+    support_radius_m: 0.0006433982992950394
+    gaussian_sigma_m: 0.0003216991496475197
+    minimum_points: 12
+    maximum_neighbors: 64
+    maximum_condition_number: 100000000.0
+  strata:
+    near:
+      count: 23
+      mae_m: 0.00014777416954331972
+      rmse_m: 0.00043433883370592183
+      median_absolute_error_m: 4.510598180572714e-05
+      p95_absolute_error_m: 0.00025057231697079706
+      maximum_absolute_error_m: 0.0020310642806358158
+      test_count: 23
+      supported_count: 23
+      coverage_percent: 100.0
+    medium:
+      count: 22
+      mae_m: 2.5523888698283044e-05
+      rmse_m: 0.00010307968239105528
+      median_absolute_error_m: 4.590408134858004e-08
+      p95_absolute_error_m: 3.807497944754502e-05
+      maximum_absolute_error_m: 0.0004812830649681514
+      test_count: 22
+      supported_count: 22
+      coverage_percent: 100.0
+    sparse:
+      count: 4
+      mae_m: 4.980264488313978e-05
+      rmse_m: 5.235964905612299e-05
+      median_absolute_error_m: 5.1025199352579265e-05
+      p95_absolute_error_m: 6.834940536379774e-05
+      maximum_absolute_error_m: 7.137107500045092e-05
+      test_count: 5
+      supported_count: 4
+      coverage_percent: 80.0
+frozen_artifacts_unchanged: true

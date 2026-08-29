@@ -55,6 +55,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "surface_completion_holdout_validation.md",
             "surface_completion_hole_config.yaml", "surface_completion_hole_validation.yaml",
             "surface_completion_hole_validation.md",
+            "dense_height_case2_config.yaml", "dense_height_case2_mvp.md",
+            "dense_height_case2_outputs",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",

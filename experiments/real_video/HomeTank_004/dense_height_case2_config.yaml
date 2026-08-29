@@ -1,0 +1,20 @@
+schema_version: '1.0'
+frozen:
+  frame_identity: HomeTank_004/wave/phase4_case2_candidate02/frame_000000
+  pixel_xyz_npz: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828/reconstruction/pixel_xyz/000000_pixel_xyz.npz
+  height_npz: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828/reconstruction/height/000000_height_points.npz
+  mapping_yaml: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/manual_reference/frozen_cam1_validation_mapping.yaml
+  reference_plane_yaml: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/static_reference_plane.yaml
+  projection_txt: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828/reconstruction/wass_workspace/work/000000_wd/P0cam.txt
+  calibrated_baseline_m: 0.0686847
+observation_gate_px: 2.0
+completion:
+  maximum_gap_multiplier: 3.0
+mls:
+  radius_multiplier: 6.0
+  sigma_multiplier: 3.0
+  minimum_points: 12
+  maximum_neighbors: 64
+  maximum_condition_number: 100000000.0
+output_directory: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/dense_height_case2_outputs
+case2_check_canonical_px: [799, 396]

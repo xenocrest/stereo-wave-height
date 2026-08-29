@@ -283,6 +283,8 @@ HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/righ
 
 因此 `CALIBRATION_QUALITY_FAIL`、`STATIC_VALIDATION_FAIL` 和 `approved_for_wass=false` 均保持。五帧 wave 只证明扩展软件链闭环，不改变这些质量门。单帧主线下一步转向专业双目相机与独立物理验证；动态视频问题继续在 Extension 中保留。详细证据见 [HomeTank_004 static summary](experiments/real_video/HomeTank_004/static_validation_summary.md) 和 [SGBM audit](experiments/real_video/HomeTank_004/wass_sgbm_matching_parameter_audit.md)。
 
+冻结 WASS 点的空间 MLS 已完成单点 hold-out 和连续空洞 `hole_2` 验证，并建立首个 canonical cam1 像素级高度图 MVP。输出保留 `OBSERVED / ESTIMATED / UNSUPPORTED` 三态和保守水面 ROI；该结果是 WASS 曲面内部一致性与展示链验证，不替代独立物理误差验证。
+
 ## 10. 当前已经证明什么
 
 在当前冻结的理想合成几何和软件版本范围内，项目已经证明：

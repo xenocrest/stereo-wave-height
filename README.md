@@ -48,6 +48,8 @@ Phase 3 正式 R0 结果现已完成纯观测分布 QA：raw range、P1–P99/P5
 
 Case 1 完整保留。Case 2 的用户尺值与点击已登记，五个冻结 artifact 哈希全部一致；但 canonical `(799,396)` 映射后距最近原始 pixel–XYZ 观测 `15.4946 px`，超过不可变的 `2 px` gate，且 ±1 px 九点全部失败。Case 2 因此分类为 `CASE2_PIXEL_XYZ_DISTANCE_GATE_FAIL`：不扩大搜索、不插值，也不用全局约 `-24.7 mm` 中位数代替尺旁局部值，物理误差保持未计算。
 
+空间 MLS 已通过单点 hold-out 与连续空洞 `hole_2` 内部一致性验证。基于冻结 Case 2 的最小 dense pixel-wise height-map MVP 已完成，输出明确区分 `OBSERVED / ESTIMATED / UNSUPPORTED`；它只证明空间补全与像素输出链成立，不构成独立物理准确度验证。
+
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 
 1. **OpenCV 官方双目标定流程接入**
