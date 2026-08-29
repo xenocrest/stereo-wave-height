@@ -11,12 +11,38 @@ from typing import Any
 
 import numpy as np
 import yaml
-from PIL import Image
+from PIL import Image, ImageDraw
 from scipy.spatial import ConvexHull, cKDTree
 
 from .mls import evaluate_holdout, quadratic_mls_predict
 
 OBSERVED, ESTIMATED, UNSUPPORTED = np.uint8(1), np.uint8(2), np.uint8(0)
+
+
+def rasterize_water_roi(
+    roi: dict[str, Any], *, width: int, height: int, observed_rectified_px: np.ndarray,
+    canonical_rectified_px: np.ndarray,
+) -> np.ndarray:
+    """Rasterize an explicit canonical polygon or the safe observed hull."""
+    roi_type = str(roi.get("type", "observed_convex_hull"))
+    if roi_type == "observed_convex_hull":
+        hull = ConvexHull(observed_rectified_px)
+        return np.all(
+            canonical_rectified_px @ hull.equations[:, :2].T + hull.equations[:, 2] <= 1e-7,
+            axis=1,
+        ).reshape(height, width)
+    if roi_type != "polygon":
+        raise ValueError("water ROI type must be observed_convex_hull or polygon")
+    if roi.get("coordinate_system") != "canonical_cam1":
+        raise ValueError("polygon water ROI must explicitly use canonical_cam1")
+    points = np.asarray(roi.get("points"), dtype=np.float64)
+    if points.ndim != 2 or points.shape[0] < 3 or points.shape[1] != 2 or not np.all(np.isfinite(points)):
+        raise ValueError("polygon water ROI requires at least three finite [x,y] points")
+    if np.any(points[:, 0] < 0) or np.any(points[:, 0] >= width) or np.any(points[:, 1] < 0) or np.any(points[:, 1] >= height):
+        raise ValueError("polygon water ROI lies outside the canonical image")
+    image = Image.new("1", (width, height), 0)
+    ImageDraw.Draw(image).polygon([tuple(point) for point in points], fill=1)
+    return np.asarray(image, dtype=bool)
 
 
 def _sha256(path: Path) -> str:
@@ -162,16 +188,20 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("frozen pixel/height artifacts do not align")
     observed_uv, xyz, height = observed_uv[water], xyz[water], height[water]
     mapping = yaml.safe_load(Path(frozen["mapping_yaml"]).read_text(encoding="utf-8"))
-    plane = yaml.safe_load(Path(frozen["reference_plane_yaml"]).read_text(encoding="utf-8"))["plane"]
+    if "reference_plane" in frozen:
+        plane = frozen["reference_plane"]
+    else:
+        plane = yaml.safe_load(Path(frozen["reference_plane_yaml"]).read_text(encoding="utf-8"))["plane"]
     normal, offset = np.asarray(plane["normal"], dtype=np.float64), float(plane["offset_m"])
     projection = metric_projection(np.loadtxt(frozen["projection_txt"]), float(frozen["calibrated_baseline_m"]))
     width, image_height = (int(v) for v in mapping["image_size_px"])
     yy, xx = np.indices((image_height, width), dtype=np.float64)
     canonical = np.column_stack((xx.ravel(), yy.ravel()))
     rectified = canonical_to_rectified(canonical, mapping)
-    hull = ConvexHull(observed_uv)
-    inside = np.all(rectified @ hull.equations[:, :2].T + hull.equations[:, 2] <= 1e-7, axis=1)
-    roi_indices = np.flatnonzero(inside)
+    roi_config = config.get("water_roi", {"type": "observed_convex_hull"})
+    roi = rasterize_water_roi(roi_config, width=width, height=image_height,
+                              observed_rectified_px=observed_uv, canonical_rectified_px=rectified)
+    roi_indices = np.flatnonzero(roi.ravel())
     basis = plane_basis(normal)
     support_xy = plane_xy(xyz, normal, basis)
     pixel_tree, physical_tree = cKDTree(observed_uv), cKDTree(support_xy)
@@ -209,8 +239,8 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
             diagnostics[int(flat_index)] = diagnostic
     dense_h = dense_h.reshape(image_height, width)
     status = status.reshape(image_height, width)
-    roi = inside.reshape(image_height, width)
     output = Path(config["output_directory"]); output.mkdir(parents=True, exist_ok=True)
+    stem = str(config.get("artifact_stem", "dense_height_case2"))
     metadata = {
         "classification": "DENSE_HEIGHT_MAP_MVP_COMPLETED", "source_frame": frozen["frame_identity"],
         "coordinate_system": coordinate_system, "output_pixel_system": "canonical_cam1",
@@ -219,20 +249,21 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
         "calibrated_baseline_m": float(frozen["calibrated_baseline_m"]),
         "p90_spacing_m": p90, "maximum_gap_m": max_gap,
         "completion_rule": "hole_2 = 3 * frame P90 nearest-neighbor spacing",
+        "water_roi": roi_config,
     }
-    np.savez_compressed(output / "dense_height_case2.npz", height_mm=dense_h, status=status,
+    np.savez_compressed(output / f"{stem}.npz", height_mm=dense_h, status=status,
                         valid_mask=status != UNSUPPORTED, water_roi_mask=roi,
                         metadata_json=np.asarray(json.dumps(metadata, ensure_ascii=False)))
     valid = np.isfinite(dense_h)
     lo, hi = np.percentile(dense_h[valid], (2, 98))
     scaled = np.zeros_like(dense_h, dtype=np.uint8)
     scaled[valid] = np.clip((dense_h[valid] - lo) / max(hi - lo, 1e-12) * 255, 0, 255).astype(np.uint8)
-    Image.fromarray(scaled, "L").save(output / "dense_height_case2.png")
+    Image.fromarray(scaled, "L").save(output / f"{stem}.png")
     status_rgb = np.zeros((image_height, width, 3), dtype=np.uint8)
     status_rgb[status == OBSERVED] = (0, 180, 255)
     status_rgb[status == ESTIMATED] = (70, 210, 80)
     status_rgb[roi & (status == UNSUPPORTED)] = (220, 50, 50)
-    Image.fromarray(status_rgb, "RGB").save(output / "dense_height_case2_status.png")
+    Image.fromarray(status_rgb, "RGB").save(output / f"{stem}_status.png")
     roi_count = int(roi.sum())
     counts = {name: int(np.count_nonzero(status[roi] == code)) for name, code in
               (("observed", OBSERVED), ("estimated", ESTIMATED), ("unsupported", UNSUPPORTED))}
@@ -242,13 +273,15 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
                           minimum_points=int(config["mls"]["minimum_points"]),
                           maximum_neighbors=int(config["mls"]["maximum_neighbors"]),
                           maximum_condition_number=float(config["mls"]["maximum_condition_number"]))
-    target_u, target_v = (int(v) for v in config["case2_check_canonical_px"])
-    target_flat = target_v * width + target_u
-    target_code = status.ravel()[target_flat] if 0 <= target_u < width and 0 <= target_v < image_height else UNSUPPORTED
     target_names = {int(UNSUPPORTED): "UNSUPPORTED", int(OBSERVED): "OBSERVED", int(ESTIMATED): "ESTIMATED"}
-    target = {"canonical_px": [target_u, target_v], "status": target_names[int(target_code)],
-              "height_mm": float(dense_h.ravel()[target_flat]) if target_code != UNSUPPORTED else None,
-              "inside_water_roi": bool(roi.ravel()[target_flat])}
+    target = None
+    if config.get("case2_check_canonical_px") is not None:
+        target_u, target_v = (int(v) for v in config["case2_check_canonical_px"])
+        target_flat = target_v * width + target_u
+        target_code = status.ravel()[target_flat] if 0 <= target_u < width and 0 <= target_v < image_height else UNSUPPORTED
+        target = {"canonical_px": [target_u, target_v], "status": target_names[int(target_code)],
+                  "height_mm": float(dense_h.ravel()[target_flat]) if target_code != UNSUPPORTED else None,
+                  "inside_water_roi": bool(roi.ravel()[target_flat])}
     elapsed = time.perf_counter() - started
     result = {"metadata": metadata, "resolution_px": [width, image_height], "water_roi_pixel_count": roi_count,
               "status": {key: {"count": count, "percent": 100 * count / roi_count} for key, count in counts.items()},
@@ -263,7 +296,7 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
               "case2_manual_point_check": target,
               "small_holdout_qa": qa.to_dict(),
               "frozen_artifacts_unchanged": all(_sha256(Path(path)) == digest for path, digest in original_hashes.items())}
-    (output / "dense_height_case2_result.yaml").write_text(yaml.safe_dump(result, sort_keys=False), encoding="utf-8")
+    (output / f"{stem}_result.yaml").write_text(yaml.safe_dump(result, sort_keys=False), encoding="utf-8")
     return result
 
 

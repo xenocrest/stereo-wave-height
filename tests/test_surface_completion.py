@@ -53,8 +53,11 @@ class SurfaceCompletionTests(unittest.TestCase):
             path = Path(frame["height_npz"])
             if path.exists():
                 self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest().upper(), frame["sha256"])
-        for source in Path("src/reconstruction").glob("*.py"):
-            self.assertNotIn("surface_completion", source.read_text(encoding="utf-8"))
+        # Completion is now an explicit optional post-reconstruction step in
+        # single_frame.py; the core reconstruction pipeline remains untouched.
+        self.assertNotIn(
+            "surface_completion", Path("src/reconstruction/pipeline.py").read_text(encoding="utf-8")
+        )
 
 
 if __name__ == "__main__":

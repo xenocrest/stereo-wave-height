@@ -57,6 +57,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "surface_completion_hole_validation.md",
             "dense_height_case2_config.yaml", "dense_height_case2_mvp.md",
             "dense_height_case2_outputs",
+            "single_frame_dense_smoke_config.yaml",
+            "single_frame_dense_backend_integration.yaml", "single_frame_dense_backend_integration.md",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",

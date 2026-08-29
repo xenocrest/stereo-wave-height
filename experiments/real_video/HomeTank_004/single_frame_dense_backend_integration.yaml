@@ -1,0 +1,36 @@
+schema_version: '1.0'
+classification: SINGLE_FRAME_DENSE_BACKEND_PARTIAL
+starting_head: 2ebfd1da5ce1ae582fb20b825129a7a490402659
+frozen_polygon_validation:
+  status: PASS
+  config: dense_height_case2_config.yaml
+  polygon_canonical_cam1: [[700, 340], [900, 340], [900, 520], [700, 520]]
+  roi_pixel_count: 36381
+  observed: {count: 1950, percent: 5.359940628349963}
+  estimated: {count: 8, percent: 0.02198950001374344}
+  unsupported: {count: 34423, percent: 94.6180698716363}
+  valid_height_count: 1958
+  height_mm: {minimum: -25.497047424316406, maximum: -16.74299430847168, mean: -24.30010223388672, median: -24.661468505859375}
+  generation_seconds: 3.7182143999998516
+  case2_point_799_396: {inside_roi: true, status: UNSUPPORTED, height_mm: null}
+single_frame_smoke:
+  input: HomeTank_004 wave videos at requested left time 29.4654055 s
+  selected_left: {pts: 2651866, timestamp_s: 29.465178}
+  selected_right: {pts: 2646070, timestamp_s: 29.400778}
+  pair_residual_ms: 1.005499999997994
+  new_wass_runs: 1
+  status: WASS_RECONSTRUCTION_FAILED
+  failure_stage: stereo_configuration_parse
+  failure: 'Unexpected key: RECTIFICATION_ALPHA'
+  cause: smoke config initially selected the official runtime instead of the frozen policy-capable runtime binding
+  elapsed_seconds: 14.175725300000067
+  dense_stage_reached: false
+  external_output: D:/stereo-wave-height-runs/HomeTank_004/single-frame-dense-smoke-20260829
+  rerun_performed: false
+integration:
+  automatic_dense_call_after_reconstruction: IMPLEMENTED_AND_UNIT_TESTED
+  enabled_false_backward_compatibility: PASS
+  corrected_future_runtime_binding: D:/stereo-wave-height-runs/HomeTank_004/reconstruction-pipeline-runtime-20260824.json
+calibration_modified: false
+synchronization_modified: false
+wass_parameters_modified: false

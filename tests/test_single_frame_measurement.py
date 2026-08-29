@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 import subprocess
+from types import SimpleNamespace
 
 import numpy as np
 from PIL import Image
@@ -14,6 +15,7 @@ from src.reconstruction.single_frame import (
     SingleFrameMeasurementRequest,
     SingleFrameMeasurementResult,
     SingleFrameMeasurementBackend,
+    DenseHeightSpec,
     SynchronizationSpec,
     canonicalize_image_pair,
 )
@@ -23,6 +25,54 @@ from src.synchronization.tolerance import OnDemandSyncTolerancePolicy
 
 
 class SingleFrameMeasurementTests(unittest.TestCase):
+    @patch("src.reconstruction.single_frame._encode_lossless_single_frame")
+    def test_dense_enabled_automatically_adds_summary_and_disabled_is_compatible(self, encode) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            left, right = root / "left.png", root / "right.png"
+            Image.fromarray(np.zeros((10, 10), dtype=np.uint8)).save(left)
+            Image.fromarray(np.zeros((10, 10), dtype=np.uint8)).save(right)
+            calibration, binding, mapping = root / "cal.yaml", root / "runtime.json", root / "mapping.yaml"
+            for path in (calibration, binding, mapping): path.write_text("{}\n", encoding="utf-8")
+            config_dir = root / "config"; config_dir.mkdir()
+            def fake_pipeline(config):
+                class Pipeline:
+                    def run(self):
+                        config.output_directory.mkdir(parents=True)
+                        payload = {"frames": [{"frame_id": "000000", "point_count": 10,
+                                   "pixel_xyz_correspondence_count": 10, "height_range_m": [-.01, .01],
+                                   "height_mean_m": 0., "height_rms_m": .001, "height_max_absolute_m": .01,
+                                   "water_plane_rms_m": .001}],
+                                   "height_reference": {"normal": [0, 0, 1], "offset_m": 0},
+                                   "calibration": {"baseline_m": .1}}
+                        result = config.output_directory / "reconstruction_result.json"
+                        result.write_text(json.dumps(payload), encoding="utf-8")
+                        return SimpleNamespace(result_json=result)
+                return Pipeline()
+            dense_calls = []
+            def fake_dense(config):
+                dense_calls.append(config)
+                return {"water_roi_pixel_count": 100, "status": {
+                    "observed": {"count": 40}, "estimated": {"count": 10}, "unsupported": {"count": 50}}}
+            dense = DenseHeightSpec(True, mapping, {"type": "polygon", "coordinate_system": "canonical_cam1",
+                                                    "points": [[1, 1], [8, 1], [8, 8], [1, 8]]})
+            request = SingleFrameMeasurementRequest(
+                "image_pair", root / "out", calibration, config_dir, binding, Path("ffmpeg"), "explicit",
+                left_image=left, right_image=right, dense_height=dense,
+            )
+            result = SingleFrameMeasurementBackend(pipeline_factory=fake_pipeline, dense_map_builder=fake_dense).run(request)
+            self.assertEqual(result.status, "SINGLE_FRAME_DENSE_HEIGHT_COMPLETED")
+            self.assertEqual(result.dense_height["valid_height_count"], 50)
+            self.assertEqual(len(dense_calls), 1)
+            compatible = SingleFrameMeasurementRequest(
+                "image_pair", root / "out-disabled", calibration, config_dir, binding, Path("ffmpeg"), "explicit",
+                left_image=left, right_image=right,
+            )
+            legacy = SingleFrameMeasurementBackend(pipeline_factory=fake_pipeline, dense_map_builder=fake_dense).run(compatible)
+            self.assertEqual(legacy.status, "SINGLE_FRAME_PIPELINE_PASS")
+            self.assertIsNone(legacy.dense_height)
+            self.assertEqual(len(dense_calls), 1)
+
     def test_affine_target_mapping_and_nearest_pts_pair_residual(self) -> None:
         mapping = AffineTimeMapping(1.0001, 0.02, 4, 0.001, 0.002)
         left = tuple(VideoFrameTimestamp(index, value) for index, value in enumerate((0.98, 1.0, 1.02)))

@@ -17,42 +17,54 @@ metadata:
   p90_spacing_m: 0.00010723304988250655
   maximum_gap_m: 0.0003216991496475197
   completion_rule: hole_2 = 3 * frame P90 nearest-neighbor spacing
+  water_roi:
+    type: polygon
+    coordinate_system: canonical_cam1
+    points:
+    - - 700
+      - 340
+    - - 900
+      - 340
+    - - 900
+      - 520
+    - - 700
+      - 520
 resolution_px:
 - 1920
 - 1080
-water_roi_pixel_count: 2629
+water_roi_pixel_count: 36381
 status:
   observed:
-    count: 1924
-    percent: 73.18372004564473
+    count: 1950
+    percent: 5.359940628349963
   estimated:
     count: 8
-    percent: 0.304298212248003
+    percent: 0.02198950001374344
   unsupported:
-    count: 697
-    percent: 26.511981742107267
+    count: 34423
+    percent: 94.6180698716363
 valid_height_mm:
   minimum: -25.497047424316406
-  maximum: -17.266788482666016
-  mean: -24.32248306274414
-  median: -24.67182159423828
-generation_seconds: 2.4073662000000695
+  maximum: -16.74299430847168
+  mean: -24.30010223388672
+  median: -24.661468505859375
+generation_seconds: 3.7182143999998516
 diagnostics: {}
 unsupported_reasons:
-  UNSUPPORTED_GAP: 649
-  UNSUPPORTED_MINIMUM_POINTS: 30
-  UNSUPPORTED_NO_CONVERGENCE: 18
+  UNSUPPORTED_GAP: 34355
+  UNSUPPORTED_MINIMUM_POINTS: 48
+  UNSUPPORTED_NO_CONVERGENCE: 20
 unsupported_nearest_support_m:
   minimum: 3.4840905724042574e-06
-  median: 0.000920630465536521
-  maximum: 0.005938955783303269
+  median: 0.01932277101715857
+  maximum: 0.05214687289329034
 case2_manual_point_check:
   canonical_px:
   - 799
   - 396
   status: UNSUPPORTED
   height_mm: null
-  inside_water_roi: false
+  inside_water_roi: true
 small_holdout_qa:
   test_point_count: 50
   supported_prediction_count: 49

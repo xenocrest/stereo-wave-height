@@ -8,6 +8,11 @@ frozen:
   projection_txt: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828/reconstruction/wass_workspace/work/000000_wd/P0cam.txt
   calibrated_baseline_m: 0.0686847
 observation_gate_px: 2.0
+water_roi:
+  type: polygon
+  coordinate_system: canonical_cam1
+  # Conservative visible-water demo area; selected from image content only.
+  points: [[700, 340], [900, 340], [900, 520], [700, 520]]
 completion:
   maximum_gap_multiplier: 3.0
 mls:

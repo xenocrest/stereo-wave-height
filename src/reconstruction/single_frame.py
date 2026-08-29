@@ -25,6 +25,27 @@ from synchronization.tolerance import OnDemandSyncTolerancePolicy
 
 from .io import FrameRequest, ReconstructionConfig
 from .pipeline import ReconstructionPipeline, ReconstructionRunResult
+from surface_completion.dense_map import build_dense_map
+
+
+@dataclass(frozen=True)
+class DenseHeightSpec:
+    """Minimal optional dense-height policy; it never changes reconstruction."""
+
+    enabled: bool = False
+    mapping_file: Path | None = None
+    water_roi: dict[str, object] | None = None
+    observation_gate_px: float = 2.0
+    method: str = "mls_quadratic"
+    max_gap_spacing_multiplier: float = 3.0
+
+    def __post_init__(self) -> None:
+        if self.enabled and self.mapping_file is None:
+            raise ValueError("enabled dense height requires a canonical cam1 mapping file")
+        if self.method != "mls_quadratic":
+            raise ValueError("only the frozen mls_quadratic method is supported")
+        if self.observation_gate_px != 2.0 or self.max_gap_spacing_multiplier != 3.0:
+            raise ValueError("dense-height frozen observation/hole policy cannot be changed")
 
 
 @dataclass(frozen=True)
@@ -70,6 +91,7 @@ class SingleFrameMeasurementRequest:
     reference_plane_file: Path | None = None
     surface_distance_threshold_m: float = 0.01
     synchronization_tolerance: OnDemandSyncTolerancePolicy | None = None
+    dense_height: DenseHeightSpec = DenseHeightSpec()
 
     def __post_init__(self) -> None:
         if self.input_mode not in {"image_pair", "video_time"}:
@@ -103,15 +125,12 @@ class SingleFrameMeasurementRequest:
             self.left_image, self.right_image, self.left_video, self.right_video,
             self.calibration_source, self.wass_config_dir, self.wass_runtime_binding,
             self.reference_plane_file,
+            self.dense_height.mapping_file,
         )
         return tuple(path for path in optional if path is not None)
 
     def to_dict(self) -> dict[str, object]:
-        data = asdict(self)
-        for key, value in tuple(data.items()):
-            if isinstance(value, Path):
-                data[key] = str(value)
-        return data
+        return json.loads(json.dumps(asdict(self), default=str))
 
 
 @dataclass(frozen=True)
@@ -137,6 +156,8 @@ class SingleFrameMeasurementResult:
     physical_accuracy_status: str
     warnings: tuple[str, ...]
     output_paths: dict[str, str]
+    dense_height: dict[str, object] | None = None
+    total_seconds: float | None = None
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -203,14 +224,22 @@ def _write_backend_outputs(output: Path, result: SingleFrameMeasurementResult) -
     ]
     if result.warnings:
         lines += ["## Warnings", "", *[f"- {warning}" for warning in result.warnings], ""]
+    if result.dense_height is not None:
+        lines += ["## Dense height", "", f"- Status: `{result.dense_height.get('status')}`",
+                  f"- ROI type: `{result.dense_height.get('roi_type')}`",
+                  f"- ROI pixels: `{result.dense_height.get('roi_pixel_count')}`",
+                  f"- OBSERVED / ESTIMATED / UNSUPPORTED: `{result.dense_height.get('observed_count')}` / "
+                  f"`{result.dense_height.get('estimated_count')}` / `{result.dense_height.get('unsupported_count')}`", ""]
     (output / "report" / "single_frame_report.md").write_text("\n".join(lines), encoding="utf-8")
 
 
 class SingleFrameMeasurementBackend:
     """Thin orchestration layer around the mature ReconstructionPipeline."""
 
-    def __init__(self, *, pipeline_factory: Callable[[ReconstructionConfig], Any] = ReconstructionPipeline) -> None:
+    def __init__(self, *, pipeline_factory: Callable[[ReconstructionConfig], Any] = ReconstructionPipeline,
+                 dense_map_builder: Callable[[dict[str, Any]], dict[str, Any]] = build_dense_map) -> None:
         self.pipeline_factory = pipeline_factory
+        self.dense_map_builder = dense_map_builder
 
     def _blocked_result(
         self, request: SingleFrameMeasurementRequest, selection: SelectedTimestampPair
@@ -259,6 +288,7 @@ class SingleFrameMeasurementBackend:
             physical_accuracy_status="PHYSICAL_ACCURACY_NOT_ESTABLISHED",
             warnings=(f"Fixed-calibration reconstruction terminated: {type(error).__name__}: {error}",),
             output_paths={"selected_pair": "selected_pair", "result_json": "single_frame_result.json", "report": "report/single_frame_report.md"},
+            total_seconds=elapsed_s,
         )
         _write_backend_outputs(request.output_dir, result)
         return result
@@ -374,8 +404,57 @@ class SingleFrameMeasurementBackend:
         sync_warning = selection is not None and (
             selection.quality_status == "FRAME_PAIR_SYNC_WARNING" or engineering_sync_status is not None
         )
+        dense_summary: dict[str, object] | None = None
+        dense_warning: str | None = None
+        dense_seconds = 0.0
+        if request.dense_height.enabled:
+            dense_output = output / "dense_height"
+            dense_started = time.perf_counter()
+            try:
+                dense_result = self.dense_map_builder({
+                    "frozen": {
+                        "frame_identity": f"single_frame/{frame['frame_id']}",
+                        "pixel_xyz_npz": str(pipeline_output / "pixel_xyz" / "000000_pixel_xyz.npz"),
+                        "height_npz": str(pipeline_output / "height" / "000000_height_points.npz"),
+                        "mapping_yaml": str(request.dense_height.mapping_file),
+                        "reference_plane": {"model": "normal dot [X,Y,Z] + offset_m = 0",
+                                            "normal": reference["normal"], "offset_m": reference["offset_m"]},
+                        "projection_txt": str(pipeline_output / "wass_workspace" / "work" / "000000_wd" / "P0cam.txt"),
+                        "calibrated_baseline_m": reconstructed["calibration"]["baseline_m"],
+                    },
+                    "observation_gate_px": request.dense_height.observation_gate_px,
+                    "water_roi": request.dense_height.water_roi or {"type": "observed_convex_hull"},
+                    "completion": {"maximum_gap_multiplier": request.dense_height.max_gap_spacing_multiplier},
+                    "mls": {"radius_multiplier": 6.0, "sigma_multiplier": 3.0, "minimum_points": 12,
+                            "maximum_neighbors": 64, "maximum_condition_number": 1e8},
+                    "output_directory": str(dense_output), "artifact_stem": "dense_height",
+                })
+                dense_seconds = time.perf_counter() - dense_started
+                status_counts = dense_result["status"]
+                valid_count = int(status_counts["observed"]["count"] + status_counts["estimated"]["count"])
+                dense_summary = {
+                    "status": "COMPLETED", "roi_type": (request.dense_height.water_roi or {"type": "observed_convex_hull"})["type"],
+                    "roi_pixel_count": dense_result["water_roi_pixel_count"],
+                    "observed_count": status_counts["observed"]["count"],
+                    "estimated_count": status_counts["estimated"]["count"],
+                    "unsupported_count": status_counts["unsupported"]["count"],
+                    "valid_height_count": valid_count, "generation_time_sec": dense_seconds,
+                    "artifact_paths": {"npz": "dense_height/dense_height.npz", "height_png": "dense_height/dense_height.png",
+                                       "status_png": "dense_height/dense_height_status.png",
+                                       "result_yaml": "dense_height/dense_height_result.yaml"},
+                }
+            except Exception as error:
+                dense_seconds = time.perf_counter() - dense_started
+                dense_summary = {"status": "FAILED", "error": f"{type(error).__name__}: {error}",
+                                 "generation_time_sec": dense_seconds}
+                dense_warning = "Dense height generation failed after successful reconstruction."
+
+        dense_ok = dense_summary is not None and dense_summary.get("status") == "COMPLETED" and int(dense_summary["valid_height_count"]) > 0
+        base_status = "SINGLE_FRAME_PIPELINE_PASS_WITH_SYNC_WARNING" if sync_warning else "SINGLE_FRAME_PIPELINE_PASS"
+        final_status = ("SINGLE_FRAME_DENSE_HEIGHT_COMPLETED" if dense_ok else
+                        "SINGLE_FRAME_RECONSTRUCTION_COMPLETED_DENSE_HEIGHT_FAILED" if request.dense_height.enabled else base_status)
         result = SingleFrameMeasurementResult(
-            status="SINGLE_FRAME_PIPELINE_PASS_WITH_SYNC_WARNING" if sync_warning else "SINGLE_FRAME_PIPELINE_PASS",
+            status=final_status,
             requested_time_s=request.target_time_s,
             left_timestamp_s=selection.left.timestamp_s if selection else None,
             right_timestamp_s=selection.right.timestamp_s if selection else None,
@@ -399,13 +478,14 @@ class SingleFrameMeasurementBackend:
             warnings=tuple(filter(None, [
                 "Strict frame-level synchronization remains unproven; R0 is accepted by the controlled on-demand tolerance policy."
                 if engineering_sync_status else
-                ("Frame pair passed with synchronization warning." if sync_warning else None)
+                ("Frame pair passed with synchronization warning." if sync_warning else None), dense_warning,
             ])),
             output_paths={
                 "selected_pair": "selected_pair", "pointcloud": "reconstruction/pointcloud",
                 "height": "reconstruction/height", "pixel_xyz": "reconstruction/pixel_xyz",
                 "result_json": "single_frame_result.json", "report": "report/single_frame_report.md",
             },
+            dense_height=dense_summary, total_seconds=wass_seconds + dense_seconds,
         )
         _write_backend_outputs(output, result)
         return result

@@ -1,17 +1,36 @@
 """Minimum status/ray safeguards for the dense-map MVP."""
 
 import unittest
+from pathlib import Path
 
 import numpy as np
 
 from src.surface_completion.dense_map import (
     ESTIMATED, OBSERVED, UNSUPPORTED, estimate_ray_surface, metric_projection,
     plane_basis, plane_xy, ray_from_projection,
+    rasterize_water_roi,
 )
 from scipy.spatial import cKDTree
 
 
 class DenseHeightMapTests(unittest.TestCase):
+    def test_polygon_roi_rasterizes_only_declared_canonical_area(self) -> None:
+        canonical = np.zeros((100, 2))
+        mask = rasterize_water_roi(
+            {"type": "polygon", "coordinate_system": "canonical_cam1",
+             "points": [[2, 2], [7, 2], [7, 7], [2, 7]]},
+            width=10, height=10, observed_rectified_px=np.array([[0., 0.], [1., 0.], [0., 1.]]),
+            canonical_rectified_px=canonical,
+        )
+        self.assertTrue(mask[4, 4]); self.assertFalse(mask[0, 0]); self.assertFalse(mask[9, 9])
+
+    def test_committed_polygon_output_never_populates_outside_roi(self) -> None:
+        path = Path("experiments/real_video/HomeTank_004/dense_height_case2_outputs/dense_height_case2.npz")
+        with np.load(path) as data:
+            outside = ~data["water_roi_mask"]
+            self.assertTrue(np.all(data["status"][outside] == UNSUPPORTED))
+            self.assertTrue(np.all(np.isnan(data["height_mm"][outside])))
+
     def test_status_codes_are_distinct_and_unsupported_is_zero(self) -> None:
         self.assertEqual(int(UNSUPPORTED), 0)
         self.assertEqual({int(UNSUPPORTED), int(OBSERVED), int(ESTIMATED)}, {0, 1, 2})

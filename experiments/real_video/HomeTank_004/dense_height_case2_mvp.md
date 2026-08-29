@@ -24,8 +24,10 @@ that plane, followed by ray/surface intersection.
 
 ## Conservative domain and support policy
 
-The water ROI is the interior of the convex hull of projected frozen water
-observations. No sky, wall, ruler, hand, or full-frame segmentation is added.
+The demo water ROI is the conservative canonical-cam1 polygon
+`[(700,340), (900,340), (900,520), (700,520)]`, selected from visible image
+content rather than reconstructed H values. The original observed-convex-hull
+mode remains available as the default safety mode.
 
 The frame P90 nearest-neighbour spacing is 0.107233 mm. The largest admitted
 continuous hole is `hole_2 = 3 × P90 = 0.321699 mm`. Because discrete support
@@ -39,18 +41,18 @@ rank check, and condition-number limit of $10^8$.
 
 | Item | Result |
 |---|---:|
-| Water ROI pixels | 2,629 |
-| OBSERVED | 1,924 (73.1837%) |
-| ESTIMATED | 8 (0.3043%) |
-| UNSUPPORTED | 697 (26.5120%) |
+| Water ROI pixels | 36,381 |
+| OBSERVED | 1,950 (5.3599%) |
+| ESTIMATED | 8 (0.0220%) |
+| UNSUPPORTED | 34,423 (94.6181%) |
 | Valid H minimum | -25.4970 mm |
-| Valid H maximum | -17.2668 mm |
-| Valid H mean | -24.3225 mm |
-| Valid H median | -24.6718 mm |
-| Generation time | approximately 2.4 s (recorded per run in result YAML) |
+| Valid H maximum | -16.7430 mm |
+| Valid H mean | -24.3001 mm |
+| Valid H median | -24.6615 mm |
+| Generation time | 3.7182 s |
 
-The frozen manual point `(799,396)` is outside the conservative water ROI and
-remains `UNSUPPORTED`; no gate was relaxed and no height was fabricated.
+The frozen manual point `(799,396)` is inside the polygon but remains
+`UNSUPPORTED`; no gate was relaxed and no height was fabricated.
 
 A deterministic 50-point direct-observation hold-out QA supported 49 points
 (98.0%), with MAE 0.0849 mm, RMSE 0.3059 mm, and P95 absolute error 0.2383 mm.

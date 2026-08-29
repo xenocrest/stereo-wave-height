@@ -29,6 +29,15 @@ processing:
   wass_runtime_binding: null
   reference_plane_file: null
   reference_plane_source: current_frame_fit_or_static_reference_must_be_explicit
+dense_height:
+  enabled: false
+  mapping_file: null
+  water_roi:
+    type: observed_convex_hull
+  observation_gate_px: 2.0
+  surface_completion:
+    method: mls_quadratic
+    max_gap_spacing_multiplier: 3.0
 output:
   directory: null
 validation_boundary:
