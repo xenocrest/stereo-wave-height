@@ -285,7 +285,7 @@ HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/righ
 
 冻结 WASS 点的空间 MLS 已完成单点 hold-out 和连续空洞 `hole_2` 验证，并建立首个 canonical cam1 像素级高度图 MVP。输出保留 `OBSERVED / ESTIMATED / UNSUPPORTED` 三态和保守水面 ROI；该结果是 WASS 曲面内部一致性与展示链验证，不替代独立物理误差验证。
 
-单帧后端已加入可选 polygon water ROI 与自动 dense-height 调用，且关闭时保持原行为。冻结 Case 2 polygon 结果已生成；新视频 smoke run 因 runtime binding 与冻结 rectification policy 不兼容而在 WASS stereo 配置解析停止，因此当前集成分类为 `SINGLE_FRAME_DENSE_BACKEND_PARTIAL`，尚不能声称视频到 dense 输出的新运行已闭环。
+单帧后端已加入可选 polygon water ROI 与自动 dense-height 调用，且关闭时保持原行为。使用已验证的 policy-capable runtime 后，Case 2 新 smoke run 已从视频输入和目标时间自动生成 XYZ/H、pixel–XYZ、dense NPZ、高度图、状态图与统一结果，分类为 `SINGLE_FRAME_DENSE_BACKEND_COMPLETED`。后端已冻结用于演示层集成；这不改变同步与物理精度警告。
 
 ## 10. 当前已经证明什么
 

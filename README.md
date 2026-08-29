@@ -50,7 +50,7 @@ Case 1 完整保留。Case 2 的用户尺值与点击已登记，五个冻结 ar
 
 空间 MLS 已通过单点 hold-out 与连续空洞 `hole_2` 内部一致性验证。基于冻结 Case 2 的最小 dense pixel-wise height-map MVP 已完成，输出明确区分 `OBSERVED / ESTIMATED / UNSUPPORTED`；它只证明空间补全与像素输出链成立，不构成独立物理准确度验证。
 
-按需单帧后端现已支持独立的 canonical-cam1 polygon water ROI，并在重建成功后自动调用 dense-height 阶段；`enabled=false` 保持原流程兼容。冻结 Case 2 验证已通过，但本轮唯一一次视频 smoke run 因选错不支持冻结 rectification policy 的 WASS runtime binding 而停在 stereo 配置解析，故端到端状态保持 `SINGLE_FRAME_DENSE_BACKEND_PARTIAL`，未掩盖失败。
+按需单帧后端现已支持独立的 canonical-cam1 polygon water ROI，并在重建成功后自动调用 dense-height 阶段；`enabled=false` 保持原流程兼容。修正 runtime binding 后，HomeTank_004 Case 2 已从双目视频与目标时间自动完成 WASS、XYZ/H、pixel–XYZ 和三态 dense height 输出，状态为 `SINGLE_FRAME_DENSE_BACKEND_COMPLETED`；该后端现冻结用于下一阶段演示界面集成，物理精度警告仍保留。
 
 在保留全部理想仿真成果和历史失败记录的基础上，最近完成了第一轮真实手机视频处理闭环：
 

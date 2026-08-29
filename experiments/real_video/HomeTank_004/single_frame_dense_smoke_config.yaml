@@ -41,4 +41,4 @@ dense_height:
     method: mls_quadratic
     max_gap_spacing_multiplier: 3.0
 output:
-  directory: D:/stereo-wave-height-runs/HomeTank_004/single-frame-dense-smoke-20260829
+  directory: D:/stereo-wave-height-runs/HomeTank_004/single-frame-dense-completed-20260829

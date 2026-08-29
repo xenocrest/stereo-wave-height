@@ -1,5 +1,6 @@
 schema_version: '1.0'
-classification: SINGLE_FRAME_DENSE_BACKEND_PARTIAL
+classification: SINGLE_FRAME_DENSE_BACKEND_COMPLETED
+freeze_status: BACKEND_FROZEN_FOR_DEMO_INTEGRATION
 starting_head: 2ebfd1da5ce1ae582fb20b825129a7a490402659
 frozen_polygon_validation:
   status: PASS
@@ -18,19 +19,36 @@ single_frame_smoke:
   selected_left: {pts: 2651866, timestamp_s: 29.465178}
   selected_right: {pts: 2646070, timestamp_s: 29.400778}
   pair_residual_ms: 1.005499999997994
-  new_wass_runs: 1
-  status: WASS_RECONSTRUCTION_FAILED
-  failure_stage: stereo_configuration_parse
-  failure: 'Unexpected key: RECTIFICATION_ALPHA'
-  cause: smoke config initially selected the official runtime instead of the frozen policy-capable runtime binding
-  elapsed_seconds: 14.175725300000067
-  dense_stage_reached: false
-  external_output: D:/stereo-wave-height-runs/HomeTank_004/single-frame-dense-smoke-20260829
-  rerun_performed: false
+  new_wass_runs_this_task: 1
+  runtime_binding: D:/stereo-wave-height-runs/HomeTank_004/reconstruction-pipeline-runtime-20260824.json
+  status: SINGLE_FRAME_DENSE_HEIGHT_COMPLETED
+  prepare: PASS
+  match: PASS
+  stereo: PASS
+  xyz_point_count: 35459
+  height_point_count: 35459
+  pixel_xyz_count: 35459
+  polygon_loaded: true
+  roi_pixel_count: 36381
+  observed: {count: 1950, percent: 5.359940628349963}
+  estimated: {count: 8, percent: 0.02198950001374344}
+  unsupported: {count: 34423, percent: 94.6180698716363}
+  valid_height_count: 1958
+  height_mm: {minimum: -25.497047424316406, maximum: -16.74299430847168, mean: -24.30010223388672, median: -24.661468505859375}
+  reconstruction_seconds: 25.171454299999823
+  dense_seconds_backend: 3.776530399999956
+  dense_seconds_module: 3.763300199999776
+  backend_internal_total_seconds: 28.94798469999978
+  command_wall_seconds: 31.51
+  selection_staging_and_report_overhead_seconds: 2.56201530000022
+  frame_selection_time_separately_instrumented: false
+  external_output: D:/stereo-wave-height-runs/HomeTank_004/single-frame-dense-completed-20260829
+  artifacts_complete: true
 integration:
   automatic_dense_call_after_reconstruction: IMPLEMENTED_AND_UNIT_TESTED
   enabled_false_backward_compatibility: PASS
-  corrected_future_runtime_binding: D:/stereo-wave-height-runs/HomeTank_004/reconstruction-pipeline-runtime-20260824.json
+  verified_runtime_binding: D:/stereo-wave-height-runs/HomeTank_004/reconstruction-pipeline-runtime-20260824.json
+  backend_cli: python -m src.reconstruction.run_single_frame --config experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml
 calibration_modified: false
 synchronization_modified: false
 wass_parameters_modified: false
