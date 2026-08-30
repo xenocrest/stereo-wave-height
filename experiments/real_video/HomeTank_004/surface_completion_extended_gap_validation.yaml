@@ -1,0 +1,293 @@
+schema_version: '1.0'
+experiment: FROZEN_WASS_CONTINUOUS_HOLE_COMPLETION
+method: existing_local_weighted_quadratic_MLS_in_physical_XY
+interpretation_boundary: internal WASS surface consistency, not independent physical
+  accuracy
+config:
+  schema_version: '1.0'
+  experiment:
+    maximum_test_centers: 200
+    seed: 20260829
+    hole_radius_multipliers:
+    - 4.5
+    - 6.0
+    - 9.0
+    - 12.0
+  mls:
+    radius_multiplier: 6.0
+    sigma_multiplier: 3.0
+    minimum_points: 12
+    maximum_neighbors: 64
+    maximum_condition_number: 100000000.0
+  frames:
+  - id: static_r0
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/sync-tolerance-formal-r0-20260826/static/reconstruction/height/000000_height_points.npz
+    sha256: B57113FE200ED593C95AE8BEEE7E7016CF13F595268FFD4F911EFB70B046FF9D
+  - id: wave_case1
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/sync-tolerance-formal-r0-20260826/wave/reconstruction/height/000000_height_points.npz
+    sha256: BD99D0CD2B45C1E56753ECA3DF6DA1A7E2676944D86A829F098DBA8E83BC7E10
+  - id: wave_case2
+    height_npz: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828/reconstruction/height/000000_height_points.npz
+    sha256: 635C74821FDBB2806BAEAB0332C7FFF842D661B97664649F26F1B97C22F2252D
+  output_yaml: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/surface_completion_extended_gap_validation.yaml
+frames:
+  static_r0:
+    source_sha256: B57113FE200ED593C95AE8BEEE7E7016CF13F595268FFD4F911EFB70B046FF9D
+    spacing_m:
+      p50: 9.332755584288639e-05
+      p90: 0.00010252767082201313
+      p95: 0.00010379775466279145
+    rules:
+      support_radius_m: 0.0006151660249320789
+      gaussian_sigma_m: 0.00030758301246603943
+      hole_radius_basis: frame_p90_nearest_neighbor_spacing
+      hole_radius_multipliers:
+      - 4.5
+      - 6.0
+      - 9.0
+      - 12.0
+      minimum_points: 12
+      maximum_neighbors: 64
+      maximum_condition_number: 100000000.0
+      test_center_count: 200
+      seed: 20260829
+    levels:
+      hole_0:
+        hole_radius_m: 0.0004613745186990591
+        test_point_count: 200
+        supported_prediction_count: 199
+        unsupported_count: 1
+        coverage_percent: 99.5
+        mae_m: 0.0008051843592997902
+        rmse_m: 0.0016828709107236071
+        median_absolute_error_m: 0.000245671038552446
+        p95_absolute_error_m: 0.003525547447946726
+        maximum_absolute_error_m: 0.009938541827031213
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 1
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_1:
+        hole_radius_m: 0.0006151660249320789
+        test_point_count: 200
+        supported_prediction_count: 0
+        unsupported_count: 200
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 200
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_2:
+        hole_radius_m: 0.0009227490373981182
+        test_point_count: 200
+        supported_prediction_count: 0
+        unsupported_count: 200
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 200
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_3:
+        hole_radius_m: 0.0012303320498641577
+        test_point_count: 200
+        supported_prediction_count: 0
+        unsupported_count: 200
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 200
+          UNSUPPORTED_ILL_CONDITIONED: 0
+  wave_case1:
+    source_sha256: BD99D0CD2B45C1E56753ECA3DF6DA1A7E2676944D86A829F098DBA8E83BC7E10
+    spacing_m:
+      p50: 0.00010011223973126985
+      p90: 0.00010059767594966819
+      p95: 0.00010136998759049885
+    rules:
+      support_radius_m: 0.0006035860556980091
+      gaussian_sigma_m: 0.00030179302784900453
+      hole_radius_basis: frame_p90_nearest_neighbor_spacing
+      hole_radius_multipliers:
+      - 4.5
+      - 6.0
+      - 9.0
+      - 12.0
+      minimum_points: 12
+      maximum_neighbors: 64
+      maximum_condition_number: 100000000.0
+      test_center_count: 199
+      seed: 20260829
+    levels:
+      hole_0:
+        hole_radius_m: 0.00045268954177350685
+        test_point_count: 199
+        supported_prediction_count: 193
+        unsupported_count: 6
+        coverage_percent: 96.98492462311557
+        mae_m: 0.0005594893079481713
+        rmse_m: 0.0011595444107337257
+        median_absolute_error_m: 0.00019348007849931837
+        p95_absolute_error_m: 0.00202178421529639
+        maximum_absolute_error_m: 0.008499349103397998
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 6
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_1:
+        hole_radius_m: 0.0006035860556980091
+        test_point_count: 199
+        supported_prediction_count: 0
+        unsupported_count: 199
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 199
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_2:
+        hole_radius_m: 0.0009053790835470137
+        test_point_count: 199
+        supported_prediction_count: 0
+        unsupported_count: 199
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 199
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_3:
+        hole_radius_m: 0.0012071721113960181
+        test_point_count: 199
+        supported_prediction_count: 0
+        unsupported_count: 199
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 199
+          UNSUPPORTED_ILL_CONDITIONED: 0
+  wave_case2:
+    source_sha256: 635C74821FDBB2806BAEAB0332C7FFF842D661B97664649F26F1B97C22F2252D
+    spacing_m:
+      p50: 9.707334263704743e-05
+      p90: 9.715955647616081e-05
+      p95: 9.762999360496599e-05
+    rules:
+      support_radius_m: 0.0005829573388569649
+      gaussian_sigma_m: 0.00029147866942848244
+      hole_radius_basis: frame_p90_nearest_neighbor_spacing
+      hole_radius_multipliers:
+      - 4.5
+      - 6.0
+      - 9.0
+      - 12.0
+      minimum_points: 12
+      maximum_neighbors: 64
+      maximum_condition_number: 100000000.0
+      test_center_count: 200
+      seed: 20260829
+    levels:
+      hole_0:
+        hole_radius_m: 0.00043721800414272367
+        test_point_count: 200
+        supported_prediction_count: 196
+        unsupported_count: 4
+        coverage_percent: 98.0
+        mae_m: 0.0003096708123750733
+        rmse_m: 0.0007619589267237922
+        median_absolute_error_m: 9.071135747782365e-05
+        p95_absolute_error_m: 0.001563221855699735
+        maximum_absolute_error_m: 0.006800414190629732
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 4
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_1:
+        hole_radius_m: 0.0005829573388569649
+        test_point_count: 200
+        supported_prediction_count: 0
+        unsupported_count: 200
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 200
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_2:
+        hole_radius_m: 0.0008744360082854473
+        test_point_count: 200
+        supported_prediction_count: 0
+        unsupported_count: 200
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 200
+          UNSUPPORTED_ILL_CONDITIONED: 0
+      hole_3:
+        hole_radius_m: 0.0011659146777139298
+        test_point_count: 200
+        supported_prediction_count: 0
+        unsupported_count: 200
+        coverage_percent: 0.0
+        mae_m: null
+        rmse_m: null
+        median_absolute_error_m: null
+        p95_absolute_error_m: null
+        maximum_absolute_error_m: null
+        unsupported_reasons:
+          UNSUPPORTED_MINIMUM_POINTS: 200
+          UNSUPPORTED_ILL_CONDITIONED: 0
+classification: NO_SAFE_EXTENSION
+raw_evaluator_classification: HOLE_COMPLETION_UNRELIABLE
+classification_screen: 'each required level on every frame: coverage >=90%, RMSE <=2
+  mm, P95 <=3 mm'
+historical_reference:
+  source: surface_completion_hole_validation.yaml
+  safe_level_3x_p90: true
+  level_4_5x_p90: TRANSITION
+decision:
+  safe_maximum_multiplier: 3.0
+  transition_multipliers: [4.5]
+  unsupported_from_multiplier: 6.0
+  extended_gap_classification: NO_SAFE_EXTENSION
+  formal_dense_policy_modified: false
+  dense_map_recomputed: false
+  coverage_gain_classification: COVERAGE_GAIN_NOT_MATERIAL
+  reason: hole radius at 6x P90 equals the unchanged MLS support radius, leaving no support observations outside the artificial hole
+case2_demo_status_preserved:
+  roi_pixel_count: 36381
+  observed_count: 1950
+  observed_percent: 5.359940628350
+  estimated_count: 8
+  estimated_percent: 0.021989500014
+  unsupported_count: 34423
+  unsupported_percent: 94.618069871636
+  valid_height_percent: 5.381930128364
+  check_pixel_799_396: UNSUPPORTED
+  generation_time_sec: null
+  note: not regenerated because no safe extension was identified

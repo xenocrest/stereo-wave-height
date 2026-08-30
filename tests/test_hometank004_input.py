@@ -55,6 +55,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "surface_completion_holdout_validation.md",
             "surface_completion_hole_config.yaml", "surface_completion_hole_validation.yaml",
             "surface_completion_hole_validation.md",
+            "surface_completion_extended_gap_validation.yaml", "surface_completion_extended_gap_validation.md",
             "dense_height_case2_config.yaml", "dense_height_case2_mvp.md",
             "dense_height_case2_outputs",
             "single_frame_dense_smoke_config.yaml",
