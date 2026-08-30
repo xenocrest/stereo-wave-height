@@ -68,7 +68,7 @@ class FrozenBackendRunner:
         self.template_config = Path(template_config).resolve()
 
     def prepare_config(self, left_video: Path, right_video: Path, target_time_sec: float,
-                       output_directory: Path) -> Path:
+                       output_directory: Path, calibration_file: Path | None = None) -> Path:
         data = yaml.safe_load(self.template_config.read_text(encoding="utf-8"))
         template_base = self.template_config.parent
         def absolute(value: str) -> str:
@@ -78,7 +78,7 @@ class FrozenBackendRunner:
         data["input"]["right_video"] = str(Path(right_video).resolve())
         data["input"]["target_time_s"] = float(target_time_sec)
         data["input"]["ffmpeg_executable"] = absolute(data["input"]["ffmpeg_executable"])
-        data["calibration"]["source"] = absolute(data["calibration"]["source"])
+        data["calibration"]["source"] = str(Path(calibration_file).resolve()) if calibration_file else absolute(data["calibration"]["source"])
         for key in ("wass_config_dir", "wass_runtime_binding", "reference_plane_file"):
             data["processing"][key] = absolute(data["processing"][key])
         if data.get("dense_height", {}).get("mapping_file"):
@@ -89,8 +89,8 @@ class FrozenBackendRunner:
         return config
 
     def run(self, left_video: Path, right_video: Path, target_time_sec: float,
-            output_directory: Path, log_path: Path) -> MeasurementRecord:
-        config = self.prepare_config(left_video, right_video, target_time_sec, output_directory)
+            output_directory: Path, log_path: Path, calibration_file: Path | None = None) -> MeasurementRecord:
+        config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file)
         environment = os.environ.copy()
         extra = os.pathsep.join((str(self.repository / "src"), str(self.repository)))
         environment["PYTHONPATH"] = extra + (os.pathsep + environment["PYTHONPATH"] if environment.get("PYTHONPATH") else "")

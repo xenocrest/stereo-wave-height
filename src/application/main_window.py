@@ -15,10 +15,12 @@ from .video_tools import VideoMetadata, extract_frame, probe_video
 from .visualization import DenseMeasurementView, DisplayTransform, make_height_overlay
 from .export import delete_session, export_session
 from .runtime_paths import resolve_runtime_paths
+from .input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, VIDEO_FORMAT_TEXT, GuidedInputState
+from .calibration_workflow import calibrate_from_videos
 
 
 class StereoWaveHeightApplication:
-    title = "Stereo Wave Height — Offline Demo Stage 1"
+    title = "双目水面三维测量 — 离线演示系统"
 
     def __init__(self, repository: Path | None = None) -> None:
         paths = resolve_runtime_paths(repository)
@@ -34,6 +36,7 @@ class StereoWaveHeightApplication:
         self.backend_started_at: float | None = None
         self.display_transform: DisplayTransform | None = None; self.dense_view: DenseMeasurementView | None = None
         self.viewing_result = False
+        self.input_state = GuidedInputState()
         self._worker_messages: queue.Queue[tuple[str, Any]] = queue.Queue()
 
     def _var(self, key: str, value: str = "") -> tk.StringVar:
@@ -44,17 +47,21 @@ class StereoWaveHeightApplication:
         if hasattr(self, "log_text"): self.log_text.insert(tk.END, message + "\n"); self.log_text.see(tk.END)
 
     def _choose_video(self, key: str) -> None:
-        selected = filedialog.askopenfilename(title="选择离线视频", filetypes=[("Video", "*.mp4 *.mov *.avi *.mkv *.m4v")])
+        names={"left_calibration":"选择左相机标定视频","right_calibration":"选择右相机标定视频",
+               "left_measurement":"选择左相机测量视频","right_measurement":"选择右相机测量视频"}
+        selected = filedialog.askopenfilename(title=names[key], filetypes=list(VIDEO_FILE_TYPES))
         if not selected: return
         self.variables[key].set(selected)
         try:
             meta = probe_video(Path(selected), self.ffmpeg); self.metadata[key] = meta
-            self.variables[key + "_meta"].set(f"{meta.width}×{meta.height} | {meta.fps:.3f} fps | {meta.duration_sec:.3f} s")
+            role="LEFT" if key.startswith("left") else "RIGHT"
+            self.variables[key + "_meta"].set(f"角色：{role}　文件：{Path(selected).name}\n分辨率：{meta.width} × {meta.height}　FPS：{meta.fps:.3f}　时长：{meta.duration_sec:.3f} s")
             if key == "right_measurement": self.timeline.configure(to=meta.duration_sec); self._show_video_frame(0.0)
-            if self.variables.get("left_measurement") and self.variables["left_measurement"].get() and self.variables.get("right_measurement") and self.variables["right_measurement"].get():
-                self.variables["app_state"].set("PAUSED_READY_FOR_MEASUREMENT")
+            if key.endswith("measurement"):
+                self.input_state.mark_measurement_video("left" if key.startswith("left") else "right")
+                self._refresh_step_state()
             self._log(f"selected {key}: {selected}")
-        except Exception as error: messagebox.showerror(self.title, str(error))
+        except Exception as error: messagebox.showerror(self.title, f"视频读取失败。请确认所选文件是受支持且未损坏的本地视频。\n\n{error}")
 
     def _show_pil(self, image: Image.Image) -> None:
         source_width,source_height=image.size; canvas_width=max(self.image_canvas.winfo_width(),760); canvas_height=max(self.image_canvas.winfo_height(),440)
@@ -71,30 +78,83 @@ class StereoWaveHeightApplication:
     def _preview_calibration(self, key: str) -> None:
         path = self.variables[key].get()
         if not path: messagebox.showwarning(self.title, "请先选择标定视频。"); return
-        try: self._show_pil(extract_frame(Path(path), 0.0, self.ffmpeg)); self._log(f"previewed {key}")
-        except Exception as error: messagebox.showerror(self.title, str(error))
+        try:
+            image=extract_frame(Path(path),0.0,self.ffmpeg); image.thumbnail((900,560),Image.Resampling.LANCZOS)
+            dialog=tk.Toplevel(self.root); dialog.title(("LEFT" if key.startswith("left") else "RIGHT")+" 标定视频代表帧")
+            photo=ImageTk.PhotoImage(image); label=ttk.Label(dialog,image=photo); label.image=photo; label.pack(padx=8,pady=8)
+            ttk.Label(dialog,text=f"相机角色：{'LEFT' if key.startswith('left') else 'RIGHT'}　文件：{Path(path).name}").pack(pady=(0,8))
+            self._log(f"previewed {key}")
+        except Exception as error: messagebox.showerror(self.title,f"无法预览标定视频代表帧。请检查视频文件。\n\n{error}")
 
     def _load_calibration(self) -> None:
-        path_text = filedialog.askopenfilename(title="加载标定结果", initialdir=self.experiment, filetypes=[("YAML", "*.yaml *.yml")])
+        path_text = filedialog.askopenfilename(title="选择已有双目标定结果", initialdir=self.experiment, filetypes=list(CALIBRATION_FILE_TYPES))
         if not path_text: return
         try:
             data = yaml.safe_load(Path(path_text).read_text(encoding="utf-8"))
-            for prefix, node in (("left", data["mono_cam0"]), ("right", data["mono_cam1"])):
-                k=node["K"]
-                for field,value in {"fx":k[0][0],"fy":k[1][1],"cx":k[0][2],"cy":k[1][2],"D":node["D"]}.items(): self.variables[f"{prefix}_{field}"].set(str(value))
-            stereo=data["stereo"]
-            qa=(f"R = {stereo['R_right_from_left']}\nT = {stereo['T_right_from_left_m']} m\n"
-                f"baseline = {stereo['baseline_m']:.9f} m\nstatus = {data['status']}\n"
-                f"stereo RMS = {stereo['rms_px']:.6f} px\nepipolar RMS = {stereo['symmetric_epipolar_rms_px']:.6f} px")
-            self.stereo_text.configure(state=tk.NORMAL); self.stereo_text.delete("1.0",tk.END); self.stereo_text.insert(tk.END,qa); self.stereo_text.configure(state=tk.DISABLED)
-            self.variables["calibration_path"].set(path_text); self._log(f"loaded calibration: {path_text}")
-        except Exception as error: messagebox.showerror(self.title,f"标定文件读取失败：{error}")
+            self._apply_calibration(data, Path(path_text))
+        except Exception as error: messagebox.showerror(self.title,f"标定结果文件读取失败。\n请选择由本系统生成或兼容格式的双目标定 YAML 文件。\n\n{error}")
+
+    def _apply_calibration(self, data: dict[str, Any], path: Path) -> None:
+        for prefix, node in (("left", data["mono_cam0"]), ("right", data["mono_cam1"])):
+            k=node["K"]
+            self.variables[f"{prefix}_model"].set(str(node.get("model", "LEFT/cam0" if prefix=="left" else "RIGHT/cam1")))
+            for field,value in {"fx":k[0][0],"fy":k[1][1],"cx":k[0][2],"cy":k[1][2],"D":node["D"]}.items(): self.variables[f"{prefix}_{field}"].set(str(value))
+        stereo=data["stereo"]
+        qa=(f"R = {stereo['R_right_from_left']}\nT = {stereo['T_right_from_left_m']} m\n"
+            f"baseline = {stereo['baseline_m']:.9f} m\nstatus = {data['status']}\n"
+            f"stereo RMS = {stereo['rms_px']:.6f} px\nepipolar RMS = {stereo['symmetric_epipolar_rms_px']:.6f} px")
+        self.stereo_text.configure(state=tk.NORMAL); self.stereo_text.delete("1.0",tk.END); self.stereo_text.insert(tk.END,qa); self.stereo_text.configure(state=tk.DISABLED)
+        self.variables["calibration_path"].set(str(path)); self.variables["calibration_file"].set(path.name)
+        self.variables["calibration_load_status"].set("✓ 标定结果已加载，可以进入步骤 2")
+        self.input_state.mark_calibration_ready(); self._refresh_step_state(); self._log(f"loaded calibration: {path}")
+
+    def _calibration_mode_changed(self) -> None:
+        self.input_state.set_mode(self.variables["calibration_mode"].get())
+        if self.input_state.calibration_mode == "existing":
+            self.video_calibration_frame.grid_remove(); self.existing_calibration_frame.grid()
+        else:
+            self.existing_calibration_frame.grid_remove(); self.video_calibration_frame.grid()
+        self._refresh_step_state()
+
+    def _start_video_calibration(self) -> None:
+        left,right=self.variables["left_calibration"].get(),self.variables["right_calibration"].get()
+        if not left or not right:
+            messagebox.showerror(self.title,"左右标定视频尚未准备完整。请分别选择 LEFT 和 RIGHT 标定视频。"); return
+        try:
+            cols=int(self.variables["corners_x"].get()); rows=int(self.variables["corners_y"].get()); square=float(self.variables["square_mm"].get())
+            if cols<2 or rows<2 or square<=0: raise ValueError
+        except ValueError:
+            messagebox.showerror(self.title,"标定板参数无效。请输入至少 2×2 个内部角点和大于 0 mm 的单格尺寸。"); return
+        self.calibrate_button.configure(state=tk.DISABLED); self.variables["calibration_load_status"].set("● 正在进行双目标定，请稍候……")
+        destination=self.session.directory/"gui_calibration_result.yaml"
+        def work() -> None:
+            try:
+                run=calibrate_from_videos(Path(left),Path(right),self.ffmpeg,destination,corners_x=cols,corners_y=rows,square_size_mm=square)
+                self._worker_messages.put(("calibration_success",run))
+            except Exception as error:self._worker_messages.put(("calibration_error",str(error)))
+        threading.Thread(target=work,daemon=True).start()
+
+    def _refresh_step_state(self) -> None:
+        if not hasattr(self,"step2_frame"): return
+        if self.input_state.calibration_ready:
+            self.variables["step1_status"].set("✓ 已完成"); self.notebook.tab(self.step2_frame,state="normal")
+        else:
+            self.variables["step1_status"].set("○ 未完成"); self.notebook.tab(self.step2_frame,state="disabled")
+        ready=self.input_state.measurement_ready
+        self.variables["step2_status"].set("✓ 左右测量视频已准备" if ready else "○ 等待左右测量视频")
+        self.enter_measurement_button.configure(state=tk.NORMAL if ready else tk.DISABLED)
+
+    def _enter_measurement(self) -> None:
+        if not self.input_state.measurement_ready:
+            messagebox.showerror(self.title,"测量输入尚未准备完成。请先加载标定结果，并选择左右测量视频。"); return
+        self.notebook.tab(self.measurement_frame,state="normal"); self.notebook.select(self.measurement_frame)
+        self.variables["app_state"].set("等待用户播放并暂停")
 
     def _play(self) -> None:
         if not self.variables["right_measurement"].get(): messagebox.showwarning(self.title,"请先选择 RIGHT 测量视频。"); return
-        self.playing=True; self.viewing_result=False; self.variables["app_state"].set("VIDEO_PLAYBACK"); self._log("play")
+        self.playing=True; self.viewing_result=False; self.variables["app_state"].set("正在播放测量视频"); self._log("播放")
     def _pause(self) -> None:
-        self.playing=False; self.variables["app_state"].set("PAUSED_READY_FOR_MEASUREMENT"); self._log(f"pause at {self.current_time:.3f}s")
+        self.playing=False; self.variables["app_state"].set("已暂停，可以解算当前时刻"); self._log(f"暂停于 {self.current_time:.3f}s")
     def _seek(self,value:str) -> None:
         self.current_time=float(value); self.variables["time"].set(f"{self.current_time:.3f} s")
         if not self.playing: self._show_video_frame(self.current_time)
@@ -114,11 +174,11 @@ class StereoWaveHeightApplication:
         if not self.variables["calibration_path"].get(): messagebox.showerror(self.title,"必须先加载标定结果。"); return
         self._pause(); name,output=self.session.allocate(self.current_time); self.backend_running=True; self.backend_started_at=time.perf_counter(); self.solve_button.configure(state=tk.DISABLED)
         self.variables["run_status"].set("正在执行单帧三维解算…"); self._log(f"backend start {name} target={self.current_time:.6f}s")
-        self.variables["app_state"].set("MEASUREMENT_RUNNING")
+        self.variables["app_state"].set("正在解算当前暂停帧")
         def work() -> None:
             started=time.perf_counter()
             try:
-                record=self.runner.run(Path(left),Path(right),self.current_time,output,self.session.log_path)
+                record=self.runner.run(Path(left),Path(right),self.current_time,output,self.session.log_path,Path(self.variables["calibration_path"].get()))
                 record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put(("success",(record,time.perf_counter()-started)))
             except Exception as error: self._worker_messages.put(("error",str(error)))
         threading.Thread(target=work,daemon=True).start()
@@ -126,8 +186,15 @@ class StereoWaveHeightApplication:
     def _poll_worker(self) -> None:
         try: kind,payload=self._worker_messages.get_nowait()
         except queue.Empty: return
+        if kind == "calibration_error":
+            self.calibrate_button.configure(state=tk.NORMAL); self.variables["calibration_load_status"].set("✕ 双目标定失败")
+            messagebox.showerror(self.title,f"双目标定未完成。请检查棋盘参数、视频清晰度和左右视频身份。\n\n{payload}"); return
+        if kind == "calibration_success":
+            self.calibrate_button.configure(state=tk.NORMAL)
+            data=yaml.safe_load(payload.result_path.read_text(encoding="utf-8")); self._apply_calibration(data,payload.result_path)
+            self.variables["calibration_load_status"].set(f"✓ 双目标定完成（{payload.paired_views} 组有效视图），可以进入步骤 2"); return
         self.backend_running=False; self.backend_started_at=None; self.solve_button.configure(state=tk.NORMAL)
-        if kind=="error": self.variables["run_status"].set("解算失败"); self.variables["app_state"].set("PAUSED_READY_FOR_MEASUREMENT"); self._log(f"backend failed: {payload}"); messagebox.showerror(self.title,payload); return
+        if kind=="error": self.variables["run_status"].set("解算失败"); self.variables["app_state"].set("解算失败，请查看日志后重试"); self._log(f"backend failed: {payload}"); messagebox.showerror(self.title,f"当前帧解算失败。请确认标定结果、左右视频和运行时文件均可用。\n\n{payload}"); return
         record,elapsed=payload; self.session.add(record); self.history.insert(tk.END,record.display_name)
         self.variables["run_status"].set(f"完成（{elapsed:.1f} s）"); self._log(f"backend completed {record.display_name}"); self._show_record(record,"MEASUREMENT_RESULT")
 
@@ -136,10 +203,10 @@ class StereoWaveHeightApplication:
         s=record.summary_metadata; d=s.get("dense_height",{}); h=s.get("height_statistics",{}); roi=d.get("roi_pixel_count",0) or 0
         pct=lambda v:f"{100*v/roi:.2f}%" if roi else "N/A"
         def mm(value:object) -> str:return "N/A" if value is None else f"{float(value)*1000:.3f}"
-        return (f"Target: {s.get('requested_time_s')} s\nActual L/R: {s.get('left_timestamp_s')} / {s.get('right_timestamp_s')} s\nSync residual: {s.get('pair_time_error_ms')} ms\n"
-                f"Status: {s.get('status')}\nXYZ: {s.get('xyz_point_count')}\nROI: {roi}\nOBSERVED: {d.get('observed_count')} ({pct(d.get('observed_count',0))})\n"
-                f"ESTIMATED: {d.get('estimated_count')} ({pct(d.get('estimated_count',0))})\nUNSUPPORTED: {d.get('unsupported_count')} ({pct(d.get('unsupported_count',0))})\n"
-                f"H min/max/mean: {mm(h.get('minimum'))} / {mm(h.get('maximum'))} / {mm(h.get('mean'))} mm\nWASS: {s.get('wass_seconds')} s | Dense: {d.get('generation_time_sec')} s | Total: {s.get('total_seconds')} s")
+        return (f"目标时刻：{s.get('requested_time_s')} s\n左右实际时刻：{s.get('left_timestamp_s')} / {s.get('right_timestamp_s')} s\n同步残差：{s.get('pair_time_error_ms')} ms\n"
+                f"状态：{s.get('status')}\nXYZ 点数：{s.get('xyz_point_count')}\n测量 ROI：{roi}\n直接双目观测（OBSERVED）：{d.get('observed_count')} ({pct(d.get('observed_count',0))})\n"
+                f"空间曲面估算（ESTIMATED）：{d.get('estimated_count')} ({pct(d.get('estimated_count',0))})\n无可靠结果（UNSUPPORTED）：{d.get('unsupported_count')} ({pct(d.get('unsupported_count',0))})\n"
+                f"高度 最小/最大/平均：{mm(h.get('minimum'))} / {mm(h.get('maximum'))} / {mm(h.get('mean'))} mm\nWASS：{s.get('wass_seconds')} s | 稠密图：{d.get('generation_time_sec')} s | 总计：{s.get('total_seconds')} s")
 
     def _show_record(self,record:MeasurementRecord,state:str="MEASUREMENT_RESULT") -> None:
         self.active_record=record; self.viewing_result=True
@@ -149,8 +216,8 @@ class StereoWaveHeightApplication:
         except Exception as error:self.dense_view=None; self._log(f"measurement query load failed: {error}")
         self.variables["mode"].set("高度叠加"); self._show_mode(); self.summary_text.configure(state=tk.NORMAL); self.summary_text.delete("1.0",tk.END); self.summary_text.insert(tk.END,self._summary(record)); self.summary_text.configure(state=tk.DISABLED)
         h=record.summary_metadata.get("height_statistics",{}); minimum=h.get("minimum"); maximum=h.get("maximum")
-        self.variables["result_legend"].set(f"H range: {float(minimum)*1000:.3f} … {float(maximum)*1000:.3f} mm | OBSERVED=orange | ESTIMATED=green | UNSUPPORTED=red/N/A" if minimum is not None and maximum is not None else "H range: N/A")
-        self.variables["app_state"].set(state)
+        self.variables["result_legend"].set(f"高度范围：{float(minimum)*1000:.3f} … {float(maximum)*1000:.3f} mm | 直接观测=橙色 | 空间估算=绿色 | 无可靠结果=红色/N/A" if minimum is not None and maximum is not None else "高度范围：N/A")
+        self.variables["app_state"].set("正在查看测量结果" if state in {"MEASUREMENT_RESULT","VIEWING_HISTORY"} else state)
         self.pointcloud_button.configure(state=tk.NORMAL if record.point_cloud_path and record.point_cloud_path.is_file() else tk.DISABLED)
     def _show_mode(self) -> None:
         record=getattr(self,"active_record",None)
@@ -170,10 +237,11 @@ class StereoWaveHeightApplication:
     def _hover(self,event:tk.Event) -> None:
         if not self.viewing_result or self.dense_view is None or self.display_transform is None:return
         pixel=self.display_transform.canvas_to_pixel(event.x,event.y)
-        if pixel is None:self.variables["pixel_info"].set("Pixel: outside image");return
+        if pixel is None:self.variables["pixel_info"].set("像素：画面外");return
         query=self.dense_view.query(*pixel); xyz="N/A" if query.xyz_m is None else " / ".join(f"{value:.6f}" for value in query.xyz_m)+" m"
         height="N/A" if query.height_mm is None else f"{query.height_mm:.3f} mm"
-        self.variables["pixel_info"].set(f"Pixel: {query.pixel}\nStatus: {query.status}\nSource: {query.source}\nXYZ: {xyz}\nH: {height}")
+        labels={"OBSERVED":"直接双目观测（OBSERVED）","ESTIMATED":"空间曲面估算（ESTIMATED）","UNSUPPORTED":"无可靠结果（UNSUPPORTED）"}
+        self.variables["pixel_info"].set(f"像素：{query.pixel}\n状态：{labels.get(query.status,query.status)}\n来源：{query.source}\nXYZ：{xyz}\n高度 H：{height}")
 
     def _show_pointcloud(self) -> None:
         record=getattr(self,"active_record",None)
@@ -215,34 +283,73 @@ class StereoWaveHeightApplication:
         ttk.Button(dialog,text="全部删除",command=remove).pack(fill="x",padx=18,pady=3); ttk.Button(dialog,text="取消退出",command=dialog.destroy).pack(fill="x",padx=18,pady=(3,15))
 
     def _build_camera_fields(self,parent:ttk.Frame) -> None:
-        for column,(prefix,title) in enumerate((("left","LEFT / cam0"),("right","RIGHT / cam1"))):
-            box=ttk.LabelFrame(parent,text=title); box.grid(row=0,column=column,sticky="nsew",padx=4)
+        for column,(prefix,title) in enumerate((("left","左相机（LEFT / cam0）"),("right","右相机（RIGHT / cam1）"))):
+            box=ttk.LabelFrame(parent,text=title); box.grid(row=0,column=column,sticky="nsew",padx=4); parent.columnconfigure(column,weight=1)
+            defaults={"model":"未加载","fx":"—","fy":"—","cx":"—","cy":"—","D":"—"}
             for row,field in enumerate(("model","fx","fy","cx","cy","D")):
-                default=("iQOO Neo5S" if prefix=="left" else "iQOO Z10 Turbo+") if field=="model" else ""
-                ttk.Label(box,text=field).grid(row=row,column=0,sticky="w"); ttk.Entry(box,textvariable=self._var(f"{prefix}_{field}",default),width=34).grid(row=row,column=1,sticky="ew")
-        stereo=ttk.LabelFrame(parent,text="Stereo / QA"); stereo.grid(row=0,column=2,sticky="nsew",padx=4); self.stereo_text=tk.Text(stereo,width=48,height=8); self.stereo_text.pack(fill="both",expand=True); self.stereo_text.configure(state=tk.DISABLED)
-        ttk.Entry(parent,textvariable=self._var("calibration_path"),width=85).grid(row=1,column=0,columnspan=2,sticky="ew",pady=3); ttk.Button(parent,text="加载现有 calibration",command=self._load_calibration).grid(row=1,column=2,sticky="w")
-    def _video_row(self,parent:ttk.Frame,row:int,key:str,label:str,preview:bool=False) -> None:
-        ttk.Label(parent,text=label).grid(row=row,column=0,sticky="w"); ttk.Entry(parent,textvariable=self._var(key),width=72).grid(row=row,column=1,sticky="ew"); ttk.Button(parent,text="选择",command=lambda:self._choose_video(key)).grid(row=row,column=2)
-        if preview:ttk.Button(parent,text="预览",command=lambda:self._preview_calibration(key)).grid(row=row,column=3)
-        ttk.Label(parent,textvariable=self._var(key+"_meta"),foreground="#555").grid(row=row+1,column=1,sticky="w")
+                label={"model":"型号","fx":"fx (px)","fy":"fy (px)","cx":"cx (px)","cy":"cy (px)","D":"畸变 D"}[field]
+                ttk.Label(box,text=f"{label}：").grid(row=row,column=0,sticky="nw")
+                ttk.Label(box,textvariable=self._var(f"{prefix}_{field}",defaults[field]),wraplength=360).grid(row=row,column=1,sticky="w")
+        stereo=ttk.LabelFrame(parent,text="双目外参与标定质量"); stereo.grid(row=0,column=2,sticky="nsew",padx=4); parent.columnconfigure(2,weight=1)
+        self.stereo_text=tk.Text(stereo,width=48,height=7); self.stereo_text.pack(fill="both",expand=True); self.stereo_text.configure(state=tk.DISABLED)
+        self._var("calibration_path"); self._var("calibration_file","尚未加载标定结果")
+
+    def _video_selector(self,parent:ttk.Frame,row:int,key:str,title:str,description:str,button_text:str,preview:bool=False) -> None:
+        box=ttk.LabelFrame(parent,text=title); box.grid(row=row,column=0,sticky="ew",padx=8,pady=6); box.columnconfigure(0,weight=1)
+        ttk.Label(box,text=description,wraplength=900,justify="left").grid(row=0,column=0,columnspan=3,sticky="w",padx=8,pady=(6,2))
+        ttk.Label(box,text=f"支持的视频格式：{VIDEO_FORMAT_TEXT}",foreground="#555").grid(row=1,column=0,columnspan=3,sticky="w",padx=8)
+        ttk.Button(box,text=button_text,command=lambda:self._choose_video(key)).grid(row=2,column=0,sticky="w",padx=8,pady=6)
+        if preview: ttk.Button(box,text="查看代表帧",command=lambda:self._preview_calibration(key)).grid(row=2,column=1,sticky="w",padx=4)
+        self._var(key); ttk.Label(box,textvariable=self._var(key+"_meta","尚未选择"),foreground="#444",justify="left").grid(row=3,column=0,columnspan=3,sticky="w",padx=8,pady=(0,6))
 
     def build(self) -> tk.Tk:
-        root=tk.Tk(); root.title(self.title); root.geometry("1320x900"); self.root=root
-        state_bar=ttk.Frame(root); state_bar.pack(fill="x",padx=8,pady=(5,0)); ttk.Label(state_bar,text="Application state:",font=("TkDefaultFont",10,"bold")).pack(side="left"); ttk.Label(state_bar,textvariable=self._var("app_state","READY_NO_VIDEO")).pack(side="left",padx=6)
-        top=ttk.LabelFrame(root,text="Camera / Calibration"); top.pack(fill="x",padx=8,pady=5); self._build_camera_fields(top)
-        videos=ttk.Frame(root); videos.pack(fill="x",padx=8); self._video_row(videos,0,"left_calibration","LEFT calibration",True); self._video_row(videos,2,"right_calibration","RIGHT calibration",True); self._video_row(videos,4,"left_measurement","LEFT measurement"); self._video_row(videos,6,"right_measurement","RIGHT measurement"); ttk.Button(videos,text="运行双目标定（Stage 2）",state=tk.DISABLED).grid(row=0,column=4,padx=6)
-        center=ttk.Panedwindow(root,orient=tk.HORIZONTAL); center.pack(fill="both",expand=True,padx=8,pady=5); image_box=ttk.LabelFrame(center,text="Main View: RIGHT / canonical cam1"); summary_box=ttk.LabelFrame(center,text="当前状态 / 解算摘要"); center.add(image_box,weight=3); center.add(summary_box,weight=1)
+        root=tk.Tk(); root.title(self.title); root.geometry("1380x940"); self.root=root
+        state_bar=ttk.Frame(root); state_bar.pack(fill="x",padx=8,pady=(5,0)); ttk.Label(state_bar,text="当前状态：",font=("TkDefaultFont",10,"bold")).pack(side="left"); ttk.Label(state_bar,textvariable=self._var("app_state","请先完成步骤 1：相机标定")).pack(side="left",padx=6)
+        current=ttk.LabelFrame(root,text="当前相机与标定（只读）"); current.pack(fill="x",padx=8,pady=5); self._build_camera_fields(current)
+        self.notebook=ttk.Notebook(root); self.notebook.pack(fill="both",expand=True,padx=8,pady=4)
+        step1=ttk.Frame(self.notebook); self.step2_frame=ttk.Frame(self.notebook); self.measurement_frame=ttk.Frame(self.notebook)
+        self.notebook.add(step1,text="步骤 1：相机标定"); self.notebook.add(self.step2_frame,text="步骤 2：导入双目测量视频",state="disabled"); self.notebook.add(self.measurement_frame,text="步骤 3–4：播放、解算与结果",state="disabled")
+
+        heading=ttk.Frame(step1); heading.grid(row=0,column=0,sticky="ew",padx=10,pady=8); step1.columnconfigure(0,weight=1)
+        ttk.Label(heading,text="请选择标定方式：",font=("TkDefaultFont",11,"bold")).pack(side="left")
+        mode=self._var("calibration_mode","existing")
+        ttk.Radiobutton(heading,text="我已有标定结果",value="existing",variable=mode,command=self._calibration_mode_changed).pack(side="left",padx=14)
+        ttk.Radiobutton(heading,text="使用标定视频重新计算",value="videos",variable=mode,command=self._calibration_mode_changed).pack(side="left",padx=14)
+        ttk.Label(heading,textvariable=self._var("step1_status","○ 未完成")).pack(side="right")
+        self.existing_calibration_frame=ttk.LabelFrame(step1,text="方式 A：导入已有双目标定结果"); self.existing_calibration_frame.grid(row=1,column=0,sticky="ew",padx=10,pady=6)
+        ttk.Label(self.existing_calibration_frame,text="如果相机已经完成双目标定，请直接导入已有的标定结果，无需重新计算。",wraplength=1000).pack(anchor="w",padx=10,pady=(8,2))
+        ttk.Label(self.existing_calibration_frame,text="支持的文件类型：YAML 标定文件 (*.yaml; *.yml)",foreground="#555").pack(anchor="w",padx=10)
+        ttk.Button(self.existing_calibration_frame,text="选择已有双目标定结果",command=self._load_calibration).pack(anchor="w",padx=10,pady=8)
+        ttk.Label(self.existing_calibration_frame,textvariable=self.variables["calibration_file"]).pack(anchor="w",padx=10)
+        ttk.Label(self.existing_calibration_frame,textvariable=self._var("calibration_load_status","○ 尚未加载"),foreground="#075").pack(anchor="w",padx=10,pady=(2,8))
+        self.video_calibration_frame=ttk.Frame(step1); self.video_calibration_frame.grid(row=2,column=0,sticky="ew"); self.video_calibration_frame.grid_remove(); self.video_calibration_frame.columnconfigure(0,weight=1)
+        self._video_selector(self.video_calibration_frame,0,"left_calibration","左相机标定视频（LEFT）","请选择左相机拍摄的标定板视频。该视频仅用于计算相机标定参数，不是后续水面测量视频。","选择左相机标定视频",True)
+        self._video_selector(self.video_calibration_frame,1,"right_calibration","右相机标定视频（RIGHT）","请选择右相机在同一次标定过程中拍摄的标定板视频。","选择右相机标定视频",True)
+        board=ttk.LabelFrame(self.video_calibration_frame,text="标定板参数"); board.grid(row=2,column=0,sticky="ew",padx=8,pady=6)
+        ttk.Label(board,text="必须与视频中实际棋盘格一致。角点指内部角点，不是方格数量。").grid(row=0,column=0,columnspan=6,sticky="w",padx=8,pady=5)
+        ttk.Label(board,text="横向内部角点：").grid(row=1,column=0,padx=6); ttk.Entry(board,textvariable=self._var("corners_x","9"),width=7).grid(row=1,column=1)
+        ttk.Label(board,text="纵向内部角点：").grid(row=1,column=2,padx=6); ttk.Entry(board,textvariable=self._var("corners_y","6"),width=7).grid(row=1,column=3)
+        ttk.Label(board,text="单格实际尺寸 (mm)：").grid(row=1,column=4,padx=6); ttk.Entry(board,textvariable=self._var("square_mm","20"),width=9).grid(row=1,column=5)
+        self.calibrate_button=ttk.Button(board,text="开始双目标定",command=self._start_video_calibration); self.calibrate_button.grid(row=2,column=0,columnspan=2,sticky="w",padx=8,pady=8)
+
+        self.step2_frame.columnconfigure(0,weight=1)
+        ttk.Label(self.step2_frame,text="请选择需要进行水面三维测量的同一次双目拍摄视频。这两个视频不是标定视频。",font=("TkDefaultFont",10,"bold"),wraplength=1100).grid(row=0,column=0,sticky="w",padx=12,pady=10)
+        ttk.Label(self.step2_frame,textvariable=self._var("step2_status","○ 等待左右测量视频")).grid(row=0,column=1,padx=10)
+        self._video_selector(self.step2_frame,1,"left_measurement","左相机测量视频（LEFT）","请选择 LEFT 相机拍摄的水面视频。","选择左相机测量视频")
+        self._video_selector(self.step2_frame,2,"right_measurement","右相机测量视频（RIGHT）","请选择 RIGHT 相机与左相机同步拍摄的同一段水面视频。","选择右相机测量视频")
+        self.enter_measurement_button=ttk.Button(self.step2_frame,text="进入视频测量",command=self._enter_measurement,state=tk.DISABLED); self.enter_measurement_button.grid(row=3,column=0,sticky="w",padx=12,pady=10)
+
+        center=ttk.Panedwindow(self.measurement_frame,orient=tk.HORIZONTAL); center.pack(fill="both",expand=True,padx=8,pady=5); image_box=ttk.LabelFrame(center,text="步骤 3：播放并选择测量时刻（RIGHT / canonical cam1）"); summary_box=ttk.LabelFrame(center,text="步骤 4：查看测量结果"); center.add(image_box,weight=3); center.add(summary_box,weight=1)
         self.image_canvas=tk.Canvas(image_box,background="#222",highlightthickness=0); self.image_canvas.pack(fill="both",expand=True); self.image_canvas.bind("<Motion>",self._hover)
         modes=ttk.Frame(image_box); modes.pack(fill="x"); self._var("mode","原始画面")
         for mode in ("原始画面","高度叠加","高度图","状态图"):ttk.Radiobutton(modes,text=mode,value=mode,variable=self.variables["mode"],command=self._show_mode).pack(side="left")
         ttk.Label(modes,text="透明度").pack(side="left",padx=(20,2)); self._var("alpha","45"); ttk.Scale(modes,from_=0,to=100,variable=self.variables["alpha"],command=lambda _value:self._show_mode() if self.variables["mode"].get()=="高度叠加" else None).pack(side="left",fill="x",expand=True)
-        ttk.Label(image_box,textvariable=self._var("result_legend","H unit: mm | XYZ unit: m"),anchor="w").pack(fill="x",padx=4,pady=2)
+        ttk.Label(image_box,textvariable=self._var("result_legend","高度 H 单位：mm | XYZ 单位：m"),anchor="w").pack(fill="x",padx=4,pady=2)
         self.summary_text=tk.Text(summary_box,width=42,height=22); self.summary_text.pack(fill="both",expand=True); self.summary_text.configure(state=tk.DISABLED)
-        ttk.Label(summary_box,text="Current Pixel",font=("TkDefaultFont",10,"bold")).pack(anchor="w",padx=5,pady=(6,0)); ttk.Label(summary_box,textvariable=self._var("pixel_info","Pixel: N/A"),justify="left").pack(anchor="w",padx=5)
+        ttk.Label(summary_box,text="当前像素",font=("TkDefaultFont",10,"bold")).pack(anchor="w",padx=5,pady=(6,0)); ttk.Label(summary_box,textvariable=self._var("pixel_info","像素：无"),justify="left").pack(anchor="w",padx=5)
         self.pointcloud_button=ttk.Button(summary_box,text="显示三维点云",command=self._show_pointcloud,state=tk.DISABLED); self.pointcloud_button.pack(anchor="w",padx=5,pady=6)
-        controls=ttk.Frame(root); controls.pack(fill="x",padx=8); ttk.Button(controls,text="Play",command=self._play).pack(side="left"); ttk.Button(controls,text="Pause",command=self._pause).pack(side="left"); self.timeline=ttk.Scale(controls,from_=0,to=1,command=self._seek); self.timeline.pack(side="left",fill="x",expand=True,padx=8); ttk.Label(controls,textvariable=self._var("time","0.000 s"),width=12).pack(side="left"); self.solve_button=ttk.Button(controls,text="解算当前帧",command=self._solve); self.solve_button.pack(side="left",padx=8); ttk.Label(controls,textvariable=self._var("run_status","就绪")).pack(side="left")
-        bottom=ttk.Panedwindow(root,orient=tk.HORIZONTAL); bottom.pack(fill="x",padx=8,pady=5); history_box=ttk.LabelFrame(bottom,text="本次测量记录"); log_box=ttk.LabelFrame(bottom,text="Session log"); bottom.add(history_box,weight=1); bottom.add(log_box,weight=3); self.history=tk.Listbox(history_box,height=5); self.history.pack(fill="both",expand=True); self.history.bind("<<ListboxSelect>>",self._history_selected)
+        controls=ttk.Frame(self.measurement_frame); controls.pack(fill="x",padx=8); ttk.Button(controls,text="播放",command=self._play).pack(side="left"); ttk.Button(controls,text="暂停",command=self._pause).pack(side="left"); self.timeline=ttk.Scale(controls,from_=0,to=1,command=self._seek); self.timeline.pack(side="left",fill="x",expand=True,padx=8); ttk.Label(controls,textvariable=self._var("time","0.000 s"),width=12).pack(side="left"); self.solve_button=ttk.Button(controls,text="解算当前暂停帧",command=self._solve); self.solve_button.pack(side="left",padx=8); ttk.Label(controls,textvariable=self._var("run_status","就绪")).pack(side="left")
+        bottom=ttk.Panedwindow(self.measurement_frame,orient=tk.HORIZONTAL); bottom.pack(fill="x",padx=8,pady=5); history_box=ttk.LabelFrame(bottom,text="本次测量记录"); log_box=ttk.LabelFrame(bottom,text="运行日志"); bottom.add(history_box,weight=1); bottom.add(log_box,weight=3); self.history=tk.Listbox(history_box,height=5); self.history.pack(fill="both",expand=True); self.history.bind("<<ListboxSelect>>",self._history_selected)
         for record in self.session.records:self.history.insert(tk.END,record.display_name)
-        self.log_text=tk.Text(log_box,height=5); self.log_text.pack(fill="both",expand=True); self._log(f"session directory: {self.session.directory}"); root.protocol("WM_DELETE_WINDOW",self._request_close); root.after(200,self._tick); return root
+        self.log_text=tk.Text(log_box,height=5); self.log_text.pack(fill="both",expand=True); self._log(f"会话目录：{self.session.directory}"); self._refresh_step_state(); root.protocol("WM_DELETE_WINDOW",self._request_close); root.after(200,self._tick); return root
     def run(self) -> None:(self.root or self.build()).mainloop()

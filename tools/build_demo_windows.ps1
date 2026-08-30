@@ -26,8 +26,8 @@ foreach ($required in @(
     if (-not (Test-Path -LiteralPath $required)) { throw "Required packaging input missing: $required" }
 }
 
-& $PythonExe -c "import PyInstaller" 2>$null
-if ($LASTEXITCODE -ne 0) { throw "PyInstaller is required. Install it without upgrading project runtime dependencies." }
+& $PythonExe -c "import PyInstaller, cv2" 2>$null
+if ($LASTEXITCODE -ne 0) { throw "PyInstaller and opencv-python are required; OpenCV is used by the existing video-calibration workflow." }
 
 foreach ($target in @($Build, $Dist)) {
     Assert-ChildPath $target $Repo

@@ -6,6 +6,7 @@ import unittest
 from application.backend_runner import BackendResultError, parse_backend_result
 from application.backend_runner import FrozenBackendRunner, backend_command
 from application.runtime_paths import resolve_runtime_paths
+from application.input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, GuidedInputState
 from application.session import MeasurementRecord, MeasurementSession
 from application.export import export_session
 from application.visualization import DisplayTransform, DenseMeasurementView, make_height_overlay
@@ -71,6 +72,28 @@ class DemoGuiStage1Tests(unittest.TestCase):
         development=backend_command(config,executable=Path("C:/python.exe"),frozen=False)
         self.assertEqual(packaged[:2],[str(Path("C:/Demo.exe").resolve()),"--backend-single-frame"])
         self.assertIn("src.reconstruction.run_single_frame",development)
+
+    def test_guided_calibration_modes_gate_measurement_step(self):
+        state=GuidedInputState()
+        self.assertFalse(state.measurement_ready)
+        state.set_mode("videos"); state.mark_measurement_video("left"); state.mark_measurement_video("right")
+        self.assertFalse(state.measurement_ready)
+        state.mark_calibration_ready(); self.assertTrue(state.measurement_ready)
+        state.set_mode("existing"); self.assertFalse(state.calibration_ready)
+
+    def test_guided_file_dialog_filters_match_supported_inputs(self):
+        self.assertEqual(CALIBRATION_FILE_TYPES,(("YAML 双目标定文件","*.yaml *.yml"),))
+        self.assertEqual(VIDEO_FILE_TYPES,(("本地视频","*.mp4 *.mov *.avi *.mkv *.m4v"),))
+
+    def test_selected_calibration_overrides_only_request_calibration_source(self):
+        repository=Path(__file__).resolve().parents[1]
+        runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary); chosen=base/"chosen.yaml"; chosen.write_text("status: fixture\n",encoding="utf-8")
+            config=runner.prepare_config(repository/"left.mp4",repository/"right.mp4",1.0,base/"result",chosen)
+            import yaml
+            data=yaml.safe_load(config.read_text(encoding="utf-8"))
+            self.assertEqual(Path(data["calibration"]["source"]),chosen.resolve())
 
     def test_result_summary_uses_demo_friendly_height_units(self):
         from application.main_window import StereoWaveHeightApplication

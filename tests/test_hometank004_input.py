@@ -64,6 +64,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "demo_gui_stage2.md",
             "demo_readiness_checklist.md",
             "demo_windows_packaging.md",
+            "demo_input_workflow_redesign.md",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",
