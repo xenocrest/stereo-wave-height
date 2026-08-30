@@ -55,6 +55,13 @@ class DemoGuiStage1Tests(unittest.TestCase):
         from application import StereoWaveHeightApplication
         self.assertTrue(callable(StereoWaveHeightApplication))
 
+    def test_result_summary_uses_demo_friendly_height_units(self):
+        from application.main_window import StereoWaveHeightApplication
+        record=self._record(Path("result"),"1.000s")
+        record=MeasurementRecord(**{**record.__dict__,"summary_metadata":{"height_statistics":{"minimum":-0.025,"maximum":-0.014,"mean":-0.020},"dense_height":{}}})
+        summary=StereoWaveHeightApplication._summary(record)
+        self.assertIn("-25.000 / -14.000 / -20.000 mm",summary)
+
     def test_canvas_mapping_accounts_for_letterbox(self):
         transform=DisplayTransform.fit(1920,1080,1000,700)
         self.assertIsNone(transform.canvas_to_pixel(500,20))

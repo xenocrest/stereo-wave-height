@@ -61,6 +61,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "single_frame_dense_backend_integration.yaml", "single_frame_dense_backend_integration.md",
             "demo_gui_stage1.md",
             "demo_gui_stage2.md",
+            "demo_readiness_checklist.md",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",
