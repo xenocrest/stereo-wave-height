@@ -2,11 +2,15 @@ from pathlib import Path
 import json
 import tempfile
 import unittest
+from unittest import mock
 
 from application.backend_runner import BackendResultError, parse_backend_result
 from application.backend_runner import FrozenBackendRunner, backend_command
 from application.runtime_paths import resolve_runtime_paths
 from application.input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, GuidedInputState
+from application.fallback import FALLBACK_FRAME_OFFSETS, run_bounded_fallback
+from application.video_tools import LatestFrameDecoder
+from process_utils import hidden_process_kwargs
 from application.session import MeasurementRecord, MeasurementSession
 from application.export import export_session
 from application.visualization import DisplayTransform, DenseMeasurementView, make_height_overlay
@@ -94,6 +98,61 @@ class DemoGuiStage1Tests(unittest.TestCase):
             import yaml
             data=yaml.safe_load(config.read_text(encoding="utf-8"))
             self.assertEqual(Path(data["calibration"]["source"]),chosen.resolve())
+
+    def test_bounded_fallback_order_and_first_success(self):
+        attempted=[]
+        def attempt(time_sec,offset):
+            attempted.append((time_sec,offset))
+            if offset!=1: raise RuntimeError("fixture failure")
+            return "ok"
+        result=run_bounded_fallback(10.0,0.02,attempt)
+        self.assertEqual(FALLBACK_FRAME_OFFSETS,(0,-1,1,-2,2))
+        self.assertEqual([item[1] for item in attempted],[0,-1,1])
+        self.assertEqual(result.actual_time_sec,10.02)
+
+    def test_target_success_does_not_retry_and_pair_model_is_preserved(self):
+        pairs=[]
+        result=run_bounded_fallback(5.0,1/60,lambda left,offset:pairs.append((left,left-0.0654055)) or "ok")
+        self.assertEqual(result.frame_offset,0); self.assertEqual(len(pairs),1)
+        self.assertAlmostEqual(pairs[0][1],pairs[0][0]-0.0654055)
+
+    def test_latest_frame_decoder_has_bounded_storage(self):
+        decoder=LatestFrameDecoder()
+        self.assertEqual(decoder.pending_frame_count,0)
+        decoder._latest=(1,0.0,None)  # type: ignore[assignment]
+        decoder._latest=(2,0.1,None)  # type: ignore[assignment]
+        self.assertEqual(decoder.pending_frame_count,1)
+
+    def test_windows_hidden_process_policy_is_explicit(self):
+        import os
+        options=hidden_process_kwargs()
+        if os.name=="nt": self.assertIn("creationflags",options); self.assertIn("startupinfo",options)
+
+    def test_core_reconstruction_survives_dense_artifact_failure(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output=Path(temporary); (output/"selected_pair").mkdir(); (output/"reconstruction/pointcloud").mkdir(parents=True)
+            (output/"selected_pair/right.png").write_bytes(b"png"); (output/"reconstruction/pointcloud/000000.xyz").write_text("0 0 0\n")
+            payload={"status":"SINGLE_FRAME_RECONSTRUCTION_COMPLETED_DENSE_HEIGHT_FAILED","requested_time_s":1.0,"dense_height":{"status":"FAILED"}}
+            (output/"single_frame_result.json").write_text(json.dumps(payload),encoding="utf-8")
+            record=parse_backend_result(output)
+            self.assertEqual(record.summary_metadata["status"],"SINGLE_FRAME_RECONSTRUCTION_COMPLETED_DENSE_HEIGHT_FAILED")
+
+    def test_fallback_metadata_records_requested_and_actual_time(self):
+        repository=Path(__file__).resolve().parents[1]
+        runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary); calls=[]
+            def fake_run(_left,_right,time_sec,output,_log,_calibration):
+                calls.append(time_sec)
+                if len(calls)==1: raise BackendResultError("target failed")
+                output.mkdir(parents=True); unified=output/"single_frame_result.json"; unified.write_text(json.dumps({"status":"SINGLE_FRAME_DENSE_HEIGHT_COMPLETED","requested_time_s":time_sec}),encoding="utf-8")
+                return MeasurementRecord(time_sec,"fixture",output,unified,output/"right.png",output/"h.png",output/"s.png",None,"now",{"status":"SINGLE_FRAME_DENSE_HEIGHT_COMPLETED","requested_time_s":time_sec})
+            with mock.patch.object(runner,"run",side_effect=fake_run):
+                record=runner.run_with_fallback(Path("l"),Path("r"),2.0,root/"out",root/"log",root/"cal.yaml",frame_period_sec=0.02)
+            self.assertTrue(record.summary_metadata["fallback_used"])
+            self.assertEqual(record.summary_metadata["fallback_frame_offset"],-1)
+            self.assertAlmostEqual(record.summary_metadata["actual_measurement_time_sec"],1.98)
+            self.assertAlmostEqual(record.summary_metadata["fallback_time_offset_ms"],-20.0)
 
     def test_result_summary_uses_demo_friendly_height_units(self):
         from application.main_window import StereoWaveHeightApplication

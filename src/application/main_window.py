@@ -11,7 +11,7 @@ import yaml
 
 from .backend_runner import FrozenBackendRunner
 from .session import MeasurementRecord, MeasurementSession
-from .video_tools import VideoMetadata, extract_frame, probe_video
+from .video_tools import LatestFrameDecoder, VideoMetadata, extract_frame, probe_video
 from .visualization import DenseMeasurementView, DisplayTransform, make_height_overlay
 from .export import delete_session, export_session
 from .runtime_paths import resolve_runtime_paths
@@ -37,6 +37,8 @@ class StereoWaveHeightApplication:
         self.display_transform: DisplayTransform | None = None; self.dense_view: DenseMeasurementView | None = None
         self.viewing_result = False
         self.input_state = GuidedInputState()
+        self.preview_decoder=LatestFrameDecoder(display_fps=30.0); self._preview_version=0
+        self._canvas_image_id: int | None=None; self._seek_generation=0; self._last_status_refresh=0.0
         self._worker_messages: queue.Queue[tuple[str, Any]] = queue.Queue()
 
     def _var(self, key: str, value: str = "") -> tk.StringVar:
@@ -67,7 +69,10 @@ class StereoWaveHeightApplication:
         source_width,source_height=image.size; canvas_width=max(self.image_canvas.winfo_width(),760); canvas_height=max(self.image_canvas.winfo_height(),440)
         self.display_transform=DisplayTransform.fit(source_width,source_height,canvas_width,canvas_height)
         image=image.resize((self.display_transform.display_width,self.display_transform.display_height),Image.Resampling.LANCZOS); self._photo=ImageTk.PhotoImage(image)
-        self.image_canvas.delete("all"); self.image_canvas.create_image(canvas_width/2,canvas_height/2,image=self._photo,anchor="center")
+        if self._canvas_image_id is None:
+            self._canvas_image_id=self.image_canvas.create_image(canvas_width/2,canvas_height/2,image=self._photo,anchor="center")
+        else:
+            self.image_canvas.coords(self._canvas_image_id,canvas_width/2,canvas_height/2); self.image_canvas.itemconfigure(self._canvas_image_id,image=self._photo)
 
     def _show_video_frame(self, time_sec: float) -> None:
         path = self.variables["right_measurement"].get()
@@ -152,20 +157,30 @@ class StereoWaveHeightApplication:
 
     def _play(self) -> None:
         if not self.variables["right_measurement"].get(): messagebox.showwarning(self.title,"请先选择 RIGHT 测量视频。"); return
+        self.preview_decoder.start(Path(self.variables["right_measurement"].get()),self.current_time)
         self.playing=True; self.viewing_result=False; self.variables["app_state"].set("正在播放测量视频"); self._log("播放")
     def _pause(self) -> None:
-        self.playing=False; self.variables["app_state"].set("已暂停，可以解算当前时刻"); self._log(f"暂停于 {self.current_time:.3f}s")
+        self.playing=False; self.preview_decoder.stop(); self.variables["app_state"].set("已暂停，可以解算当前时刻"); self._log(f"暂停于 {self.current_time:.3f}s")
     def _seek(self,value:str) -> None:
         self.current_time=float(value); self.variables["time"].set(f"{self.current_time:.3f} s")
-        if not self.playing: self._show_video_frame(self.current_time)
+        if not self.playing and self.variables["right_measurement"].get():
+            self._seek_generation+=1; generation=self._seek_generation; path=Path(self.variables["right_measurement"].get()); target=self.current_time
+            def work() -> None:
+                try:self._worker_messages.put(("preview",(generation,target,extract_frame(path,target,self.ffmpeg))))
+                except Exception as error:self._worker_messages.put(("preview_error",str(error)))
+            threading.Thread(target=work,daemon=True).start()
     def _tick(self) -> None:
         if self.playing:
-            self.current_time=min(self.current_time+0.2,float(self.timeline.cget("to"))); self.timeline.set(self.current_time)
-            self.variables["time"].set(f"{self.current_time:.3f} s"); self._show_video_frame(self.current_time)
+            latest=self.preview_decoder.snapshot(self._preview_version)
+            if latest:
+                self._preview_version,self.current_time,image=latest; self.timeline.set(self.current_time)
+                self.variables["time"].set(f"{self.current_time:.3f} s"); self._show_pil(image)
             if self.current_time >= float(self.timeline.cget("to")): self.playing=False
-        if self.backend_running and self.backend_started_at is not None:
+        now=time.perf_counter()
+        if self.backend_running and self.backend_started_at is not None and now-self._last_status_refresh>=0.2:
+            self._last_status_refresh=now
             self.variables["run_status"].set(f"正在执行单帧三维解算… {time.perf_counter()-self.backend_started_at:.1f} s")
-        self._poll_worker(); self.root.after(200,self._tick)
+        self._poll_worker(); self.root.after(33,self._tick)
 
     def _solve(self) -> None:
         if self.backend_running: messagebox.showwarning(self.title,"当前单帧解算仍在运行。"); return
@@ -178,7 +193,9 @@ class StereoWaveHeightApplication:
         def work() -> None:
             started=time.perf_counter()
             try:
-                record=self.runner.run(Path(left),Path(right),self.current_time,output,self.session.log_path,Path(self.variables["calibration_path"].get()))
+                fps=self.metadata.get("left_measurement").fps if self.metadata.get("left_measurement") else 60.0
+                record=self.runner.run_with_fallback(Path(left),Path(right),self.current_time,output,self.session.log_path,
+                    Path(self.variables["calibration_path"].get()),frame_period_sec=1.0/fps)
                 record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put(("success",(record,time.perf_counter()-started)))
             except Exception as error: self._worker_messages.put(("error",str(error)))
         threading.Thread(target=work,daemon=True).start()
@@ -186,6 +203,11 @@ class StereoWaveHeightApplication:
     def _poll_worker(self) -> None:
         try: kind,payload=self._worker_messages.get_nowait()
         except queue.Empty: return
+        if kind == "preview":
+            generation,target,image=payload
+            if generation==self._seek_generation and not self.playing:self.current_time=target; self._show_pil(image)
+            return
+        if kind == "preview_error": self._log(f"预览帧读取失败：{payload}"); return
         if kind == "calibration_error":
             self.calibrate_button.configure(state=tk.NORMAL); self.variables["calibration_load_status"].set("✕ 双目标定失败")
             messagebox.showerror(self.title,f"双目标定未完成。请检查棋盘参数、视频清晰度和左右视频身份。\n\n{payload}"); return
@@ -197,26 +219,33 @@ class StereoWaveHeightApplication:
         if kind=="error": self.variables["run_status"].set("解算失败"); self.variables["app_state"].set("解算失败，请查看日志后重试"); self._log(f"backend failed: {payload}"); messagebox.showerror(self.title,f"当前帧解算失败。请确认标定结果、左右视频和运行时文件均可用。\n\n{payload}"); return
         record,elapsed=payload; self.session.add(record); self.history.insert(tk.END,record.display_name)
         self.variables["run_status"].set(f"完成（{elapsed:.1f} s）"); self._log(f"backend completed {record.display_name}"); self._show_record(record,"MEASUREMENT_RESULT")
+        if record.summary_metadata.get("fallback_used"):
+            messagebox.showinfo(self.title,"目标帧三维匹配不足，已自动使用最近可可靠解算帧。\n"
+                f"用户暂停时刻：{record.summary_metadata['requested_target_time_sec']:.3f} s\n"
+                f"实际解算时刻：{record.summary_metadata['actual_measurement_time_sec']:.3f} s\n"
+                f"时间偏移：{record.summary_metadata['fallback_time_offset_ms']:+.1f} ms")
 
     @staticmethod
     def _summary(record: MeasurementRecord) -> str:
         s=record.summary_metadata; d=s.get("dense_height",{}); h=s.get("height_statistics",{}); roi=d.get("roi_pixel_count",0) or 0
         pct=lambda v:f"{100*v/roi:.2f}%" if roi else "N/A"
         def mm(value:object) -> str:return "N/A" if value is None else f"{float(value)*1000:.3f}"
-        return (f"目标时刻：{s.get('requested_time_s')} s\n左右实际时刻：{s.get('left_timestamp_s')} / {s.get('right_timestamp_s')} s\n同步残差：{s.get('pair_time_error_ms')} ms\n"
+        fallback=(f"\n邻近帧自动容错：{'是' if s.get('fallback_used') else '否'} | 实际测量时刻：{s.get('actual_measurement_time_sec',s.get('requested_time_s'))} s | 偏移：{s.get('fallback_time_offset_ms',0)} ms" if 'fallback_used' in s else "")
+        return (f"目标时刻：{s.get('requested_target_time_sec',s.get('requested_time_s'))} s\n左右实际时刻：{s.get('left_timestamp_s')} / {s.get('right_timestamp_s')} s\n同步残差：{s.get('pair_time_error_ms')} ms{fallback}\n"
                 f"状态：{s.get('status')}\nXYZ 点数：{s.get('xyz_point_count')}\n测量 ROI：{roi}\n直接双目观测（OBSERVED）：{d.get('observed_count')} ({pct(d.get('observed_count',0))})\n"
                 f"空间曲面估算（ESTIMATED）：{d.get('estimated_count')} ({pct(d.get('estimated_count',0))})\n无可靠结果（UNSUPPORTED）：{d.get('unsupported_count')} ({pct(d.get('unsupported_count',0))})\n"
                 f"高度 最小/最大/平均：{mm(h.get('minimum'))} / {mm(h.get('maximum'))} / {mm(h.get('mean'))} mm\nWASS：{s.get('wass_seconds')} s | 稠密图：{d.get('generation_time_sec')} s | 总计：{s.get('total_seconds')} s")
 
     def _show_record(self,record:MeasurementRecord,state:str="MEASUREMENT_RESULT") -> None:
         self.active_record=record; self.viewing_result=True
+        dense_available=record.summary_metadata.get("status")=="SINGLE_FRAME_DENSE_HEIGHT_COMPLETED" and record.dense_npz_path.is_file()
         try:
-            self.dense_view=DenseMeasurementView(record.dense_npz_path,record.pixel_xyz_path,self.experiment/"manual_reference/frozen_cam1_validation_mapping.yaml")
-            if record.overlay_path and not record.overlay_path.is_file():make_height_overlay(record.selected_frame_path,record.dense_npz_path,float(self.variables["alpha"].get())/100).save(record.overlay_path)
+            self.dense_view=(DenseMeasurementView(record.dense_npz_path,record.pixel_xyz_path,self.experiment/"manual_reference/frozen_cam1_validation_mapping.yaml") if dense_available else None)
+            if dense_available and record.overlay_path and not record.overlay_path.is_file():make_height_overlay(record.selected_frame_path,record.dense_npz_path,float(self.variables["alpha"].get())/100).save(record.overlay_path)
         except Exception as error:self.dense_view=None; self._log(f"measurement query load failed: {error}")
-        self.variables["mode"].set("高度叠加"); self._show_mode(); self.summary_text.configure(state=tk.NORMAL); self.summary_text.delete("1.0",tk.END); self.summary_text.insert(tk.END,self._summary(record)); self.summary_text.configure(state=tk.DISABLED)
+        self.variables["mode"].set("高度叠加" if dense_available else "原始画面"); self._show_mode(); self.summary_text.configure(state=tk.NORMAL); self.summary_text.delete("1.0",tk.END); self.summary_text.insert(tk.END,self._summary(record)); self.summary_text.configure(state=tk.DISABLED)
         h=record.summary_metadata.get("height_statistics",{}); minimum=h.get("minimum"); maximum=h.get("maximum")
-        self.variables["result_legend"].set(f"高度范围：{float(minimum)*1000:.3f} … {float(maximum)*1000:.3f} mm | 直接观测=橙色 | 空间估算=绿色 | 无可靠结果=红色/N/A" if minimum is not None and maximum is not None else "高度范围：N/A")
+        self.variables["result_legend"].set(f"高度范围：{float(minimum)*1000:.3f} … {float(maximum)*1000:.3f} mm | 直接观测=橙色 | 空间估算=绿色 | 无可靠结果=红色/N/A" if minimum is not None and maximum is not None else "核心 XYZ/H 已完成；稠密图不可用，请查看点云和摘要。")
         self.variables["app_state"].set("正在查看测量结果" if state in {"MEASUREMENT_RESULT","VIEWING_HISTORY"} else state)
         self.pointcloud_button.configure(state=tk.NORMAL if record.point_cloud_path and record.point_cloud_path.is_file() else tk.DISABLED)
     def _show_mode(self) -> None:
@@ -274,6 +303,7 @@ class StereoWaveHeightApplication:
         ttk.Button(chooser,text="取消",command=chooser.destroy).pack(pady=3)
 
     def _request_close(self) -> None:
+        self.preview_decoder.stop()
         if not self.session.records:self.root.destroy();return
         dialog=tk.Toplevel(self.root); dialog.title("退出处理"); dialog.transient(self.root); dialog.grab_set(); ttk.Label(dialog,text="本次会话包含测量结果，请选择处理方式。",padding=15).pack()
         ttk.Button(dialog,text="导出全部",command=lambda:(dialog.destroy(),self._export_and_exit(list(self.session.records)))).pack(fill="x",padx=18,pady=3)

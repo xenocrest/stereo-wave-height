@@ -117,7 +117,7 @@ class ReconstructionPipeline:
                     raise ValueError("WASS rectified stereo montage width must be even")
                 computational_left = montage.crop((0, 0, width // 2, height))
                 computational_right = montage.crop((width // 2, 0, width, height))
-                log = (workdir / "wass_stereo_log.txt").read_text(encoding="utf-8")
+                log = (workdir / "wass_stereo_log.txt").read_text(encoding="utf-8",errors="replace")
                 swapped = "auto-swapping left-right images" in log
                 original_left = computational_right if swapped else computational_left
                 original_right = computational_left if swapped else computational_right
@@ -135,7 +135,7 @@ class ReconstructionPipeline:
             shutil.copy2(disparity_source, disparity_dir / f"{frame_id}.png")
             with Image.open(disparity_source) as disparity_image:
                 disparity_visualization = np.asarray(disparity_image.convert("L"), dtype=np.float64)
-            stereo_log = (workdir / "wass_stereo_log.txt").read_text(encoding="utf-8")
+            stereo_log = (workdir / "wass_stereo_log.txt").read_text(encoding="utf-8",errors="replace")
             valid_line = next(
                 (line for line in stereo_log.splitlines() if " valid points found" in line), None
             )

@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+from process_utils import hidden_process_kwargs
 
 import numpy as np
 
@@ -55,7 +56,8 @@ def probe_video_pts_window(
         "-ss", f"{start:.9f}", "-copyts", "-i", str(video),
         "-to", f"{start + 2 * half_window_s:.9f}", "-vf", "showinfo", "-an", "-f", "null", os.devnull,
     ]
-    completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
+    completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
+                               **hidden_process_kwargs())
     if completed.returncode != 0:
         raise RuntimeError(f"video PTS probe failed: {completed.stderr.strip()}")
     frames = tuple(
@@ -151,7 +153,8 @@ def extract_frame_by_pts(
         "-ss", f"{start:.9f}", "-copyts", "-i", str(video),
         "-vf", filter_value, "-frames:v", "1", "-vsync", "0", "-y", str(target),
     ]
-    completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
+    completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
+                               **hidden_process_kwargs())
     if completed.returncode != 0 or not target.is_file():
         raise RuntimeError(f"exact PTS extraction failed: {completed.stderr.strip()}")
     return target

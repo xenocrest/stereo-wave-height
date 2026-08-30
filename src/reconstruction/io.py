@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+from process_utils import hidden_process_kwargs
 from typing import Any
 import xml.etree.ElementTree as ET
 
@@ -245,7 +246,8 @@ def extract_synchronized_frames(config: ReconstructionConfig, dataset_root: Path
             command = [config.ffmpeg_executable, "-hide_banner", "-loglevel", "error", "-noautorotate",
                        "-ss", f"{timestamp:.9f}", "-i", str(video), "-frames:v", "1",
                        "-vf", _rotation_filter(rotation), "-update", "1", "-y", str(destination)]
-            completed = subprocess.run(command, capture_output=True, text=True, check=False, shell=False)
+            completed = subprocess.run(command, capture_output=True, text=True, check=False, shell=False,
+                                       **hidden_process_kwargs())
             if completed.returncode != 0 or not destination.is_file():
                 raise RuntimeError(f"video extraction failed for {destination}: {completed.stderr.strip()}")
         records.append({

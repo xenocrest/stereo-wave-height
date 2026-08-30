@@ -6,6 +6,7 @@ from dataclasses import asdict, dataclass
 import json
 from pathlib import Path
 import subprocess
+from process_utils import hidden_process_kwargs
 import tempfile
 import time
 from typing import Any, Callable
@@ -194,7 +195,8 @@ def _encode_lossless_single_frame(image: Path, video: Path, ffmpeg: Path) -> Non
         str(ffmpeg), "-hide_banner", "-loglevel", "error", "-loop", "1", "-i", str(image),
         "-frames:v", "1", "-c:v", "ffv1", "-pix_fmt", "gray", "-y", str(video),
     ]
-    completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
+    completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
+                               **hidden_process_kwargs())
     if completed.returncode != 0 or not video.is_file():
         raise RuntimeError(f"lossless single-frame staging failed: {completed.stderr.strip()}")
 

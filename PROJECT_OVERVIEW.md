@@ -335,6 +335,8 @@ Windows 演示分发已采用 PyInstaller `--onedir` 完成验证：GUI 与 Pyth
 
 演示输入工作流现采用中文分步引导：先选择导入已有 YAML 标定结果或由左右标定视频调用既有 OpenCV 标定后端，再导入明确标记 LEFT/RIGHT 的水面测量视频，最后进入播放、暂停、单帧解算和结果查看；普通用户无需接触内部配置路径。
 
+演示运行时已完成阻断性健壮性修复：WASS 非 UTF-8 日志不再把成功重建误判为失败，目标时刻失败时仅按固定顺序尝试 ±2 个完整同步时刻；播放预览使用后台 latest-frame 解码，不改变暂停后的精确 PTS/sync 解算。
+
 项目主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Video-based On-demand Single-frame Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。Wave video analysis 是 Extension；真实视频层不会回写或覆盖既有仿真历史。详细协议见 [真实视频验证](docs/real_video_validation/README.md)。
 
 完整用户汇报 DOCX/Markdown 仅保存在本地，不进入本仓库；大型 PNG、原始双目图像、`xyzC`、NetCDF 和 WASS 运行目录同样不得提交。

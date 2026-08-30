@@ -182,6 +182,7 @@ Case 0/1/2 是静水零场、固定非零高度和动态正弦规则波三个逐
 - Demo Stage 2 已补齐有效像素高度叠加、canonical pixel 的 XYZ/H/status 查询、原始 WASS 点云查看及安全的全部/选择性 Session 导出；MVP 主流程现已冻结，见 [Stage 2 报告](experiments/real_video/HomeTank_004/demo_gui_stage2.md)。
 - Windows 离线演示现支持 PyInstaller `--onedir` 分发，无需系统 Python、网络或仓库工作目录；构建与启动见 [DEMO_RUN](DEMO_RUN.md) 和 [打包验证](experiments/real_video/HomeTank_004/demo_windows_packaging.md)。
 - 离线演示输入页已改为中文四步引导，明确区分“导入已有标定 YAML”和“使用 LEFT/RIGHT 标定视频现场计算”，标定就绪后才开放正式测量视频与单帧解算。
+- Demo 运行时已修复 WASS 日志编码误判，增加同步时刻 ±2 帧的有限容错，并采用后台 latest-frame 解码提升播放响应；所有数值算法和 WASS 参数保持冻结。
 - `configs/`：候选设备、仿真和实验配置模板；
 - `tests/`：自动化测试；
 - `experiments/`：可复现实验入口；当前包含 HomeTank_004 的小型配置、元数据和诊断报告，不包含原始 MP4 或大型重建产物；

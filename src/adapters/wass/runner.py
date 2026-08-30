@@ -10,6 +10,7 @@ import shutil
 from typing import Sequence
 
 from .runtime import WassRuntimeBinding
+from process_utils import hidden_process_kwargs
 
 
 @dataclass(frozen=True)
@@ -90,12 +91,14 @@ class WassRunner:
             cwd=self.runtime.working_directory or workspace,
             env=self.runtime.process_environment(),
             capture_output=True,
-            text=True,
             check=False,
             shell=False,
+            **hidden_process_kwargs(),
         )
-        (log_dir / f"{stage}{label}.stdout.log").write_text(completed.stdout, encoding="utf-8")
-        (log_dir / f"{stage}{label}.stderr.log").write_text(completed.stderr, encoding="utf-8")
+        decode=lambda value:value.decode("utf-8",errors="replace") if isinstance(value,bytes) else str(value)
+        stdout,stderr=decode(completed.stdout),decode(completed.stderr)
+        (log_dir / f"{stage}{label}.stdout.log").write_text(stdout, encoding="utf-8")
+        (log_dir / f"{stage}{label}.stderr.log").write_text(stderr, encoding="utf-8")
         if completed.returncode != 0:
             raise WassStageError(stage, completed.returncode, frame_id)
 

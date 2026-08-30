@@ -13,6 +13,8 @@ from typing import Any
 import yaml
 
 from .session import MeasurementRecord
+from .fallback import run_bounded_fallback
+from process_utils import hidden_process_kwargs
 
 
 class BackendResultError(RuntimeError):
@@ -29,17 +31,19 @@ def parse_backend_result(output_directory: Path, *, display_name: str | None = N
     except (json.JSONDecodeError, OSError) as error:
         raise BackendResultError(f"无法读取统一结果：{error}") from error
     status = str(summary.get("status", "UNKNOWN"))
-    if status != "SINGLE_FRAME_DENSE_HEIGHT_COMPLETED":
+    core_only = status == "SINGLE_FRAME_RECONSTRUCTION_COMPLETED_DENSE_HEIGHT_FAILED"
+    if status != "SINGLE_FRAME_DENSE_HEIGHT_COMPLETED" and not core_only:
         raise BackendResultError(f"单帧解算未完成：{status}")
     dense = summary.get("dense_height") or {}
     paths = dense.get("artifact_paths") or {}
     selected = output / "selected_pair" / "right.png"
     height = output / str(paths.get("height_png", "dense_height/dense_height.png"))
     status_map = output / str(paths.get("status_png", "dense_height/dense_height_status.png"))
-    missing = [path for path in (selected, height, status_map) if not path.is_file()]
+    pointcloud = output / "reconstruction" / "pointcloud" / "000000.xyz"
+    required=(selected,pointcloud) if core_only else (selected,height,status_map)
+    missing = [path for path in required if not path.is_file()]
     if missing:
         raise BackendResultError("结果图缺失：" + ", ".join(str(path) for path in missing))
-    pointcloud = output / "reconstruction" / "pointcloud" / "000000.xyz"
     target = float(summary["requested_time_s"])
     return MeasurementRecord(
         target_time_sec=target,
@@ -98,10 +102,31 @@ class FrozenBackendRunner:
         with Path(log_path).open("a", encoding="utf-8") as stream:
             stream.write("backend command: " + subprocess.list2cmdline(command) + "\n")
             completed = subprocess.run(command, cwd=self.repository, env=environment, stdout=stream,
-                                       stderr=subprocess.STDOUT, text=True, check=False)
+                                       stderr=subprocess.STDOUT, text=True, check=False,
+                                       **hidden_process_kwargs(enabled=bool(getattr(sys,"frozen",False))))
         if completed.returncode != 0:
             raise BackendResultError(f"后端执行失败（退出码 {completed.returncode}），详情见 {log_path}")
         return parse_backend_result(output_directory)
+
+    def run_with_fallback(self, left_video: Path, right_video: Path, target_time_sec: float,
+                          output_directory: Path, log_path: Path, calibration_file: Path,
+                          *, frame_period_sec: float) -> MeasurementRecord:
+        """Try the target then at most four neighboring whole-pair target times."""
+        def attempt(candidate_time: float, offset: int) -> MeasurementRecord:
+            folder=Path(output_directory)/f"attempt_{offset:+d}"
+            return self.run(left_video,right_video,candidate_time,folder,log_path,calibration_file)
+        result=run_bounded_fallback(target_time_sec,frame_period_sec,attempt)
+        record=result.value; summary=dict(record.summary_metadata)
+        summary.update({
+            "requested_target_time_sec":target_time_sec,
+            "actual_measurement_time_sec":result.actual_time_sec,
+            "fallback_used":result.frame_offset!=0,
+            "fallback_frame_offset":result.frame_offset,
+            "fallback_time_offset_ms":(result.actual_time_sec-target_time_sec)*1000.0,
+            "fallback_reason":"; ".join(result.failures) if result.failures else None,
+        })
+        record.unified_result_path.write_text(json.dumps(summary,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+        return MeasurementRecord(**{**record.__dict__,"target_time_sec":target_time_sec,"summary_metadata":summary})
 
 
 def backend_command(config: Path, *, executable: Path | None = None, frozen: bool | None = None) -> list[str]:
