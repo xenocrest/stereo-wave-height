@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "status": "portable_policy_capable_demo_binding",
+  "environment_type": "native",
+  "working_directory": ".",
+  "command_prefix": [],
+  "environment_variables": {},
+  "observed_version": "1.11_remotes/origin/v_1.11-0-g6b82aeb; policy-capable isolated build",
+  "executables": {
+    "prepare": "wass_prepare.exe",
+    "match": "wass_match.exe",
+    "autocalibrate": "wass_autocalibrate.exe",
+    "stereo": "wass_stereo_policy.exe"
+  }
+}

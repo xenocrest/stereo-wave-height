@@ -49,6 +49,17 @@ class WassRuntimeTests(unittest.TestCase):
             ["wsl.exe", "-d", "ExplicitDistro", "--", "/opt/wass/wass_match", "config", "work"],
         )
 
+    def test_native_relative_paths_resolve_from_binding_file(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary)
+            for stage in ("prepare","match","autocalibrate","stereo"):(root/f"wass_{stage}.exe").write_bytes(b"fixture")
+            config=root/"runtime.json"
+            config.write_text(json.dumps({"environment_type":"native","working_directory":".","executables":{
+                stage:f"wass_{stage}.exe" for stage in ("prepare","match","autocalibrate","stereo")}}),encoding="utf-8")
+            binding=load_runtime_binding(config)
+            self.assertEqual(Path(binding.working_directory),root)
+            self.assertEqual(Path(binding.executables["stereo"]),root/"wass_stereo.exe")
+
     def test_probe_accepts_observed_banner_despite_help_return_code(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -4,7 +4,8 @@ import tempfile
 import unittest
 
 from application.backend_runner import BackendResultError, parse_backend_result
-from application.backend_runner import FrozenBackendRunner
+from application.backend_runner import FrozenBackendRunner, backend_command
+from application.runtime_paths import resolve_runtime_paths
 from application.session import MeasurementRecord, MeasurementSession
 from application.export import export_session
 from application.visualization import DisplayTransform, DenseMeasurementView, make_height_overlay
@@ -48,12 +49,28 @@ class DemoGuiStage1Tests(unittest.TestCase):
             import yaml
             data=yaml.safe_load(config.read_text(encoding="utf-8"))
             self.assertTrue(Path(data["calibration"]["source"]).is_absolute())
+            self.assertTrue(Path(data["input"]["ffmpeg_executable"]).is_absolute())
             self.assertTrue(Path(data["processing"]["reference_plane_file"]).is_absolute())
             self.assertTrue(Path(data["dense_height"]["mapping_file"]).is_absolute())
 
     def test_application_imports_without_opening_window(self):
         from application import StereoWaveHeightApplication
         self.assertTrue(callable(StereoWaveHeightApplication))
+
+    def test_development_and_packaged_resource_resolution(self):
+        repository=Path(__file__).resolve().parents[1]
+        development=resolve_runtime_paths(repository,frozen=False)
+        packaged=resolve_runtime_paths(executable=Path("C:/portable/StereoWaveHeightDemo/StereoWaveHeightDemo.exe"),frozen=True)
+        self.assertEqual(development.experiment,repository/"experiments/real_video/HomeTank_004")
+        self.assertEqual(packaged.experiment,Path("C:/portable/StereoWaveHeightDemo/resources/HomeTank_004"))
+        self.assertEqual(packaged.ffmpeg,Path("C:/portable/StereoWaveHeightDemo/runtime/ffmpeg/ffmpeg.exe"))
+
+    def test_backend_command_switches_to_packaged_executable_mode(self):
+        config=Path("C:/request.yaml")
+        packaged=backend_command(config,executable=Path("C:/Demo.exe"),frozen=True)
+        development=backend_command(config,executable=Path("C:/python.exe"),frozen=False)
+        self.assertEqual(packaged[:2],[str(Path("C:/Demo.exe").resolve()),"--backend-single-frame"])
+        self.assertIn("src.reconstruction.run_single_frame",development)
 
     def test_result_summary_uses_demo_friendly_height_units(self):
         from application.main_window import StereoWaveHeightApplication

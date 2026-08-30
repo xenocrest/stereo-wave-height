@@ -14,17 +14,20 @@ from .session import MeasurementRecord, MeasurementSession
 from .video_tools import VideoMetadata, extract_frame, probe_video
 from .visualization import DenseMeasurementView, DisplayTransform, make_height_overlay
 from .export import delete_session, export_session
+from .runtime_paths import resolve_runtime_paths
 
 
 class StereoWaveHeightApplication:
     title = "Stereo Wave Height — Offline Demo Stage 1"
 
     def __init__(self, repository: Path | None = None) -> None:
-        self.repository = (repository or Path(__file__).resolve().parents[2]).resolve()
-        self.experiment = self.repository / "experiments/real_video/HomeTank_004"
-        self.ffmpeg = Path("D:/FormatFactory/ffmpeg.exe")
-        self.session = MeasurementSession(Path("D:/stereo-wave-height-runs/gui_sessions"))
-        self.runner = FrozenBackendRunner(self.repository, self.experiment / "single_frame_dense_smoke_config.yaml")
+        paths = resolve_runtime_paths(repository)
+        self.repository = paths.application_root
+        self.experiment = paths.experiment
+        self.ffmpeg = paths.ffmpeg
+        self.session = MeasurementSession(paths.session_root)
+        template = self.experiment / ("single_frame_dense_template.yaml" if paths.frozen else "single_frame_dense_smoke_config.yaml")
+        self.runner = FrozenBackendRunner(self.repository, template)
         self.root: tk.Tk | None = None; self.variables: dict[str, tk.StringVar] = {}
         self.metadata: dict[str, VideoMetadata] = {}; self.current_time = 0.0
         self.playing = False; self.backend_running = False; self._photo: ImageTk.PhotoImage | None = None

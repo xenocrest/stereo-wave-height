@@ -1,6 +1,4 @@
-"""Launch the V0.x desktop application shell."""
+"""Launch the desktop application or its packaged backend command mode."""
+from .entrypoint import main
 
-from .main_window import StereoWaveHeightApplication
-
-
-StereoWaveHeightApplication().run()
+raise SystemExit(main())

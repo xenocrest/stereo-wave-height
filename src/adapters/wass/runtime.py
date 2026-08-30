@@ -73,18 +73,24 @@ class RuntimeProbeResult:
 
 def load_runtime_binding(path: str | Path) -> WassRuntimeBinding:
     """Load a JSON runtime binding; no path defaults are supplied."""
-    source = Path(path)
+    source = Path(path).resolve()
     data: dict[str, Any] = json.loads(source.read_text(encoding="utf-8"))
+    environment_type = str(data["environment_type"])
+    def resolve_runtime_path(value: object) -> str:
+        if environment_type != "native":
+            return str(value)
+        candidate = Path(str(value))
+        return str(candidate if candidate.is_absolute() else (source.parent / candidate).resolve())
     return WassRuntimeBinding(
-        environment_type=str(data["environment_type"]),
+        environment_type=environment_type,
         executables={
-            str(key): str(value) for key, value in data["executables"].items() if value is not None
+            str(key): resolve_runtime_path(value) for key, value in data["executables"].items() if value is not None
         },
         command_prefix=tuple(str(value) for value in data.get("command_prefix", [])),
         environment_variables=tuple(
             (str(key), str(value)) for key, value in data.get("environment_variables", {}).items()
         ),
-        working_directory=(str(data["working_directory"]) if data.get("working_directory") else None),
+        working_directory=(resolve_runtime_path(data["working_directory"]) if data.get("working_directory") else None),
         observed_version=str(data.get("observed_version", "UNKNOWN")),
     )
 

@@ -6,6 +6,9 @@ __pycache__/
 .ruff_cache/
 .venv/
 venv/
+build/
+dist/
+*.spec
 
 # IDE and operating system
 .idea/

@@ -77,6 +77,7 @@ class FrozenBackendRunner:
         data["input"]["left_video"] = str(Path(left_video).resolve())
         data["input"]["right_video"] = str(Path(right_video).resolve())
         data["input"]["target_time_s"] = float(target_time_sec)
+        data["input"]["ffmpeg_executable"] = absolute(data["input"]["ffmpeg_executable"])
         data["calibration"]["source"] = absolute(data["calibration"]["source"])
         for key in ("wass_config_dir", "wass_runtime_binding", "reference_plane_file"):
             data["processing"][key] = absolute(data["processing"][key])
@@ -93,7 +94,7 @@ class FrozenBackendRunner:
         environment = os.environ.copy()
         extra = os.pathsep.join((str(self.repository / "src"), str(self.repository)))
         environment["PYTHONPATH"] = extra + (os.pathsep + environment["PYTHONPATH"] if environment.get("PYTHONPATH") else "")
-        command = [sys.executable, "-m", "src.reconstruction.run_single_frame", "--config", str(config)]
+        command = backend_command(config)
         with Path(log_path).open("a", encoding="utf-8") as stream:
             stream.write("backend command: " + subprocess.list2cmdline(command) + "\n")
             completed = subprocess.run(command, cwd=self.repository, env=environment, stdout=stream,
@@ -101,3 +102,12 @@ class FrozenBackendRunner:
         if completed.returncode != 0:
             raise BackendResultError(f"后端执行失败（退出码 {completed.returncode}），详情见 {log_path}")
         return parse_backend_result(output_directory)
+
+
+def backend_command(config: Path, *, executable: Path | None = None, frozen: bool | None = None) -> list[str]:
+    """Build the child command for development Python or the packaged executable."""
+    is_frozen = bool(getattr(sys, "frozen", False)) if frozen is None else frozen
+    program = str((executable or Path(sys.executable)).resolve())
+    return [program, "--backend-single-frame", str(Path(config).resolve())] if is_frozen else [
+        program, "-m", "src.reconstruction.run_single_frame", "--config", str(Path(config).resolve())
+    ]
