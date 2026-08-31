@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 from typing import Any
@@ -15,10 +16,44 @@ import yaml
 from .session import MeasurementRecord
 from .fallback import run_bounded_fallback
 from process_utils import hidden_process_kwargs
+from reconstruction.io import load_calibration
+from adapters.wass.input.opencv_xml import write_opencv_matrix_xml
 
 
 class BackendResultError(RuntimeError):
     """A user-presentable backend integration failure."""
+
+    def __init__(self, message: str, *, stage: str = "结果处理", retry_neighbor: bool = False) -> None:
+        super().__init__(message)
+        self.stage = stage
+        self.retry_neighbor = retry_neighbor
+
+
+def _failure_from_summary(summary: dict[str, Any], log_path: Path | None = None) -> BackendResultError:
+    """Preserve the backend's first structured error instead of hiding it behind exit code 1."""
+    status = str(summary.get("status", "UNKNOWN"))
+    warnings = [str(value) for value in summary.get("warnings", [])]
+    root = warnings[0] if warnings else f"后端状态为 {status}"
+    lowered = root.lower()
+    frame_local_markers = (
+        "insufficient stereo", "insufficient match", "matching support",
+        "geometry qa", "frame-local", "no reliable 3d", "not enough matches",
+    )
+    retry = status == "FRAME_RECONSTRUCTION_SUPPORT_FAILURE" or any(
+        marker in lowered for marker in frame_local_markers
+    )
+    if "calibration" in lowered or "intrinsics" in lowered:
+        stage = "固定标定准备"
+    elif "ffmpeg" in lowered or "video" in lowered or "frame" in lowered and not retry:
+        stage = "视频抽帧"
+    elif "match" in lowered:
+        stage = "双目匹配"
+    elif "stereo" in lowered or "wass" in lowered:
+        stage = "WASS 三维重建"
+    else:
+        stage = "后端处理"
+    suffix = f"，详细日志：{log_path}" if log_path is not None else ""
+    return BackendResultError(f"后端在【{stage}】阶段失败：{root}{suffix}", stage=stage, retry_neighbor=retry)
 
 
 def parse_backend_result(output_directory: Path, *, display_name: str | None = None) -> MeasurementRecord:
@@ -33,7 +68,7 @@ def parse_backend_result(output_directory: Path, *, display_name: str | None = N
     status = str(summary.get("status", "UNKNOWN"))
     core_only = status == "SINGLE_FRAME_RECONSTRUCTION_COMPLETED_DENSE_HEIGHT_FAILED"
     if status != "SINGLE_FRAME_DENSE_HEIGHT_COMPLETED" and not core_only:
-        raise BackendResultError(f"单帧解算未完成：{status}")
+        raise _failure_from_summary(summary)
     dense = summary.get("dense_height") or {}
     paths = dense.get("artifact_paths") or {}
     selected = output / "selected_pair" / "right.png"
@@ -82,9 +117,34 @@ class FrozenBackendRunner:
         data["input"]["right_video"] = str(Path(right_video).resolve())
         data["input"]["target_time_s"] = float(target_time_sec)
         data["input"]["ffmpeg_executable"] = absolute(data["input"]["ffmpeg_executable"])
-        data["calibration"]["source"] = str(Path(calibration_file).resolve()) if calibration_file else absolute(data["calibration"]["source"])
+        selected_calibration = Path(calibration_file).resolve() if calibration_file else Path(absolute(data["calibration"]["source"]))
+        data["calibration"]["source"] = str(selected_calibration)
         for key in ("wass_config_dir", "wass_runtime_binding", "reference_plane_file"):
             data["processing"][key] = absolute(data["processing"][key])
+        if calibration_file is not None:
+            source_config = Path(data["processing"]["wass_config_dir"])
+            calibration = load_calibration(
+                selected_calibration,
+                quality_mode=str(data["calibration"].get("quality_mode", "require_approved")),
+            )
+            generated_config = Path(output_directory).parent / f"{Path(output_directory).name}_wass_config"
+            if generated_config.exists():
+                raise FileExistsError(f"generated WASS config already exists: {generated_config}")
+            shutil.copytree(source_config, generated_config)
+            matrices = {
+                "intrinsics_00.xml": (calibration.k0, "intrinsics_penne"),
+                "distortion_00.xml": (calibration.d0.reshape(-1, 1), "intrinsics_penne"),
+                "intrinsics_01.xml": (calibration.k1, "intrinsics_penne"),
+                "distortion_01.xml": (calibration.d1.reshape(-1, 1), "intrinsics_penne"),
+                "ext_R.xml": (calibration.r, "ext_R"),
+                "ext_T.xml": (calibration.t_m.reshape(-1, 1), "ext_T"),
+            }
+            for name, (matrix, node_name) in matrices.items():
+                write_opencv_matrix_xml(generated_config / name, matrix, node_name=node_name)
+            (generated_config / "selected_calibration_source.txt").write_text(
+                str(selected_calibration) + "\n", encoding="utf-8"
+            )
+            data["processing"]["wass_config_dir"] = str(generated_config)
         if data.get("dense_height", {}).get("mapping_file"):
             data["dense_height"]["mapping_file"] = absolute(data["dense_height"]["mapping_file"])
         data["output"]["directory"] = str(Path(output_directory).resolve())
@@ -94,18 +154,41 @@ class FrozenBackendRunner:
 
     def run(self, left_video: Path, right_video: Path, target_time_sec: float,
             output_directory: Path, log_path: Path, calibration_file: Path | None = None) -> MeasurementRecord:
-        config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file)
+        try:
+            config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file)
+        except Exception as error:
+            raise BackendResultError(
+                f"后端在【请求配置】阶段失败：{type(error).__name__}: {error}，详细日志：{log_path}",
+                stage="请求配置",
+            ) from error
         environment = os.environ.copy()
         extra = os.pathsep.join((str(self.repository / "src"), str(self.repository)))
         environment["PYTHONPATH"] = extra + (os.pathsep + environment["PYTHONPATH"] if environment.get("PYTHONPATH") else "")
         command = backend_command(config)
         with Path(log_path).open("a", encoding="utf-8") as stream:
             stream.write("backend command: " + subprocess.list2cmdline(command) + "\n")
-            completed = subprocess.run(command, cwd=self.repository, env=environment, stdout=stream,
-                                       stderr=subprocess.STDOUT, text=True, check=False,
+            completed = subprocess.run(command, cwd=self.repository, env=environment, capture_output=True,
+                                       text=False, check=False,
                                        **hidden_process_kwargs(enabled=bool(getattr(sys,"frozen",False))))
+            backend_output = (completed.stdout or b"") + (completed.stderr or b"")
+            decoded = backend_output.decode("utf-8", errors="replace")
+            stream.write(decoded)
         if completed.returncode != 0:
-            raise BackendResultError(f"后端执行失败（退出码 {completed.returncode}），详情见 {log_path}")
+            unified = Path(output_directory) / "single_frame_result.json"
+            if unified.is_file():
+                try:
+                    summary = json.loads(unified.read_text(encoding="utf-8"))
+                    if summary.get("status") == "SINGLE_FRAME_RECONSTRUCTION_COMPLETED_DENSE_HEIGHT_FAILED":
+                        return parse_backend_result(output_directory)
+                    raise _failure_from_summary(summary, Path(log_path))
+                except json.JSONDecodeError:
+                    pass
+            tail = " | ".join(line.strip() for line in decoded.splitlines()[-4:] if line.strip())
+            root = tail or "后端未生成结构化错误结果"
+            raise BackendResultError(
+                f"后端在【进程启动/运行时】阶段失败：{root}（退出码 {completed.returncode}），详细日志：{log_path}",
+                stage="进程启动/运行时",
+            )
         return parse_backend_result(output_directory)
 
     def run_with_fallback(self, left_video: Path, right_video: Path, target_time_sec: float,
@@ -115,7 +198,12 @@ class FrozenBackendRunner:
         def attempt(candidate_time: float, offset: int) -> MeasurementRecord:
             folder=Path(output_directory)/f"attempt_{offset:+d}"
             return self.run(left_video,right_video,candidate_time,folder,log_path,calibration_file)
-        result=run_bounded_fallback(target_time_sec,frame_period_sec,attempt)
+        result=run_bounded_fallback(
+            target_time_sec,
+            frame_period_sec,
+            attempt,
+            should_retry=lambda error: isinstance(error, BackendResultError) and error.retry_neighbor,
+        )
         record=result.value; summary=dict(record.summary_metadata)
         summary.update({
             "requested_target_time_sec":target_time_sec,

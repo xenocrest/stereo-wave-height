@@ -19,6 +19,19 @@ from .mls import evaluate_holdout, quadratic_mls_predict
 OBSERVED, ESTIMATED, UNSUPPORTED = np.uint8(1), np.uint8(2), np.uint8(0)
 
 
+def scale_dense_height_for_png(dense_h: np.ndarray) -> np.ndarray:
+    """Render finite heights; all-unsupported is a valid black diagnostic image."""
+    values = np.asarray(dense_h, dtype=np.float32)
+    valid = np.isfinite(values)
+    scaled = np.zeros_like(values, dtype=np.uint8)
+    if np.any(valid):
+        lo, hi = np.percentile(values[valid], (2, 98))
+        scaled[valid] = np.clip(
+            (values[valid] - lo) / max(hi - lo, 1e-12) * 255, 0, 255
+        ).astype(np.uint8)
+    return scaled
+
+
 def rasterize_water_roi(
     roi: dict[str, Any], *, width: int, height: int, observed_rectified_px: np.ndarray,
     canonical_rectified_px: np.ndarray,
@@ -255,9 +268,7 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
                         valid_mask=status != UNSUPPORTED, water_roi_mask=roi,
                         metadata_json=np.asarray(json.dumps(metadata, ensure_ascii=False)))
     valid = np.isfinite(dense_h)
-    lo, hi = np.percentile(dense_h[valid], (2, 98))
-    scaled = np.zeros_like(dense_h, dtype=np.uint8)
-    scaled[valid] = np.clip((dense_h[valid] - lo) / max(hi - lo, 1e-12) * 255, 0, 255).astype(np.uint8)
+    scaled = scale_dense_height_for_png(dense_h)
     Image.fromarray(scaled, "L").save(output / f"{stem}.png")
     status_rgb = np.zeros((image_height, width, 3), dtype=np.uint8)
     status_rgb[status == OBSERVED] = (0, 180, 255)
@@ -285,8 +296,9 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
     elapsed = time.perf_counter() - started
     result = {"metadata": metadata, "resolution_px": [width, image_height], "water_roi_pixel_count": roi_count,
               "status": {key: {"count": count, "percent": 100 * count / roi_count} for key, count in counts.items()},
-              "valid_height_mm": {"minimum": float(dense_h[valid].min()), "maximum": float(dense_h[valid].max()),
-                                  "mean": float(dense_h[valid].mean()), "median": float(np.median(dense_h[valid]))},
+              "valid_height_mm": ({"minimum": float(dense_h[valid].min()), "maximum": float(dense_h[valid].max()),
+                                   "mean": float(dense_h[valid].mean()), "median": float(np.median(dense_h[valid]))}
+                                  if np.any(valid) else None),
               "generation_seconds": elapsed, "diagnostics": diagnostics,
               "unsupported_reasons": rejection_reasons,
               "unsupported_nearest_support_m": ({"minimum": min(rejection_nearest),

@@ -8,12 +8,17 @@ import numpy as np
 from src.surface_completion.dense_map import (
     ESTIMATED, OBSERVED, UNSUPPORTED, estimate_ray_surface, metric_projection,
     plane_basis, plane_xy, ray_from_projection,
-    rasterize_water_roi,
+    rasterize_water_roi, scale_dense_height_for_png,
 )
 from scipy.spatial import cKDTree
 
 
 class DenseHeightMapTests(unittest.TestCase):
+    def test_all_unsupported_dense_map_renders_without_index_error(self) -> None:
+        rendered = scale_dense_height_for_png(np.full((3, 4), np.nan, dtype=np.float32))
+        self.assertEqual(rendered.shape, (3, 4))
+        self.assertTrue(np.all(rendered == 0))
+
     def test_polygon_roi_rasterizes_only_declared_canonical_area(self) -> None:
         canonical = np.zeros((100, 2))
         mask = rasterize_water_roi(

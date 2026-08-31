@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import subprocess
 import tempfile
 import unittest
 from unittest import mock
@@ -43,7 +44,7 @@ class DemoGuiStage1Tests(unittest.TestCase):
     def test_failed_or_incomplete_backend_is_explicit(self):
         with tempfile.TemporaryDirectory() as temporary:
             output=Path(temporary); (output/"single_frame_result.json").write_text(json.dumps({"status":"FAILED","requested_time_s":1}),encoding="utf-8")
-            with self.assertRaisesRegex(BackendResultError,"未完成"): parse_backend_result(output)
+            with self.assertRaisesRegex(BackendResultError,"FAILED"): parse_backend_result(output)
 
     def test_external_request_config_makes_template_resources_absolute(self):
         repository=Path(__file__).resolve().parents[1]
@@ -93,11 +94,31 @@ class DemoGuiStage1Tests(unittest.TestCase):
         repository=Path(__file__).resolve().parents[1]
         runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
         with tempfile.TemporaryDirectory() as temporary:
-            base=Path(temporary); chosen=base/"chosen.yaml"; chosen.write_text("status: fixture\n",encoding="utf-8")
+            base=Path(temporary)
+            chosen=repository/"experiments/real_video/HomeTank_004/calibration_result.yaml"
             config=runner.prepare_config(repository/"left.mp4",repository/"right.mp4",1.0,base/"result",chosen)
             import yaml
             data=yaml.safe_load(config.read_text(encoding="utf-8"))
             self.assertEqual(Path(data["calibration"]["source"]),chosen.resolve())
+            generated=Path(data["processing"]["wass_config_dir"])
+            self.assertEqual(generated,base/"result_wass_config")
+            self.assertTrue((generated/"intrinsics_00.xml").is_file())
+            from reconstruction.io import load_calibration, verify_wass_calibration
+            verify_wass_calibration(generated,load_calibration(chosen,quality_mode="diagnostic_allow_failed_gate"))
+
+    def test_multiple_measurement_configs_do_not_overwrite_generated_calibration(self):
+        repository=Path(__file__).resolve().parents[1]
+        runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
+        calibration=repository/"experiments/real_video/HomeTank_004/calibration_result.yaml"
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary)
+            first=runner.prepare_config(repository/"left.mp4",repository/"right.mp4",1.0,base/"attempt_+0",calibration)
+            second=runner.prepare_config(repository/"left.mp4",repository/"right.mp4",1.1,base/"attempt_-1",calibration)
+            import yaml
+            first_dir=Path(yaml.safe_load(first.read_text(encoding="utf-8"))["processing"]["wass_config_dir"])
+            second_dir=Path(yaml.safe_load(second.read_text(encoding="utf-8"))["processing"]["wass_config_dir"])
+            self.assertNotEqual(first_dir,second_dir)
+            self.assertTrue(first_dir.is_dir() and second_dir.is_dir())
 
     def test_bounded_fallback_order_and_first_success(self):
         attempted=[]
@@ -144,7 +165,7 @@ class DemoGuiStage1Tests(unittest.TestCase):
             root=Path(temporary); calls=[]
             def fake_run(_left,_right,time_sec,output,_log,_calibration):
                 calls.append(time_sec)
-                if len(calls)==1: raise BackendResultError("target failed")
+                if len(calls)==1: raise BackendResultError("target failed",retry_neighbor=True)
                 output.mkdir(parents=True); unified=output/"single_frame_result.json"; unified.write_text(json.dumps({"status":"SINGLE_FRAME_DENSE_HEIGHT_COMPLETED","requested_time_s":time_sec}),encoding="utf-8")
                 return MeasurementRecord(time_sec,"fixture",output,unified,output/"right.png",output/"h.png",output/"s.png",None,"now",{"status":"SINGLE_FRAME_DENSE_HEIGHT_COMPLETED","requested_time_s":time_sec})
             with mock.patch.object(runner,"run",side_effect=fake_run):
@@ -153,6 +174,53 @@ class DemoGuiStage1Tests(unittest.TestCase):
             self.assertEqual(record.summary_metadata["fallback_frame_offset"],-1)
             self.assertAlmostEqual(record.summary_metadata["actual_measurement_time_sec"],1.98)
             self.assertAlmostEqual(record.summary_metadata["fallback_time_offset_ms"],-20.0)
+
+    def test_engineering_failure_does_not_trigger_neighbor_fallback(self):
+        attempted=[]
+        def attempt(_time,offset):
+            attempted.append(offset)
+            raise BackendResultError("missing calibration",stage="固定标定准备",retry_neighbor=False)
+        with self.assertRaisesRegex(BackendResultError,"missing calibration"):
+            run_bounded_fallback(2.0,0.02,attempt,should_retry=lambda error:isinstance(error,BackendResultError) and error.retry_neighbor)
+        self.assertEqual(attempted,[0])
+
+    def test_frame_local_failure_still_uses_bounded_neighbor_fallback(self):
+        attempted=[]
+        def attempt(_time,offset):
+            attempted.append(offset)
+            if offset==1:return "ok"
+            raise BackendResultError("insufficient matching support",stage="双目匹配",retry_neighbor=True)
+        result=run_bounded_fallback(2.0,0.02,attempt,should_retry=lambda error:isinstance(error,BackendResultError) and error.retry_neighbor)
+        self.assertEqual(attempted,[0,-1,1]); self.assertEqual(result.frame_offset,1)
+
+    def test_backend_structured_root_error_survives_exit_code_wrapper(self):
+        repository=Path(__file__).resolve().parents[1]
+        runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary); output=base/"out"; output.mkdir()
+            payload={"status":"WASS_RECONSTRUCTION_FAILED","warnings":["Fixed-calibration reconstruction terminated: ValueError: missing intrinsics_00.xml"]}
+            (output/"single_frame_result.json").write_text(json.dumps(payload),encoding="utf-8")
+            completed=subprocess.CompletedProcess(["backend"],1,stdout=b"WASS_RECONSTRUCTION_FAILED\n",stderr=b"")
+            with mock.patch.object(runner,"prepare_config",return_value=base/"request.yaml"), mock.patch("application.backend_runner.subprocess.run",return_value=completed):
+                with self.assertRaises(BackendResultError) as raised:
+                    runner.run(Path("left"),Path("right"),1.0,output,base/"session.log",None)
+            self.assertIn("固定标定准备",str(raised.exception)); self.assertIn("intrinsics_00.xml",str(raised.exception))
+            self.assertNotIn("退出码 1",str(raised.exception))
+
+    def test_backend_subprocess_preserves_cwd_environment_and_runtime_config(self):
+        repository=Path(__file__).resolve().parents[1]
+        runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary); output=base/"out"; config=base/"request.yaml"; config.write_text("fixture: true\n")
+            record=self._record(output,"fixture")
+            completed=subprocess.CompletedProcess(["backend"],0,stdout=b"ok\xff\n",stderr=b"")
+            with mock.patch.object(runner,"prepare_config",return_value=config), mock.patch("application.backend_runner.subprocess.run",return_value=completed) as launched, mock.patch("application.backend_runner.parse_backend_result",return_value=record):
+                runner.run(Path("left"),Path("right"),1.0,output,base/"session.log",None)
+            kwargs=launched.call_args.kwargs
+            self.assertEqual(kwargs["cwd"],repository)
+            self.assertIn(str(repository/"src"),kwargs["env"]["PYTHONPATH"])
+            self.assertFalse(kwargs["text"])
+            self.assertIn("ok�",(base/"session.log").read_text(encoding="utf-8"))
 
     def test_result_summary_uses_demo_friendly_height_units(self):
         from application.main_window import StereoWaveHeightApplication
