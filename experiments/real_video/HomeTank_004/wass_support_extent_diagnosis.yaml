@@ -1,0 +1,134 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: DIAGNOSIS_COMPLETE_NO_WASS_RERUN
+starting_head: bf88b8afb8fcccb1e0aa48d4911471fbb6e85189
+scope: ONE_FROZEN_FORMAL_WAVE_FRAME_READ_ONLY
+main_frame:
+  requested_time_s: 28.800766666666668
+  session: 20260831-104155/measurement_28.801s/attempt_+0
+  sync_pair_error_ms: 0.6165000000031284
+  selection_rule: most recent successful formal random-pause measurement with complete WASS observability artifacts
+  wass_reruns: 0
+water_roi:
+  source: committed dense-height result for the selected GUI measurement
+  pixel_count: 36381
+  common_fov_intersection_pixels: 36381
+  common_fov_ratio: 1.0
+  direct_observed_pixels: 7181
+  direct_observed_ratio: 0.19738324949836453
+common_fov:
+  derivation: frozen OpenCV calibration plus alpha=0 zero-disparity rectification maps; no hand-drawn common mask
+  full_rectified_pixels: 2073600
+  limitation_class: LOW
+rectification:
+  calibration_observation_metrics_px:
+    median: 10.994903564453125
+    rms: 21.122547472723607
+    p95: 46.28102722167967
+    max: 92.52593994140625
+  current_frame_sparse_check:
+    source: 37 WASS matches_epionly correspondences mapped with the frozen fixed calibration
+    count: 37
+    median_absolute_vertical_px: 403.18092836644917
+    rms_vertical_px: 579.5048348503817
+    p95_absolute_vertical_px: 1030.120347110024
+    max_absolute_vertical_px: 1288.5345150977528
+    caveat: sparse WASS feature inliers are not an independent metrology target and may contain repeated-ruler ambiguities
+  spatial_nonuniformity: CLEAR
+  classification: RECTIFICATION_SPATIALLY_LIMITING_WASS_SUPPORT
+support_funnel:
+  common_fov_pixels: 2073600
+  triangulated_valid_points: 229164
+  triangulated_over_common_fov: 0.11051581790123456
+  largest_component_points: 135205
+  largest_component_retained_from_triangulated: 0.5899897025697745
+  final_xyz_points: 135205
+  final_over_common_fov: 0.06520302854938272
+  plane_crop_loss_points: 0
+  largest_loss: COMMON_FOV_TO_VALID_TRIANGULATION
+  interpretation: MATCHING_SUPPORT_LIMITED
+  unavailable_masks:
+    - lossless raw SGBM disparity-valid mask before morphology
+    - left-right consistency mask
+    - per-filter rejection masks
+disparity:
+  source: effective rectified disparity f_rect/Z from traceable pre-cluster baseline-normalized depth
+  configured_range_px: [1, 640]
+  min_px: 16.356762462636834
+  p5_px: 145.01245924154847
+  median_px: 621.248007107101
+  p95_px: 658.5914617624675
+  max_px: 686.8837702832208
+  fraction_at_or_above_95_percent_upper_bound: 0.762881604440488
+  fraction_above_nominal_upper_bound: 0.14973556055925014
+  boundary_interaction: true
+  historical_control: 1280_and_2560_ranges_did_not_restore_support_and_added_bad_matches
+  classification: DISPARITY_RANGE_NOT_PRIMARY_LIMIT
+matcher_and_filters:
+  winsize: 13
+  uniqueness_ratio: 1
+  speckle_range: 16
+  speckle_window_size: -70
+  min_disparity: 1
+  max_disparity: 640
+  disp12maxdiff: -1
+  dilate_steps: 1
+  erosion_steps: 2
+  zgap_percentile: 99
+  component_loss_points: 93959
+  component_loss_fraction_of_triangulated: 0.41001029743022555
+  plane_crop_loss_points: 0
+  post_filter_class: MEDIUM
+texture_diagnostic:
+  method: fixed-seed 30+30 rectified 15x15 patches; Sobel gradient energy and best same-row horizontal OpenCV normalized correlation
+  success:
+    count: 30
+    median_gradient_energy: 28.381641387939453
+    median_best_ncc: 0.716117799282074
+  failure:
+    count: 30
+    median_gradient_energy: 2.082524299621582
+    median_best_ncc: 0.7881032526493073
+  interpretation: failure patches are much flatter; high NCC on flat patches is non-discriminative rather than evidence of unique correspondence
+  classification: WATER_APPEARANCE_LIMITING_MATCHING
+xyz:
+  count: 135205
+  unit: m
+  min: [-0.111367669, -0.094487256, 0.252189892]
+  max: [-0.039036542, -0.025944801, 0.326811564]
+  extent: [0.072331127, 0.068542455, 0.074621672]
+factor_ranking:
+  - {rank: 1, factor: WATER_APPEARANCE_TEXTURE_SPECULARITY, severity: HIGH}
+  - {rank: 2, factor: CALIBRATION_RECTIFICATION, severity: HIGH}
+  - {rank: 3, factor: DISPARITY_MATCHER_RANGE, severity: MEDIUM}
+  - {rank: 4, factor: CONNECTED_COMPONENT_POST_FILTER, severity: MEDIUM}
+  - {rank: 5, factor: COMMON_FOV, severity: LOW}
+calibration_video_assessment:
+  stereo_candidate_pairs: 192
+  selected_independent_poses: 12
+  cam0_detection_success: 233
+  cam1_detection_success: 328
+  conclusion: EXISTING_CALIBRATION_VIDEO_MAY_BE_SALVAGEABLE
+  limitation: spatial edge coverage was not preserved in the frozen summary and quality gates failed strongly
+  fallback: NEW_CALIBRATION_CAPTURE_RECOMMENDED_IF_COVERAGE_AWARE_RECALIBRATION_FAILS
+decisions:
+  small_support_not_caused_by_gui_roi: true
+  recalibration_priority: HIGH
+  controlled_rerun_allowed: false
+  controlled_rerun_executed: false
+  support_expansion_potential_existing_HomeTank_004: LIMITED
+  recommended_next_single_action: rerun OpenCV calibration on the existing 192 candidate pairs with spatial-coverage-aware pose selection and accept only if rectified residual gates pass
+  dense_strategy: expand direct WASS observation first; use completion only for locally validated small gaps
+classifications:
+  - SMALL_SUPPORT_NOT_CAUSED_BY_GUI_ROI
+  - RECTIFICATION_SPATIALLY_LIMITING_WASS_SUPPORT
+  - MATCHING_SUPPORT_LIMITED
+  - WATER_APPEARANCE_LIMITING_MATCHING
+  - DISPARITY_RANGE_NOT_PRIMARY_LIMIT
+  - RECALIBRATION_HIGH_PRIORITY
+  - EXISTING_CALIBRATION_VIDEO_MAY_BE_SALVAGEABLE
+  - NEW_CALIBRATION_CAPTURE_RECOMMENDED
+  - WASS_SUPPORT_EXPANSION_POTENTIAL_LIMITED
+formal_pipeline_modified: false
+formal_gui_modified: false
+

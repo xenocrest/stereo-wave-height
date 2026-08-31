@@ -69,6 +69,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "packaged_backend_failure_diagnosis.md",
             "demo_roi_seek_exit_diagnosis.md",
             "full_roi_surface_completion.yaml", "full_roi_surface_completion.md",
+            "wass_support_extent_diagnosis.yaml", "wass_support_extent_diagnosis.md",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",
