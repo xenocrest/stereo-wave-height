@@ -1,0 +1,82 @@
+schema_version: '1.0'
+experiment: FULL_ROI_CONTINUOUS_SURFACE_COMPLETION_MVP
+starting_head: a288042a048bb5100dadcc207287183e3b09b9bb
+wass_executions: 0
+interpretation: Internal frozen-WASS surface consistency and engineering feasibility; not independent physical accuracy.
+global_model:
+  method: scipy_RBFInterpolator_thin_plate_spline
+  coordinate_system: physical_reference_plane_XY_m
+  robust_filter: median_plus_or_minus_8_MAD
+  control_policy: deterministic_physical_XY_spatial_cell_medians
+  target_control_points: 2500
+  smoothing_noise_scale_m: 0.001
+  smoothing_basis: committed frozen local hold-out RMSE range 0.43-1.06 mm
+  inputs_excluded: [ruler, manual_clicks, GUI_ROI_as_truth, prior_estimated_points]
+holdout:
+  seed: 20260831
+  maximum_test_points: 500
+  static_r0:
+    raw_count: 166479
+    filtered_count: 162726
+    control_count: 1469
+    coverage_percent: 100.0
+    mae_m: 0.0008081788889068315
+    rmse_m: 0.0013834328093611365
+    median_absolute_error_m: 0.00046706247705828824
+    p95_absolute_error_m: 0.0028723508184182144
+    maximum_absolute_error_m: 0.00974670855064544
+  wave_case1:
+    raw_count: 86316
+    filtered_count: 86039
+    control_count: 1252
+    coverage_percent: 100.0
+    mae_m: 0.0007839349347008754
+    rmse_m: 0.0012713163256303796
+    median_absolute_error_m: 0.0004875385411046583
+    p95_absolute_error_m: 0.0021061370939060857
+    maximum_absolute_error_m: 0.007498452598057961
+  wave_case2:
+    raw_count: 34955
+    filtered_count: 33940
+    control_count: 1227
+    coverage_percent: 100.0
+    mae_m: 0.0003596609814200934
+    rmse_m: 0.0008280149415323333
+    median_absolute_error_m: 0.00018256400144978958
+    p95_absolute_error_m: 0.0011977952188089794
+    maximum_absolute_error_m: 0.010190849961457485
+global_sanity_classification: GLOBAL_SURFACE_COMPLETION_SANITY_PASS_IN_OBSERVED_DOMAIN
+full_roi_smoke:
+  source: latest_completed_GUI_measurement_at_18.783833_s; no newer saved large ROI was recoverable
+  roi_coordinate_system: canonical_cam1
+  roi_points: [[120, 190], [1500, 190], [1500, 900], [120, 900]]
+  roi_basis: image-audited large visible-water demonstration query; not fitting truth
+  roi_pixel_count: 981891
+  observed:
+    count: 5495
+    percent: 0.5596344197064643
+  estimated_local:
+    count: 0
+    percent: 0.0
+  estimated_global:
+    count: 478744
+    percent: 48.75734679307581
+  unsupported:
+    count: 497652
+    percent: 50.683018787217726
+  valid_coverage_percent: 49.316981212782274
+  height_mm:
+    minimum: -103.17668914794922
+    maximum: 508.7413330078125
+    mean: 56.163387298583984
+    median: 65.19019317626953
+  generation_seconds: 36.13671020000038
+  visual_sanity: FAIL_NUMERICAL_EXTRAPOLATION_AND_SPIKES
+  frozen_artifacts_unchanged: true
+decision:
+  classification: GLOBAL_SURFACE_COMPLETION_UNSTABLE
+  full_roi_pipeline_integrated: false
+  gui_integrated: false
+  packaged_exe_rebuilt: false
+  reason: Stable observed-domain hold-out does not justify extrapolation far beyond physical WASS support; coverage, range, and runtime all fail the requested MVP gate.
+
