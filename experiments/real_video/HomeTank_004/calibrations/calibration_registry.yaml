@@ -1,0 +1,9 @@
+schema_version: '1.0'
+current_production_calibration_id: HomeTank_004_frozen_calibration_v1
+approved_at: HISTORICAL_BASELINE_REGISTRATION_2026-08-31
+reason: Register current frozen diagnostic baseline without changing numeric calibration
+calibrations:
+  HomeTank_004_frozen_calibration_v1:
+    package_path: calibrations/HomeTank_004_frozen_calibration_v1
+    lifecycle_status: PROMOTED_PRODUCTION_CALIBRATION
+    immutable: true

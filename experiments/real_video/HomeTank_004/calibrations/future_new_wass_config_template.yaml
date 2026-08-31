@@ -1,0 +1,14 @@
+schema_version: '1.0'
+status: PREPARED_NOT_EXECUTED
+stereo_videos: HomeTank_004_STATIC_PAIR
+target_time_s: 28.8007667
+left_frame_id: FROZEN_DIAGNOSTIC_LEFT
+right_frame_id: FROZEN_DIAGNOSTIC_RIGHT
+sync_model: FROZEN_HOMETANK004_FRAME_LEVEL_MODEL
+sync_residual_ms: 0.6165
+rectification_policy: {alpha: 0.0, zero_disparity: true}
+matcher_config_hash: FROZEN_CURRENT
+stereo_config_hash: FROZEN_CURRENT
+post_filter: FROZEN_CURRENT
+water_roi: FROZEN_CURRENT
+run_autocalibrate: false

@@ -73,6 +73,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "calibration_spatial_salvage.yaml", "calibration_spatial_salvage.md",
             "calibration_spatial_candidate.yaml",
             "calibration_wass_ab_template.yaml", "new_calibration_workflow_preparation.md",
+            "calibrations", "calibration_promotion_and_wass_ab_preparation.md",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",

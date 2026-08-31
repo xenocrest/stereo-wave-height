@@ -1,0 +1,113 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+status: CALIBRATION_QUALITY_FAIL
+quality_gate_detail: CALIBRATION_HIGH_REPROJECTION_ERROR
+strict_calibration_failed: true
+approved_for_wass: false
+backend: OPENCV_OFFICIAL
+opencv_version: 5.0.0
+camera_roles: {cam0: left, cam1: right}
+canonical_orientation: {cam0: rotate180, cam1: identity}
+target:
+  inner_corners: [9, 6]
+  corner_count: 54
+  physical_squares: [10, 7]
+  square_size_m: 0.020
+  size_provenance: USER_SPECIFIED_CONFIGURED
+dataset:
+  stereo_candidate_pairs: 192
+  independent_pose_count: 12
+  readiness: DATASET_USABLE_WITH_WARNING
+  initial_calibration_views: 12
+  rejected_views: []
+  final_calibration_views: 12
+  one_shot_rejection_rule: reject only when max mono per-view RMS exceeds median plus 3 MAD and at least 12 views remain
+  rejection_note: no rejection permitted because the initial set already equals the 12-view minimum
+mono_cam0:
+  rms_px: 4.380505717787364
+  K:
+    - [1519.8630475914051, 0.0, 894.4430979866063]
+    - [0.0, 1505.9973301475638, 459.12086085995617]
+    - [0.0, 0.0, 1.0]
+  D: [0.09419674528173762, 0.4106725017735245, -0.024204065177231445, -0.02430140388720611, -1.068373319093563]
+  per_view_rms_px: [3.7578330039978027, 3.7048392295837402, 2.9745876789093018, 4.8826823234558105, 6.998053550720215, 5.207513809204102, 4.416351795196533, 4.33334493637085, 3.8875913619995117, 3.954702854156494, 3.3172218799591064, 3.6878304481506348]
+mono_cam1:
+  rms_px: 4.525324741510539
+  K:
+    - [1540.820849209382, 0.0, 1045.672210930653]
+    - [0.0, 1523.9518756486245, 608.5890665247778]
+    - [0.0, 0.0, 1.0]
+  D: [0.19899213500290663, -0.4520725281648086, 0.025399617020145093, 0.035831490163472576, 0.4450934421632416]
+  per_view_rms_px: [4.182981014251709, 3.660392999649048, 2.8745381832122803, 4.753037929534912, 6.714424133300781, 6.315788269042969, 4.698553562164307, 4.267172813415527, 3.750354766845703, 3.758060932159424, 3.806711435317993, 4.006930351257324]
+stereo:
+  rms_px: 7.922425043794302
+  convention: X_cam1 = R_right_from_left * X_cam0 + T_right_from_left_m
+  R_right_from_left:
+    - [0.9930873165486288, -0.020173468835128883, -0.11563136626971747]
+    - [-0.006391109959918555, 0.9743653510553748, -0.22488067141534496]
+    - [0.11720382000482622, 0.22406515529616422, 0.9675009409599465]
+  T_right_from_left_m: [-0.05885880270281312, 0.012587938733396406, -0.03308738049944439]
+  baseline_m: 0.06868471158474378
+  relative_rotation_angle_deg: 14.652724096515515
+  E:
+    - [0.0012638894184831585, 0.035059715563000964, 0.004738130227217134]
+    - [-0.02596018139413657, 0.013855694007493705, 0.0607718860121843]
+    - [-0.012124749217444353, -0.05709603556848886, 0.014691767624774059]
+  F:
+    - [3.575819181294905e-08, 1.0010484888509737e-06, -0.00028784515219920816]
+    - [-7.426002449011265e-07, 3.999962347979348e-07, 0.0031226992004975587]
+    - [-0.00011400941481098, -0.003802116269984627, 0.9999999999999999]
+  symmetric_epipolar_rms_px: 9.508413074591859
+  symmetric_epipolar_max_px: 41.865631103515625
+rectification:
+  flags: CALIB_ZERO_DISPARITY
+  alpha: 0
+  R1:
+    - [0.9086497894586247, -0.08792216456533287, 0.40819756625308723]
+    - [0.13524060945110541, 0.9868536297094423, -0.088486671790685]
+    - [-0.3950513101764005, 0.13560828332902586, 0.9085949899820404]
+  R2:
+    - [0.8569418338489001, -0.18327133423083974, 0.48172846236124767]
+    - [0.12462930774023916, 0.9805905879096619, 0.15135928962297784]
+    - [-0.5001182150770684, -0.06966862243672925, 0.8631500761720962]
+  P1:
+    - [3072.648101605626, 0.0, -186.38017749786377, 0.0]
+    - [0.0, 3072.648101605626, 451.8921585083008, 0.0]
+    - [0.0, 0.0, 1.0, 0.0]
+  P2:
+    - [3072.648101605626, 0.0, -186.38017749786377, -211.0439486601929]
+    - [0.0, 3072.648101605626, 451.8921585083008, 0.0]
+    - [0.0, 0.0, 1.0, 0.0]
+  Q:
+    - [1.0, 0.0, 0.0, 186.38017749786377]
+    - [0.0, 1.0, 0.0, -451.8921585083008]
+    - [0.0, 0.0, 0.0, 3072.648101605626]
+    - [0.0, 0.0, 14.559280761719318, 0.0]
+  roi0: [0, 0, 1920, 1079]
+  roi1: [0, 0, 1920, 1080]
+  common_roi: [0, 0, 1920, 1079]
+  common_roi_fraction: 0.9990740740740741
+  vertical_disparity_rms_px: 21.122547472723607
+  vertical_disparity_median_px: 10.994903564453125
+  vertical_disparity_p95_px: 46.28102722167967
+physical_sanity:
+  recovered_baseline_m: 0.06868471158474378
+  measured_baseline_m: 0.070
+  absolute_difference_m: 0.00131528841525623
+  relative_difference_percent_of_measured: 1.8789834503660428
+  sanity_threshold_percent: 5.0
+  threshold_status: PROJECT_COARSE_SANITY_THRESHOLD
+  baseline_check: PASS
+  interpretation: baseline scale is physically plausible; this does not approve the calibration
+  rotation_check: WARNING_RELATIVE_ROTATION_14_65_DEG_NOT_INDEPENDENTLY_MEASURED
+  approval_effect: FAIL
+physical_validation:
+  baseline: PASS
+engineering_interpretation: PHYSICALLY_CONSISTENT_BUT_NOT_METROLOGICAL
+reconstruction_parameter_principle: CALIBRATION_PARAMETERS_PRIMARY_MANUAL_MEASUREMENTS_SANITY_ONLY
+static_algorithm_validation_status: FAILED_AT_WASS_RECTIFICATION
+coarse_calibration_physical_plausibility: PASS_BASELINE_ONLY
+coarse_fixed_calibration_allowed: true
+metrological_validity: false
+coarse_purpose: ALGORITHM_CLOSURE_VALIDATION_ONLY
+outputs_are_diagnostic_only: true
