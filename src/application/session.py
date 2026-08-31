@@ -51,8 +51,9 @@ class MeasurementSession:
     """Own measurement folders without writing generated data into the repository."""
 
     def __init__(self, root: Path, session_id: str | None = None) -> None:
+        self.root = Path(root).resolve()
         self.session_id = session_id or datetime.now().strftime("%Y%m%d-%H%M%S")
-        self.directory = Path(root) / self.session_id
+        self.directory = self.root / self.session_id
         self.directory.mkdir(parents=True, exist_ok=True)
         self.records: list[MeasurementRecord] = []
         self.log_path = self.directory / "session.log"

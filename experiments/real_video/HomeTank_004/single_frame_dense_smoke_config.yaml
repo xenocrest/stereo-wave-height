@@ -32,10 +32,7 @@ processing:
 dense_height:
   enabled: true
   mapping_file: manual_reference/frozen_cam1_validation_mapping.yaml
-  water_roi:
-    type: polygon
-    coordinate_system: canonical_cam1
-    points: [[700, 340], [900, 340], [900, 520], [700, 520]]
+  water_roi: null  # Must be supplied explicitly by an interactive or scripted run.
   observation_gate_px: 2.0
   surface_completion:
     method: mls_quadratic

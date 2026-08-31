@@ -51,13 +51,22 @@ class LatestFrameDecoder:
 
     def __init__(self, *, display_fps: float = 30.0) -> None:
         self.display_fps=display_fps; self._lock=threading.Lock(); self._stop=threading.Event()
-        self._latest: tuple[int,float,Image.Image] | None=None; self._version=0; self._thread: threading.Thread | None=None
+        self._latest: tuple[int,float,Image.Image] | None=None; self._version=0; self._generation=0
+        self._thread: threading.Thread | None=None
 
     def start(self,path:Path,start_time_sec:float) -> None:
-        self.stop(); self._stop.clear()
-        self._thread=threading.Thread(target=self._decode,args=(Path(path),start_time_sec),daemon=True); self._thread.start()
+        self.seek(path,start_time_sec,continue_playing=True)
 
-    def _decode(self,path:Path,start:float) -> None:
+    def seek(self, path: Path, time_sec: float, *, continue_playing: bool) -> int:
+        """Submit one latest-only OpenCV seek; paused mode publishes one frame."""
+        self.stop(); self._stop.clear(); self._generation += 1; generation=self._generation
+        with self._lock:self._latest=None
+        self._thread=threading.Thread(
+            target=self._decode,args=(Path(path),time_sec,generation,continue_playing),daemon=True
+        ); self._thread.start()
+        return generation
+
+    def _decode(self,path:Path,start:float,generation:int,continuous:bool) -> None:
         import cv2
         capture=cv2.VideoCapture(str(path)); capture.set(cv2.CAP_PROP_POS_MSEC,max(start,0)*1000.0)
         interval=1.0/self.display_fps; deadline=time.perf_counter()
@@ -68,7 +77,9 @@ class LatestFrameDecoder:
                 timestamp=float(capture.get(cv2.CAP_PROP_POS_MSEC)/1000.0)
                 rgb=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
                 with self._lock:
+                    if generation != self._generation: break
                     self._version+=1; self._latest=(self._version,timestamp,Image.fromarray(rgb))
+                if not continuous: break
                 deadline+=interval; self._stop.wait(max(0.0,deadline-time.perf_counter()))
         finally: capture.release()
 
@@ -81,6 +92,6 @@ class LatestFrameDecoder:
         return 0 if self._latest is None else 1
 
     def stop(self) -> None:
-        self._stop.set()
+        self._generation += 1; self._stop.set()
         if self._thread and self._thread.is_alive(): self._thread.join(timeout=0.5)
         self._thread=None

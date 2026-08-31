@@ -67,6 +67,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "demo_input_workflow_redesign.md",
             "demo_runtime_robustness.md",
             "packaged_backend_failure_diagnosis.md",
+            "demo_roi_seek_exit_diagnosis.md",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",

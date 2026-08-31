@@ -163,7 +163,7 @@ class DemoGuiStage1Tests(unittest.TestCase):
         runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
         with tempfile.TemporaryDirectory() as temporary:
             root=Path(temporary); calls=[]
-            def fake_run(_left,_right,time_sec,output,_log,_calibration):
+            def fake_run(_left,_right,time_sec,output,_log,_calibration,_water_roi):
                 calls.append(time_sec)
                 if len(calls)==1: raise BackendResultError("target failed",retry_neighbor=True)
                 output.mkdir(parents=True); unified=output/"single_frame_result.json"; unified.write_text(json.dumps({"status":"SINGLE_FRAME_DENSE_HEIGHT_COMPLETED","requested_time_s":time_sec}),encoding="utf-8")
@@ -229,10 +229,74 @@ class DemoGuiStage1Tests(unittest.TestCase):
         summary=StereoWaveHeightApplication._summary(record)
         self.assertIn("-25.000 / -14.000 / -20.000 mm",summary)
 
+    def test_selected_water_roi_replaces_template_demo_polygon(self):
+        repository=Path(__file__).resolve().parents[1]
+        runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
+        selected={"type":"polygon","coordinate_system":"canonical_cam1","points":[[10,20],[300,20],[300,400],[10,400]]}
+        with tempfile.TemporaryDirectory() as temporary:
+            config=runner.prepare_config(repository/"left.mp4",repository/"right.mp4",1.0,Path(temporary)/"out",water_roi=selected)
+            import yaml
+            data=yaml.safe_load(config.read_text(encoding="utf-8"))
+            self.assertEqual(data["dense_height"]["water_roi"],selected)
+            self.assertNotEqual(data["dense_height"]["water_roi"]["points"],[[700,340],[900,340],[900,520],[700,520]])
+
+    def test_paused_and_playing_slider_release_submit_one_latest_seek(self):
+        from application.main_window import StereoWaveHeightApplication
+        class Timeline:
+            def get(self):return 60.0
+            def cget(self,_key):return 161.171
+        for resume in (False,True):
+            app=StereoWaveHeightApplication.__new__(StereoWaveHeightApplication)
+            app.timeline=Timeline(); app.preview_decoder=mock.Mock(); app._resume_after_seek=resume
+            app._timeline_dragging=True; app.current_time=0.0; app.playing=False
+            app.variables={key:mock.Mock() for key in ("right_measurement","time","app_state")}
+            app.variables["right_measurement"].get.return_value="right.mp4"; app._log=mock.Mock()
+            app._timeline_release(mock.Mock())
+            app.preview_decoder.seek.assert_called_once_with(Path("right.mp4"),60.0,continue_playing=resume)
+            self.assertEqual(app.current_time,60.0); self.assertEqual(app.playing,resume)
+
+    def test_decoder_seek_generation_makes_older_request_stale(self):
+        decoder=LatestFrameDecoder()
+        with mock.patch("application.video_tools.threading.Thread") as thread:
+            first=decoder.seek(Path("video.mp4"),20.0,continue_playing=False)
+            second=decoder.seek(Path("video.mp4"),60.0,continue_playing=False)
+        self.assertGreater(second,first); self.assertEqual(thread.call_count,2)
+
+    def test_delete_session_only_removes_current_session(self):
+        from application.export import delete_session
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary); current=MeasurementSession(root,"current"); other=MeasurementSession(root,"other")
+            delete_session(current)
+            self.assertFalse(current.directory.exists()); self.assertTrue(other.directory.exists())
+
+    def test_cleanup_failure_does_not_block_application_exit(self):
+        from application.main_window import StereoWaveHeightApplication
+        app=StereoWaveHeightApplication.__new__(StereoWaveHeightApplication)
+        app._closing=False; app.playing=True; app.preview_decoder=mock.Mock(); app._after_id=None
+        app.root=mock.Mock(); app.session=mock.Mock(); app.session.directory=Path("C:/locked/session")
+        with mock.patch("application.main_window.delete_session",side_effect=PermissionError("locked")), mock.patch("application.main_window.messagebox.showwarning"):
+            app._shutdown(delete_temporary=True)
+        app.preview_decoder.stop.assert_called_once(); app.root.destroy.assert_called_once()
+
     def test_canvas_mapping_accounts_for_letterbox(self):
         transform=DisplayTransform.fit(1920,1080,1000,700)
         self.assertIsNone(transform.canvas_to_pixel(500,20))
         self.assertEqual(transform.canvas_to_pixel(500,350),(960,540))
+        canvas=transform.pixel_to_canvas(960,540)
+        self.assertEqual(transform.canvas_to_pixel(*canvas),(960,540))
+
+    def test_export_all_and_selective_smoke(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary); session=MeasurementSession(base/"sessions","export")
+            records=[]
+            for index in range(2):
+                source=base/f"source{index}"; source.mkdir(); (source/"result.json").write_text("{}")
+                record=MeasurementRecord(float(index),f"{index}.000s",source,source/"result.json",source/"missing.png",source/"h.png",source/"s.png",None,"now",{"status":"OK"})
+                session.add(record); records.append(record)
+            all_path=export_session(session,base/"all",records)
+            selected_path=export_session(session,base/"selected",[records[1]])
+            self.assertEqual(json.loads((all_path/"session_manifest.json").read_text())["measurement_count"],2)
+            self.assertEqual(json.loads((selected_path/"session_manifest.json").read_text())["measurement_count"],1)
 
     def test_selective_export_copies_only_selected_record(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -44,6 +44,6 @@ def export_session(session:MeasurementSession,destination:Path,records:Iterable[
 
 
 def delete_session(session:MeasurementSession) -> None:
-    root=Path("D:/stereo-wave-height-runs/gui_sessions").resolve(); target=session.directory.resolve()
+    root=session.root.resolve(); target=session.directory.resolve()
     if target.parent!=root:raise ValueError("refusing to delete outside GUI session root")
     shutil.rmtree(target)

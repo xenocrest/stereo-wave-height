@@ -107,7 +107,8 @@ class FrozenBackendRunner:
         self.template_config = Path(template_config).resolve()
 
     def prepare_config(self, left_video: Path, right_video: Path, target_time_sec: float,
-                       output_directory: Path, calibration_file: Path | None = None) -> Path:
+                       output_directory: Path, calibration_file: Path | None = None,
+                       water_roi: dict[str, Any] | None = None) -> Path:
         data = yaml.safe_load(self.template_config.read_text(encoding="utf-8"))
         template_base = self.template_config.parent
         def absolute(value: str) -> str:
@@ -147,15 +148,18 @@ class FrozenBackendRunner:
             data["processing"]["wass_config_dir"] = str(generated_config)
         if data.get("dense_height", {}).get("mapping_file"):
             data["dense_height"]["mapping_file"] = absolute(data["dense_height"]["mapping_file"])
+        if water_roi is not None:
+            data["dense_height"]["water_roi"] = water_roi
         data["output"]["directory"] = str(Path(output_directory).resolve())
         config = Path(output_directory).parent / f"{Path(output_directory).name}_request.yaml"
         config.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
         return config
 
     def run(self, left_video: Path, right_video: Path, target_time_sec: float,
-            output_directory: Path, log_path: Path, calibration_file: Path | None = None) -> MeasurementRecord:
+            output_directory: Path, log_path: Path, calibration_file: Path | None = None,
+            water_roi: dict[str, Any] | None = None) -> MeasurementRecord:
         try:
-            config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file)
+            config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file, water_roi)
         except Exception as error:
             raise BackendResultError(
                 f"后端在【请求配置】阶段失败：{type(error).__name__}: {error}，详细日志：{log_path}",
@@ -193,11 +197,11 @@ class FrozenBackendRunner:
 
     def run_with_fallback(self, left_video: Path, right_video: Path, target_time_sec: float,
                           output_directory: Path, log_path: Path, calibration_file: Path,
-                          *, frame_period_sec: float) -> MeasurementRecord:
+                          *, frame_period_sec: float, water_roi: dict[str, Any] | None = None) -> MeasurementRecord:
         """Try the target then at most four neighboring whole-pair target times."""
         def attempt(candidate_time: float, offset: int) -> MeasurementRecord:
             folder=Path(output_directory)/f"attempt_{offset:+d}"
-            return self.run(left_video,right_video,candidate_time,folder,log_path,calibration_file)
+            return self.run(left_video,right_video,candidate_time,folder,log_path,calibration_file,water_roi)
         result=run_bounded_fallback(
             target_time_sec,
             frame_period_sec,

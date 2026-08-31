@@ -30,6 +30,9 @@ class DisplayTransform:
         if u<0 or v<0 or u>=self.source_width or v>=self.source_height:return None
         return int(u),int(v)
 
+    def pixel_to_canvas(self, u: float, v: float) -> tuple[float, float]:
+        return self.offset_x + u * self.scale, self.offset_y + v * self.scale
+
 
 @dataclass(frozen=True)
 class PixelQuery:
@@ -38,8 +41,11 @@ class PixelQuery:
 
 class DenseMeasurementView:
     def __init__(self,dense_npz:Path,pixel_xyz_npz:Path,mapping_yaml:Path) -> None:
-        dense=np.load(dense_npz); self.height=dense["height_mm"]; self.status=dense["status"]; self.roi=dense["water_roi_mask"]
-        sparse=np.load(pixel_xyz_npz); self.xyz=sparse["xyz_m"]; self.tree=cKDTree(np.column_stack((sparse["u_px"],sparse["v_px"])))
+        with np.load(dense_npz) as dense:
+            self.height=dense["height_mm"].copy(); self.status=dense["status"].copy(); self.roi=dense["water_roi_mask"].copy()
+        with np.load(pixel_xyz_npz) as sparse:
+            self.xyz=sparse["xyz_m"].copy(); pixels=np.column_stack((sparse["u_px"],sparse["v_px"]))
+        self.tree=cKDTree(pixels)
         self.mapping=yaml.safe_load(Path(mapping_yaml).read_text(encoding="utf-8"))
 
     def query(self,u:int,v:int) -> PixelQuery:
@@ -59,7 +65,8 @@ class DenseMeasurementView:
 def make_height_overlay(original:Path,dense_npz:Path,alpha:float=0.45) -> Image.Image:
     if not 0<=alpha<=1:raise ValueError("alpha must be in [0,1]")
     base=np.asarray(Image.open(original).convert("RGB"),dtype=np.float32)
-    dense=np.load(dense_npz); h=dense["height_mm"]; valid=dense["valid_mask"] & np.isfinite(h)
+    with np.load(dense_npz) as dense:
+        h=dense["height_mm"].copy(); valid=dense["valid_mask"].copy() & np.isfinite(h)
     color=np.zeros_like(base); values=h[valid]
     if values.size:
         lo,hi=np.percentile(values,(2,98)); norm=np.zeros_like(h,dtype=np.float32); norm[valid]=np.clip((h[valid]-lo)/max(hi-lo,1e-9),0,1)
