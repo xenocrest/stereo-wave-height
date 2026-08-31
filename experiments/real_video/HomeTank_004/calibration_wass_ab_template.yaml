@@ -1,0 +1,46 @@
+schema_version: '1.0'
+status: PREPARED_NOT_EXECUTED
+gate_required: CALIBRATION_READY_FOR_WASS_AB
+max_new_wass_runs: 1
+comparison_fields:
+  - selected_frame_identity
+  - sync_residual
+  - triangulated_count
+  - final_xyz_count
+  - observed_pixel_count
+  - observed_roi_percent
+  - xyz_extent
+  - support_map
+  - reconstruction_qa
+  - runtime
+old:
+  calibration: experiments/real_video/HomeTank_004/calibration_result.yaml
+  execution: FROZEN_EXISTING_RESULT
+  frozen_result: D:/stereo-wave-height-runs/HomeTank_004/single-frame-backend/28.8007667
+  stereo_videos: HomeTank_004_STATIC_PAIR
+  target_time_s: 28.8007667
+  selected_frames: FROZEN_FORMAL_DIAGNOSTIC_PAIR
+  sync_model: FROZEN_HOMETANK004_FRAME_LEVEL_MODEL
+  sync_residual_ms: 0.6165
+  rectification_policy: {alpha: 0.0, zero_disparity: true}
+  matcher_config: FROZEN_CURRENT
+  stereo_config: FROZEN_CURRENT
+  post_filter: FROZEN_CURRENT
+  water_roi: FROZEN_CURRENT
+new:
+  calibration: TODO_NEW_CALIBRATION_PATH
+  execution: FUTURE_SINGLE_RUN
+  frozen_result: null
+  stereo_videos: HomeTank_004_STATIC_PAIR
+  target_time_s: 28.8007667
+  selected_frames: FROZEN_FORMAL_DIAGNOSTIC_PAIR
+  sync_model: FROZEN_HOMETANK004_FRAME_LEVEL_MODEL
+  sync_residual_ms: 0.6165
+  rectification_policy: {alpha: 0.0, zero_disparity: true}
+  matcher_config: FROZEN_CURRENT
+  stereo_config: FROZEN_CURRENT
+  post_filter: FROZEN_CURRENT
+  water_roi: FROZEN_CURRENT
+execution_today:
+  calibration_experiments: 0
+  wass_executions: 0
