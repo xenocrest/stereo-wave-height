@@ -70,6 +70,8 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "demo_roi_seek_exit_diagnosis.md",
             "full_roi_surface_completion.yaml", "full_roi_surface_completion.md",
             "wass_support_extent_diagnosis.yaml", "wass_support_extent_diagnosis.md",
+            "calibration_spatial_salvage.yaml", "calibration_spatial_salvage.md",
+            "calibration_spatial_candidate.yaml",
             "manual_ruler_measurement_instructions.md",
             "manual_reference",
             "qa_assets",

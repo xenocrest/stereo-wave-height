@@ -1,0 +1,83 @@
+schema_version: "1.0"
+experiment_id: HomeTank_004
+starting_head: 167f63b2c9cf9aaea7063dd8f6374d6bc9ad13e8
+status: EXISTING_CALIBRATION_VIDEO_NOT_SUFFICIENT
+scope: calibration_video_only_no_WASS_no_reconstruction_feedback
+input:
+  checkerboard_inner_corners: [9, 6]
+  square_size_m: 0.020
+  image_size_px: [1920, 1080]
+  bilateral_candidates: 192
+old_selection:
+  pose_count: 12
+  left_grid_3x3: [0, 0, 0, 0, 7, 1, 0, 4, 0]
+  right_grid_3x3: [0, 0, 0, 1, 11, 0, 0, 0, 0]
+  occupied_cells: {left: 3, right: 2}
+  issue: central_and_lower_concentration_with_missing_edge_coverage
+quality_prefilter:
+  method: fixed robust fifth percentiles plus existing 12-pixel edge and complete-corner checks
+  minimum_bilateral_area_fraction: 0.07349364442006445
+  minimum_bilateral_sharpness: 63.234579237565875
+  quality_valid_candidates: 172
+  rejection_counts:
+    bilateral_blur_robust_p5: 10
+    board_too_small_robust_p5: 10
+    edge_margin_below_12px: 0
+    corner_geometry_ambiguous: 0
+all_candidate_coverage:
+  left_grid_3x3: [0, 0, 0, 0, 150, 22, 0, 20, 0]
+  right_grid_3x3: [0, 1, 0, 20, 171, 0, 0, 0, 0]
+  interpretation: source_video_itself_lacks_broad_3x3_coverage
+selection:
+  method: deterministic_greedy_new_grid_cells_then_farthest_pose_descriptor
+  descriptor: bilateral_center_scale_sin_cos_orientation_perspective_sharpness
+  circular_orientation_representation: true
+  duplicate_distance: 0.020
+  training_pose_count: 20
+  validation_pose_count: 20
+  training_validation_disjoint: true
+  validation_also_disjoint_from_old_training: true
+  training_grid_3x3:
+    left: [0, 0, 0, 0, 17, 1, 0, 2, 0]
+    right: [0, 0, 0, 1, 19, 0, 0, 0, 0]
+  validation_grid_3x3:
+    left: [0, 0, 0, 0, 17, 1, 0, 2, 0]
+    right: [0, 1, 0, 1, 18, 0, 0, 0, 0]
+old_calibration:
+  mono_rms_px: {left: 4.380505717787364, right: 4.525324741510539}
+  stereo_rms_px: 7.922425043794302
+  epipolar_rms_px: 9.508413074591859
+  training_vertical_px: {median: 10.994903564453125, rms: 21.122549057006836, p95: 46.281005859375, max: 92.52593994140625}
+  heldout_vertical_px: {median: 20.390655517578125, rms: 39.482879638671875, p95: 83.14495849609375, max: 151.3597412109375}
+  baseline_m: 0.06868471158474378
+new_candidate:
+  status: CANDIDATE_REJECTED_NOT_PROMOTED
+  mono_rms_px: {left: 4.0737245257241055, right: 4.253940783440574}
+  stereo_rms_px: 7.717513162278722
+  epipolar_rms_px: 10.435191906680078
+  training_vertical_px: {median: 62.64215087890625, rms: 100.99717712402344, p95: 208.61181640625, max: 332.3397216796875}
+  heldout_vertical_px: {median: 78.29950714111328, rms: 172.38180541992188, p95: 381.3963317871094, max: 750.9088134765625}
+  baseline_m: 0.07664043413628495
+  baseline_vs_70mm:
+    signed_difference_m: 0.006640434136284942
+    absolute_difference_mm: 6.640434136284942
+    relative_difference_percent: 9.486334480407061
+  relative_rotation_deg: 6.7393523627127845
+  finite_K_D_R_T: true
+  sanity: FAIL_BASELINE_AND_RECTIFICATION
+  concern: left_distortion_k3_6.6379_indicates_poor_constraint
+comparison:
+  spatial_residual_improved: false
+  central_only_improvement: false
+  heldout_rms_change_px: 132.89892578125
+  heldout_p95_change_px: 298.2513732910156
+  interpretation: mono_fit_small_improvement_does_not_transfer_to_stereo_or_heldout_rectification
+decision:
+  classification: EXISTING_CALIBRATION_VIDEO_NOT_SUFFICIENT
+  new_capture: NEW_CALIBRATION_CAPTURE_REQUIRED
+  frozen_baseline_overwritten: false
+  WASS_executions: 0
+  next_action: capture_one_new_calibration_sequence_with_full_3x3_coverage_and_frozen_rig
+formal_reconstruction_modified: false
+formal_GUI_modified: false
+
