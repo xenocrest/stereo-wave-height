@@ -1,0 +1,47 @@
+schema_version: '1.0'
+experiment_id: HomeTank_004
+scope: calibration_only_no_WASS_no_reconstruction_feedback
+counts:
+  left_complete: 233
+  right_complete: 328
+  bilateral_pairs: 192
+  left_complete_not_in_bilateral_count: 41
+  right_complete_not_in_bilateral_count: 136
+coverage:
+  left_mono_grid_3x3: [0, 0, 0, 0, 189, 23, 0, 21, 0]
+  left_mono_occupied: 3
+  right_mono_grid_3x3: [0, 1, 0, 20, 307, 0, 0, 0, 0]
+  right_mono_occupied: 3
+  stereo_overlap_normalized_grid_3x3: [39, 87, 28, 6, 12, 0, 0, 20, 0]
+  stereo_overlap_occupied: 6
+old_bilateral_only:
+  mono_rms_px: {left: 4.3805057178, right: 4.5253247415}
+  stereo_rms_px: 7.9224250438
+  epipolar_rms_px: 9.5084130746
+  heldout_vertical_px: {median: 20.3906555176, rms: 39.4828796387, p95: 83.1449584961, max: 151.3597412109}
+  baseline_m: 0.0686847116
+new_split_model:
+  mono_training_count: {left: 40, right: 40}
+  stereo_training_count: 24
+  heldout_stereo_count: 20
+  stereo_flags: CALIB_FIX_INTRINSIC
+  mono_rms_px: {left: 4.2263535808, right: 5.8451691794}
+  stereo_rms_px: 8.8060102956
+  epipolar_rms_px: 11.4396531826
+  heldout_vertical_px: {median: 82.9336090088, rms: 165.9010715332, p95: 350.3399291992, max: 868.5747070313}
+  baseline_m: 0.0729656219
+  distortion_plausibility: CALIBRATION_PARAMETER_STABLE_PROXY
+deterministic_resample:
+  mono_rms_px: {left: 4.2767974391, right: 5.6560100607}
+  stereo_rms_px: 7.7783838240
+  epipolar_rms_px: 9.7507324722
+  heldout_vertical_px: {median: 73.5514526367, rms: 156.1488836505, p95: 339.7863235474, max: 820.751953125}
+  baseline_m: 0.0749580273
+parameter_stability:
+  status: CALIBRATION_PARAMETER_STABLE_PROXY
+  focal_max_relative_range: 0.0108426508
+  principal_max_normalized_range: 0.0290106223
+  baseline_relative_range: 0.0269382939
+classification: OLD_VIDEO_STILL_INSUFFICIENT
+calibration_experiments: 2
+wass_executions: 0

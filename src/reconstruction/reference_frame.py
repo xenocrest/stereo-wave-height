@@ -41,14 +41,17 @@ def fit_reference_artifact(pixel_xyz_path:str|Path, *, reference_id:str,requeste
     fit=fit_plane_orthogonal(points);normal=np.asarray(fit.normal,float);offset=float(fit.offset)
     if not np.all(np.isfinite(normal)) or not np.isfinite(offset) or not np.isfinite(fit.residual_rmse):raise ValueError("REFERENCE_PLANE_FIT_FAILED")
     if fit.residual_rmse>surface_distance_threshold_m:raise ValueError("REFERENCE_GEOMETRY_QA_FAILED: plane RMS exceeds existing surface threshold")
+    xy=points[:,:2];span=np.maximum(xy.max(0)-xy.min(0),1e-12);normalized=(xy-xy.min(0))/span;cells={(min(2,int(v*3)),min(2,int(u*3))) for u,v in normalized};cov=np.cov(xy,rowvar=False);eigen=np.linalg.eigvalsh(cov);anisotropy=float(eigen[0]/max(eigen[-1],1e-18));weak=len(cells)<4 or anisotropy<.02
     return {"schema_version":"1.0","status":"REFERENCE_PLANE_READY","reference_id":reference_id,
       "source":"user_selected_reference_frame_WASS_final_XYZ_ROI_plane_fit","created_at":datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
+      "reference_mode":"single_frame","future_reference_modes":["single_frame","multi_frame"],
       "requested_timestamp_s":requested_timestamp_s,"actual_timestamp_s":actual_timestamp_s,"fallback_frame_offset":fallback_frame_offset,
       "left_frame_id":left_frame_id,"right_frame_id":right_frame_id,"sync_residual_ms":sync_residual_ms,
       "calibration_id":calibration_id,"calibration_package_hash":calibration_package_hash,"video_pair_id":video_pair_id,
       "source_videos":source_videos,"canonical_convention":CANONICAL_CONVENTION,"roi":roi,"roi_id":roi_identity(roi),
       "plane":{"model":"aX+bY+cZ+d=0","a":float(normal[0]),"b":float(normal[1]),"c":float(normal[2]),"d":offset,"normal":normal.tolist(),"offset_m":offset},
       "unit":"m","plane_rms_m":float(fit.residual_rmse),"support_count":len(points),"xyz_point_count":xyz_point_count,
+      "reference_confidence":"MEDIUM" if weak else "HIGH","reference_quality_reasons":["REFERENCE_PLANE_WEAK_SPATIAL_SUPPORT"] if weak else [],"support_spatial_occupancy_3x3":len(cells),"support_anisotropy_ratio":anisotropy,
       "spatial_extent_m":{"x":[float(points[:,0].min()),float(points[:,0].max())],"y":[float(points[:,1].min()),float(points[:,1].max())],"z":[float(points[:,2].min()),float(points[:,2].max())]},
       "height_definition":"signed orthogonal distance to user-selected reference plane"}
 

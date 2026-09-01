@@ -54,6 +54,8 @@ def build_calibration_package(calibration_path: str | Path, package_root: str | 
     model=normalize_calibration(load_mapping(copied));write_wass_calibration_xml(wass,intrinsic_00=model["K0"],intrinsic_01=model["K1"],distortion_00=model["D0"],distortion_01=model["D1"]);write_opencv_matrix_xml(wass/"ext_R.xml",model["R"],node_name="ext_R");write_opencv_matrix_xml(wass/"ext_T.xml",np.asarray(model["T"]).reshape(3,1),node_name="ext_T")
     xml={name:{"path":f"wass_fixed/{name}","sha256":sha256_file(wass/name)} for name in XML_NAMES}
     manifest={"schema_version":"1.0","calibration_id":calibration_id,"created_at":created_at or datetime.now(timezone.utc).isoformat(),"source":source,
+              "calibration_model":source.get("calibration_model",{"left_mono":"LEGACY_UNSPECIFIED","right_mono":"LEGACY_UNSPECIFIED","stereo_extrinsic":"LEGACY_UNSPECIFIED","distortion_model":"OPENCV_5_COEFFICIENT","stereo_flags":"LEGACY_UNSPECIFIED"}),
+              "training_set_provenance":source.get("training_set_provenance",{"left_mono_ids":source.get("selected_candidate_ids",[]),"right_mono_ids":source.get("selected_candidate_ids",[]),"stereo_ids":source.get("selected_candidate_ids",[])}),
               "camera_left":{"K":model["K0"],"D":model["D0"]},"camera_right":{"K":model["K1"],"D":model["D1"]},
               "stereo":{"R":model["R"],"T_m":model["T"],"baseline_m":model_sanity(model)["baseline_m"]},"qa":qa,"status":status,
               "artifacts":{"opencv_calibration":{"path":copied.name,"sha256":sha256_file(copied)},"wass_fixed":xml}}

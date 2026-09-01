@@ -38,6 +38,11 @@ from .preflight import (
     target_preflight_status,
 )
 from .quality import CalibrationQualitySummary, CalibrationQualityThresholds, classify_calibration_quality
+from .adaptive_calibration import (
+    SplitCalibrationProvenance, calibrate_split_official,
+    classify_rectification_health, parameter_plausibility, parameter_stability,
+    rectification_residuals, select_distortion_complexity,
+)
 
 __all__ = [
     "CalibrationCameraRoles",
@@ -68,4 +73,11 @@ __all__ = [
     "stereo_baseline_m",
     "orient_quad",
     "recover_planar_grid",
+    "SplitCalibrationProvenance",
+    "calibrate_split_official",
+    "classify_rectification_health",
+    "parameter_plausibility",
+    "parameter_stability",
+    "rectification_residuals",
+    "select_distortion_complexity",
 ]

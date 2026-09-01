@@ -261,7 +261,9 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
         "metric_scale_source": "frozen OpenCV calibrated baseline",
         "calibrated_baseline_m": float(frozen["calibrated_baseline_m"]),
         "p90_spacing_m": p90, "maximum_gap_m": max_gap,
-        "completion_rule": "hole_2 = 3 * frame P90 nearest-neighbor spacing",
+        "completion_rule": f"scene-local maximum gap = {float(config['completion']['maximum_gap_multiplier']):g} * frame P90 nearest-neighbor spacing",
+        "status_semantics": {"OBSERVED":"direct WASS observation","ESTIMATED":"ESTIMATED_LOCAL within support gate","UNSUPPORTED":"no defensible local support"},
+        "extrapolation_policy":"reject outside scene-local support distance/topology gate",
         "water_roi": roi_config,
     }
     np.savez_compressed(output / f"{stem}.npz", height_mm=dense_h, status=status,

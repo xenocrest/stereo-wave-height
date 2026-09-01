@@ -29,6 +29,9 @@ from .io import FrameRequest, ReconstructionConfig
 from .pipeline import ReconstructionPipeline, ReconstructionRunResult
 from .height import height_from_plane
 from .reference_frame import fit_reference_artifact, save_reference_artifact, validate_reference_artifact
+from .scene_diagnostics import diagnose_stereo_scene
+from .quality import resolve_quality
+from .adaptation import choose_adaptation
 from surface_completion.dense_map import build_dense_map
 
 
@@ -174,6 +177,9 @@ class SingleFrameMeasurementResult:
     solve_mode: str = "legacy"
     reference_id: str | None = None
     reference_metadata: dict[str, object] | None = None
+    quality_status: str = "VALID"
+    quality_reasons: tuple[str, ...] = ()
+    adaptation_manifest: dict[str, object] | None = None
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -382,6 +388,15 @@ class SingleFrameMeasurementBackend:
         (selected / "pair_metadata.json").write_text(
             json.dumps(pair_metadata, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
         )
+        import cv2
+        try:
+            scene_diagnostics=diagnose_stereo_scene(cv2.imread(str(left_png)),cv2.imread(str(right_png)),roi=request.dense_height.water_roi,
+                frame_period_s=selection.frame_period_s if selection else None,sync_residual_s=selection.residual_s if selection else None,rolling_shutter=None)
+        except (ValueError,RuntimeError) as error:
+            scene_diagnostics={"schema_version":"1.0","quality_status":"VALID_WITH_WARNING","quality_reasons":["SCENE_DIAGNOSTICS_UNAVAILABLE"],"error":f"{type(error).__name__}: {error}"}
+        adaptation_manifest=choose_adaptation(scene_diagnostics)
+        (selected/"scene_diagnostics.json").write_text(json.dumps(scene_diagnostics,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+        (selected/"adaptation_manifest.json").write_text(json.dumps(adaptation_manifest,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
 
         with tempfile.TemporaryDirectory(prefix="single-frame-stage-", dir=str(output)) as temporary:
             stage = Path(temporary)
@@ -489,6 +504,7 @@ class SingleFrameMeasurementBackend:
                 dense_warning = "Dense height generation failed after successful reconstruction."
 
         dense_ok = dense_summary is not None and dense_summary.get("status") == "COMPLETED" and int(dense_summary["valid_height_count"]) > 0
+        quality=resolve_quality(scene_diagnostics["quality_reasons"],geometry_valid=int(frame["point_count"])>0,support_valid=(not request.dense_height.enabled or dense_ok))
         base_status = "SINGLE_FRAME_PIPELINE_PASS_WITH_SYNC_WARNING" if sync_warning else "SINGLE_FRAME_PIPELINE_PASS"
         final_status = ("SINGLE_FRAME_DENSE_HEIGHT_COMPLETED" if dense_ok else
                         "SINGLE_FRAME_RECONSTRUCTION_COMPLETED_DENSE_HEIGHT_FAILED" if request.dense_height.enabled else base_status)
@@ -528,6 +544,7 @@ class SingleFrameMeasurementBackend:
             solve_mode=request.solve_mode,
             reference_id=(str(reference_artifact["reference_id"]) if reference_artifact else (validate_reference_artifact(request.reference_artifact_file,calibration_id=str(request.calibration_id),video_pair_id=str(request.video_pair_id),roi=request.dense_height.water_roi or {})["reference_id"] if request.solve_mode=="measurement" else None)),
             reference_metadata=(reference_artifact if reference_artifact else (validate_reference_artifact(request.reference_artifact_file,calibration_id=str(request.calibration_id),video_pair_id=str(request.video_pair_id),roi=request.dense_height.water_roi or {}) if request.solve_mode=="measurement" else None)),
+            quality_status=str(quality["quality_status"]),quality_reasons=tuple(quality["quality_reasons"]),adaptation_manifest=adaptation_manifest,
         )
         if reference_artifact_path is not None:result.output_paths["reference_artifact"]=reference_artifact_path.name
         _write_backend_outputs(output, result)

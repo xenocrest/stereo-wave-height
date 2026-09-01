@@ -143,6 +143,39 @@ def evaluate_capture(pairs: Sequence[dict[str, Any]], *, image_size_wh: tuple[in
             "sharpness":{"median":float(np.median(sharp)) if sharp.size else None,"p10":float(np.percentile(sharp,10)) if sharp.size else None,"p90":float(np.percentile(sharp,90)) if sharp.size else None}}
 
 
+def _mono_coverage(detections:Sequence[dict[str,Any]],image_size_wh:tuple[int,int])->dict[str,Any]:
+    counts=[0]*9
+    for item in detections:counts[grid_cell(float(item["center_x_px"]),float(item["center_y_px"]),image_size_wh)]+=1
+    occupied=sum(value>0 for value in counts)
+    return {"candidate_count":len(detections),"grid_3x3":counts,"occupied_cells":occupied,"coverage_fraction":occupied/9}
+
+
+def overlap_aware_stereo_coverage(pairs:Sequence[dict[str,Any]])->dict[str,Any]:
+    """Normalize bilateral board centers inside their observed joint support.
+
+    This describes pose coverage in physically observed overlap and never asks
+    a checkerboard to occupy both complete sensor fields simultaneously.
+    """
+    if not pairs:return {"pair_count":0,"status":"STEREO_OVERLAP_INSUFFICIENT","grid_3x3":[0]*9,"occupied_cells":0,"normalized_bbox":None}
+    centers=np.asarray([[(float(p["left"]["center_x_px"])+float(p["right"]["center_x_px"]))/2,
+                         (float(p["left"]["center_y_px"])+float(p["right"]["center_y_px"]))/2] for p in pairs],float)
+    lo=centers.min(0);hi=centers.max(0);span=hi-lo
+    if np.any(span<1e-9):return {"pair_count":len(pairs),"status":"STEREO_OVERLAP_INSUFFICIENT","grid_3x3":[0]*9,"occupied_cells":0,"normalized_bbox":[*lo.tolist(),*hi.tolist()]}
+    normalized=(centers-lo)/span;counts=[0]*9
+    for x,y in normalized:counts[min(2,int(y*3))*3+min(2,int(x*3))]+=1
+    occupied=sum(value>0 for value in counts)
+    return {"pair_count":len(pairs),"status":"STEREO_OVERLAP_READY" if len(pairs)>=12 and occupied>=4 else "STEREO_OVERLAP_INSUFFICIENT","grid_3x3":counts,"occupied_cells":occupied,"normalized_bbox":[*lo.tolist(),*hi.tolist()]}
+
+
+def evaluate_split_capture(left_detections:Sequence[dict[str,Any]],right_detections:Sequence[dict[str,Any]],pairs:Sequence[dict[str,Any]],*,image_size_wh:tuple[int,int])->dict[str,Any]:
+    """Independent mono readiness plus overlap-only stereo readiness."""
+    left=_mono_coverage(left_detections,image_size_wh);right=_mono_coverage(right_detections,image_size_wh);stereo=overlap_aware_stereo_coverage(pairs)
+    def mono_status(value:dict[str,Any])->str:return "MONO_READY" if value["candidate_count"]>=12 and value["occupied_cells"]>=4 else "MONO_INSUFFICIENT"
+    left["status"]="LEFT_"+mono_status(left);right["status"]="RIGHT_"+mono_status(right)
+    ready=left["status"]=="LEFT_MONO_READY" and right["status"]=="RIGHT_MONO_READY" and stereo["status"]=="STEREO_OVERLAP_READY"
+    return {"status":"CAPTURE_READY_FOR_CALIBRATION" if ready else "CAPTURE_INCOMPLETE_NEEDS_TARGETED_VIEWS","left_mono":left,"right_mono":right,"stereo_overlap":stereo,"bilateral_full_fov_required":False}
+
+
 def save_diagnostic_images(result: dict[str, Any], output: Path) -> None:
     """Save compact coverage/quality plots; no source video frames are retained."""
     import matplotlib.pyplot as plt
@@ -163,22 +196,25 @@ def main() -> None:
     parser=argparse.ArgumentParser();parser.add_argument('--left');parser.add_argument('--right');parser.add_argument('--candidates-json');parser.add_argument('--output',required=True);parser.add_argument('--quick',action='store_true');parser.add_argument('--left-rotate',type=int,default=0);parser.add_argument('--right-rotate',type=int,default=0);args=parser.parse_args()
     output=Path(args.output);output.mkdir(parents=True,exist_ok=True)
     if args.candidates_json:
-        raw=json.loads(Path(args.candidates_json).read_text(encoding='utf8'));pairs,size=normalize_existing_pairs(raw);sl=sr=dl=dr=len(pairs)
+        raw=json.loads(Path(args.candidates_json).read_text(encoding='utf8'));pairs,size=normalize_existing_pairs(raw);sl=sr=dl=dr=len(pairs);left_mono=[p["left"] for p in pairs];right_mono=[p["right"] for p in pairs]
     else:
         if not args.left or not args.right:parser.error('provide both videos or --candidates-json')
         hz=2.0 if args.quick else 5.0;l,sl,size=scan_video(args.left,camera='left',sample_hz=hz,rotate_deg=args.left_rotate);r,sr,size_r=scan_video(args.right,camera='right',sample_hz=hz,rotate_deg=args.right_rotate)
         if size!=size_r:raise ValueError('left/right canonical image sizes differ')
         matched=pair_detections(l,r,maximum_delta_s=.12);pairs=[]
         for i,(a,b) in enumerate(matched):pairs.append({'pair_id':f'p{i:04d}','left':a,'right':b,'left_corners':a['corners'],'right_corners':b['corners'],'delta_s':b['pts_s']-a['pts_s']})
-        dl,dr=len(l),len(r)
+        dl,dr=len(l),len(r);left_mono,right_mono=l,r
     result=evaluate_capture(pairs,image_size_wh=size,sampled_left=sl,sampled_right=sr,detected_left=dl,detected_right=dr);result['mode']='QUICK' if args.quick else 'FULL';result['image_size_wh']=list(size)
+    result["legacy_bilateral_full_image_comparison_status"]=result["status"]
+    result["split_readiness"]=evaluate_split_capture(left_mono,right_mono,pairs,image_size_wh=size)
+    result["status"]=result["split_readiness"]["status"]
     if len(pairs)>=40:result['proposed_split']=prepare_training_and_holdout(pairs,image_size_wh=size)
     candidate_output={"schema_version":"1.0","image_size_wh":list(size),"pairs":pairs,"proposed_split":result.get("proposed_split")}
     (output/'capture_candidates.json').write_text(json.dumps(candidate_output,ensure_ascii=False),encoding='utf8');
     import yaml
     (output/'capture_qa.yaml').write_text(yaml.safe_dump(result,sort_keys=False,allow_unicode=True),encoding='utf8')
     save_diagnostic_images(result, output)
-    lines=['# Calibration capture QA','',f"Status: `{result['status']}`",'',f"Bilateral pairs: {result['bilateral_pairs']}",'',f"Missing: {', '.join(result['missing']) or 'none'}",'',f"LEFT grid: `{result['grid']['left']}`",'',f"RIGHT grid: `{result['grid']['right']}`",'',f"Scale bins: `{result['scale_bins']}`",'',f"Sharpness: `{result['sharpness']}`"]
+    lines=['# Calibration capture QA','',f"Status: `{result['status']}`",'',f"LEFT mono: `{result['split_readiness']['left_mono']['status']}`",'',f"RIGHT mono: `{result['split_readiness']['right_mono']['status']}`",'',f"Stereo overlap: `{result['split_readiness']['stereo_overlap']['status']}`",'',f"Bilateral pairs: {result['bilateral_pairs']}",'',f"Legacy full-image missing: {', '.join(result['missing']) or 'none'}",'',f"LEFT mono grid: `{result['split_readiness']['left_mono']['grid_3x3']}`",'',f"RIGHT mono grid: `{result['split_readiness']['right_mono']['grid_3x3']}`",'',f"Stereo normalized overlap grid: `{result['split_readiness']['stereo_overlap']['grid_3x3']}`"]
     (output/'capture_qa.md').write_text('\n'.join(lines)+'\n',encoding='utf8')
 
 if __name__=='__main__':main()

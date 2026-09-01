@@ -2,6 +2,8 @@
 
 基于 WASS（Waves Acquisition Stereo System）的双目水面三维形态与高度测量研究项目。最终产品定位为**双目视频输入的按需单帧测量与展示软件**：用户加载左右视频、选择目标时刻，系统提取该时刻的同步帧对并运行一次 WASS 解算。
 
+当前标定主线采用 **independent LEFT/RIGHT mono full-FOV calibration + bilateral overlap fixed-intrinsic stereo extrinsics**；系统以可审计的 scene diagnostics、分层 quality status 和 adaptation manifest 面向真实环境适配，不再要求 bilateral 标定板覆盖两幅完整图像。
+
 ```text
 双目视频（left video + right video）
   → 用户播放、选择并暂停于目标时间 t
