@@ -61,6 +61,8 @@ class MeasurementSession:
         self.index_path = self.directory / "measurements.json"
         self.reference_index_path=self.directory/"references.json"
         self.references: list[dict[str,Any]]=[];self.active_reference_path: Path|None=None
+        self.common_fov:dict[str,Any]|None=None
+        self.common_fov_path:Path|None=None
         if self.index_path.exists():
             content = json.loads(self.index_path.read_text(encoding="utf-8"))
             self.records = [MeasurementRecord.from_json(item) for item in content]
@@ -69,6 +71,9 @@ class MeasurementSession:
 
     def set_active_reference(self,path:Path,metadata:dict[str,Any])->None:
         entry={"reference_id":metadata["reference_id"],"path":str(Path(path).resolve()),"status":"REFERENCE_PLANE_READY","created_at":metadata["created_at"]};self.references.append(entry);self.active_reference_path=Path(path).resolve();self._write_reference_index()
+
+    def set_common_fov(self,metadata:dict[str,Any],metadata_path:Path)->None:
+        self.common_fov=dict(metadata);self.common_fov_path=Path(metadata_path).resolve()
 
     def invalidate_reference(self,reason:str)->None:
         if self.active_reference_path is not None:self.references.append({"reference_id":None,"path":str(self.active_reference_path),"status":"STALE","reason":reason})

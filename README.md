@@ -4,6 +4,8 @@
 
 当前标定主线采用 **independent LEFT/RIGHT mono full-FOV calibration + bilateral overlap fixed-intrinsic stereo extrinsics**；系统以可审计的 scene diagnostics、分层 quality status 和 adaptation manifest 面向真实环境适配，不再要求 bilateral 标定板覆盖两幅完整图像。
 
+离线测量流程现已加入自动双目公共有效视场识别与安全水面 ROI 选择：公共区域由标定和正式 rectification 几何计算，GUI crop 仅用于显示，WASS 仍使用原始同步帧与 full-canonical ROI。
+
 ```text
 双目视频（left video + right video）
   → 用户播放、选择并暂停于目标时间 t

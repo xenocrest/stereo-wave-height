@@ -29,15 +29,21 @@ def export_session(session:MeasurementSession,destination:Path,records:Iterable[
     staging.mkdir(parents=True)
     manifest={"session_id":session.session_id,"created_at":datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
               "camera_models":camera_models or {"left":"UNKNOWN","right":"UNKNOWN"},
-              "calibration_reference":calibration_reference or "UNKNOWN","reference":{"status":"REFERENCE_PLANE_READY" if session.active_reference_path else "LEGACY_REFERENCE_UNSPECIFIED","active_path":str(session.active_reference_path) if session.active_reference_path else None,"history":session.references},"measurement_count":len(chosen),"measurements":[]}
+              "calibration_reference":calibration_reference or "UNKNOWN","common_fov":session.common_fov or {"status":"LEGACY_COMMON_FOV_UNSPECIFIED"},"reference":{"status":"REFERENCE_PLANE_READY" if session.active_reference_path else "LEGACY_REFERENCE_UNSPECIFIED","active_path":str(session.active_reference_path) if session.active_reference_path else None,"history":session.references},"measurement_count":len(chosen),"measurements":[]}
     try:
+        if session.common_fov_path is not None and session.common_fov_path.is_file():
+            common_dir=staging/"common_fov";common_dir.mkdir()
+            shutil.copy2(session.common_fov_path,common_dir/"common_fov.yaml")
+            mask=session.common_fov_path.parent/str((session.common_fov or {}).get("mask_artifact","common_fov_mask.npz"))
+            if mask.is_file():shutil.copy2(mask,common_dir/"common_fov_mask.npz")
+            manifest["common_fov"]["mask_artifact"]="common_fov/common_fov_mask.npz"
         for record in chosen:
             folder=staging/f"measurement_{record.display_name}"; folder.mkdir(); copied=[]
             for attribute,name in ARTIFACTS:
                 source=getattr(record,attribute,None)
                 if source is not None and Path(source).is_file():shutil.copy2(source,folder/name); copied.append(name)
             reference=record.summary_metadata.get("reference_metadata") or {"status":"LEGACY_REFERENCE_UNSPECIFIED"}
-            item={"display_name":record.display_name,"target_time_sec":record.target_time_sec,"classification":record.summary_metadata.get("status"),"height_summary":record.summary_metadata.get("height_statistics"),"reference":{"reference_id":record.summary_metadata.get("reference_id"),"reference_timestamp_s":reference.get("actual_timestamp_s"),"plane":reference.get("plane"),"calibration_id":reference.get("calibration_id"),"height_definition":reference.get("height_definition")},"artifacts":copied}
+            item={"display_name":record.display_name,"target_time_sec":record.target_time_sec,"classification":record.summary_metadata.get("status"),"height_summary":record.summary_metadata.get("height_statistics"),"common_fov":session.common_fov or {"status":"LEGACY_COMMON_FOV_UNSPECIFIED"},"water_roi":record.summary_metadata.get("dense_height",{}).get("water_roi") or reference.get("roi"),"reference":{"reference_id":record.summary_metadata.get("reference_id"),"reference_timestamp_s":reference.get("actual_timestamp_s"),"plane":reference.get("plane"),"calibration_id":reference.get("calibration_id"),"height_definition":reference.get("height_definition")},"artifacts":copied}
             (folder/"measurement_manifest.json").write_text(json.dumps(item,indent=2,ensure_ascii=False),encoding="utf-8"); manifest["measurements"].append(item)
         (staging/"session_manifest.json").write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding="utf-8"); staging.rename(final)
     except Exception:

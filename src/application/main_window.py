@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from typing import Any
 from PIL import Image, ImageTk
+import numpy as np
 import yaml
 from calibration.quality import CalibrationQualityThresholds
 
@@ -19,6 +20,8 @@ from .runtime_paths import resolve_runtime_paths
 from .input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, VIDEO_FORMAT_TEXT, GuidedInputState
 from .calibration_workflow import calibrate_from_videos
 from reconstruction.reference_frame import load_reference_artifact
+from reconstruction.reference_frame import file_identity
+from reconstruction.common_fov import CommonFov,compute_common_fov,save_common_fov,validate_roi
 
 
 class StereoWaveHeightApplication:
@@ -47,6 +50,8 @@ class StereoWaveHeightApplication:
         self._after_id: str | None=None; self._closing=False
         self._worker_messages: queue.Queue[tuple[str, Any]] = queue.Queue()
         self.active_reference_path=self.session.active_reference_path
+        self.calibration_data:dict[str,Any]|None=None;self.common_fov:CommonFov|None=None;self.common_fov_file:Path|None=None
+        self.crop_origin=(0,0)
 
     def _var(self, key: str, value: str = "") -> tk.StringVar:
         variable = tk.StringVar(self.root, value=value); self.variables[key] = variable; return variable
@@ -68,14 +73,21 @@ class StereoWaveHeightApplication:
             if key == "right_measurement": self.timeline.configure(to=meta.duration_sec); self._show_video_frame(0.0)
             if key.endswith("measurement"):
                 self._invalidate_reference("VIDEO_PAIR_CHANGED")
-                self.water_roi=None
+                self.water_roi=None;self.common_fov=None;self.common_fov_file=None
                 if hasattr(self,"variables") and "roi_status" in self.variables:self.variables["roi_status"].set("水面区域：尚未设置；解算前必须在右相机画面中框选")
                 self.input_state.mark_measurement_video("left" if key.startswith("left") else "right")
+                self._refresh_common_fov()
                 self._refresh_step_state()
             self._log(f"selected {key}: {selected}")
         except Exception as error: messagebox.showerror(self.title, f"视频读取失败。请确认所选文件是受支持且未损坏的本地视频。\n\n{error}")
 
     def _show_pil(self, image: Image.Image) -> None:
+        if self.common_fov is not None:
+            x0,y0,x1,y1=self.common_fov.bbox; image=image.crop((x0,y0,x1,y1));self.crop_origin=(x0,y0)
+            local=self.common_fov.safe_mask[y0:y1,x0:x1]
+            if not bool(local.all()):
+                pixels=np.asarray(image.convert("RGB")).copy();pixels[~local]=(55,55,55);image=Image.fromarray(pixels,"RGB")
+        else:self.crop_origin=(0,0)
         source_width,source_height=image.size; canvas_width=max(self.image_canvas.winfo_width(),760); canvas_height=max(self.image_canvas.winfo_height(),440)
         self.display_transform=DisplayTransform.fit(source_width,source_height,canvas_width,canvas_height)
         image=image.resize((self.display_transform.display_width,self.display_transform.display_height),Image.Resampling.LANCZOS); self._photo=ImageTk.PhotoImage(image)
@@ -111,7 +123,9 @@ class StereoWaveHeightApplication:
         except Exception as error: messagebox.showerror(self.title,f"标定结果文件读取失败。\n请选择由本系统生成或兼容格式的双目标定 YAML 文件。\n\n{error}")
 
     def _apply_calibration(self, data: dict[str, Any], path: Path) -> None:
-        if self.variables.get("calibration_path") and self.variables["calibration_path"].get()!=str(path):self._invalidate_reference("CALIBRATION_CHANGED")
+        if self.variables.get("calibration_path") and self.variables["calibration_path"].get()!=str(path):
+            self._invalidate_reference("CALIBRATION_CHANGED");self.water_roi=None;self.common_fov=None;self.common_fov_file=None
+        data=dict(data);data["calibration_id"]=file_identity(path,"cal");self.calibration_data=data
         for prefix, node in (("left", data["mono_cam0"]), ("right", data["mono_cam1"])):
             k=node["K"]
             self.variables[f"{prefix}_model"].set(str(node.get("model", "LEFT/cam0" if prefix=="left" else "RIGHT/cam1")))
@@ -130,6 +144,25 @@ class StereoWaveHeightApplication:
             if failed else "✓ 标定质量：通过现有项目质量检查。"
         )
         self.input_state.mark_calibration_ready(); self._refresh_step_state(); self._log(f"loaded calibration: {path}")
+        self._refresh_common_fov()
+
+    def _refresh_common_fov(self)->None:
+        if self.calibration_data is None:return
+        left,right=self.metadata.get("left_measurement"),self.metadata.get("right_measurement")
+        if left is None or right is None:return
+        try:
+            if (left.width,left.height)!=(right.width,right.height):raise ValueError("LEFT/RIGHT measurement video sizes differ")
+            common=compute_common_fov(self.calibration_data,(right.width,right.height),safety_margin_px=0)
+            _mask,metadata=save_common_fov(common,self.session.directory/"common_fov")
+            saved_metadata=yaml.safe_load(metadata.read_text(encoding="utf-8"));self.common_fov=common;self.common_fov_file=metadata;self.session.set_common_fov(saved_metadata,metadata)
+            self.water_roi=None;self._invalidate_reference("COMMON_FOV_CHANGED")
+            if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共有效区域已识别：{common.metadata['coverage_ratio']*100:.1f}%　请在公共区域内框选水面测量区域。")
+            self._log(f"AUTO_STEREO_COMMON_FOV_READY {common.identity} coverage={common.metadata['coverage_ratio']:.6f} bbox={common.bbox}")
+            if self.variables.get("right_measurement") and self.variables["right_measurement"].get():self._show_video_frame(self.current_time)
+        except Exception as error:
+            self.common_fov=None;self.common_fov_file=None
+            if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("双目公共区域计算失败，请检查标定与视频参数。")
+            self._log(f"common FOV failed: {error}")
 
     def _calibration_mode_changed(self) -> None:
         self.input_state.set_mode(self.variables["calibration_mode"].get())
@@ -224,30 +257,36 @@ class StereoWaveHeightApplication:
     def _start_roi_selection(self) -> None:
         if self.display_transform is None or not self.variables["right_measurement"].get():
             messagebox.showwarning(self.title,"请先加载测量视频并显示一帧画面。");return
+        if self.common_fov is None:messagebox.showwarning(self.title,"双目公共区域尚未就绪，请检查标定与左右视频参数。");return
         if self.playing:self._pause()
         self.viewing_result=False; self._roi_selecting=True; self._roi_start=None
         self.variables["roi_status"].set("请在右相机画面上按住鼠标拖出矩形水面区域")
 
     def _roi_press(self,event:tk.Event) -> None:
         if not self._roi_selecting or self.display_transform is None:return
-        self._roi_start=self.display_transform.canvas_to_pixel(event.x,event.y)
+        self._roi_start=self.display_transform.canvas_to_full_pixel(event.x,event.y,self.crop_origin)
 
     def _roi_drag(self,event:tk.Event) -> None:
         if not self._roi_selecting or self._roi_start is None or self.display_transform is None:return
-        end=self.display_transform.canvas_to_pixel(event.x,event.y)
+        end=self.display_transform.canvas_to_full_pixel(event.x,event.y,self.crop_origin)
         if end is None:return
-        x1,y1=self.display_transform.pixel_to_canvas(*self._roi_start); x2,y2=self.display_transform.pixel_to_canvas(*end)
+        x1,y1=self.display_transform.full_pixel_to_canvas(*self._roi_start,self.crop_origin); x2,y2=self.display_transform.full_pixel_to_canvas(*end,self.crop_origin)
         if self._roi_rectangle_id is None:self._roi_rectangle_id=self.image_canvas.create_rectangle(x1,y1,x2,y2,outline="#00e5ff",width=3,dash=(7,4))
         else:self.image_canvas.coords(self._roi_rectangle_id,x1,y1,x2,y2)
 
     def _roi_release(self,event:tk.Event) -> None:
         if not self._roi_selecting or self._roi_start is None or self.display_transform is None:return
-        end=self.display_transform.canvas_to_pixel(event.x,event.y)
+        end=self.display_transform.canvas_to_full_pixel(event.x,event.y,self.crop_origin)
         if end is None:return
         x1,x2=sorted((self._roi_start[0],end[0])); y1,y2=sorted((self._roi_start[1],end[1]))
         if x2-x1<10 or y2-y1<10:
             self.variables["roi_status"].set("区域过小，请重新框选至少 10×10 像素的水面区域");return
         new_roi=(x1,y1,x2,y2)
+        if self.common_fov is None:
+            self.variables["roi_status"].set("双目公共区域尚未就绪，不能选择水面区域");return
+        try:validate_roi({"type":"polygon","coordinate_system":"canonical_cam1","points":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]]},self.common_fov)
+        except ValueError:
+            self.variables["roi_status"].set("所选区域超出双目公共有效区域，请重新选择。");return
         if self.water_roi is not None and self.water_roi!=new_roi:self._invalidate_reference("ROI_CHANGED")
         self.water_roi=new_roi; self._roi_selecting=False
         self.variables["roi_status"].set(f"水面区域：({x1}, {y1}) → ({x2}, {y2})；可点击重新选择")
@@ -255,13 +294,14 @@ class StereoWaveHeightApplication:
 
     def _draw_water_roi(self) -> None:
         if not hasattr(self,"image_canvas") or self.display_transform is None or self.water_roi is None:return
-        x1,y1,x2,y2=self.water_roi; c1=self.display_transform.pixel_to_canvas(x1,y1); c2=self.display_transform.pixel_to_canvas(x2,y2)
+        x1,y1,x2,y2=self.water_roi; c1=self.display_transform.full_pixel_to_canvas(x1,y1,self.crop_origin); c2=self.display_transform.full_pixel_to_canvas(x2,y2,self.crop_origin)
         if self._roi_rectangle_id is None:self._roi_rectangle_id=self.image_canvas.create_rectangle(*c1,*c2,outline="#00e5ff",width=3,dash=(7,4))
         else:self.image_canvas.coords(self._roi_rectangle_id,*c1,*c2)
 
     def _roi_mapping(self)->dict[str,Any]:
         assert self.water_roi is not None;x1,y1,x2,y2=self.water_roi
-        return {"type":"polygon","coordinate_system":"canonical_cam1","points":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]]}
+        assert self.common_fov is not None
+        return {"type":"polygon","coordinate_system":"canonical_cam1","points":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]],"common_fov_id":self.common_fov.identity,"common_bbox":list(self.common_fov.bbox),"roi_in_full_canonical_coordinates":True}
 
     def _invalidate_reference(self,reason:str)->None:
         if getattr(self,"active_reference_path",None) is not None:
@@ -287,7 +327,9 @@ class StereoWaveHeightApplication:
         left,right=self.variables["left_measurement"].get(),self.variables["right_measurement"].get()
         if not left or not right: messagebox.showerror(self.title,"必须选择 LEFT 和 RIGHT 测量视频。"); return
         if not self.variables["calibration_path"].get(): messagebox.showerror(self.title,"必须先加载标定结果。"); return
-        if self.water_roi is None:messagebox.showerror(self.title,"请先点击“设置水面区域”，在右相机画面中框选需要查询的水面范围。");return
+        if self.water_roi is None or self.common_fov is None:messagebox.showerror(self.title,"请先在双目公共有效区域内设置水面区域。");return
+        try:validate_roi(self._roi_mapping(),self.common_fov)
+        except ValueError:messagebox.showerror(self.title,"ROI_OUTSIDE_STEREO_COMMON_FOV：请重新选择水面区域。");return
         if solve_mode=="measurement" and self.active_reference_path is None:messagebox.showwarning(self.title,"请先选择并解算参考帧。");return
         self._pause(); name,output=self.session.allocate(self.current_time); self.backend_running=True; self.backend_started_at=time.perf_counter(); self.solve_button.configure(state=tk.DISABLED)
         self.reference_button.configure(state=tk.DISABLED);self.variables["run_status"].set("正在建立参考面…" if solve_mode=="reference" else "正在执行单帧三维解算…"); self._log(f"backend {solve_mode} start {name} target={self.current_time:.6f}s")
@@ -298,7 +340,8 @@ class StereoWaveHeightApplication:
                 fps=self.metadata.get("left_measurement").fps if self.metadata.get("left_measurement") else 60.0
                 record=self.runner.run_with_fallback(Path(left),Path(right),self.current_time,output,self.session.log_path,
                     Path(self.variables["calibration_path"].get()),frame_period_sec=1.0/fps,
-                    water_roi=self._roi_mapping(),solve_mode=solve_mode,reference_artifact=self.active_reference_path)
+                    water_roi=self._roi_mapping(),solve_mode=solve_mode,reference_artifact=self.active_reference_path,
+                    common_fov_file=self.common_fov_file)
                 record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put((("reference_success" if solve_mode=="reference" else "success"),(record,time.perf_counter()-started)))
             except Exception as error: self._worker_messages.put((("reference_error" if solve_mode=="reference" else "error"),str(error)))
         threading.Thread(target=work,daemon=True).start()
@@ -372,7 +415,7 @@ class StereoWaveHeightApplication:
 
     def _hover(self,event:tk.Event) -> None:
         if not self.viewing_result or self.dense_view is None or self.display_transform is None:return
-        pixel=self.display_transform.canvas_to_pixel(event.x,event.y)
+        pixel=self.display_transform.canvas_to_full_pixel(event.x,event.y,self.crop_origin)
         if pixel is None:self.variables["pixel_info"].set("像素：画面外");return
         query=self.dense_view.query(*pixel); xyz="N/A" if query.xyz_m is None else " / ".join(f"{value:.6f}" for value in query.xyz_m)+" m"
         height="N/A" if query.height_mm is None else f"{query.height_mm:.3f} mm"
@@ -510,6 +553,7 @@ class StereoWaveHeightApplication:
         self.pointcloud_button=ttk.Button(summary_box,text="显示三维点云",command=self._show_pointcloud,state=tk.DISABLED); self.pointcloud_button.pack(anchor="w",padx=5,pady=6)
         controls=ttk.Frame(self.measurement_frame); controls.pack(fill="x",padx=8); ttk.Button(controls,text="播放",command=self._play).pack(side="left"); ttk.Button(controls,text="暂停",command=self._pause).pack(side="left"); self.timeline=ttk.Scale(controls,from_=0,to=1,command=self._timeline_moved); self.timeline.pack(side="left",fill="x",expand=True,padx=8); self.timeline.bind("<ButtonPress-1>",self._timeline_press); self.timeline.bind("<ButtonRelease-1>",self._timeline_release); ttk.Label(controls,textvariable=self._var("time","00:00.000 / 00:00.000  (0.000 s)"),width=34).pack(side="left"); self.reference_button=ttk.Button(controls,text="设置当前帧为参考帧",command=self._set_reference);self.reference_button.pack(side="left",padx=4);self.solve_button=ttk.Button(controls,text="解算当前帧",command=self._solve,state=tk.DISABLED); self.solve_button.pack(side="left",padx=4); ttk.Label(controls,textvariable=self._var("run_status","就绪")).pack(side="left")
         roi_controls=ttk.Frame(self.measurement_frame); roi_controls.pack(fill="x",padx=8,pady=(3,2)); ttk.Button(roi_controls,text="设置/重新选择水面区域",command=self._start_roi_selection).pack(side="left"); ttk.Label(roi_controls,textvariable=self._var("roi_status","水面区域：尚未设置；解算前必须在右相机画面中框选"),foreground="#075").pack(side="left",padx=10)
+        ttk.Label(self.measurement_frame,textvariable=self._var("common_fov_status","双目公共区域：等待标定和左右测量视频"),foreground="#075").pack(fill="x",padx=12,pady=(0,2))
         reference_controls=ttk.Frame(self.measurement_frame);reference_controls.pack(fill="x",padx=8,pady=2);ttk.Label(reference_controls,textvariable=self._var("reference_status","参考面未建立"),foreground="#075").pack(side="left");ttk.Label(reference_controls,text="高度 H 为当前三维水面点到用户所选参考面的有符号法向距离。",foreground="#555").pack(side="left",padx=14)
         bottom=ttk.Panedwindow(self.measurement_frame,orient=tk.HORIZONTAL); bottom.pack(fill="x",padx=8,pady=5); history_box=ttk.LabelFrame(bottom,text="本次测量记录"); log_box=ttk.LabelFrame(bottom,text="运行日志"); bottom.add(history_box,weight=1); bottom.add(log_box,weight=3); self.history=tk.Listbox(history_box,height=5); self.history.pack(fill="both",expand=True); self.history.bind("<<ListboxSelect>>",self._history_selected)
         for record in self.session.records:self.history.insert(tk.END,record.display_name)

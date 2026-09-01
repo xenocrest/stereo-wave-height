@@ -33,6 +33,13 @@ class DisplayTransform:
     def pixel_to_canvas(self, u: float, v: float) -> tuple[float, float]:
         return self.offset_x + u * self.scale, self.offset_y + v * self.scale
 
+    def canvas_to_full_pixel(self,x:float,y:float,crop_origin:tuple[int,int]=(0,0))->tuple[int,int]|None:
+        pixel=self.canvas_to_pixel(x,y)
+        return None if pixel is None else (pixel[0]+crop_origin[0],pixel[1]+crop_origin[1])
+
+    def full_pixel_to_canvas(self,u:float,v:float,crop_origin:tuple[int,int]=(0,0))->tuple[float,float]:
+        return self.pixel_to_canvas(u-crop_origin[0],v-crop_origin[1])
+
 
 @dataclass(frozen=True)
 class PixelQuery:

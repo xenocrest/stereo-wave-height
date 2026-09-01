@@ -32,6 +32,7 @@ from .reference_frame import fit_reference_artifact, save_reference_artifact, va
 from .scene_diagnostics import diagnose_stereo_scene
 from .quality import resolve_quality
 from .adaptation import choose_adaptation
+from .common_fov import load_common_fov, validate_roi
 from surface_completion.dense_map import build_dense_map
 
 
@@ -45,6 +46,7 @@ class DenseHeightSpec:
     observation_gate_px: float = 2.0
     method: str = "mls_quadratic"
     max_gap_spacing_multiplier: float = 3.0
+    common_fov_file: Path | None = None
 
     def __post_init__(self) -> None:
         if self.enabled and self.mapping_file is None:
@@ -142,6 +144,7 @@ class SingleFrameMeasurementRequest:
             self.reference_plane_file,
             self.reference_artifact_file,
             self.dense_height.mapping_file,
+            self.dense_height.common_fov_file,
         )
         return tuple(path for path in optional if path is not None)
 
@@ -321,6 +324,14 @@ class SingleFrameMeasurementBackend:
         if output.exists() and any(output.iterdir()):
             raise FileExistsError("single-frame output directory must be absent or empty")
         output.mkdir(parents=True, exist_ok=True)
+        common_fov=None
+        if request.dense_height.water_roi is not None and request.solve_mode!="legacy":
+            if request.dense_height.common_fov_file is None:
+                raise ValueError("ROI_COMMON_FOV_ARTIFACT_REQUIRED")
+            common_fov=load_common_fov(request.dense_height.common_fov_file)
+            if request.calibration_id and common_fov.metadata["calibration_id"]!=request.calibration_id:
+                raise ValueError("COMMON_FOV_CALIBRATION_ID_MISMATCH")
+            validate_roi(request.dense_height.water_roi,common_fov)
         if request.solve_mode=="measurement":
             assert request.reference_artifact_file is not None and request.calibration_id and request.video_pair_id
             validate_reference_artifact(request.reference_artifact_file,calibration_id=request.calibration_id,video_pair_id=request.video_pair_id,roi=request.dense_height.water_roi or {})
@@ -391,6 +402,7 @@ class SingleFrameMeasurementBackend:
         import cv2
         try:
             scene_diagnostics=diagnose_stereo_scene(cv2.imread(str(left_png)),cv2.imread(str(right_png)),roi=request.dense_height.water_roi,
+                common_fov_mask=(load_common_fov(request.dense_height.common_fov_file).safe_mask if request.dense_height.common_fov_file else None),
                 frame_period_s=selection.frame_period_s if selection else None,sync_residual_s=selection.residual_s if selection else None,rolling_shutter=None)
         except (ValueError,RuntimeError) as error:
             scene_diagnostics={"schema_version":"1.0","quality_status":"VALID_WITH_WARNING","quality_reasons":["SCENE_DIAGNOSTICS_UNAVAILABLE"],"error":f"{type(error).__name__}: {error}"}
@@ -488,6 +500,8 @@ class SingleFrameMeasurementBackend:
                 valid_count = int(status_counts["observed"]["count"] + status_counts["estimated"]["count"])
                 dense_summary = {
                     "status": "COMPLETED", "roi_type": (request.dense_height.water_roi or {"type": "observed_convex_hull"})["type"],
+                    "water_roi":request.dense_height.water_roi,
+                    "common_fov":common_fov.metadata if common_fov is not None else {"status":"LEGACY_COMMON_FOV_UNSPECIFIED"},
                     "roi_pixel_count": dense_result["water_roi_pixel_count"],
                     "observed_count": status_counts["observed"]["count"],
                     "estimated_count": status_counts["estimated"]["count"],
