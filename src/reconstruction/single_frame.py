@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from datetime import datetime
 import json
 from pathlib import Path
 import subprocess
@@ -26,6 +27,8 @@ from synchronization.tolerance import OnDemandSyncTolerancePolicy
 
 from .io import FrameRequest, ReconstructionConfig
 from .pipeline import ReconstructionPipeline, ReconstructionRunResult
+from .height import height_from_plane
+from .reference_frame import fit_reference_artifact, save_reference_artifact, validate_reference_artifact
 from surface_completion.dense_map import build_dense_map
 
 
@@ -93,10 +96,18 @@ class SingleFrameMeasurementRequest:
     surface_distance_threshold_m: float = 0.01
     synchronization_tolerance: OnDemandSyncTolerancePolicy | None = None
     dense_height: DenseHeightSpec = DenseHeightSpec()
+    solve_mode: str = "legacy"
+    reference_artifact_file: Path | None = None
+    calibration_id: str | None = None
+    calibration_package_hash: str | None = None
+    video_pair_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.input_mode not in {"image_pair", "video_time"}:
             raise ValueError("input_mode must be image_pair or video_time")
+        if self.solve_mode not in {"legacy","reference","measurement"}:raise ValueError("solve_mode must be legacy/reference/measurement")
+        if self.solve_mode in {"reference","measurement"} and (not self.calibration_id or not self.video_pair_id):raise ValueError("explicit calibration_id and video_pair_id required")
+        if self.solve_mode=="measurement" and self.reference_artifact_file is None:raise ValueError("measurement solve requires reference artifact")
         if not self.synchronization_source:
             raise ValueError("synchronization_source must be explicit")
         if self.left_rotation_deg not in (0, 90, 180, 270) or self.right_rotation_deg not in (0, 90, 180, 270):
@@ -126,6 +137,7 @@ class SingleFrameMeasurementRequest:
             self.left_image, self.right_image, self.left_video, self.right_video,
             self.calibration_source, self.wass_config_dir, self.wass_runtime_binding,
             self.reference_plane_file,
+            self.reference_artifact_file,
             self.dense_height.mapping_file,
         )
         return tuple(path for path in optional if path is not None)
@@ -159,6 +171,9 @@ class SingleFrameMeasurementResult:
     output_paths: dict[str, str]
     dense_height: dict[str, object] | None = None
     total_seconds: float | None = None
+    solve_mode: str = "legacy"
+    reference_id: str | None = None
+    reference_metadata: dict[str, object] | None = None
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
@@ -300,6 +315,9 @@ class SingleFrameMeasurementBackend:
         if output.exists() and any(output.iterdir()):
             raise FileExistsError("single-frame output directory must be absent or empty")
         output.mkdir(parents=True, exist_ok=True)
+        if request.solve_mode=="measurement":
+            assert request.reference_artifact_file is not None and request.calibration_id and request.video_pair_id
+            validate_reference_artifact(request.reference_artifact_file,calibration_id=request.calibration_id,video_pair_id=request.video_pair_id,roi=request.dense_height.water_roi or {})
         selected = output / "selected_pair"
         left_png, right_png = selected / "left.png", selected / "right.png"
         selection: SelectedTimestampPair | None = None
@@ -385,8 +403,8 @@ class SingleFrameMeasurementBackend:
                 ffmpeg_executable=str(request.ffmpeg_executable),
                 output_directory=pipeline_output,
                 surface_distance_threshold_m=request.surface_distance_threshold_m,
-                run_type="wave" if request.reference_plane_file else "static",
-                reference_plane_file=request.reference_plane_file,
+                run_type="wave" if request.solve_mode=="measurement" or request.reference_plane_file else "static",
+                reference_plane_file=request.reference_artifact_file if request.solve_mode=="measurement" else request.reference_plane_file,
             )
             (output / "single_frame_request.json").write_text(
                 json.dumps(request.to_dict(), indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
@@ -403,6 +421,25 @@ class SingleFrameMeasurementBackend:
         reconstructed = json.loads(run.result_json.read_text(encoding="utf-8"))
         frame = reconstructed["frames"][0]
         reference = reconstructed["height_reference"]
+        reference_artifact: dict[str,object] | None = None
+        reference_artifact_path: Path | None = None
+        if request.solve_mode=="reference":
+            actual=float(selection.left.timestamp_s if selection else (request.target_time_s or 0.0))
+            try:reference_artifact=fit_reference_artifact(
+                pipeline_output/"pixel_xyz"/"000000_pixel_xyz.npz",reference_id=f"ref_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}",
+                requested_timestamp_s=float(request.target_time_s or 0.0),actual_timestamp_s=actual,fallback_frame_offset=0,
+                left_frame_id=str(pair_metadata["left_frame_id"]),right_frame_id=str(pair_metadata["right_frame_id"]),sync_residual_ms=float(pair_metadata["pair_residual_s"])*1000,
+                calibration_id=str(request.calibration_id),calibration_package_hash=request.calibration_package_hash,video_pair_id=str(request.video_pair_id),
+                roi=request.dense_height.water_roi or {},xyz_point_count=int(frame["point_count"]),source_videos={"left":str(request.left_video or request.left_image),"right":str(request.right_video or request.right_image)},surface_distance_threshold_m=request.surface_distance_threshold_m)
+            except Exception as error:
+                message=str(error);status=next((name for name in ("REFERENCE_SUPPORT_INSUFFICIENT","REFERENCE_PLANE_FIT_FAILED","REFERENCE_GEOMETRY_QA_FAILED") if name in message),"REFERENCE_PLANE_FIT_FAILED")
+                failed=SingleFrameMeasurementResult(status=status,requested_time_s=request.target_time_s,left_timestamp_s=selection.left.timestamp_s if selection else None,right_timestamp_s=selection.right.timestamp_s if selection else None,pair_time_error_ms=selection.residual_s*1000 if selection else 0,left_frame_id=str(pair_metadata["left_frame_id"]),right_frame_id=str(pair_metadata["right_frame_id"]),calibration_source=str(request.calibration_source),xyz_point_count=int(frame["point_count"]),pixel_xyz_count=int(frame["pixel_xyz_correspondence_count"]),reference_plane=None,reference_plane_source=None,height_statistics=None,plane_rms_m=None,wass_seconds=wass_seconds,qa_status=status,physical_accuracy_status="PHYSICAL_ACCURACY_NOT_ESTABLISHED",warnings=(message,),output_paths={"selected_pair":"selected_pair","pointcloud":"reconstruction/pointcloud","pixel_xyz":"reconstruction/pixel_xyz","result_json":"single_frame_result.json","report":"report/single_frame_report.md"},total_seconds=wass_seconds,solve_mode="reference")
+                _write_backend_outputs(output,failed);return failed
+            reference_artifact_path=save_reference_artifact(reference_artifact,output/f"reference_{reference_artifact['reference_id']}.yaml")
+            reference=reference_artifact["plane"]
+            pixel=np.load(pipeline_output/"pixel_xyz"/"000000_pixel_xyz.npz");heights=height_from_plane(pixel["xyz_m"],np.asarray(reference["normal"]),float(reference["offset_m"]));old=np.load(pipeline_output/"height"/"000000_height_points.npz")
+            np.savez_compressed(pipeline_output/"height"/"000000_height_points.npz",x_m=pixel["xyz_m"][:,0],y_m=pixel["xyz_m"][:,1],height_m=heights,water_mask=old["water_mask"])
+            frame["height_range_m"]=[float(heights.min()),float(heights.max())];frame["height_mean_m"]=float(heights.mean());frame["height_rms_m"]=float(np.sqrt(np.mean(heights**2)));frame["height_max_absolute_m"]=float(np.max(np.abs(heights)))
         sync_warning = selection is not None and (
             selection.quality_status == "FRAME_PAIR_SYNC_WARNING" or engineering_sync_status is not None
         )
@@ -467,7 +504,7 @@ class SingleFrameMeasurementBackend:
             xyz_point_count=int(frame["point_count"]),
             pixel_xyz_count=int(frame["pixel_xyz_correspondence_count"]),
             reference_plane={"normal": reference["normal"], "offset_m": reference["offset_m"]},
-            reference_plane_source="static_reference" if request.reference_plane_file else "current_frame_fit",
+            reference_plane_source=("user_selected_reference_plane" if request.solve_mode in {"reference","measurement"} else "static_reference" if request.reference_plane_file else "current_frame_fit"),
             height_statistics={
                 "unit": "m", "minimum": frame["height_range_m"][0], "maximum": frame["height_range_m"][1],
                 "mean": frame["height_mean_m"], "rms": frame["height_rms_m"],
@@ -488,6 +525,10 @@ class SingleFrameMeasurementBackend:
                 "result_json": "single_frame_result.json", "report": "report/single_frame_report.md",
             },
             dense_height=dense_summary, total_seconds=wass_seconds + dense_seconds,
+            solve_mode=request.solve_mode,
+            reference_id=(str(reference_artifact["reference_id"]) if reference_artifact else (validate_reference_artifact(request.reference_artifact_file,calibration_id=str(request.calibration_id),video_pair_id=str(request.video_pair_id),roi=request.dense_height.water_roi or {})["reference_id"] if request.solve_mode=="measurement" else None)),
+            reference_metadata=(reference_artifact if reference_artifact else (validate_reference_artifact(request.reference_artifact_file,calibration_id=str(request.calibration_id),video_pair_id=str(request.video_pair_id),roi=request.dense_height.water_roi or {}) if request.solve_mode=="measurement" else None)),
         )
+        if reference_artifact_path is not None:result.output_paths["reference_artifact"]=reference_artifact_path.name
         _write_backend_outputs(output, result)
         return result

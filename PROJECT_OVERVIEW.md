@@ -331,6 +331,8 @@ HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/righ
 
 Demo Stage 2 已完成透明高度叠加、canonical-cam1 pixel 的只读 XYZ/H/status 查询、原始 WASS 点云查看和安全 Session 导出。由此第一版离线演示 MVP 闭环并冻结；后续仅处理 coverage、precision、UX、visualization、robustness 与 packaging，不改变 MVP 数值主流程。
 
+离线演示的高度基准现由用户选择：用户可在任意暂停帧运行一次既有单帧 WASS，以当前 water ROI 内的有效 XYZ 拟合固定参考面；之后的解算、overlay、hover、历史记录和导出均绑定该 reference ID。标定、视频对或 ROI 改变会使参考面失效，且参考帧不要求是静水状态。
+
 Windows 演示分发已采用 PyInstaller `--onedir` 完成验证：GUI 与 Python backend 由同一 EXE 分派，WASS/FFmpeg 作为随目录携带的外部 runtime，运行不依赖系统 Python、网络、`PYTHONPATH` 或仓库 cwd。分发二进制不进入 Git，构建脚本和路径适配保持可追溯。
 
 演示输入工作流现采用中文分步引导：先选择导入已有 YAML 标定结果或由左右标定视频调用既有 OpenCV 标定后端，再导入明确标记 LEFT/RIGHT 的水面测量视频，最后进入播放、暂停、单帧解算和结果查看；普通用户无需接触内部配置路径。

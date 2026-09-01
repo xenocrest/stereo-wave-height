@@ -59,6 +59,11 @@ def load_request(path: str | Path) -> SingleFrameMeasurementRequest:
         reference_plane_file=_path(base, processing.get("reference_plane_file")),
         surface_distance_threshold_m=float(processing.get("surface_distance_threshold_m", 0.01)),
         synchronization_tolerance=tolerance, dense_height=dense,
+        solve_mode=str(data.get("solve_mode","legacy")),
+        reference_artifact_file=_path(base,processing.get("reference_artifact_file")),
+        calibration_id=data.get("calibration",{}).get("calibration_id"),
+        calibration_package_hash=data.get("calibration",{}).get("package_hash"),
+        video_pair_id=data.get("input",{}).get("video_pair_id"),
     )
 
 

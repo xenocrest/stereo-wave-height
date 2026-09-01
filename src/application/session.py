@@ -26,12 +26,13 @@ class MeasurementRecord:
     point_cloud_ply_path: Path | None = None
     report_path: Path | None = None
     overlay_path: Path | None = None
+    reference_artifact_path: Path | None = None
 
     def to_json(self) -> dict[str, Any]:
         data = asdict(self)
         for key in ("output_directory", "unified_result_path", "selected_frame_path",
                     "dense_height_path", "status_map_path", "point_cloud_path", "dense_npz_path",
-                    "pixel_xyz_path", "point_cloud_ply_path", "report_path", "overlay_path"):
+                    "pixel_xyz_path", "point_cloud_ply_path", "report_path", "overlay_path","reference_artifact_path"):
             if data[key] is not None:
                 data[key] = str(data[key])
         return data
@@ -42,7 +43,7 @@ class MeasurementRecord:
         for key in ("output_directory", "unified_result_path", "selected_frame_path",
                     "dense_height_path", "status_map_path"):
             converted[key] = Path(converted[key])
-        for key in ("point_cloud_path", "dense_npz_path", "pixel_xyz_path", "point_cloud_ply_path", "report_path", "overlay_path"):
+        for key in ("point_cloud_path", "dense_npz_path", "pixel_xyz_path", "point_cloud_ply_path", "report_path", "overlay_path","reference_artifact_path"):
             converted[key] = Path(converted[key]) if converted.get(key) else None
         return cls(**converted)
 
@@ -58,13 +59,28 @@ class MeasurementSession:
         self.records: list[MeasurementRecord] = []
         self.log_path = self.directory / "session.log"
         self.index_path = self.directory / "measurements.json"
+        self.reference_index_path=self.directory/"references.json"
+        self.references: list[dict[str,Any]]=[];self.active_reference_path: Path|None=None
         if self.index_path.exists():
             content = json.loads(self.index_path.read_text(encoding="utf-8"))
             self.records = [MeasurementRecord.from_json(item) for item in content]
+        if self.reference_index_path.exists():
+            content=json.loads(self.reference_index_path.read_text(encoding="utf-8"));self.references=list(content.get("history",[]));active=content.get("active_path");self.active_reference_path=Path(active) if active else None
+
+    def set_active_reference(self,path:Path,metadata:dict[str,Any])->None:
+        entry={"reference_id":metadata["reference_id"],"path":str(Path(path).resolve()),"status":"REFERENCE_PLANE_READY","created_at":metadata["created_at"]};self.references.append(entry);self.active_reference_path=Path(path).resolve();self._write_reference_index()
+
+    def invalidate_reference(self,reason:str)->None:
+        if self.active_reference_path is not None:self.references.append({"reference_id":None,"path":str(self.active_reference_path),"status":"STALE","reason":reason})
+        self.active_reference_path=None;self._write_reference_index()
+
+    def _write_reference_index(self)->None:
+        self.reference_index_path.write_text(json.dumps({"status":"REFERENCE_PLANE_READY" if self.active_reference_path else "REFERENCE_NOT_SET_OR_STALE","active_path":str(self.active_reference_path) if self.active_reference_path else None,"history":self.references},indent=2,ensure_ascii=False),encoding="utf-8")
 
     def unique_name(self, target_time_sec: float) -> str:
         base = f"{target_time_sec:.3f}s"
         names = {record.display_name for record in self.records}
+        names.update(path.name.removeprefix("measurement_") for path in self.directory.glob("measurement_*") if path.is_dir())
         if base not in names:
             return base
         suffix = 2

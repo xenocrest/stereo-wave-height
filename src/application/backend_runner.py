@@ -18,6 +18,7 @@ from .fallback import run_bounded_fallback
 from process_utils import hidden_process_kwargs
 from reconstruction.io import load_calibration
 from adapters.wass.input.opencv_xml import write_opencv_matrix_xml
+from reconstruction.reference_frame import file_identity,video_pair_identity
 
 
 class BackendResultError(RuntimeError):
@@ -96,6 +97,7 @@ def parse_backend_result(output_directory: Path, *, display_name: str | None = N
         point_cloud_ply_path=output / "reconstruction" / "pointcloud" / "000000.ply",
         report_path=output / "report" / "single_frame_report.md",
         overlay_path=output / "dense_height" / "height_overlay.png",
+        reference_artifact_path=(output / str(summary.get("output_paths",{}).get("reference_artifact"))) if summary.get("output_paths",{}).get("reference_artifact") else None,
     )
 
 
@@ -108,7 +110,7 @@ class FrozenBackendRunner:
 
     def prepare_config(self, left_video: Path, right_video: Path, target_time_sec: float,
                        output_directory: Path, calibration_file: Path | None = None,
-                       water_roi: dict[str, Any] | None = None) -> Path:
+                       water_roi: dict[str, Any] | None = None, *,solve_mode:str="legacy",reference_artifact:Path|None=None) -> Path:
         data = yaml.safe_load(self.template_config.read_text(encoding="utf-8"))
         template_base = self.template_config.parent
         def absolute(value: str) -> str:
@@ -120,8 +122,14 @@ class FrozenBackendRunner:
         data["input"]["ffmpeg_executable"] = absolute(data["input"]["ffmpeg_executable"])
         selected_calibration = Path(calibration_file).resolve() if calibration_file else Path(absolute(data["calibration"]["source"]))
         data["calibration"]["source"] = str(selected_calibration)
-        for key in ("wass_config_dir", "wass_runtime_binding", "reference_plane_file"):
+        for key in ("wass_config_dir", "wass_runtime_binding"):
             data["processing"][key] = absolute(data["processing"][key])
+        data["solve_mode"]=solve_mode;data["input"]["video_pair_id"]=video_pair_identity(left_video,right_video);data["calibration"]["calibration_id"]=file_identity(selected_calibration,"cal")
+        if solve_mode=="reference":data["processing"].pop("reference_plane_file",None);data["processing"].pop("reference_artifact_file",None)
+        elif solve_mode=="measurement":
+            if reference_artifact is None:raise ValueError("measurement solve requires reference artifact")
+            data["processing"]["reference_artifact_file"]=str(Path(reference_artifact).resolve());data["processing"]["reference_plane_file"]=str(Path(reference_artifact).resolve())
+        elif data["processing"].get("reference_plane_file"):data["processing"]["reference_plane_file"]=absolute(data["processing"]["reference_plane_file"])
         if calibration_file is not None:
             source_config = Path(data["processing"]["wass_config_dir"])
             calibration = load_calibration(
@@ -157,9 +165,9 @@ class FrozenBackendRunner:
 
     def run(self, left_video: Path, right_video: Path, target_time_sec: float,
             output_directory: Path, log_path: Path, calibration_file: Path | None = None,
-            water_roi: dict[str, Any] | None = None) -> MeasurementRecord:
+            water_roi: dict[str, Any] | None = None, *,solve_mode:str="legacy",reference_artifact:Path|None=None) -> MeasurementRecord:
         try:
-            config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file, water_roi)
+            config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file, water_roi,solve_mode=solve_mode,reference_artifact=reference_artifact)
         except Exception as error:
             raise BackendResultError(
                 f"后端在【请求配置】阶段失败：{type(error).__name__}: {error}，详细日志：{log_path}",
@@ -197,11 +205,13 @@ class FrozenBackendRunner:
 
     def run_with_fallback(self, left_video: Path, right_video: Path, target_time_sec: float,
                           output_directory: Path, log_path: Path, calibration_file: Path,
-                          *, frame_period_sec: float, water_roi: dict[str, Any] | None = None) -> MeasurementRecord:
+                          *, frame_period_sec: float, water_roi: dict[str, Any] | None = None,
+                          solve_mode:str="legacy",reference_artifact:Path|None=None) -> MeasurementRecord:
         """Try the target then at most four neighboring whole-pair target times."""
         def attempt(candidate_time: float, offset: int) -> MeasurementRecord:
             folder=Path(output_directory)/f"attempt_{offset:+d}"
-            return self.run(left_video,right_video,candidate_time,folder,log_path,calibration_file,water_roi)
+            if solve_mode=="legacy" and reference_artifact is None:return self.run(left_video,right_video,candidate_time,folder,log_path,calibration_file,water_roi)
+            return self.run(left_video,right_video,candidate_time,folder,log_path,calibration_file,water_roi,solve_mode=solve_mode,reference_artifact=reference_artifact)
         result=run_bounded_fallback(
             target_time_sec,
             frame_period_sec,
@@ -218,6 +228,8 @@ class FrozenBackendRunner:
             "fallback_reason":"; ".join(result.failures) if result.failures else None,
         })
         record.unified_result_path.write_text(json.dumps(summary,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+        if solve_mode=="reference" and record.reference_artifact_path is not None:
+            artifact=yaml.safe_load(record.reference_artifact_path.read_text(encoding="utf-8"));artifact["requested_timestamp_s"]=target_time_sec;artifact["actual_timestamp_s"]=result.actual_time_sec;artifact["fallback_frame_offset"]=result.frame_offset;record.reference_artifact_path.write_text(yaml.safe_dump(artifact,sort_keys=False,allow_unicode=True),encoding="utf-8");summary["reference_metadata"]=artifact;record.unified_result_path.write_text(json.dumps(summary,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
         return MeasurementRecord(**{**record.__dict__,"target_time_sec":target_time_sec,"summary_metadata":summary})
 
 

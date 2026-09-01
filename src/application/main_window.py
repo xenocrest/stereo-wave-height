@@ -18,6 +18,7 @@ from .export import delete_session, export_session
 from .runtime_paths import resolve_runtime_paths
 from .input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, VIDEO_FORMAT_TEXT, GuidedInputState
 from .calibration_workflow import calibrate_from_videos
+from reconstruction.reference_frame import load_reference_artifact
 
 
 class StereoWaveHeightApplication:
@@ -45,6 +46,7 @@ class StereoWaveHeightApplication:
         self._roi_start: tuple[int,int] | None=None; self._roi_rectangle_id: int | None=None
         self._after_id: str | None=None; self._closing=False
         self._worker_messages: queue.Queue[tuple[str, Any]] = queue.Queue()
+        self.active_reference_path=self.session.active_reference_path
 
     def _var(self, key: str, value: str = "") -> tk.StringVar:
         variable = tk.StringVar(self.root, value=value); self.variables[key] = variable; return variable
@@ -65,6 +67,7 @@ class StereoWaveHeightApplication:
             self.variables[key + "_meta"].set(f"角色：{role}　文件：{Path(selected).name}\n分辨率：{meta.width} × {meta.height}　FPS：{meta.fps:.3f}　时长：{meta.duration_sec:.3f} s")
             if key == "right_measurement": self.timeline.configure(to=meta.duration_sec); self._show_video_frame(0.0)
             if key.endswith("measurement"):
+                self._invalidate_reference("VIDEO_PAIR_CHANGED")
                 self.water_roi=None
                 if hasattr(self,"variables") and "roi_status" in self.variables:self.variables["roi_status"].set("水面区域：尚未设置；解算前必须在右相机画面中框选")
                 self.input_state.mark_measurement_video("left" if key.startswith("left") else "right")
@@ -108,6 +111,7 @@ class StereoWaveHeightApplication:
         except Exception as error: messagebox.showerror(self.title,f"标定结果文件读取失败。\n请选择由本系统生成或兼容格式的双目标定 YAML 文件。\n\n{error}")
 
     def _apply_calibration(self, data: dict[str, Any], path: Path) -> None:
+        if self.variables.get("calibration_path") and self.variables["calibration_path"].get()!=str(path):self._invalidate_reference("CALIBRATION_CHANGED")
         for prefix, node in (("left", data["mono_cam0"]), ("right", data["mono_cam1"])):
             k=node["K"]
             self.variables[f"{prefix}_model"].set(str(node.get("model", "LEFT/cam0" if prefix=="left" else "RIGHT/cam1")))
@@ -243,7 +247,9 @@ class StereoWaveHeightApplication:
         x1,x2=sorted((self._roi_start[0],end[0])); y1,y2=sorted((self._roi_start[1],end[1]))
         if x2-x1<10 or y2-y1<10:
             self.variables["roi_status"].set("区域过小，请重新框选至少 10×10 像素的水面区域");return
-        self.water_roi=(x1,y1,x2,y2); self._roi_selecting=False
+        new_roi=(x1,y1,x2,y2)
+        if self.water_roi is not None and self.water_roi!=new_roi:self._invalidate_reference("ROI_CHANGED")
+        self.water_roi=new_roi; self._roi_selecting=False
         self.variables["roi_status"].set(f"水面区域：({x1}, {y1}) → ({x2}, {y2})；可点击重新选择")
         self._draw_water_roi(); self._log(f"water ROI selected: {self.water_roi}")
 
@@ -253,24 +259,48 @@ class StereoWaveHeightApplication:
         if self._roi_rectangle_id is None:self._roi_rectangle_id=self.image_canvas.create_rectangle(*c1,*c2,outline="#00e5ff",width=3,dash=(7,4))
         else:self.image_canvas.coords(self._roi_rectangle_id,*c1,*c2)
 
+    def _roi_mapping(self)->dict[str,Any]:
+        assert self.water_roi is not None;x1,y1,x2,y2=self.water_roi
+        return {"type":"polygon","coordinate_system":"canonical_cam1","points":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]]}
+
+    def _invalidate_reference(self,reason:str)->None:
+        if getattr(self,"active_reference_path",None) is not None:
+            self.session.invalidate_reference(reason);self.active_reference_path=None
+            if "reference_status" in self.variables:self.variables["reference_status"].set("参考面已失效，请重新设置")
+        self._refresh_reference_controls()
+
+    def _refresh_reference_controls(self)->None:
+        ready=getattr(self,"active_reference_path",None) is not None
+        if hasattr(self,"solve_button"):self.solve_button.configure(state=tk.NORMAL if ready and not self.backend_running else tk.DISABLED)
+        if hasattr(self,"reference_button"):self.reference_button.configure(state=tk.DISABLED if self.backend_running else tk.NORMAL)
+
+    def _set_reference(self)->None:
+        if self.active_reference_path is not None and not messagebox.askyesno(self.title,"这将替换当前参考面，之后的高度结果将使用新的参考面。是否继续？"):return
+        self._start_backend("reference")
+
     def _solve(self) -> None:
+        if self.active_reference_path is None:messagebox.showwarning(self.title,"请先选择并解算参考帧。");return
+        self._start_backend("measurement")
+
+    def _start_backend(self,solve_mode:str) -> None:
         if self.backend_running: messagebox.showwarning(self.title,"当前单帧解算仍在运行。"); return
         left,right=self.variables["left_measurement"].get(),self.variables["right_measurement"].get()
         if not left or not right: messagebox.showerror(self.title,"必须选择 LEFT 和 RIGHT 测量视频。"); return
         if not self.variables["calibration_path"].get(): messagebox.showerror(self.title,"必须先加载标定结果。"); return
         if self.water_roi is None:messagebox.showerror(self.title,"请先点击“设置水面区域”，在右相机画面中框选需要查询的水面范围。");return
+        if solve_mode=="measurement" and self.active_reference_path is None:messagebox.showwarning(self.title,"请先选择并解算参考帧。");return
         self._pause(); name,output=self.session.allocate(self.current_time); self.backend_running=True; self.backend_started_at=time.perf_counter(); self.solve_button.configure(state=tk.DISABLED)
-        self.variables["run_status"].set("正在执行单帧三维解算…"); self._log(f"backend start {name} target={self.current_time:.6f}s")
-        self.variables["app_state"].set("正在解算当前暂停帧")
+        self.reference_button.configure(state=tk.DISABLED);self.variables["run_status"].set("正在建立参考面…" if solve_mode=="reference" else "正在执行单帧三维解算…"); self._log(f"backend {solve_mode} start {name} target={self.current_time:.6f}s")
+        self.variables["app_state"].set("正在解算参考帧" if solve_mode=="reference" else "正在解算当前暂停帧")
         def work() -> None:
             started=time.perf_counter()
             try:
                 fps=self.metadata.get("left_measurement").fps if self.metadata.get("left_measurement") else 60.0
                 record=self.runner.run_with_fallback(Path(left),Path(right),self.current_time,output,self.session.log_path,
                     Path(self.variables["calibration_path"].get()),frame_period_sec=1.0/fps,
-                    water_roi={"type":"polygon","coordinate_system":"canonical_cam1","points":[[self.water_roi[0],self.water_roi[1]],[self.water_roi[2],self.water_roi[1]],[self.water_roi[2],self.water_roi[3]],[self.water_roi[0],self.water_roi[3]]]})
-                record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put(("success",(record,time.perf_counter()-started)))
-            except Exception as error: self._worker_messages.put(("error",str(error)))
+                    water_roi=self._roi_mapping(),solve_mode=solve_mode,reference_artifact=self.active_reference_path)
+                record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put((("reference_success" if solve_mode=="reference" else "success"),(record,time.perf_counter()-started)))
+            except Exception as error: self._worker_messages.put((("reference_error" if solve_mode=="reference" else "error"),str(error)))
         threading.Thread(target=work,daemon=True).start()
 
     def _poll_worker(self) -> None:
@@ -284,10 +314,17 @@ class StereoWaveHeightApplication:
             self.calibrate_button.configure(state=tk.NORMAL)
             data=yaml.safe_load(payload.result_path.read_text(encoding="utf-8")); self._apply_calibration(data,payload.result_path)
             self.variables["calibration_load_status"].set(f"✓ 双目标定完成（{payload.paired_views} 组有效视图），可以进入步骤 2"); return
-        self.backend_running=False; self.backend_started_at=None; self.solve_button.configure(state=tk.NORMAL)
+        self.backend_running=False; self.backend_started_at=None; self._refresh_reference_controls()
+        if kind=="reference_error":self.variables["run_status"].set("参考面建立失败");self._log(f"reference failed: {payload}");messagebox.showerror(self.title,f"参考帧解算失败，原有有效参考面已保留。\n\n{payload}");return
         if kind=="error": self.variables["run_status"].set("解算失败"); self.variables["app_state"].set("解算失败，请查看日志后重试"); self._log(f"backend failed: {payload}"); messagebox.showerror(self.title,f"当前帧解算失败。请确认标定结果、左右视频和运行时文件均可用。\n\n{payload}"); return
-        record,elapsed=payload; self.session.add(record); self.history.insert(tk.END,record.display_name)
-        self.variables["run_status"].set(f"完成（{elapsed:.1f} s）"); self._log(f"backend completed {record.display_name}"); self._show_record(record,"MEASUREMENT_RESULT")
+        record,elapsed=payload
+        if kind=="reference_success":
+            if record.reference_artifact_path is None:messagebox.showerror(self.title,"参考帧解算未生成 reference artifact；原参考面保持不变。");return
+            metadata=load_reference_artifact(record.reference_artifact_path);self.session.set_active_reference(record.reference_artifact_path,metadata);self.active_reference_path=record.reference_artifact_path
+            self.variables["reference_status"].set(f"参考面已建立 | 当前参考：{metadata['actual_timestamp_s']:.3f} s | RMS：{metadata['plane_rms_m']*1000:.3f} mm | 点数：{metadata['support_count']} | {metadata['calibration_id'][:20]}")
+            self._refresh_reference_controls()
+        self.session.add(record); self.history.insert(tk.END,record.display_name)
+        self.variables["run_status"].set(f"完成（{elapsed:.1f} s）"); self._log(f"backend completed {record.display_name}"); self._show_record(record,"REFERENCE_RESULT" if kind=="reference_success" else "MEASUREMENT_RESULT")
         if record.summary_metadata.get("fallback_used"):
             messagebox.showinfo(self.title,"目标帧三维匹配不足，已自动使用最近可可靠解算帧。\n"
                 f"用户暂停时刻：{record.summary_metadata['requested_target_time_sec']:.3f} s\n"
@@ -300,7 +337,8 @@ class StereoWaveHeightApplication:
         pct=lambda v:f"{100*v/roi:.2f}%" if roi else "N/A"
         def mm(value:object) -> str:return "N/A" if value is None else f"{float(value)*1000:.3f}"
         fallback=(f"\n邻近帧自动容错：{'是' if s.get('fallback_used') else '否'} | 实际测量时刻：{s.get('actual_measurement_time_sec',s.get('requested_time_s'))} s | 偏移：{s.get('fallback_time_offset_ms',0)} ms" if 'fallback_used' in s else "")
-        return (f"目标时刻：{s.get('requested_target_time_sec',s.get('requested_time_s'))} s\n左右实际时刻：{s.get('left_timestamp_s')} / {s.get('right_timestamp_s')} s\n同步残差：{s.get('pair_time_error_ms')} ms{fallback}\n"
+        reference=s.get("reference_metadata") or {};reference_line=f"\n参考：{reference.get('actual_timestamp_s','LEGACY_REFERENCE_UNSPECIFIED')} s | ID：{s.get('reference_id','N/A')}"
+        return (f"目标时刻：{s.get('requested_target_time_sec',s.get('requested_time_s'))} s\n左右实际时刻：{s.get('left_timestamp_s')} / {s.get('right_timestamp_s')} s\n同步残差：{s.get('pair_time_error_ms')} ms{fallback}{reference_line}\n"
                 f"状态：{s.get('status')}\nXYZ 点数：{s.get('xyz_point_count')}\n测量 ROI：{roi}\n直接双目观测（OBSERVED）：{d.get('observed_count')} ({pct(d.get('observed_count',0))})\n"
                 f"空间曲面估算（ESTIMATED）：{d.get('estimated_count')} ({pct(d.get('estimated_count',0))})\n无可靠结果（UNSUPPORTED）：{d.get('unsupported_count')} ({pct(d.get('unsupported_count',0))})\n"
                 f"高度 最小/最大/平均：{mm(h.get('minimum'))} / {mm(h.get('maximum'))} / {mm(h.get('mean'))} mm\nWASS：{s.get('wass_seconds')} s | 稠密图：{d.get('generation_time_sec')} s | 总计：{s.get('total_seconds')} s")
@@ -339,7 +377,8 @@ class StereoWaveHeightApplication:
         query=self.dense_view.query(*pixel); xyz="N/A" if query.xyz_m is None else " / ".join(f"{value:.6f}" for value in query.xyz_m)+" m"
         height="N/A" if query.height_mm is None else f"{query.height_mm:.3f} mm"
         labels={"OBSERVED":"直接双目观测（OBSERVED）","ESTIMATED":"空间曲面估算（ESTIMATED）","UNSUPPORTED":"无可靠结果（UNSUPPORTED）"}
-        self.variables["pixel_info"].set(f"像素：{query.pixel}\n状态：{labels.get(query.status,query.status)}\n来源：{query.source}\nXYZ：{xyz}\n高度 H：{height}")
+        reference=(getattr(self,"active_record",None).summary_metadata.get("reference_metadata") or {}) if getattr(self,"active_record",None) else {}
+        self.variables["pixel_info"].set(f"像素：{query.pixel}\n状态：{labels.get(query.status,query.status)}\n来源：{query.source}\nXYZ：{xyz}\n高度 H：{height}\n参考：{reference.get('actual_timestamp_s','未指定')} s")
 
     def _show_pointcloud(self) -> None:
         record=getattr(self,"active_record",None)
@@ -469,9 +508,10 @@ class StereoWaveHeightApplication:
         self.summary_text=tk.Text(summary_box,width=42,height=22); self.summary_text.pack(fill="both",expand=True); self.summary_text.configure(state=tk.DISABLED)
         ttk.Label(summary_box,text="当前像素",font=("TkDefaultFont",10,"bold")).pack(anchor="w",padx=5,pady=(6,0)); ttk.Label(summary_box,textvariable=self._var("pixel_info","像素：无"),justify="left").pack(anchor="w",padx=5)
         self.pointcloud_button=ttk.Button(summary_box,text="显示三维点云",command=self._show_pointcloud,state=tk.DISABLED); self.pointcloud_button.pack(anchor="w",padx=5,pady=6)
-        controls=ttk.Frame(self.measurement_frame); controls.pack(fill="x",padx=8); ttk.Button(controls,text="播放",command=self._play).pack(side="left"); ttk.Button(controls,text="暂停",command=self._pause).pack(side="left"); self.timeline=ttk.Scale(controls,from_=0,to=1,command=self._timeline_moved); self.timeline.pack(side="left",fill="x",expand=True,padx=8); self.timeline.bind("<ButtonPress-1>",self._timeline_press); self.timeline.bind("<ButtonRelease-1>",self._timeline_release); ttk.Label(controls,textvariable=self._var("time","00:00.000 / 00:00.000  (0.000 s)"),width=34).pack(side="left"); self.solve_button=ttk.Button(controls,text="解算当前暂停帧",command=self._solve); self.solve_button.pack(side="left",padx=8); ttk.Label(controls,textvariable=self._var("run_status","就绪")).pack(side="left")
+        controls=ttk.Frame(self.measurement_frame); controls.pack(fill="x",padx=8); ttk.Button(controls,text="播放",command=self._play).pack(side="left"); ttk.Button(controls,text="暂停",command=self._pause).pack(side="left"); self.timeline=ttk.Scale(controls,from_=0,to=1,command=self._timeline_moved); self.timeline.pack(side="left",fill="x",expand=True,padx=8); self.timeline.bind("<ButtonPress-1>",self._timeline_press); self.timeline.bind("<ButtonRelease-1>",self._timeline_release); ttk.Label(controls,textvariable=self._var("time","00:00.000 / 00:00.000  (0.000 s)"),width=34).pack(side="left"); self.reference_button=ttk.Button(controls,text="设置当前帧为参考帧",command=self._set_reference);self.reference_button.pack(side="left",padx=4);self.solve_button=ttk.Button(controls,text="解算当前帧",command=self._solve,state=tk.DISABLED); self.solve_button.pack(side="left",padx=4); ttk.Label(controls,textvariable=self._var("run_status","就绪")).pack(side="left")
         roi_controls=ttk.Frame(self.measurement_frame); roi_controls.pack(fill="x",padx=8,pady=(3,2)); ttk.Button(roi_controls,text="设置/重新选择水面区域",command=self._start_roi_selection).pack(side="left"); ttk.Label(roi_controls,textvariable=self._var("roi_status","水面区域：尚未设置；解算前必须在右相机画面中框选"),foreground="#075").pack(side="left",padx=10)
+        reference_controls=ttk.Frame(self.measurement_frame);reference_controls.pack(fill="x",padx=8,pady=2);ttk.Label(reference_controls,textvariable=self._var("reference_status","参考面未建立"),foreground="#075").pack(side="left");ttk.Label(reference_controls,text="高度 H 为当前三维水面点到用户所选参考面的有符号法向距离。",foreground="#555").pack(side="left",padx=14)
         bottom=ttk.Panedwindow(self.measurement_frame,orient=tk.HORIZONTAL); bottom.pack(fill="x",padx=8,pady=5); history_box=ttk.LabelFrame(bottom,text="本次测量记录"); log_box=ttk.LabelFrame(bottom,text="运行日志"); bottom.add(history_box,weight=1); bottom.add(log_box,weight=3); self.history=tk.Listbox(history_box,height=5); self.history.pack(fill="both",expand=True); self.history.bind("<<ListboxSelect>>",self._history_selected)
         for record in self.session.records:self.history.insert(tk.END,record.display_name)
-        self.log_text=tk.Text(log_box,height=5); self.log_text.pack(fill="both",expand=True); self._log(f"会话目录：{self.session.directory}"); self._refresh_step_state(); root.protocol("WM_DELETE_WINDOW",self._request_close); self._after_id=root.after(200,self._tick); return root
+        self.log_text=tk.Text(log_box,height=5); self.log_text.pack(fill="both",expand=True); self._log(f"会话目录：{self.session.directory}"); self._refresh_step_state();self._refresh_reference_controls();root.protocol("WM_DELETE_WINDOW",self._request_close); self._after_id=root.after(200,self._tick); return root
     def run(self) -> None:(self.root or self.build()).mainloop()
