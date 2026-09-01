@@ -113,6 +113,12 @@ def prepare_training_and_holdout(pairs: Sequence[dict[str, Any]], *, image_size_
     return {"training_pair_ids":[x.pair_id for x in train],"heldout_pair_ids":[x.pair_id for x in held]}
 
 
+def optional_training_and_holdout(pairs: Sequence[dict[str, Any]], *, image_size_wh: tuple[int,int]) -> dict[str, Any]:
+    """Keep completed capture QA when the optional 20+20 split is impossible."""
+    try:return {"proposed_split":prepare_training_and_holdout(pairs,image_size_wh=image_size_wh)}
+    except ValueError as error:return {"proposed_split_status":"INSUFFICIENT_NON_DUPLICATE_POSES_FOR_20_20_SPLIT","proposed_split_error":str(error)}
+
+
 def evaluate_capture(pairs: Sequence[dict[str, Any]], *, image_size_wh: tuple[int,int], sampled_left: int, sampled_right: int, detected_left: int, detected_right: int) -> dict[str, Any]:
     """Return transparent capture readiness without running calibration."""
     descriptors=[build_bilateral_descriptor(pair,image_size_wh=image_size_wh) for pair in pairs]
@@ -208,7 +214,7 @@ def main() -> None:
     result["legacy_bilateral_full_image_comparison_status"]=result["status"]
     result["split_readiness"]=evaluate_split_capture(left_mono,right_mono,pairs,image_size_wh=size)
     result["status"]=result["split_readiness"]["status"]
-    if len(pairs)>=40:result['proposed_split']=prepare_training_and_holdout(pairs,image_size_wh=size)
+    if len(pairs)>=40:result.update(optional_training_and_holdout(pairs,image_size_wh=size))
     candidate_output={"schema_version":"1.0","image_size_wh":list(size),"pairs":pairs,"proposed_split":result.get("proposed_split")}
     (output/'capture_candidates.json').write_text(json.dumps(candidate_output,ensure_ascii=False),encoding='utf8');
     import yaml

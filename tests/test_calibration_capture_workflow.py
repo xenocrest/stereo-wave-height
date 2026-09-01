@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from calibration.capture_qa import deterministic_scale_bins, evaluate_capture, grid_cell, pair_detections, prepare_training_and_holdout
+from calibration.capture_qa import deterministic_scale_bins, evaluate_capture, grid_cell, pair_detections, prepare_training_and_holdout, optional_training_and_holdout
 from calibration.compare_calibrations import calibration_ab_gate
 from calibration.wass_ab_plan import validate_ab_plan
 
@@ -38,6 +38,11 @@ class CaptureWorkflowTests(unittest.TestCase):
         first=prepare_training_and_holdout(pairs,image_size_wh=(900,600),training_count=10,heldout_count=10)
         second=prepare_training_and_holdout(pairs,image_size_wh=(900,600),training_count=10,heldout_count=10)
         self.assertEqual(first,second);self.assertTrue(set(first["training_pair_ids"]).isdisjoint(first["heldout_pair_ids"]))
+
+    def test_optional_split_does_not_discard_qa_for_duplicate_poses(self):
+        pairs=[pair(i,450,300,.05) for i in range(40)]
+        result=optional_training_and_holdout(pairs,image_size_wh=(900,600))
+        self.assertEqual(result["proposed_split_status"],"INSUFFICIENT_NON_DUPLICATE_POSES_FOR_20_20_SPLIT")
 
     def test_gate_blocks_bad_and_passes_clear_improvement(self):
         old={"rms_px":10.,"p95_px":20.,"max_px":40.,"epipolar_rms_px":8.}

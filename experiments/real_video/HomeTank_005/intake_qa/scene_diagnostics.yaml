@@ -1,0 +1,193 @@
+schema_version: '1.0'
+representative_times_s:
+- 12.07367
+- 48.29468
+- 90.552525
+samples:
+- schema_version: '1.0'
+  image_size:
+    width: 1920
+    height: 1080
+  left:
+    brightness_mean: 131.81168209876543
+    brightness_std: 38.90466639652849
+    contrast_p95_p5: 144.0
+    bright_clipping_ratio: 3.858024691358025e-06
+    dark_clipping_ratio: 3.520447530864198e-05
+    specular_highlight_proxy_ratio: 4.340277777777778e-06
+    gradient_texture_energy: 18.900062561035156
+    local_texture_energy_3x3:
+    - 18.81770896911621
+    - 19.18581199645996
+    - 17.782020568847656
+    - 41.1528205871582
+    - 8.731854438781738
+    - 15.013978958129883
+    - 25.38157081604004
+    - 11.252840042114258
+    - 12.781977653503418
+    blur_laplacian_variance: 121.14574432373047
+    low_texture_ratio: 0.2958183834876543
+  right:
+    brightness_mean: 118.82389130015432
+    brightness_std: 35.59370755696847
+    contrast_p95_p5: 136.0
+    bright_clipping_ratio: 0.0
+    dark_clipping_ratio: 0.0031491126543209875
+    specular_highlight_proxy_ratio: 0.0
+    gradient_texture_energy: 21.303869247436523
+    local_texture_energy_3x3:
+    - 7.45936393737793
+    - 9.341277122497559
+    - 59.412715911865234
+    - 13.358746528625488
+    - 22.984800338745117
+    - 42.588111877441406
+    - 10.95555305480957
+    - 13.715880393981934
+    - 11.918339729309082
+    blur_laplacian_variance: 131.26727294921875
+    low_texture_ratio: 0.3216984953703704
+  left_right_difference:
+    brightness_mean: 12.987790798611115
+    contrast_std: 3.3109588395600227
+    sharpness_laplacian_variance: 10.121528625488281
+  common_fov_ratio: 1.0
+  roi_valid_common_fov_ratio: 1.0
+  temporal_motion_median_px: 0.0978705883026123
+  sync_residual_over_frame_period: 0.072
+  rolling_shutter_status: ROLLING_SHUTTER_METADATA_UNKNOWN
+  quality_status: VALID
+  quality_reasons: []
+  time_s: 12.07367
+  common_fov_status: COMMON_FOV_PENDING_NEW_CALIBRATION
+  roi_common_fov_ratio: N/A
+- schema_version: '1.0'
+  image_size:
+    width: 1920
+    height: 1080
+  left:
+    brightness_mean: 125.83710407021604
+    brightness_std: 40.731368095817196
+    contrast_p95_p5: 142.0
+    bright_clipping_ratio: 0.0
+    dark_clipping_ratio: 1.54320987654321e-05
+    specular_highlight_proxy_ratio: 0.0
+    gradient_texture_energy: 12.833539009094238
+    local_texture_energy_3x3:
+    - 9.5547456741333
+    - 8.757307052612305
+    - 16.366283416748047
+    - 27.238445281982422
+    - 5.554903984069824
+    - 10.378173828125
+    - 20.086471557617188
+    - 8.66657543182373
+    - 8.899003028869629
+    blur_laplacian_variance: 60.76719665527344
+    low_texture_ratio: 0.4383347800925926
+  right:
+    brightness_mean: 107.87633053626543
+    brightness_std: 38.90117728147277
+    contrast_p95_p5: 135.0
+    bright_clipping_ratio: 0.0
+    dark_clipping_ratio: 0.0009693287037037037
+    specular_highlight_proxy_ratio: 0.0
+    gradient_texture_energy: 12.098599433898926
+    local_texture_energy_3x3:
+    - 5.904193878173828
+    - 6.654382228851318
+    - 44.8519401550293
+    - 4.317821025848389
+    - 8.47840690612793
+    - 20.956697463989258
+    - 6.964937686920166
+    - 5.055060863494873
+    - 5.70398473739624
+    blur_laplacian_variance: 59.18585205078125
+    low_texture_ratio: 0.6159982638888889
+  left_right_difference:
+    brightness_mean: 17.960773533950615
+    contrast_std: 1.8301908143444265
+    sharpness_laplacian_variance: 1.5813446044921875
+  common_fov_ratio: 1.0
+  roi_valid_common_fov_ratio: 1.0
+  temporal_motion_median_px: 0.05113852024078369
+  sync_residual_over_frame_period: 0.072
+  rolling_shutter_status: ROLLING_SHUTTER_METADATA_UNKNOWN
+  quality_status: VALID
+  quality_reasons: []
+  time_s: 48.29468
+  common_fov_status: COMMON_FOV_PENDING_NEW_CALIBRATION
+  roi_common_fov_ratio: N/A
+- schema_version: '1.0'
+  image_size:
+    width: 1920
+    height: 1080
+  left:
+    brightness_mean: 124.12274980709877
+    brightness_std: 37.359539387637824
+    contrast_p95_p5: 134.0
+    bright_clipping_ratio: 0.0
+    dark_clipping_ratio: 7.523148148148149e-05
+    specular_highlight_proxy_ratio: 0.0
+    gradient_texture_energy: 13.131546974182129
+    local_texture_energy_3x3:
+    - 8.22299861907959
+    - 8.366569519042969
+    - 14.98802375793457
+    - 26.11530876159668
+    - 5.170009613037109
+    - 12.738607406616211
+    - 23.046062469482422
+    - 8.912522315979004
+    - 10.623841285705566
+    blur_laplacian_variance: 60.033592224121094
+    low_texture_ratio: 0.4780671296296296
+  right:
+    brightness_mean: 112.73370804398148
+    brightness_std: 35.7332316356545
+    contrast_p95_p5: 129.0
+    bright_clipping_ratio: 0.0
+    dark_clipping_ratio: 0.0012649498456790123
+    specular_highlight_proxy_ratio: 0.0
+    gradient_texture_energy: 11.832401275634766
+    local_texture_energy_3x3:
+    - 4.980428695678711
+    - 8.240687370300293
+    - 52.43818283081055
+    - 4.9100236892700195
+    - 8.23988151550293
+    - 13.823217391967773
+    - 4.652736663818359
+    - 4.52770471572876
+    - 4.678770542144775
+    blur_laplacian_variance: 77.96551513671875
+    low_texture_ratio: 0.6397583912037037
+  left_right_difference:
+    brightness_mean: 11.38904176311729
+    contrast_std: 1.626307751983326
+    sharpness_laplacian_variance: 17.931922912597656
+  common_fov_ratio: 1.0
+  roi_valid_common_fov_ratio: 1.0
+  temporal_motion_median_px: 0.07451532036066055
+  sync_residual_over_frame_period: 0.072
+  rolling_shutter_status: ROLLING_SHUTTER_METADATA_UNKNOWN
+  quality_status: VALID
+  quality_reasons: []
+  time_s: 90.552525
+  common_fov_status: COMMON_FOV_PENDING_NEW_CALIBRATION
+  roi_common_fov_ratio: N/A
+reference_candidate:
+  status: REFERENCE_CANDIDATE_PERIOD_FOUND
+  suggested_range_s:
+  - 7.5
+  - 10.5
+  mean_motion_proxy: 1.2102372685185185
+wave_dynamic_range:
+  status: WAVE_DYNAMIC_RANGE_PRESENT
+  change_proxy_p10_median_p90:
+  - 3.4803003472222223
+  - 12.077517361111111
+  - 23.671637152777777
+common_fov_status: COMMON_FOV_PENDING_NEW_CALIBRATION

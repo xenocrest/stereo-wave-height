@@ -1,0 +1,196 @@
+status: CAPTURE_INCOMPLETE_NEEDS_TARGETED_VIEWS
+missing:
+- MISSING_TOP_COVERAGE_LEFT
+- MISSING_BOTTOM_COVERAGE_LEFT
+- MISSING_RIGHT_EDGE_LEFT
+- MISSING_CORNER_COVERAGE_LEFT
+- MISSING_BOTTOM_COVERAGE_RIGHT
+- MISSING_RIGHT_EDGE_RIGHT
+- MISSING_CORNER_COVERAGE_RIGHT
+- INSUFFICIENT_POSE_DIVERSITY
+sampled:
+  left: 717
+  right: 717
+detected:
+  left: 179
+  right: 86
+bilateral_pairs: 63
+bilateral_rate: 0.7325581395348837
+grid:
+  names:
+  - top_left
+  - top_center
+  - top_right
+  - mid_left
+  - mid_center
+  - mid_right
+  - bottom_left
+  - bottom_center
+  - bottom_right
+  left:
+  - 0
+  - 0
+  - 0
+  - 11
+  - 52
+  - 0
+  - 0
+  - 0
+  - 0
+  right:
+  - 0
+  - 2
+  - 0
+  - 8
+  - 53
+  - 0
+  - 0
+  - 0
+  - 0
+scale_bins:
+  NEAR_LARGE: 21
+  FAR_SMALL: 21
+  MEDIUM: 21
+pose_diversity:
+  near_duplicate_count: 48
+  near_duplicate_ratio: 0.7619047619047619
+  diverse_estimate: 15
+sharpness:
+  median: 743.4009191736533
+  p10: 224.02784354372568
+  p90: 903.9242909759495
+mode: FULL
+image_size_wh:
+- 1920
+- 1080
+legacy_bilateral_full_image_comparison_status: CAPTURE_INCOMPLETE_NEEDS_MORE_VIEWS
+split_readiness:
+  status: CAPTURE_INCOMPLETE_NEEDS_TARGETED_VIEWS
+  left_mono:
+    candidate_count: 179
+    grid_3x3:
+    - 0
+    - 0
+    - 0
+    - 38
+    - 140
+    - 0
+    - 1
+    - 0
+    - 0
+    occupied_cells: 3
+    coverage_fraction: 0.3333333333333333
+    status: LEFT_MONO_INSUFFICIENT
+  right_mono:
+    candidate_count: 86
+    grid_3x3:
+    - 0
+    - 2
+    - 0
+    - 14
+    - 69
+    - 1
+    - 0
+    - 0
+    - 0
+    occupied_cells: 4
+    coverage_fraction: 0.4444444444444444
+    status: RIGHT_MONO_READY
+  stereo_overlap:
+    pair_count: 63
+    status: STEREO_OVERLAP_READY
+    grid_3x3:
+    - 0
+    - 0
+    - 1
+    - 0
+    - 0
+    - 1
+    - 12
+    - 7
+    - 42
+    occupied_cells: 5
+    normalized_bbox:
+    - 712.7999883581091
+    - 464.6758347793862
+    - 741.1654790242512
+    - 485.3342210275156
+  bilateral_full_fov_required: false
+proposed_split_status: INSUFFICIENT_NON_DUPLICATE_POSES_FOR_20_20_SPLIT
+proposed_split_error: not enough non-duplicate poses for requested selection
+split_descriptors:
+  left:
+    scale_area_fraction_min_median_max:
+    - 0.1197152151212342
+    - 0.12820062290279308
+    - 0.21304690601164414
+    scale_ratio_max_min: 1.7796142770648995
+    orientation_deg_min_max_std:
+    - -178.94148205556235
+    - 178.49733359424135
+    - 133.9801936596923
+    perspective_min_median_max:
+    - 0.016854052700920056
+    - 0.024925681051772994
+    - 0.12017882420195886
+    sharpness_p10_median_p90:
+    - 224.02784354372568
+    - 743.4009191736533
+    - 903.9242909759495
+  right:
+    scale_area_fraction_min_median_max:
+    - 0.15417856993094978
+    - 0.16744019113624767
+    - 0.28384859248847205
+    scale_ratio_max_min: 1.8410379121793394
+    orientation_deg_min_max_std:
+    - -4.661999928720243
+    - 8.283866467390837
+    - 2.8020993383028987
+    perspective_min_median_max:
+    - 0.05169900436350197
+    - 0.0720854083669358
+    - 0.16895471661980932
+    sharpness_p10_median_p90:
+    - 666.7712722369912
+    - 1254.4438677766777
+    - 1399.4242057504305
+  stereo:
+    pair_count: 63
+    minimum_scale_diversity: 1.7796142770648995
+    orientation_diversity_proxy_deg_std: 2.8020993383028987
+checkerboard_roi_photometry:
+  left:
+    sample_count: 32
+    dark_clipping_ratio_median: 0.0
+    bright_clipping_ratio_median: 0.0
+    contrast_p95_p5_median: 103.0
+  right:
+    sample_count: 32
+    dark_clipping_ratio_median: 0.0016096911673619402
+    bright_clipping_ratio_median: 0.0
+    contrast_p95_p5_median: 141.5
+historical_comparison:
+  HomeTank_004:
+    left_mono_candidates: 233
+    left_occupied_cells: 3
+    right_mono_candidates: 328
+    right_occupied_cells: 3
+    bilateral_pairs: 192
+    stereo_overlap_occupied_cells: 6
+  HomeTank_005:
+    left_mono_candidates: 179
+    left_occupied_cells: 3
+    right_mono_candidates: 86
+    right_occupied_cells: 4
+    bilateral_pairs: 63
+    stereo_overlap_occupied_cells: 5
+calibration_observability_precheck: INSUFFICIENT
+final_intake_classification: HOMETANK005_CAPTURE_INSUFFICIENT
+allowed_to_enter_formal_split_calibration: false
+blocking_evidence:
+- LEFT_MONO_SPATIAL_COVERAGE_3_OF_9
+- LEFT_MONO_TOP_AND_RIGHT_FULL_FOV_OBSERVATIONS_ABSENT
+- OPTIONAL_20_20_SPLIT_HAS_ONLY_15_DIVERSE_BILATERAL_POSES
+camera_identity_status: CAMERA_IDENTITY_ASSUMED_FROM_CAPTURE_MANIFEST
+common_fov_status: COMMON_FOV_PENDING_NEW_CALIBRATION

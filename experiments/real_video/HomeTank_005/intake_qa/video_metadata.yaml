@@ -1,0 +1,147 @@
+schema_version: '1.0'
+canonical_rule: metadata-driven; display rotation applied, no resize
+videos:
+  calibration_left:
+    codec: h264
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    coded_size:
+    - 1920
+    - 1080
+    display_size:
+    - 1920
+    - 1080
+    pixel_format: yuv420p
+    rotation_metadata_deg: 180
+    canonical_transform: rotate180
+    canonical_size:
+    - 1920
+    - 1080
+    sample_aspect_ratio: null
+    display_aspect_ratio: null
+    nominal_fps: 29.97002997002997
+    average_fps: 29.980962808754242
+    time_base: 1/90000
+    duration_s: 143.491056
+    frame_count: 4302
+    start_time_s: 0.0182
+    pts_available: true
+    dts_available: true
+    pts_monotonic: true
+    duplicate_pts: 0
+    frame_interval_median_s: 0.03335599999999772
+    frame_interval_p05_s: 0.033355000000000246
+    frame_interval_p95_s: 0.03335600000001193
+    vfr_indication: CFR_LIKE
+    audio_stream_present: true
+    creation_time: '2026-09-01T08:46:00.000000Z'
+  calibration_right:
+    codec: hevc
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    coded_size:
+    - 1920
+    - 1080
+    display_size:
+    - 1920
+    - 1080
+    pixel_format: yuv420p
+    rotation_metadata_deg: 0
+    canonical_transform: identity
+    canonical_size:
+    - 1920
+    - 1080
+    sample_aspect_ratio: null
+    display_aspect_ratio: null
+    nominal_fps: 30.0
+    average_fps: 29.99923025230903
+    time_base: 1/90000
+    duration_s: 143.337
+    frame_count: 4300
+    start_time_s: 0.0
+    pts_available: true
+    dts_available: true
+    pts_monotonic: true
+    duplicate_pts: 0
+    frame_interval_median_s: 0.03333299999999895
+    frame_interval_p05_s: 0.03333299999999895
+    frame_interval_p95_s: 0.033343999999999596
+    vfr_indication: CFR_LIKE
+    audio_stream_present: true
+    creation_time: '2026-09-01T08:46:01.000000Z'
+  wave_left:
+    codec: h264
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    coded_size:
+    - 1920
+    - 1080
+    display_size:
+    - 1920
+    - 1080
+    pixel_format: yuv420p
+    rotation_metadata_deg: 180
+    canonical_transform: rotate180
+    canonical_size:
+    - 1920
+    - 1080
+    sample_aspect_ratio: null
+    display_aspect_ratio: null
+    nominal_fps: 29.97002997002997
+    average_fps: 29.972690997284527
+    time_base: 1/90000
+    duration_s: 121.010156
+    frame_count: 3627
+    start_time_s: 0.0024
+    pts_available: true
+    dts_available: true
+    pts_monotonic: true
+    duplicate_pts: 0
+    frame_interval_median_s: 0.03335599999999772
+    frame_interval_p05_s: 0.033355000000000024
+    frame_interval_p95_s: 0.03335600000001193
+    vfr_indication: CFR_LIKE
+    audio_stream_present: true
+    creation_time: '2026-09-01T08:52:53.000000Z'
+  wave_right:
+    codec: hevc
+    container: mov,mp4,m4a,3gp,3g2,mj2
+    coded_size:
+    - 1920
+    - 1080
+    display_size:
+    - 1920
+    - 1080
+    pixel_format: yuv420p
+    rotation_metadata_deg: 0
+    canonical_transform: identity
+    canonical_size:
+    - 1920
+    - 1080
+    sample_aspect_ratio: null
+    display_aspect_ratio: null
+    nominal_fps: 30.0
+    average_fps: 30.007443193196142
+    time_base: 1/90000
+    duration_s: 120.7367
+    frame_count: 3623
+    start_time_s: 0.0
+    pts_available: true
+    dts_available: true
+    pts_monotonic: true
+    duplicate_pts: 0
+    frame_interval_median_s: 0.033332999999999835
+    frame_interval_p05_s: 0.03333299999999895
+    frame_interval_p95_s: 0.033343999999999596
+    vfr_indication: CFR_LIKE
+    audio_stream_present: true
+    creation_time: '2026-09-01T08:52:54.000000Z'
+calibration_pair:
+  duration_difference_s: 0.15405599999999708
+  initial_timestamp_difference_s: -0.0182
+  canonical_mode_compatible: true
+  timing_health: PASS
+  sync_input_status: SYNC_INPUT_READY
+wave_pair:
+  duration_difference_s: 0.2734559999999959
+  initial_timestamp_difference_s: -0.0024
+  canonical_mode_compatible: true
+  timing_health: PASS
+  sync_input_status: SYNC_INPUT_READY
