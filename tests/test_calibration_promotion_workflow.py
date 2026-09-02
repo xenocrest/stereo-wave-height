@@ -16,6 +16,11 @@ def metadata(calibration_id="old",rms=.002,success=True):
     return {"calibration_id":calibration_id,"stereo_videos":"v","target_time_s":1.,"left_frame_id":"l","right_frame_id":"r","sync_model":"s","sync_residual_ms":.5,"matcher_config_hash":"m","stereo_config_hash":"t","post_filter":"p","water_roi":[0,0,100,100],"rectification_policy":"fixed","reconstruction_success":success,"triangulated_count":100,"final_xyz_count":80,"common_fov_observed_percent":5.,"xyz_extent":{"x":[0,1],"y":[0,1],"z":[1,2]},"geometry_qa":{"finite":True,"plane_rms_m":rms}}
 
 class PromotionWorkflowTests(unittest.TestCase):
+    def test_demo_only_calibration_cannot_be_promoted(self):
+        registry={"calibrations":{"demo":{"lifecycle_status":"DEMO_ONLY","production_promotion_allowed":False}}}
+        with self.assertRaisesRegex(ValueError,"demo-only"):
+            approve_for_wass_ab(registry,"demo",calibration_gate="CALIBRATION_READY_FOR_WASS_AB",consistency="PASS")
+
     def test_manifest_hash_deterministic_and_roundtrip(self):
         self.assertEqual(canonical_hash({"b":2,"a":1}),canonical_hash({"a":1,"b":2}))
         with tempfile.TemporaryDirectory() as directory:

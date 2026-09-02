@@ -49,7 +49,7 @@ def verify_package_consistency(package_root: str | Path, *, tolerance: float=1e-
     return {"status":"PASS" if not mismatches else "CALIBRATION_WASS_EXPORT_MISMATCH","mismatches":mismatches,"tolerance":tolerance}
 
 def build_calibration_package(calibration_path: str | Path, package_root: str | Path, *, calibration_id: str, source: dict[str,Any], qa: dict[str,Any], status: str="CANDIDATE", created_at: str|None=None) -> Path:
-    if status not in {"CANDIDATE","APPROVED","REJECTED"}:raise ValueError("invalid immutable manifest status")
+    if status not in {"CANDIDATE","APPROVED","REJECTED","DEMO_ONLY"}:raise ValueError("invalid immutable manifest status")
     root=Path(package_root);root.mkdir(parents=True,exist_ok=False);wass=root/"wass_fixed";wass.mkdir();source_path=Path(calibration_path);suffix=source_path.suffix.lower();copied=root/f"opencv_calibration{suffix}";shutil.copyfile(source_path,copied)
     model=normalize_calibration(load_mapping(copied));write_wass_calibration_xml(wass,intrinsic_00=model["K0"],intrinsic_01=model["K1"],distortion_00=model["D0"],distortion_01=model["D1"]);write_opencv_matrix_xml(wass/"ext_R.xml",model["R"],node_name="ext_R");write_opencv_matrix_xml(wass/"ext_T.xml",np.asarray(model["T"]).reshape(3,1),node_name="ext_T")
     xml={name:{"path":f"wass_fixed/{name}","sha256":sha256_file(wass/name)} for name in XML_NAMES}
@@ -58,6 +58,9 @@ def build_calibration_package(calibration_path: str | Path, package_root: str | 
               "training_set_provenance":source.get("training_set_provenance",{"left_mono_ids":source.get("selected_candidate_ids",[]),"right_mono_ids":source.get("selected_candidate_ids",[]),"stereo_ids":source.get("selected_candidate_ids",[])}),
               "camera_left":{"K":model["K0"],"D":model["D0"]},"camera_right":{"K":model["K1"],"D":model["D1"]},
               "stereo":{"R":model["R"],"T_m":model["T"],"baseline_m":model_sanity(model)["baseline_m"]},"qa":qa,"status":status,
+              "use_case":("PRESENTATION_DEMO_ONLY" if status=="DEMO_ONLY" else source.get("use_case","RESEARCH_CALIBRATION")),
+              "geometry_validation":("GEOMETRY_UNVERIFIED_NOT_FOR_VALIDATED_MEASUREMENT" if status=="DEMO_ONLY" else qa.get("geometry_validation")),
+              "production_promotion_allowed":status!="DEMO_ONLY",
               "artifacts":{"opencv_calibration":{"path":copied.name,"sha256":sha256_file(copied)},"wass_fixed":xml}}
     manifest["package_content_sha256"]=canonical_hash({"calibration_id":calibration_id,"artifacts":manifest["artifacts"]})
     (root/"manifest.yaml").write_text(yaml.safe_dump(manifest,sort_keys=False,allow_unicode=True),encoding="utf-8")
@@ -69,6 +72,7 @@ def load_registry(path: str|Path) -> dict[str,Any]:return yaml.safe_load(Path(pa
 
 def approve_for_wass_ab(registry: dict[str,Any], calibration_id: str, *, calibration_gate: str, consistency: str) -> dict[str,Any]:
     if calibration_gate!="CALIBRATION_READY_FOR_WASS_AB" or consistency!="PASS":raise ValueError("candidate is not eligible for WASS A/B")
+    if registry["calibrations"][calibration_id].get("lifecycle_status")=="DEMO_ONLY" or registry["calibrations"][calibration_id].get("production_promotion_allowed") is False:raise ValueError("demo-only calibration cannot enter WASS A/B promotion")
     updated=json.loads(json.dumps(registry));updated["calibrations"][calibration_id]["lifecycle_status"]="APPROVED_FOR_WASS_AB";return updated
 
 def promote_production(registry: dict[str,Any], calibration_id: str, *, recommendation: str, approved_at: str, reason: str) -> dict[str,Any]:

@@ -65,6 +65,12 @@ Get-ChildItem -LiteralPath $FfmpegRoot -Filter "*.dll" -File | Copy-Item -Destin
 Copy-Item -LiteralPath (Join-Path $Repo "DEMO_RUN.md") -Destination $App
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\calibration_adaptive\adaptive_calibration.yaml") -Destination $Resource005
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\DEMO_READINESS_REPORT.md") -Destination $Resource005
+Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_run_template.yaml") -Destination $Resource005
+Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_reference_artifact.yaml") -Destination $Resource005
+Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_full_pixel_config.yaml") -Destination $Resource005
+Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\calibrations") -Destination $Resource005 -Recurse
+Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_common_fov") -Destination $Resource005 -Recurse
+Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_full_pixel_result") -Destination $Resource005 -Recurse
 
 $exe = Join-Path $App "StereoWaveHeightDemo.exe"
 if (-not (Test-Path -LiteralPath $exe)) { throw "Packaged executable missing: $exe" }

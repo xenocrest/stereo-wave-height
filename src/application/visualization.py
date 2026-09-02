@@ -11,7 +11,7 @@ from scipy.spatial import cKDTree
 
 from surface_completion.dense_map import canonical_to_rectified
 
-UNSUPPORTED, OBSERVED, ESTIMATED = 0, 1, 2
+UNSUPPORTED, OBSERVED, ESTIMATED_LOCAL, ESTIMATED_GLOBAL_MODEL = 0, 1, 2, 3
 
 
 @dataclass(frozen=True)
@@ -43,13 +43,17 @@ class DisplayTransform:
 
 @dataclass(frozen=True)
 class PixelQuery:
-    pixel: tuple[int,int]; status: str; source: str; height_mm: float|None; xyz_m: tuple[float,float,float]|None
+    pixel: tuple[int,int]; status: str; source: str; confidence: str; height_mm: float|None; xyz_m: tuple[float,float,float]|None
 
 
 class DenseMeasurementView:
     def __init__(self,dense_npz:Path,pixel_xyz_npz:Path,mapping_yaml:Path) -> None:
         with np.load(dense_npz) as dense:
-            self.height=dense["height_mm"].copy(); self.status=dense["status"].copy(); self.roi=dense["water_roi_mask"].copy()
+            height_key="height_mm" if "height_mm" in dense else "height_m"
+            self.height=dense[height_key].copy()*(1.0 if height_key=="height_mm" else 1000.0)
+            self.status=dense["status"].copy() if "status" in dense else dense["source_status"].copy()
+            self.roi=dense["water_roi_mask"].copy()
+            self.confidence=dense["confidence"].copy() if "confidence" in dense else np.where(self.status==OBSERVED,3,np.where(self.status==ESTIMATED_LOCAL,2,0)).astype(np.uint8)
         with np.load(pixel_xyz_npz) as sparse:
             self.xyz=sparse["xyz_m"].copy(); pixels=np.column_stack((sparse["u_px"],sparse["v_px"]))
         self.tree=cKDTree(pixels)
@@ -57,23 +61,27 @@ class DenseMeasurementView:
 
     def query(self,u:int,v:int) -> PixelQuery:
         if u<0 or v<0 or v>=self.status.shape[0] or u>=self.status.shape[1] or not self.roi[v,u]:
-            return PixelQuery((u,v),"OUTSIDE_ROI","UNSUPPORTED",None,None)
+            return PixelQuery((u,v),"OUTSIDE_ROI","UNSUPPORTED","UNSUPPORTED",None,None)
         code=int(self.status[v,u])
-        if code==UNSUPPORTED:return PixelQuery((u,v),"UNSUPPORTED","UNSUPPORTED",None,None)
+        confidence_map=getattr(self,"confidence",None)
+        confidence_code=int(confidence_map[v,u]) if confidence_map is not None else (3 if code==OBSERVED else 2 if code==ESTIMATED_LOCAL else 1 if code==ESTIMATED_GLOBAL_MODEL else 0)
+        confidence={1:"LOW",2:"MEDIUM",3:"HIGH"}.get(confidence_code,"UNSUPPORTED")
+        if code==UNSUPPORTED:return PixelQuery((u,v),"UNSUPPORTED","UNSUPPORTED",confidence,None,None)
         height=float(self.height[v,u])
-        if code==ESTIMATED:return PixelQuery((u,v),"ESTIMATED","SURFACE_ESTIMATED",height,None)
+        if code==ESTIMATED_LOCAL:return PixelQuery((u,v),"ESTIMATED_LOCAL","ESTIMATED_LOCAL",confidence,height,None)
+        if code==ESTIMATED_GLOBAL_MODEL:return PixelQuery((u,v),"ESTIMATED_GLOBAL_MODEL","ESTIMATED_GLOBAL_MODEL",confidence,height,None)
         rectified=canonical_to_rectified(np.asarray([[u,v]],dtype=np.float64),self.mapping)[0]
         distance,index=self.tree.query(rectified,k=1)
         if distance>2.0: raise RuntimeError("OBSERVED pixel violates frozen 2 px direct-observation gate")
         xyz=tuple(float(value) for value in self.xyz[int(index)])
-        return PixelQuery((u,v),"OBSERVED","DIRECT_STEREO",height,xyz)
+        return PixelQuery((u,v),"OBSERVED","DIRECT_STEREO",confidence,height,xyz)
 
 
 def make_height_overlay(original:Path,dense_npz:Path,alpha:float=0.45) -> Image.Image:
     if not 0<=alpha<=1:raise ValueError("alpha must be in [0,1]")
     base=np.asarray(Image.open(original).convert("RGB"),dtype=np.float32)
     with np.load(dense_npz) as dense:
-        h=dense["height_mm"].copy(); valid=dense["valid_mask"].copy() & np.isfinite(h)
+        key="height_mm" if "height_mm" in dense else "height_m";h=dense[key].copy(); valid=dense["valid_mask"].copy() & np.isfinite(h)
     color=np.zeros_like(base); values=h[valid]
     if values.size:
         lo,hi=np.percentile(values,(2,98)); norm=np.zeros_like(h,dtype=np.float32); norm[valid]=np.clip((h[valid]-lo)/max(hi-lo,1e-9),0,1)

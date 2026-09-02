@@ -1,0 +1,13 @@
+schema_version: '1.0'
+status: DEMO_ONLY_GEOMETRY_UNVERIFIED
+pixel_xyz_npz: D:/stereo-wave-height-runs/HomeTank_005/demo-measurement-48s-20260902/reconstruction/pixel_xyz/000000_pixel_xyz.npz
+height_npz: D:/stereo-wave-height-runs/HomeTank_005/demo-measurement-48s-20260902/reconstruction/height/000000_height_points.npz
+measurement_run: D:/stereo-wave-height-runs/HomeTank_005/demo-measurement-48s-20260902
+reference_artifact: D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/demo_reference_artifact.yaml
+image_size_wh: [1920, 1080]
+water_roi_bbox_xyxy: [20, 350, 480, 680]
+model_grid_shape: [64, 96]
+current_frame_base_plane:
+  normal: [0.858300895870124, 0.3057268115058774, 0.4121294564514796]
+  offset_m: 0.6923052972819732
+output_directory: D:/stereo-wave-height-runs/HomeTank_005/full-pixel-demo-20260902

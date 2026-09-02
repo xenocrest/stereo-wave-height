@@ -426,9 +426,9 @@ class StereoWaveHeightApplication:
         if pixel is None:self.variables["pixel_info"].set("像素：画面外");return
         query=self.dense_view.query(*pixel); xyz="N/A" if query.xyz_m is None else " / ".join(f"{value:.6f}" for value in query.xyz_m)+" m"
         height="N/A" if query.height_mm is None else f"{query.height_mm:.3f} mm"
-        labels={"OBSERVED":"直接双目观测（OBSERVED）","ESTIMATED":"空间曲面估算（ESTIMATED）","UNSUPPORTED":"无可靠结果（UNSUPPORTED）"}
+        labels={"OBSERVED":"直接双目观测（OBSERVED）","ESTIMATED_LOCAL":"局部曲面估计（ESTIMATED_LOCAL）","ESTIMATED_GLOBAL_MODEL":"全局约束模型估计（ESTIMATED_GLOBAL_MODEL）","ESTIMATED":"空间曲面估算（ESTIMATED）","UNSUPPORTED":"无可靠结果（UNSUPPORTED）"}
         reference=(getattr(self,"active_record",None).summary_metadata.get("reference_metadata") or {}) if getattr(self,"active_record",None) else {}
-        self.variables["pixel_info"].set(f"像素：{query.pixel}\n状态：{labels.get(query.status,query.status)}\n来源：{query.source}\nXYZ：{xyz}\n高度 H：{height}\n参考：{reference.get('actual_timestamp_s','未指定')} s")
+        self.variables["pixel_info"].set(f"像素：{query.pixel}\n状态：{labels.get(query.status,query.status)}\n来源：{query.source}\n置信度：{query.confidence}\nXYZ：{xyz}\n高度 H：{height}\n参考：{reference.get('actual_timestamp_s','未指定')} s")
 
     def _show_pointcloud(self) -> None:
         record=getattr(self,"active_record",None)

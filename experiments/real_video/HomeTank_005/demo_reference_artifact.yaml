@@ -1,0 +1,68 @@
+schema_version: '1.0'
+status: REFERENCE_PLANE_READY
+reference_id: HomeTank_005_demo_reference_9s_v1
+source: DEMO_ONLY_real_WASS_XYZ_robust_plane_from_reference_frame
+created_at: '2026-09-02T11:28:10+08:00'
+reference_mode: single_frame
+demo_only: true
+use_case: PRESENTATION_DEMO_ONLY
+geometry_validation: GEOMETRY_UNVERIFIED_NOT_FOR_VALIDATED_MEASUREMENT
+requested_timestamp_s: 9.0
+actual_timestamp_s: 9.000233
+fallback_frame_offset: 0
+left_frame_id: pts_810738
+right_frame_id: pts_810021
+sync_residual_ms: -5.567
+calibration_id: cal_828c065a519c80ef
+calibration_package_hash: null
+video_pair_id: pair_444b133420030ce3
+source_videos:
+  left: D:\research\stereo-wave-height\experiments\real_video\HomeTank_005\videos\wave\HomeTank_005_wave_cam0_LEFT.mp4
+  right: D:\research\stereo-wave-height\experiments\real_video\HomeTank_005\videos\wave\HomeTank_005_wave_cam1_RIGHT.mp4
+canonical_convention: canonical_cam1_pixels__WASS_metric_camera_coordinates_m
+roi: {}
+roi_id: roi_44136fa355b3678a
+fit_roi:
+  coordinate_system: wass_rectified_computational_cam0__input_right
+  points:
+  - - 2380
+    - 580
+  - - 2760
+    - 580
+  - - 2760
+    - 900
+  - - 2380
+    - 900
+plane:
+  model: aX+bY+cZ+d=0
+  a: 0.27784092647082564
+  b: -0.9516000592559728
+  c: 0.1313839670654774
+  d: -0.4306169892911183
+  normal:
+  - 0.27784092647082564
+  - -0.9516000592559728
+  - 0.1313839670654774
+  offset_m: -0.4306169892911183
+unit: m
+plane_rms_m: 0.04050172518389271
+support_count: 18589
+xyz_point_count: 99954
+reference_confidence: LOW
+reference_quality_reasons:
+- CALIBRATION_GEOMETRY_UNVERIFIED
+- REFERENCE_PLANE_RMS_EXCEEDS_FORMAL_10_MM_GATE
+- CANONICAL_ROI_TO_RECTIFIED_SUPPORT_BINDING_NOT_FORMALLY_VALIDATED
+support_spatial_occupancy_3x3: UNKNOWN
+support_anisotropy_ratio: UNKNOWN
+spatial_extent_m:
+  x:
+  - 0.6834673379365362
+  - 0.9613730969762124
+  y:
+  - -0.052808036275753374
+  - 0.2397945598017666
+  z:
+  - 1.8711393993219798
+  - 2.449304254929539
+height_definition: signed orthogonal distance to real-WASS-XYZ reference plane; demo-only

@@ -345,6 +345,8 @@ Windows 演示分发已采用 PyInstaller `--onedir` 完成验证：GUI 与 Pyth
 
 演示运行时已完成阻断性健壮性修复：WASS 非 UTF-8 日志不再把成功重建误判为失败，目标时刻失败时仅按固定顺序尝试 ±2 个完整同步时刻；播放预览使用后台 latest-frame 解码，不改变暂停后的精确 PTS/sync 解算。
 
+HomeTank_005 现增加完全隔离的 `DEMO_ONLY_GEOMETRY_UNVERIFIED` 路径：它不降低 production calibration gate，而是用真实 WASS XYZ 约束低阶趋势与正则化残差网格，为演示 water ROI 生成逐像素 finite H。来源图和置信度图明确区分直接观测、局部估计和全局模型估计；当前 canonical pixel 对应尚未验证，因此实际结果诚实分类为 global-model dominant，不能用于物理精度声明。专项证据见 [HomeTank_005 演示报告](experiments/real_video/HomeTank_005/DEMO_READINESS_REPORT.md)。
+
 项目主路线为：`Theory/Simulation -> Real Stereo Calibration/WASS -> Video-based On-demand Single-frame Measurement -> Independent Physical Validation -> Result Application -> Professional Stereo Migration`。Wave video analysis 是 Extension；真实视频层不会回写或覆盖既有仿真历史。详细协议见 [真实视频验证](docs/real_video_validation/README.md)。
 
 完整用户汇报 DOCX/Markdown 仅保存在本地，不进入本仓库；大型 PNG、原始双目图像、`xyzC`、NetCDF 和 WASS 运行目录同样不得提交。

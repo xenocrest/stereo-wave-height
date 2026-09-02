@@ -190,6 +190,7 @@ Case 0/1/2 是静水零场、固定非零高度和动态正弦规则波三个逐
 - 离线演示现支持用户从任意暂停时刻建立参考面；后续单帧的相对高度均绑定该参考帧、标定、视频对与水面 ROI，参考未建立或失效时不输出正式高度。
 - 离线演示输入页已改为中文四步引导，明确区分“导入已有标定 YAML”和“使用 LEFT/RIGHT 标定视频现场计算”，标定就绪后才开放正式测量视频与单帧解算。
 - Demo 运行时已修复 WASS 日志编码误判，增加同步时刻 ±2 帧的有限容错，并采用后台 latest-frame 解码提升播放响应；所有数值算法和 WASS 参数保持冻结。
+- HomeTank_005 已形成隔离的演示专用全像素结果：真实 WASS 点支持受约束规则网格模型，在选定水面 ROI 内提供 100% finite H，并逐像素保留 `OBSERVED / ESTIMATED_LOCAL / ESTIMATED_GLOBAL_MODEL` 与 confidence。该结果明确标记 `GEOMETRY_UNVERIFIED`，不改变正式标定失败结论，也不构成物理精度证明；详见 [演示就绪报告](experiments/real_video/HomeTank_005/DEMO_READINESS_REPORT.md)。
 - `configs/`：候选设备、仿真和实验配置模板；
 - `tests/`：自动化测试；
 - `experiments/`：可复现实验入口；当前包含 HomeTank_004 的小型配置、元数据和诊断报告，不包含原始 MP4 或大型重建产物；

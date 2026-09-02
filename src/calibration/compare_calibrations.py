@@ -29,7 +29,7 @@ def normalize_calibration(payload: dict[str, Any]) -> dict[str, Any]:
     return {"mono_left_rms": payload["mono_cam0"]["rms_px"], "mono_right_rms": payload["mono_cam1"]["rms_px"],
             "K0": payload["mono_cam0"]["K"], "D0": payload["mono_cam0"]["D"],
             "K1": payload["mono_cam1"]["K"], "D1": payload["mono_cam1"]["D"],
-            "stereo_rms": payload["stereo"]["rms_px"], "epipolar_rms": payload["stereo"]["symmetric_epipolar_rms_px"],
+            "stereo_rms": payload["stereo"]["rms_px"], "epipolar_rms": payload["stereo"].get("symmetric_epipolar_rms_px",payload["stereo"].get("epipolar_rms_px")),
             "R": payload["stereo"]["R_right_from_left"], "T": payload["stereo"]["T_right_from_left_m"],
             "image_size": [1920, 1080]}
 

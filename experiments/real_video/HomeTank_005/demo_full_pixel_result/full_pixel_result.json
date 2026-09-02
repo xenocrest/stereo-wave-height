@@ -1,0 +1,92 @@
+{
+  "status": "HOMETANK005_MODEL_ESTIMATED_FULL_PIXEL_DEMO_READY",
+  "quality_status": "DEMO_ONLY_GEOMETRY_UNVERIFIED",
+  "quality_reasons": [
+    "CALIBRATION_GEOMETRY_UNRELIABLE",
+    "REFERENCE_FRAME_COORDINATE_INCOMPATIBILITY",
+    "PIXEL_XYZ_CANONICAL_MAPPING_UNVERIFIED",
+    "MODEL_ESTIMATION_DOMINANT_WARNING"
+  ],
+  "water_roi_bbox_xyxy": [
+    20,
+    350,
+    480,
+    680
+  ],
+  "roi_pixel_count": 151800,
+  "finite_height_count": 151800,
+  "finite_coverage_ratio": 1.0,
+  "source_counts": {
+    "OBSERVED": 0,
+    "ESTIMATED_LOCAL": 0,
+    "ESTIMATED_GLOBAL_MODEL": 151800
+  },
+  "source_ratios": {
+    "OBSERVED": 0.0,
+    "ESTIMATED_LOCAL": 0.0,
+    "ESTIMATED_GLOBAL_MODEL": 1.0
+  },
+  "confidence_counts": {
+    "LOW": 97521,
+    "MEDIUM": 54279,
+    "HIGH": 0
+  },
+  "confidence_ratios": {
+    "LOW": 0.6424308300395257,
+    "MEDIUM": 0.35756916996047433,
+    "HIGH": 0.0
+  },
+  "reference_artifact": "D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/demo_reference_artifact.yaml",
+  "measurement_run": "D:\\stereo-wave-height-runs\\HomeTank_005\\demo-measurement-48s-20260902",
+  "height_definition": "signed orthogonal residual to the current measurement frame robust WASS water-plane base; demo surface-shape only",
+  "reference_warning": "The frozen 9 s reference plane is retained for traceability but cannot be subtracted because WASS frame coordinates were not invariant.",
+  "reconstruction_independence": "No ruler or manual ground truth is used.",
+  "model": {
+    "classification": "CONSTRAINED_FULL_PIXEL_SURFACE_READY",
+    "model_type": "REGULARIZED_GRID_SURFACE",
+    "base_trend_type": "BASE_QUADRATIC",
+    "regularization": "weighted_data + 0.35*Laplacian + 0.08*bi-Laplacian + residual-to-zero ridge",
+    "model_grid_shape": [
+      64,
+      96
+    ],
+    "range_guard": {
+      "method": "P01/P99 plus max(3*MAD-scale, 0.25 robust span)",
+      "lower_m": -0.028471089955784568,
+      "upper_m": 0.028303064837308323,
+      "clipped_pixel_count": 0
+    },
+    "height_statistics_m": {
+      "minimum": -0.009686439277956432,
+      "maximum": 0.018705285404262036,
+      "median": 0.0008156947990313643,
+      "mean": 0.0008369615153158476
+    },
+    "gradient_guard": {
+      "status": "PASS_NO_ISOLATED_SPIKE",
+      "maximum_m_per_pixel": 0.0034142428856157145,
+      "p99_m_per_pixel": 0.0016946280456396877
+    },
+    "curvature_guard": {
+      "status": "PASS_NO_CURVATURE_BLOWUP",
+      "maximum_m_per_pixel2": 0.003477596149439445,
+      "p99_m_per_pixel2": 0.0007853676424979537
+    },
+    "holdout": {
+      "method": "spatially grouped low-order trend consistency",
+      "count": 65280,
+      "mae_m": 0.004328574704045633,
+      "rmse_m": 0.005233839898450374,
+      "p95_absolute_m": 0.010249192962342347,
+      "max_absolute_m": 0.014927713036592882
+    },
+    "p90_support_spacing_normalized": 0.0017593205235919124,
+    "pixel_geometry_status": "UNVERIFIED_NORMALIZED_PHYSICAL_DOMAIN_FOR_DEMO_ONLY",
+    "physical_accuracy_status": "NOT_ESTABLISHED"
+  },
+  "artifact_paths": {
+    "npz": "full_pixel_height.npz",
+    "height_png": "full_pixel_height.png",
+    "source_png": "source_status.png"
+  }
+}

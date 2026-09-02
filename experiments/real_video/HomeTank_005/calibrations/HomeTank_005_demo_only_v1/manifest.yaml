@@ -1,0 +1,96 @@
+schema_version: '1.0'
+calibration_id: HomeTank_005_demo_only_v1
+created_at: '2026-09-02T03:20:29.006832+00:00'
+source:
+  use_case: PRESENTATION_DEMO_ONLY
+  calibration_model: &id001
+    left_mono: ALL_LEFT_VALID
+    right_mono: ALL_RIGHT_VALID
+    stereo_extrinsic: CALIB_FIX_INTRINSIC
+    distortion_model: OPENCV_5_COEFFICIENT
+  training_set_provenance: &id002
+    independent_pose_groups: 17
+    fold_count: 5
+calibration_model: *id001
+training_set_provenance: *id002
+camera_left:
+  K:
+  - - 2411.957151428909
+    - 0.0
+    - 1528.233062121939
+  - - 0.0
+    - 2220.96976005509
+    - 640.6968545695029
+  - - 0.0
+    - 0.0
+    - 1.0
+  D:
+  - 0.17372933261934617
+  - 0.29851004725257785
+  - 0.017667994967156195
+  - 0.12680923019975243
+  - -0.47574853806471107
+camera_right:
+  K:
+  - - 2298.0605278212392
+    - 0.0
+    - 1426.2750693576888
+  - - 0.0
+    - 2145.5666022721284
+    - 573.774927473841
+  - - 0.0
+    - 0.0
+    - 1.0
+  D:
+  - 0.4972811233689478
+  - -0.7540839314844431
+  - 0.013615441254094232
+  - 0.12259818713687252
+  - 0.6902726127258616
+stereo:
+  R:
+  - - 0.9994664100424813
+    - -0.00545264287072385
+    - -0.032205028838971916
+  - - 0.0052198516797772
+    - 0.9999596718285606
+    - -0.00730806848343509
+  - - 0.03224357835656265
+    - 0.007136063497601075
+    - 0.9994545653767971
+  T_m:
+  - -0.051207106301403335
+  - -0.003110584446958345
+  - -0.07798391294098071
+  baseline_m: 0.09334524170492753
+qa:
+  geometry_validation: CALIBRATION_GEOMETRY_UNRELIABLE
+  warning: NOT_FOR_VALIDATED_MEASUREMENT
+status: DEMO_ONLY
+use_case: PRESENTATION_DEMO_ONLY
+geometry_validation: GEOMETRY_UNVERIFIED_NOT_FOR_VALIDATED_MEASUREMENT
+production_promotion_allowed: false
+artifacts:
+  opencv_calibration:
+    path: opencv_calibration.yaml
+    sha256: 74f4e4e85921880a28484f5d39736bee97586f0d71388969c58b8d2535edc5c6
+  wass_fixed:
+    intrinsics_00.xml:
+      path: wass_fixed/intrinsics_00.xml
+      sha256: 6326b990c42c7b662211aa5fd0d36986369dbb2295b60c5109f8333ddb59239d
+    intrinsics_01.xml:
+      path: wass_fixed/intrinsics_01.xml
+      sha256: 2ea83f6f7b9fb36f4ed13b3bdee3a6f328892e757a64249981fef7dc71875c11
+    distortion_00.xml:
+      path: wass_fixed/distortion_00.xml
+      sha256: 7c6c48bd2e99d82ff02b876aa569340f0fbbeb23254802e190a2fec1ae902d35
+    distortion_01.xml:
+      path: wass_fixed/distortion_01.xml
+      sha256: e1e513f99c7eb506f1ff307030a2e1de7978be492518f14f8133adb9307bd523
+    ext_R.xml:
+      path: wass_fixed/ext_R.xml
+      sha256: c0ee1bbcf782e400c1711c12f4654f58caef2d31ae022d7b17ce3d42d851d582
+    ext_T.xml:
+      path: wass_fixed/ext_T.xml
+      sha256: 1939668fa495c8f940ed23109c6abaf52df0eab5c4e3477a9efcc868598e03bf
+package_content_sha256: f5660536b2f65c161b06ac58873d15034ad64fddb4e4aeb9e1f28ec963badf67
