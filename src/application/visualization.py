@@ -53,7 +53,9 @@ class DenseMeasurementView:
             self.height=dense[height_key].copy()*(1.0 if height_key=="height_mm" else 1000.0)
             self.status=dense["status"].copy() if "status" in dense else dense["source_status"].copy()
             self.roi=dense["water_roi_mask"].copy()
-            self.confidence=dense["confidence"].copy() if "confidence" in dense else np.where(self.status==OBSERVED,3,np.where(self.status==ESTIMATED_LOCAL,2,0)).astype(np.uint8)
+            self.confidence=dense["confidence"].copy() if "confidence" in dense else np.where(
+                self.status==OBSERVED,3,np.where(self.status==ESTIMATED_LOCAL,2,np.where(self.status==ESTIMATED_GLOBAL_MODEL,1,0))
+            ).astype(np.uint8)
         with np.load(pixel_xyz_npz) as sparse:
             self.xyz=sparse["xyz_m"].copy(); pixels=np.column_stack((sparse["u_px"],sparse["v_px"]))
         self.tree=cKDTree(pixels)

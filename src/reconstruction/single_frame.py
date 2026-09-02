@@ -184,9 +184,25 @@ class SingleFrameMeasurementResult:
     quality_status: str = "VALID"
     quality_reasons: tuple[str, ...] = ()
     adaptation_manifest: dict[str, object] | None = None
+    height_basis_status: str | None = None
+    reference_plane_angle_deg: float | None = None
 
     def to_dict(self) -> dict[str, object]:
         return asdict(self)
+
+
+def demo_height_basis(
+    reference_plane: dict[str, object], current_plane: dict[str, object], *, demo_enabled: bool,
+) -> tuple[dict[str, object], str, float]:
+    """Avoid publishing a cross-frame offset when demo frame coordinates disagree."""
+    reference_normal=np.asarray(reference_plane["normal"],dtype=float)
+    current_normal=np.asarray(current_plane["normal"],dtype=float)
+    reference_normal/=np.linalg.norm(reference_normal);current_normal/=np.linalg.norm(current_normal)
+    cosine=float(np.clip(abs(reference_normal @ current_normal),0.0,1.0))
+    angle=float(np.degrees(np.arccos(cosine)))
+    if demo_enabled and angle > 30.0:
+        return current_plane,"DEMO_CURRENT_FRAME_SURFACE_SHAPE__REFERENCE_FRAME_INCOMPATIBLE",angle
+    return reference_plane,"SELECTED_REFERENCE_PLANE",angle
 
 
 def canonicalize_image_pair(
@@ -469,6 +485,24 @@ class SingleFrameMeasurementBackend:
             pixel=np.load(pipeline_output/"pixel_xyz"/"000000_pixel_xyz.npz");heights=height_from_plane(pixel["xyz_m"],np.asarray(reference["normal"]),float(reference["offset_m"]));old=np.load(pipeline_output/"height"/"000000_height_points.npz")
             np.savez_compressed(pipeline_output/"height"/"000000_height_points.npz",x_m=pixel["xyz_m"][:,0],y_m=pixel["xyz_m"][:,1],height_m=heights,water_mask=old["water_mask"])
             frame["height_range_m"]=[float(heights.min()),float(heights.max())];frame["height_mean_m"]=float(heights.mean());frame["height_rms_m"]=float(np.sqrt(np.mean(heights**2)));frame["height_max_absolute_m"]=float(np.max(np.abs(heights)))
+        height_basis_status="SELECTED_REFERENCE_PLANE"
+        reference_plane_angle_deg:float|None=None
+        if request.solve_mode=="measurement":
+            basis,height_basis_status,reference_plane_angle_deg=demo_height_basis(
+                reference,frame["plane"],demo_enabled=request.dense_height.demo_global_completion)
+            if height_basis_status.startswith("DEMO_CURRENT_FRAME"):
+                reference=basis
+                pixel_path=pipeline_output/"pixel_xyz"/"000000_pixel_xyz.npz"
+                height_path=pipeline_output/"height"/"000000_height_points.npz"
+                with np.load(pixel_path) as pixel:
+                    xyz_m=pixel["xyz_m"].copy()
+                heights=height_from_plane(xyz_m,np.asarray(reference["normal"]),float(reference["offset_m"]))
+                with np.load(height_path) as old:
+                    water_mask=old["water_mask"].copy()
+                np.savez_compressed(height_path,x_m=xyz_m[:,0],y_m=xyz_m[:,1],height_m=heights,water_mask=water_mask)
+                frame["height_range_m"]=[float(heights.min()),float(heights.max())]
+                frame["height_mean_m"]=float(heights.mean());frame["height_rms_m"]=float(np.sqrt(np.mean(heights**2)))
+                frame["height_max_absolute_m"]=float(np.max(np.abs(heights)))
         sync_warning = selection is not None and (
             selection.quality_status == "FRAME_PAIR_SYNC_WARNING" or engineering_sync_status is not None
         )
@@ -513,6 +547,7 @@ class SingleFrameMeasurementBackend:
                     "estimated_global_model_count": global_count,
                     "unsupported_count": status_counts["unsupported"]["count"],
                     "valid_height_count": valid_count, "generation_time_sec": dense_seconds,
+                    "height_statistics_mm": dense_result.get("valid_height_mm"),
                     "artifact_paths": {"npz": "dense_height/dense_height.npz", "height_png": "dense_height/dense_height.png",
                                        "status_png": "dense_height/dense_height_status.png",
                                        "result_yaml": "dense_height/dense_height_result.yaml"},
@@ -540,7 +575,7 @@ class SingleFrameMeasurementBackend:
             xyz_point_count=int(frame["point_count"]),
             pixel_xyz_count=int(frame["pixel_xyz_correspondence_count"]),
             reference_plane={"normal": reference["normal"], "offset_m": reference["offset_m"]},
-            reference_plane_source=("user_selected_reference_plane" if request.solve_mode in {"reference","measurement"} else "static_reference" if request.reference_plane_file else "current_frame_fit"),
+            reference_plane_source=("demo_current_frame_surface_shape_basis" if height_basis_status.startswith("DEMO_CURRENT_FRAME") else "user_selected_reference_plane" if request.solve_mode in {"reference","measurement"} else "static_reference" if request.reference_plane_file else "current_frame_fit"),
             height_statistics={
                 "unit": "m", "minimum": frame["height_range_m"][0], "maximum": frame["height_range_m"][1],
                 "mean": frame["height_mean_m"], "rms": frame["height_rms_m"],
@@ -554,6 +589,8 @@ class SingleFrameMeasurementBackend:
                 "Strict frame-level synchronization remains unproven; R0 is accepted by the controlled on-demand tolerance policy."
                 if engineering_sync_status else
                 ("Frame pair passed with synchronization warning." if sync_warning else None), dense_warning,
+                "Selected reference and current water-plane normals are incompatible; demo output is current-frame orthogonal surface-shape residual, not cross-frame water-level change."
+                if height_basis_status.startswith("DEMO_CURRENT_FRAME") else None,
             ])),
             output_paths={
                 "selected_pair": "selected_pair", "pointcloud": "reconstruction/pointcloud",
@@ -565,6 +602,7 @@ class SingleFrameMeasurementBackend:
             reference_id=(str(reference_artifact["reference_id"]) if reference_artifact else (validate_reference_artifact(request.reference_artifact_file,calibration_id=str(request.calibration_id),video_pair_id=str(request.video_pair_id),roi=request.dense_height.water_roi or {})["reference_id"] if request.solve_mode=="measurement" else None)),
             reference_metadata=(reference_artifact if reference_artifact else (validate_reference_artifact(request.reference_artifact_file,calibration_id=str(request.calibration_id),video_pair_id=str(request.video_pair_id),roi=request.dense_height.water_roi or {}) if request.solve_mode=="measurement" else None)),
             quality_status=str(quality["quality_status"]),quality_reasons=tuple(quality["quality_reasons"]),adaptation_manifest=adaptation_manifest,
+            height_basis_status=height_basis_status,reference_plane_angle_deg=reference_plane_angle_deg,
         )
         if reference_artifact_path is not None:result.output_paths["reference_artifact"]=reference_artifact_path.name
         _write_backend_outputs(output, result)

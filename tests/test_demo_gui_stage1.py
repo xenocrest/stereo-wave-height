@@ -34,7 +34,7 @@ class DemoGuiStage1Tests(unittest.TestCase):
         app.stereo_text=mock.Mock();app.demo_continue_button=mock.Mock()
         app.input_state=GuidedInputState();app.pending_demo_calibration=None
         app.calibration_data=None;app.common_fov=None;app.common_fov_file=None;app.water_roi=None
-        app._refresh_common_fov=mock.Mock();app._refresh_step_state=mock.Mock();app._log=mock.Mock()
+        app._refresh_common_fov=mock.Mock();app._ensure_common_fov=mock.Mock();app._refresh_step_state=mock.Mock();app._log=mock.Mock()
         app._invalidate_reference=mock.Mock()
         app._worker_messages=queue.Queue();app.calibrate_button=mock.Mock()
         return app
@@ -179,6 +179,21 @@ class DemoGuiStage1Tests(unittest.TestCase):
             self.assertEqual(saved["status"],"CALIBRATION_OPERATIONAL_DOMAIN_FAIL")
             self.assertEqual(saved.get("approved_for_wass"),original.get("approved_for_wass"))
             self.assertEqual(saved["gui_operating_mode"],"DEMO_ESTIMATION_MODE")
+
+    def test_demo_height_basis_rejects_incompatible_cross_frame_plane(self):
+        from reconstruction.single_frame import demo_height_basis
+        reference={"normal":[0,0,1],"offset_m":-2.0};current={"normal":[1,0,0],"offset_m":-1.0}
+        basis,status,angle=demo_height_basis(reference,current,demo_enabled=True)
+        self.assertIs(basis,current);self.assertGreater(angle,30)
+        self.assertEqual(status,"DEMO_CURRENT_FRAME_SURFACE_SHAPE__REFERENCE_FRAME_INCOMPATIBLE")
+        production,status,_=demo_height_basis(reference,current,demo_enabled=False)
+        self.assertIs(production,reference);self.assertEqual(status,"SELECTED_REFERENCE_PLANE")
+
+    def test_result_view_uses_active_common_fov_mapping_not_legacy_experiment_file(self):
+        source=Path("C:/session/common_fov/canonical_cam1_wass_mapping.yaml")
+        text=Path("src/application/main_window.py").read_text(encoding="utf-8")
+        self.assertIn("DenseMeasurementView(record.dense_npz_path,record.pixel_xyz_path,self.mapping_file)",text)
+        self.assertNotIn('self.experiment/"manual_reference/frozen_cam1_validation_mapping.yaml"',text)
 
     def test_guided_file_dialog_filters_match_supported_inputs(self):
         self.assertEqual(CALIBRATION_FILE_TYPES,(("YAML 双目标定文件","*.yaml *.yml"),))
@@ -411,6 +426,13 @@ class DemoGuiStage1Tests(unittest.TestCase):
         view.height=np.asarray([[np.nan]],dtype=np.float32); view.status=np.asarray([[0]],dtype=np.uint8); view.roi=np.asarray([[True]])
         query=view.query(0,0)
         self.assertEqual(query.status,"UNSUPPORTED"); self.assertIsNone(query.height_mm); self.assertIsNone(query.xyz_m)
+
+    def test_global_model_hover_reports_low_confidence(self):
+        view=DenseMeasurementView.__new__(DenseMeasurementView)
+        view.height=np.asarray([[1.5]],dtype=np.float32);view.status=np.asarray([[3]],dtype=np.uint8)
+        view.roi=np.asarray([[True]]);view.confidence=np.asarray([[1]],dtype=np.uint8)
+        query=view.query(0,0)
+        self.assertEqual(query.source,"ESTIMATED_GLOBAL_MODEL");self.assertEqual(query.confidence,"LOW")
 
     def test_failed_export_preserves_temporary_session(self):
         with tempfile.TemporaryDirectory() as temporary:

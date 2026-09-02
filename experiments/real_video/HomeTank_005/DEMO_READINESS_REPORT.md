@@ -84,3 +84,41 @@ The viewer recognizes `OBSERVED`, `ESTIMATED_LOCAL`, `ESTIMATED_GLOBAL_MODEL` an
 `DEMO_ONLY_CALIBRATION_READY`; `DEMO_COMMON_FOV_READY`; `REFERENCE_PLANE_READY_DEMO_ONLY_LOW_CONFIDENCE`; `HOMETANK005_MEASUREMENT_COMPLETED`; `CONSTRAINED_FULL_PIXEL_SURFACE_READY`; `ROI_HEIGHT_COVERAGE_100_PERCENT`; `NO_GLOBAL_EXTRAPOLATION_BLOWUP`; `HOMETANK005_MODEL_ESTIMATED_FULL_PIXEL_DEMO_READY`; `MODEL_ESTIMATION_DOMINANT_WARNING`; `PHYSICAL_ACCURACY_NOT_ESTABLISHED`.
 
 The Windows onedir package was rebuilt at `dist/StereoWaveHeightDemo/StereoWaveHeightDemo.exe`. Startup/no-console process smoke passed, HomeTank_005 resources were present, eight distributed ROI hover queries returned finite H with correct global-model provenance/confidence, and a temporary full artifact export roundtrip passed. This automated smoke does not claim that every manual GUI gesture was exercised by a human operator.
+
+## FINAL PACKAGED END-TO-END ACCEPTANCE
+
+This section is the authoritative acceptance result for the final build and supersedes earlier generated demo artifacts above where their numbers differ. Exactly one packaged reference run and one packaged measurement run were executed; no calibration experiment was run.
+
+| Check | Result | Evidence |
+|---|---|---|
+| CALIBRATION | PASS | `HomeTank_005_demo_only_v1`, `DEMO_ESTIMATION_MODE`; production QA remains unchanged |
+| MEASUREMENT PAGE | PASS | page enabled after active demo calibration |
+| VIDEO PAIR | PASS | HomeTank_005 LEFT/RIGHT wave videos loaded with fixed roles |
+| COMMON FOV | PASS | ID `fov_34dc12cb8453b570`, bbox `[0,272,522,722]`, coverage 9.974826% |
+| COMMON FOV VISIBLE | PASS | preview source is the 522×450 crop with origin `(0,272)` |
+| PLAYBACK | PASS | play/pause state and cropped preview retained |
+| SEEK | PASS | reference 9 s and measurement 48 s selections retained crop and timestamps |
+| ROI | PASS | full-canonical `[20,350,480,680]`, entirely inside the safe common mask |
+| REFERENCE | PASS | actual LEFT 9.008200 s / RIGHT 9.000233 s; 99,137 XYZ; plane RMS 40.482 mm |
+| MEASUREMENT | PASS | actual LEFT 47.999522 s / RIGHT 48.001267 s; 98,438 XYZ |
+| HEIGHT COVERAGE | PASS | 152,591 / 152,591 finite ROI pixels (100%) |
+| HEIGHT SANITY | PASS | dense min/median/mean/max = -9.999 / +1.045 / +0.940 / +9.998 mm; P05/P95 = -4.637 / +6.382 mm |
+| SPATIAL SUPPORT | PASS | 3,073 direct observations; bbox `[293,439,401,503]`; occupancy 44.459% |
+| OVERLAY | PASS | support and continuous height overlays align with the selected water ROI |
+| HOVER | PASS | 10/10 finite: 5 `OBSERVED` HIGH and 5 `ESTIMATED_GLOBAL_MODEL` LOW |
+| POINT CLOUD | PASS | 98,438 finite observed XYZ loaded |
+| HISTORY | PASS | measurement record can be reopened using the active session mapping |
+| EXPORT | PASS | exported session roundtrip contains height/source/confidence and measurement record |
+| RESTART | PASS | final EXE started cleanly twice; calibration/video/common-FOV state can be rebuilt |
+
+Final source mix is `OBSERVED` 3,073 (2.013880%), `ESTIMATED_LOCAL` 4 (0.002621%), `ESTIMATED_GLOBAL_MODEL` 149,514 (97.983498%), and `UNSUPPORTED` 0. The observed support is a coherent 108×64 water patch rather than a line, corner, or coordinate-mapping artifact. The global model is intentionally LOW confidence and is not presented as direct stereo observation.
+
+The historical approximately 1 m result was caused by subtracting independently reconstructed reference and measurement planes whose normals differ by 89.764315°. Those WASS products are not an invariant cross-frame water-level coordinate system under the current unverified demo geometry. The demo-only correction does not tune against a ruler or expected wave height: it records `DEMO_CURRENT_FRAME_SURFACE_SHAPE__REFERENCE_FRAME_INCOMPATIBLE` and presents signed orthogonal residual relative to the robust current-frame water plane. Production/validated behavior continues to use the selected reference plane and is unchanged.
+
+The common-FOV stall was a state-transition defect: loading the second measurement video did not authoritatively resolve the common FOV after demo calibration readiness, and worker failures could leave a waiting message. The final path calls a single `ensure_common_fov` transition after calibration and each measurement-video selection, exposes `NO_VIDEO → VIDEO_PAIR_READY → COMMON_FOV_COMPUTING → COMMON_FOV_READY/FAILED`, and reports the real exception. Result history also uses the active session mapping instead of a legacy HomeTank_004 path; packaged backend exceptions now create a visible crash log; global-model hover confidence is LOW rather than UNSUPPORTED.
+
+Acceptance artifacts are outside Git at `D:/stereo-wave-height-runs/HomeTank_005/final-packaged-acceptance-20260902/`, including `final_support_overlay.png`, `measurement/dense_height/height_overlay.png`, `acceptance_metrics.json`, and the exported `exports/session_final` roundtrip. No NaN/Inf, approximately 1 m global offset, numerical explosion, flip, or ROI-overlay displacement remains in the accepted presentation result.
+
+Final classifications: `CALIBRATION_STEP_PASS`, `MEASUREMENT_PAGE_PASS`, `VIDEO_PAIR_LOAD_PASS`, `COMMON_FOV_PASS`, `COMMON_FOV_VISIBLE_PASS`, `PLAYBACK_PASS`, `SEEK_PASS`, `ROI_SELECTION_PASS`, `REFERENCE_PASS`, `MEASUREMENT_SOLVE_PASS`, `HEIGHT_RESULT_PASS`, `ROI_HEIGHT_COVERAGE_100_PERCENT`, `HEIGHT_NO_OBVIOUS_GLOBAL_OFFSET`, `HEIGHT_NO_NUMERICAL_BLOWUP`, `SPATIAL_SUPPORT_NOT_OBVIOUSLY_WRONG`, `OVERLAY_PASS`, `HOVER_PASS`, `POINT_CLOUD_PASS`, `HISTORY_PASS`, `EXPORT_PASS`, `RESTART_PASS`, `PACKAGED_END_TO_END_DEMO_PASS`, and `DEMO_FEATURES_FROZEN`.
+
+See [the feature-freeze declaration](../../../DEMO_FEATURE_FREEZE.md). The accepted result remains presentation-only, model-estimation-dominant, LOW confidence, and not physically validated.

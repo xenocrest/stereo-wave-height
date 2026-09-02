@@ -54,6 +54,7 @@ class StereoWaveHeightApplication:
         self._worker_messages: queue.Queue[tuple[str, Any]] = queue.Queue()
         self.active_reference_path=self.session.active_reference_path
         self.calibration_data:dict[str,Any]|None=None;self.common_fov:CommonFov|None=None;self.common_fov_file:Path|None=None;self.mapping_file:Path|None=None
+        self.common_fov_state="NO_VIDEO"
         self.pending_demo_calibration:tuple[dict[str,Any],Path]|None=None
         self.crop_origin=(0,0)
 
@@ -80,7 +81,7 @@ class StereoWaveHeightApplication:
                 self.water_roi=None;self.common_fov=None;self.common_fov_file=None
                 if hasattr(self,"variables") and "roi_status" in self.variables:self.variables["roi_status"].set("水面区域：尚未设置；解算前必须在右相机画面中框选")
                 self.input_state.mark_measurement_video("left" if key.startswith("left") else "right")
-                self._refresh_common_fov()
+                self._ensure_common_fov()
                 self._refresh_step_state()
             self._log(f"selected {key}: {selected}")
         except Exception as error: messagebox.showerror(self.title, f"视频读取失败。请确认所选文件是受支持且未损坏的本地视频。\n\n{error}")
@@ -152,7 +153,7 @@ class StereoWaveHeightApplication:
             self.variables["calibration_load_status"].set("✓ 标定完成，可以进入测量")
             self.variables["app_state"].set("当前模式：演示模式")
             if hasattr(self,"demo_continue_button"):self.demo_continue_button.configure(state=tk.DISABLED)
-            self._log(f"loaded demo calibration: {path}");self._refresh_common_fov()
+            self._log(f"loaded demo calibration: {path}");self._ensure_common_fov()
         elif failed:
             self.input_state.mark_calibration_failed()
             self.variables["calibration_load_status"].set("⚠ 标定 QA 已加载，但几何未通过；测量与公共视场已阻止")
@@ -162,7 +163,7 @@ class StereoWaveHeightApplication:
             self.pending_demo_calibration=None
             if hasattr(self,"demo_continue_button"):self.demo_continue_button.configure(state=tk.DISABLED)
             self.input_state.mark_calibration_ready(operating_mode=operating_mode,quality_status=quality_status)
-            self._log(f"loaded calibration: {path} mode={operating_mode}");self._refresh_common_fov()
+            self._log(f"loaded calibration: {path} mode={operating_mode}");self._ensure_common_fov()
         self._refresh_step_state()
 
     def _continue_demo(self) -> None:
@@ -175,25 +176,43 @@ class StereoWaveHeightApplication:
         self.variables["app_state"].set("当前模式：演示模式")
         self.demo_continue_button.configure(state=tk.DISABLED)
         self._log("DEMO_ESTIMATION_MODE acknowledged by user")
-        self._refresh_common_fov();self._refresh_step_state()
+        self._ensure_common_fov();self._refresh_step_state()
+
+    def _ensure_common_fov(self)->None:
+        """Authoritatively resolve common FOV whenever calibration and pair exist."""
+        left,right=self.metadata.get("left_measurement"),self.metadata.get("right_measurement")
+        if left is None or right is None:
+            self.common_fov_state="NO_VIDEO"
+            return
+        if self.calibration_data is None:
+            self.common_fov_state="COMMON_FOV_FAILED"
+            if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("双目公共区域计算失败：当前会话没有可读取的标定参数。")
+            self._refresh_step_state()
+            return
+        self.common_fov_state="VIDEO_PAIR_READY"
+        self._refresh_common_fov()
 
     def _refresh_common_fov(self)->None:
         if self.calibration_data is None:return
         left,right=self.metadata.get("left_measurement"),self.metadata.get("right_measurement")
         if left is None or right is None:return
+        self.common_fov_state="COMMON_FOV_COMPUTING"
+        if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("正在计算双目公共区域…")
         try:
             if (left.width,left.height)!=(right.width,right.height):raise ValueError("LEFT/RIGHT measurement video sizes differ")
             common=compute_common_fov(self.calibration_data,(right.width,right.height),safety_margin_px=0)
             _mask,metadata=save_common_fov(common,self.session.directory/"common_fov")
             self.mapping_file=save_canonical_cam1_wass_mapping(self.calibration_data,self.session.directory/"common_fov"/"canonical_cam1_wass_mapping.yaml")
             saved_metadata=yaml.safe_load(metadata.read_text(encoding="utf-8"));self.common_fov=common;self.common_fov_file=metadata;self.session.set_common_fov(saved_metadata,metadata)
+            self.common_fov_state="COMMON_FOV_READY"
             self.water_roi=None;self._invalidate_reference("COMMON_FOV_CHANGED")
             if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共有效区域已识别：{common.metadata['coverage_ratio']*100:.1f}%　请在公共区域内框选水面测量区域。")
             self._log(f"AUTO_STEREO_COMMON_FOV_READY {common.identity} coverage={common.metadata['coverage_ratio']:.6f} bbox={common.bbox}")
             if self.variables.get("right_measurement") and self.variables["right_measurement"].get():self._show_video_frame(self.current_time)
         except Exception as error:
             self.common_fov=None;self.common_fov_file=None
-            if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("双目公共区域计算失败，请检查标定与视频参数。")
+            self.common_fov_state="COMMON_FOV_FAILED"
+            if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共区域计算失败：{error}")
             self._log(f"common FOV failed: {error}")
         self._refresh_step_state();self._refresh_reference_controls()
 
@@ -430,7 +449,7 @@ class StereoWaveHeightApplication:
 
     @staticmethod
     def _summary(record: MeasurementRecord) -> str:
-        s=record.summary_metadata; d=s.get("dense_height",{}); h=s.get("height_statistics",{}); roi=d.get("roi_pixel_count",0) or 0
+        s=record.summary_metadata; d=s.get("dense_height",{}); h=s.get("height_statistics",{}); dense_h=d.get("height_statistics_mm") or {}; roi=d.get("roi_pixel_count",0) or 0
         pct=lambda v:f"{100*v/roi:.2f}%" if roi else "N/A"
         def mm(value:object) -> str:return "N/A" if value is None else f"{float(value)*1000:.3f}"
         fallback=(f"\n邻近帧自动容错：{'是' if s.get('fallback_used') else '否'} | 实际测量时刻：{s.get('actual_measurement_time_sec',s.get('requested_time_s'))} s | 偏移：{s.get('fallback_time_offset_ms',0)} ms" if 'fallback_used' in s else "")
@@ -440,18 +459,25 @@ class StereoWaveHeightApplication:
                 f"局部估算（ESTIMATED_LOCAL）：{d.get('estimated_local_count',d.get('estimated_count'))} ({pct(d.get('estimated_local_count',d.get('estimated_count',0)))})\n"
                 f"全局模型估算（ESTIMATED_GLOBAL_MODEL）：{d.get('estimated_global_model_count',0)} ({pct(d.get('estimated_global_model_count',0))})\n"
                 f"无可靠结果（UNSUPPORTED）：{d.get('unsupported_count')} ({pct(d.get('unsupported_count',0))})\n"
-                f"高度 最小/最大/平均：{mm(h.get('minimum'))} / {mm(h.get('maximum'))} / {mm(h.get('mean'))} mm\nWASS：{s.get('wass_seconds')} s | 稠密图：{d.get('generation_time_sec')} s | 总计：{s.get('total_seconds')} s")
+                f"高度 最小/最大/中位数：{dense_h.get('minimum',mm(h.get('minimum')))} / {dense_h.get('maximum',mm(h.get('maximum')))} / {dense_h.get('median',mm(h.get('mean')))} mm\nWASS：{s.get('wass_seconds')} s | 稠密图：{d.get('generation_time_sec')} s | 总计：{s.get('total_seconds')} s")
 
     def _show_record(self,record:MeasurementRecord,state:str="MEASUREMENT_RESULT") -> None:
         self.active_record=record; self.viewing_result=True
         dense_available=record.summary_metadata.get("status")=="SINGLE_FRAME_DENSE_HEIGHT_COMPLETED" and record.dense_npz_path.is_file()
         try:
-            self.dense_view=(DenseMeasurementView(record.dense_npz_path,record.pixel_xyz_path,self.experiment/"manual_reference/frozen_cam1_validation_mapping.yaml") if dense_available else None)
+            if dense_available and self.mapping_file is None:raise RuntimeError("当前会话缺少双目像素映射，请重新加载测量视频。")
+            self.dense_view=(DenseMeasurementView(record.dense_npz_path,record.pixel_xyz_path,self.mapping_file) if dense_available else None)
             if dense_available and record.overlay_path and not record.overlay_path.is_file():make_height_overlay(record.selected_frame_path,record.dense_npz_path,float(self.variables["alpha"].get())/100).save(record.overlay_path)
         except Exception as error:self.dense_view=None; self._log(f"measurement query load failed: {error}")
         self.variables["mode"].set("高度叠加" if dense_available else "原始画面"); self._show_mode(); self.summary_text.configure(state=tk.NORMAL); self.summary_text.delete("1.0",tk.END); self.summary_text.insert(tk.END,self._summary(record)); self.summary_text.configure(state=tk.DISABLED)
-        h=record.summary_metadata.get("height_statistics",{}); minimum=h.get("minimum"); maximum=h.get("maximum")
-        self.variables["result_legend"].set(f"高度范围：{float(minimum)*1000:.3f} … {float(maximum)*1000:.3f} mm | 直接观测=橙色 | 空间估算=绿色 | 无可靠结果=红色/N/A" if minimum is not None and maximum is not None else "核心 XYZ/H 已完成；稠密图不可用，请查看点云和摘要。")
+        h=record.summary_metadata.get("height_statistics",{}); dense_h=record.summary_metadata.get("dense_height",{}).get("height_statistics_mm") or {}
+        if not dense_h and self.dense_view is not None:
+            values=self.dense_view.height[self.dense_view.roi & np.isfinite(self.dense_view.height)]
+            if values.size:dense_h={"minimum":float(values.min()),"maximum":float(values.max())}
+        minimum=dense_h.get("minimum"); maximum=dense_h.get("maximum")
+        if minimum is None or maximum is None:
+            minimum=None if h.get("minimum") is None else float(h["minimum"])*1000; maximum=None if h.get("maximum") is None else float(h["maximum"])*1000
+        self.variables["result_legend"].set(f"高度范围：{float(minimum):.3f} … {float(maximum):.3f} mm | 直接观测=橙色 | 空间估算=绿色 | 无可靠结果=红色/N/A" if minimum is not None and maximum is not None else "核心 XYZ/H 已完成；稠密图不可用，请查看点云和摘要。")
         self.variables["app_state"].set("正在查看测量结果" if state in {"MEASUREMENT_RESULT","VIEWING_HISTORY"} else state)
         self.pointcloud_button.configure(state=tk.NORMAL if record.point_cloud_path and record.point_cloud_path.is_file() else tk.DISABLED)
     def _show_mode(self) -> None:
