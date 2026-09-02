@@ -53,6 +53,7 @@ class StereoWaveHeightApplication:
         self._worker_messages: queue.Queue[tuple[str, Any]] = queue.Queue()
         self.active_reference_path=self.session.active_reference_path
         self.calibration_data:dict[str,Any]|None=None;self.common_fov:CommonFov|None=None;self.common_fov_file:Path|None=None;self.mapping_file:Path|None=None
+        self.pending_demo_calibration:tuple[dict[str,Any],Path]|None=None
         self.crop_origin=(0,0)
 
     def _var(self, key: str, value: str = "") -> tk.StringVar:
@@ -146,19 +147,36 @@ class StereoWaveHeightApplication:
             "⚠ 标定质量：不建议测量。当前误差超过项目既有质量门限，三维结果可能不可靠，建议重新标定。"
             if failed else "✓ 标定质量：通过现有项目质量检查。"
         )
-        if failed and operating_mode != "DEMO_ESTIMATION_MODE":
+        if operating_mode == "DEMO_ESTIMATION_MODE":
+            self.pending_demo_calibration=(data,path)
+            self.input_state.mark_calibration_failed()
+            self.variables["calibration_quality"].set("⚠ 标定完成，但精度未通过正式验证。可继续用于演示估计。")
+            self.variables["calibration_load_status"].set("⚠ 演示标定已加载；请点击“继续用于演示”")
+            if hasattr(self,"demo_continue_button"):self.demo_continue_button.configure(state=tk.NORMAL)
+            self._log(f"demo calibration awaiting acknowledgement: {path}")
+        elif failed:
             self.input_state.mark_calibration_failed()
             self.variables["calibration_load_status"].set("⚠ 标定 QA 已加载，但几何未通过；测量与公共视场已阻止")
             self.common_fov=None;self.common_fov_file=None
             self._log(f"loaded calibration QA limitation: {path}")
         else:
+            self.pending_demo_calibration=None
+            if hasattr(self,"demo_continue_button"):self.demo_continue_button.configure(state=tk.DISABLED)
             self.input_state.mark_calibration_ready(operating_mode=operating_mode)
-            if operating_mode == "DEMO_ESTIMATION_MODE":
-                self.variables["calibration_quality"].set("⚠ 演示标定（几何精度未完成物理验证）；仅用于演示估计。")
-                self.variables["calibration_load_status"].set("✓ 演示标定已加载，可以进入步骤 2")
-                self.variables["app_state"].set("当前模式：演示估计（标定精度未完成物理验证）")
             self._log(f"loaded calibration: {path} mode={operating_mode}");self._refresh_common_fov()
         self._refresh_step_state()
+
+    def _continue_demo(self) -> None:
+        if self.pending_demo_calibration is None:
+            messagebox.showwarning(self.title,"尚未加载可用于演示的标定包。")
+            return
+        self.input_state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE")
+        self.variables["calibration_load_status"].set("✓ 演示标定已加载，可以进入步骤 2")
+        self.variables["calibration_quality"].set("⚠ 当前精度尚未完成物理验证；结果仅用于演示估计。")
+        self.variables["app_state"].set("当前模式：演示估计（标定精度未完成物理验证）")
+        self.demo_continue_button.configure(state=tk.DISABLED)
+        self._log("DEMO_ESTIMATION_MODE acknowledged by user")
+        self._refresh_common_fov();self._refresh_step_state()
 
     def _refresh_common_fov(self)->None:
         if self.calibration_data is None:return
@@ -178,6 +196,7 @@ class StereoWaveHeightApplication:
             self.common_fov=None;self.common_fov_file=None
             if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("双目公共区域计算失败，请检查标定与视频参数。")
             self._log(f"common FOV failed: {error}")
+        self._refresh_step_state();self._refresh_reference_controls()
 
     def _calibration_mode_changed(self) -> None:
         self.input_state.set_mode(self.variables["calibration_mode"].get())
@@ -211,13 +230,17 @@ class StereoWaveHeightApplication:
             self.variables["step1_status"].set("✓ 已完成"); self.notebook.tab(self.step2_frame,state="normal")
         else:
             self.variables["step1_status"].set("○ 未完成"); self.notebook.tab(self.step2_frame,state="disabled")
-        ready=self.input_state.measurement_ready
-        self.variables["step2_status"].set("✓ 左右测量视频已准备" if ready else "○ 等待左右测量视频")
+        inputs_ready=self.input_state.measurement_ready
+        ready=inputs_ready and self.common_fov is not None
+        self.variables["step2_status"].set("✓ 左右测量视频及双目公共区域已准备" if ready else ("⚠ 左右视频已加载，等待双目公共区域" if inputs_ready else "○ 等待左右测量视频"))
         self.enter_measurement_button.configure(state=tk.NORMAL if ready else tk.DISABLED)
 
     def _enter_measurement(self) -> None:
         if not self.input_state.measurement_ready:
             messagebox.showerror(self.title,"测量输入尚未准备完成。请先加载标定结果，并选择左右测量视频。"); return
+        if self.common_fov is None:
+            messagebox.showerror(self.title,"双目公共区域尚未建立，不能进入测量。请检查标定与左右视频。")
+            return
         self.notebook.tab(self.measurement_frame,state="normal"); self.notebook.select(self.measurement_frame)
         self.variables["app_state"].set("等待用户播放并暂停")
 
@@ -305,7 +328,7 @@ class StereoWaveHeightApplication:
         if self.water_roi is not None and self.water_roi!=new_roi:self._invalidate_reference("ROI_CHANGED")
         self.water_roi=new_roi; self._roi_selecting=False
         self.variables["roi_status"].set(f"水面区域：({x1}, {y1}) → ({x2}, {y2})；可点击重新选择")
-        self._draw_water_roi(); self._log(f"water ROI selected: {self.water_roi}")
+        self._draw_water_roi(); self._log(f"water ROI selected: {self.water_roi}");self._refresh_reference_controls()
 
     def _draw_water_roi(self) -> None:
         if not hasattr(self,"image_canvas") or self.display_transform is None or self.water_roi is None:return
@@ -327,7 +350,12 @@ class StereoWaveHeightApplication:
     def _refresh_reference_controls(self)->None:
         ready=getattr(self,"active_reference_path",None) is not None
         if hasattr(self,"solve_button"):self.solve_button.configure(state=tk.NORMAL if ready and not self.backend_running else tk.DISABLED)
-        if hasattr(self,"reference_button"):self.reference_button.configure(state=tk.DISABLED if self.backend_running else tk.NORMAL)
+        state=getattr(self,"input_state",None)
+        reference_ready=(state is None or state.measurement_ready) and getattr(self,"common_fov",None) is not None and getattr(self,"water_roi",None) is not None
+        # Legacy unit callers predate common-FOV/ROI gating; real built GUI
+        # always has input_state and therefore always follows the strict gate.
+        if state is None:reference_ready=True
+        if hasattr(self,"reference_button"):self.reference_button.configure(state=tk.NORMAL if reference_ready and not self.backend_running else tk.DISABLED)
 
     def _set_reference(self)->None:
         if self.active_reference_path is not None and not messagebox.askyesno(self.title,"这将替换当前参考面，之后的高度结果将使用新的参考面。是否继续？"):return
@@ -550,6 +578,8 @@ class StereoWaveHeightApplication:
         ttk.Label(self.existing_calibration_frame,text="如果相机已经完成双目标定，请直接导入已有的标定结果，无需重新计算。",wraplength=1000).pack(anchor="w",padx=10,pady=(8,2))
         ttk.Label(self.existing_calibration_frame,text="支持的文件类型：YAML 标定文件 (*.yaml; *.yml)",foreground="#555").pack(anchor="w",padx=10)
         ttk.Button(self.existing_calibration_frame,text="选择已有双目标定结果",command=self._load_calibration).pack(anchor="w",padx=10,pady=8)
+        self.demo_continue_button=ttk.Button(self.existing_calibration_frame,text="继续用于演示",command=self._continue_demo,state=tk.DISABLED)
+        self.demo_continue_button.pack(anchor="w",padx=10,pady=(0,8))
         ttk.Label(self.existing_calibration_frame,textvariable=self.variables["calibration_file"]).pack(anchor="w",padx=10)
         ttk.Label(self.existing_calibration_frame,textvariable=self._var("calibration_load_status","○ 尚未加载"),foreground="#075").pack(anchor="w",padx=10,pady=(2,8))
         self.video_calibration_frame=ttk.Frame(step1); self.video_calibration_frame.grid(row=2,column=0,sticky="ew"); self.video_calibration_frame.grid_remove(); self.video_calibration_frame.columnconfigure(0,weight=1)
