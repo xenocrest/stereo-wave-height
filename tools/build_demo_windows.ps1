@@ -47,9 +47,10 @@ try {
 
 $App = Join-Path $Dist "StereoWaveHeightDemo"
 $Resource = Join-Path $App "resources\HomeTank_004"
+$Resource005 = Join-Path $App "resources\HomeTank_005"
 $RuntimeWass = Join-Path $App "runtime\wass"
 $RuntimeFfmpeg = Join-Path $App "runtime\ffmpeg"
-New-Item -ItemType Directory -Force -Path $Resource, (Join-Path $Resource "manual_reference"), (Join-Path $Resource "wass_config"), $RuntimeWass, $RuntimeFfmpeg | Out-Null
+New-Item -ItemType Directory -Force -Path $Resource, $Resource005, (Join-Path $Resource "manual_reference"), (Join-Path $Resource "wass_config"), $RuntimeWass, $RuntimeFfmpeg | Out-Null
 
 Copy-Item -LiteralPath (Join-Path $Repo "packaging\resources\HomeTank_004\single_frame_dense_template.yaml") -Destination $Resource
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_004\calibration_result.yaml") -Destination $Resource
@@ -62,6 +63,8 @@ Copy-Item -LiteralPath (Join-Path $Repo "packaging\runtime_binding.json") -Desti
 Copy-Item -LiteralPath (Join-Path $FfmpegRoot "ffmpeg.exe") -Destination $RuntimeFfmpeg
 Get-ChildItem -LiteralPath $FfmpegRoot -Filter "*.dll" -File | Copy-Item -Destination $RuntimeFfmpeg
 Copy-Item -LiteralPath (Join-Path $Repo "DEMO_RUN.md") -Destination $App
+Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\calibration_adaptive\adaptive_calibration.yaml") -Destination $Resource005
+Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\DEMO_READINESS_REPORT.md") -Destination $Resource005
 
 $exe = Join-Path $App "StereoWaveHeightDemo.exe"
 if (-not (Test-Path -LiteralPath $exe)) { throw "Packaged executable missing: $exe" }

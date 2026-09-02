@@ -84,6 +84,7 @@ class DemoGuiStage1Tests(unittest.TestCase):
         state.set_mode("videos"); state.mark_measurement_video("left"); state.mark_measurement_video("right")
         self.assertFalse(state.measurement_ready)
         state.mark_calibration_ready(); self.assertTrue(state.measurement_ready)
+        state.mark_calibration_failed(); self.assertFalse(state.measurement_ready)
         state.set_mode("existing"); self.assertFalse(state.calibration_ready)
 
     def test_guided_file_dialog_filters_match_supported_inputs(self):

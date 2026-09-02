@@ -131,20 +131,27 @@ class StereoWaveHeightApplication:
             self.variables[f"{prefix}_model"].set(str(node.get("model", "LEFT/cam0" if prefix=="left" else "RIGHT/cam1")))
             for field,value in {"fx":k[0][0],"fy":k[1][1],"cx":k[0][2],"cy":k[1][2],"D":node["D"]}.items(): self.variables[f"{prefix}_{field}"].set(str(value))
         stereo=data["stereo"]
+        epipolar=float(stereo.get("symmetric_epipolar_rms_px",stereo.get("epipolar_rms_px",float("inf"))))
         qa=(f"R = {stereo['R_right_from_left']}\nT = {stereo['T_right_from_left_m']} m\n"
             f"baseline = {stereo['baseline_m']:.9f} m\nstatus = {data['status']}\n"
-            f"stereo RMS = {stereo['rms_px']:.6f} px\nepipolar RMS = {stereo['symmetric_epipolar_rms_px']:.6f} px")
+            f"stereo RMS = {stereo['rms_px']:.6f} px\nepipolar RMS = {epipolar:.6f} px")
         self.stereo_text.configure(state=tk.NORMAL); self.stereo_text.delete("1.0",tk.END); self.stereo_text.insert(tk.END,qa); self.stereo_text.configure(state=tk.DISABLED)
         self.variables["calibration_path"].set(str(path)); self.variables["calibration_file"].set(path.name)
         self.variables["calibration_load_status"].set("✓ 标定结果已加载，可以进入步骤 2")
-        thresholds=CalibrationQualityThresholds(); stereo_rms=float(stereo["rms_px"]); epi=float(stereo["symmetric_epipolar_rms_px"])
+        thresholds=CalibrationQualityThresholds(); stereo_rms=float(stereo["rms_px"]); epi=epipolar
         failed=("FAIL" in str(data.get("status","")) or stereo_rms>thresholds.maximum_stereo_rms_px or epi>thresholds.maximum_epipolar_rms_px)
         self.variables["calibration_quality"].set(
             "⚠ 标定质量：不建议测量。当前误差超过项目既有质量门限，三维结果可能不可靠，建议重新标定。"
             if failed else "✓ 标定质量：通过现有项目质量检查。"
         )
-        self.input_state.mark_calibration_ready(); self._refresh_step_state(); self._log(f"loaded calibration: {path}")
-        self._refresh_common_fov()
+        if failed:
+            self.input_state.mark_calibration_failed()
+            self.variables["calibration_load_status"].set("⚠ 标定 QA 已加载，但几何未通过；测量与公共视场已阻止")
+            self.common_fov=None;self.common_fov_file=None
+            self._log(f"loaded calibration QA limitation: {path}")
+        else:
+            self.input_state.mark_calibration_ready();self._log(f"loaded calibration: {path}");self._refresh_common_fov()
+        self._refresh_step_state()
 
     def _refresh_common_fov(self)->None:
         if self.calibration_data is None:return

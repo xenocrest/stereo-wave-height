@@ -31,6 +31,10 @@ class GuidedInputState:
     def mark_calibration_ready(self) -> None:
         self.calibration_ready = True
 
+    def mark_calibration_failed(self) -> None:
+        """Expose QA failure without allowing measurement to start."""
+        self.calibration_ready = False
+
     def mark_measurement_video(self, side: str, ready: bool = True) -> None:
         if side == "left":
             self.left_measurement_ready = ready
@@ -38,4 +42,3 @@ class GuidedInputState:
             self.right_measurement_ready = ready
         else:
             raise ValueError("相机角色必须是 left 或 right")
-

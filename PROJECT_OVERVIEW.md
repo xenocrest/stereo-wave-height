@@ -272,6 +272,8 @@ $$
 
 ## 9. HomeTank_004 真实视频实验总结
 
+HomeTank_005 作为最后一次真实采集已进入自适应标定验证：179/86 个单目观测、63 个联合观测被组织为17个独立姿态组，并采用确定性五折 grouped-CV。修复解码器二次旋转后，full-sample rectified vertical RMS 从几何崩坏降至13.045 px，epipolar RMS 为3.708 px；但 grouped-CV 最差折18.635 px且 K/D/baseline 稳定性不足。项目没有用 full-sensor 3/9 单独阻断，也没有绕过真实 operational geometry 失败，最终分类为 `HOMETANK005_CALIBRATION_MODEL_LIMIT_REACHED`。因此 HomeTank_005 不生成虚假 XYZ/H；演示程序以 QA limitation 方式呈现该真实结果。
+
 HomeTank_004 使用 iQOO Neo5S（cam0/left）和 iQOO Z10 Turbo Plus（cam1/right）作为低成本双目视频输入。六段 calibration/static/wave 视频已在同一 rig setup 下完成采集；calibration、static 单帧重建和五帧 wave 扩展闭环均已执行，完整长时 wave 仍受资源与帧级同步门阻塞。
 
 已经完成：

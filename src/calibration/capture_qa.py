@@ -75,6 +75,12 @@ def scan_video(path: str | Path, *, camera: str, sample_hz: float, rotate_deg: i
     capture = cv2.VideoCapture(str(path))
     if not capture.isOpened() or sample_hz <= 0:
         raise ValueError(f"cannot open video or invalid sample rate: {path}")
+    # Canonical orientation is applied explicitly below.  FFmpeg-backed OpenCV
+    # otherwise auto-applies container rotation metadata and a 180-degree input
+    # would be rotated twice, corrupting cross-camera geometry while leaving
+    # monocular checkerboard detection deceptively healthy.
+    if hasattr(cv2, "CAP_PROP_ORIENTATION_AUTO"):
+        capture.set(cv2.CAP_PROP_ORIENTATION_AUTO, 0)
     fps = float(capture.get(cv2.CAP_PROP_FPS)); width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)); height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
     interval = max(1, round(fps / sample_hz)); sampled = 0; detections = []; index = 0
     spec = CheckerboardSpec(9, 6, .020)

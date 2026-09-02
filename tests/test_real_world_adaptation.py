@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 
 from calibration.checkerboard import CheckerboardSpec
-from calibration.adaptive_calibration import SplitCalibrationProvenance,calibrate_split_official,parameter_plausibility,rectification_residuals,select_distortion_complexity,classify_rectification_health
+from calibration.adaptive_calibration import SplitCalibrationProvenance,calibrate_split_official,parameter_plausibility,rectification_residuals,select_distortion_complexity,classify_rectification_health,deterministic_group_folds
 from calibration.capture_qa import evaluate_split_capture
 from reconstruction.scene_diagnostics import diagnose_stereo_scene
 from reconstruction.adaptation import choose_adaptation,geometry_disparity_expectation
@@ -10,6 +10,15 @@ from reconstruction.quality import component_diagnostics,height_confidence,resol
 
 
 class RealWorldAdaptationTests(unittest.TestCase):
+    def test_group_folds_keep_duplicate_poses_together(self):
+        groups=("a","a","b","c","c","d","e")
+        folds=deterministic_group_folds(groups)
+        self.assertEqual(folds,deterministic_group_folds(groups))
+        locations={}
+        for fold,indices in enumerate(folds):
+            for index in indices:locations.setdefault(groups[index],set()).add(fold)
+        self.assertTrue(all(len(value)==1 for value in locations.values()))
+
     @classmethod
     def setUpClass(cls):
         try:import cv2

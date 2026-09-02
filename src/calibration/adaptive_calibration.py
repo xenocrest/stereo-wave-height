@@ -20,6 +20,20 @@ from .opencv_backend import (
 )
 
 
+def deterministic_group_folds(group_ids: Sequence[str], *, maximum_folds: int = 5) -> tuple[tuple[int, ...], ...]:
+    """Build deterministic validation folds without near-pose leakage."""
+    if maximum_folds < 2:
+        raise ValueError("maximum_folds must be at least two")
+    unique = sorted(set(map(str, group_ids)))
+    if len(unique) < 2:
+        raise ValueError("at least two independent pose groups are required")
+    buckets: list[list[int]] = [[] for _ in range(min(maximum_folds, len(unique)))]
+    assignment = {value: index % len(buckets) for index, value in enumerate(unique)}
+    for index, value in enumerate(group_ids):
+        buckets[assignment[str(value)]].append(index)
+    return tuple(tuple(bucket) for bucket in buckets if bucket)
+
+
 @dataclass(frozen=True)
 class SplitCalibrationProvenance:
     left_mono_ids: tuple[str, ...]

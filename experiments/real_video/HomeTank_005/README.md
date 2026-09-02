@@ -39,6 +39,10 @@ The existing GUI file selectors and calibration/capture interfaces accept arbitr
 - Split capture QA: LEFT `LEFT_MONO_INSUFFICIENT` (3/9), RIGHT `RIGHT_MONO_READY` (4/9), stereo `STEREO_OVERLAP_READY` (5/9).
 - Final intake classification: `HOMETANK005_CAPTURE_INSUFFICIENT`. Formal calibration was not run.
 
+## Adaptive calibration follow-up
+
+The historical intake classification above is retained. A bounded adaptive-calibration experiment subsequently used all unilateral observations, 17 independent bilateral pose groups, deterministic five-fold grouped CV, and two OpenCV distortion models. Fixing decoder double-rotation reduced the geometry error substantially, but grouped-CV and parameter stability still failed. Current classification: `HOMETANK005_CALIBRATION_MODEL_LIMIT_REACHED`; no HomeTank_005 WASS or height result was produced. See [DEMO_READINESS_REPORT.md](DEMO_READINESS_REPORT.md).
+
 | Role | Actual file | SHA-256 |
 |---|---|---|
 | calibration cam0 / LEFT | `HomeTank_005_calibration_cam0_LEFT.mp4` | `793cd46adc997447b0f7c2eb27194325edaa194d49ba49ff57cd71867a779210` |
