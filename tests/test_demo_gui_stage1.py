@@ -34,6 +34,8 @@ class DemoGuiStage1Tests(unittest.TestCase):
         app.stereo_text=mock.Mock();app.demo_continue_button=mock.Mock()
         app.input_state=GuidedInputState();app.pending_demo_calibration=None
         app.calibration_data=None;app.common_fov=None;app.common_fov_file=None;app.water_roi=None
+        app.common_fov_state="WAITING_FOR_VIDEO_PAIR";app._common_fov_generation=0
+        app._common_fov_started_at=None;app._common_fov_timeout_seconds=10.0;app._preview_request_generation=0
         app._refresh_common_fov=mock.Mock();app._ensure_common_fov=mock.Mock();app._refresh_step_state=mock.Mock();app._log=mock.Mock()
         app._invalidate_reference=mock.Mock()
         app._worker_messages=queue.Queue();app.calibrate_button=mock.Mock()
@@ -147,6 +149,39 @@ class DemoGuiStage1Tests(unittest.TestCase):
         app.variables["calibration_load_status"].set.assert_any_call("✓ 标定完成，可以进入测量")
         app.variables["app_state"].set.assert_called_with("当前模式：演示模式")
         app.demo_continue_button.configure.assert_called_with(state="disabled")
+
+    def test_accepted_demo_qa_failure_can_trigger_common_fov_after_second_video(self):
+        from application.main_window import StereoWaveHeightApplication
+        app=self._gui_calibration_harness();app._ensure_common_fov=mock.Mock(wraps=StereoWaveHeightApplication._ensure_common_fov.__get__(app))
+        app.calibration_data={"status":"GUI_CALIBRATION_COMPLETED_REQUIRES_QA"}
+        app.input_state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE",quality_status="QA_FAIL")
+        app.metadata={"left_measurement":SimpleNamespace(width=1920,height=1080),"right_measurement":SimpleNamespace(width=1920,height=1080)}
+        app._refresh_common_fov=mock.Mock()
+        app._ensure_common_fov()
+        app._refresh_common_fov.assert_called_once()
+
+    def test_common_fov_worker_exception_becomes_failed(self):
+        from application.main_window import StereoWaveHeightApplication
+        app=self._gui_calibration_harness();app._refresh_reference_controls=mock.Mock()
+        app.variables["common_fov_status"]=mock.Mock();app._common_fov_generation=2
+        StereoWaveHeightApplication._fail_common_fov(app,"boom")
+        self.assertEqual(app.common_fov_state,"COMMON_FOV_FAILED")
+        app.variables["common_fov_status"].set.assert_called_with("双目公共区域计算失败，请查看错误信息。")
+
+    def test_common_fov_result_reaches_gui_apply(self):
+        from application.main_window import StereoWaveHeightApplication
+        app=self._gui_calibration_harness();app._apply_common_fov=mock.Mock();app._common_fov_generation=3
+        app.common_fov_state="COMPUTING_COMMON_FOV";sentinel=object()
+        app._worker_messages.put(("common_fov_ready",(3,sentinel,12.5)))
+        StereoWaveHeightApplication._poll_worker(app)
+        app._apply_common_fov.assert_called_once_with(sentinel,12.5)
+
+    def test_common_fov_timeout_cannot_wait_indefinitely(self):
+        from application.main_window import StereoWaveHeightApplication
+        app=self._gui_calibration_harness();app.common_fov_state="COMPUTING_COMMON_FOV"
+        app._common_fov_started_at=100.0;app._common_fov_timeout_seconds=10.0;app._fail_common_fov=mock.Mock()
+        self.assertTrue(StereoWaveHeightApplication._check_common_fov_timeout(app,110.1))
+        app._fail_common_fov.assert_called_once_with("TIMEOUT_AFTER_10_SECONDS")
 
     def test_validated_calibration_completion_keeps_validated_mode(self):
         from application.main_window import StereoWaveHeightApplication

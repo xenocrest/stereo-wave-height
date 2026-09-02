@@ -55,6 +55,8 @@ class StereoWaveHeightApplication:
         self.active_reference_path=self.session.active_reference_path
         self.calibration_data:dict[str,Any]|None=None;self.common_fov:CommonFov|None=None;self.common_fov_file:Path|None=None;self.mapping_file:Path|None=None
         self.common_fov_state="NO_VIDEO"
+        self._common_fov_generation=0; self._common_fov_started_at:float|None=None
+        self._common_fov_timeout_seconds=10.0; self._preview_request_generation=0
         self.pending_demo_calibration:tuple[dict[str,Any],Path]|None=None
         self.crop_origin=(0,0)
 
@@ -75,7 +77,7 @@ class StereoWaveHeightApplication:
             meta = probe_video(Path(selected), self.ffmpeg); self.metadata[key] = meta
             role="LEFT" if key.startswith("left") else "RIGHT"
             self.variables[key + "_meta"].set(f"角色：{role}　文件：{Path(selected).name}\n分辨率：{meta.width} × {meta.height}　FPS：{meta.fps:.3f}　时长：{meta.duration_sec:.3f} s")
-            if key == "right_measurement": self.timeline.configure(to=meta.duration_sec); self._show_video_frame(0.0)
+            if key == "right_measurement": self.timeline.configure(to=meta.duration_sec)
             if key.endswith("measurement"):
                 self._invalidate_reference("VIDEO_PAIR_CHANGED")
                 self.water_roi=None;self.common_fov=None;self.common_fov_file=None
@@ -83,6 +85,7 @@ class StereoWaveHeightApplication:
                 self.input_state.mark_measurement_video("left" if key.startswith("left") else "right")
                 self._ensure_common_fov()
                 self._refresh_step_state()
+                if key == "right_measurement":self._request_initial_preview(Path(selected))
             self._log(f"selected {key}: {selected}")
         except Exception as error: messagebox.showerror(self.title, f"视频读取失败。请确认所选文件是受支持且未损坏的本地视频。\n\n{error}")
 
@@ -107,6 +110,14 @@ class StereoWaveHeightApplication:
         if path:
             try: self._show_pil(extract_frame(Path(path), time_sec, self.ffmpeg))
             except Exception as error: self._log(f"preview error: {error}")
+
+    def _request_initial_preview(self,path:Path)->None:
+        """Decode the first preview away from Tk's event loop."""
+        self._preview_request_generation+=1;generation=self._preview_request_generation
+        def work()->None:
+            try:self._worker_messages.put(("initial_preview_ready",(generation,extract_frame(path,0.0,self.ffmpeg))))
+            except Exception as error:self._worker_messages.put(("preview_error",str(error)))
+        threading.Thread(target=work,daemon=True).start()
 
     def _preview_calibration(self, key: str) -> None:
         path = self.variables[key].get()
@@ -182,32 +193,48 @@ class StereoWaveHeightApplication:
         """Authoritatively resolve common FOV whenever calibration and pair exist."""
         left,right=self.metadata.get("left_measurement"),self.metadata.get("right_measurement")
         if left is None or right is None:
-            self.common_fov_state="NO_VIDEO"
+            self.common_fov_state="WAITING_FOR_VIDEO_PAIR"
             return
         if self.calibration_data is None:
             self.common_fov_state="COMMON_FOV_FAILED"
             if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("双目公共区域计算失败：当前会话没有可读取的标定参数。")
             self._refresh_step_state()
             return
-        self.common_fov_state="VIDEO_PAIR_READY"
+        if self.common_fov_state=="COMPUTING_COMMON_FOV":return
+        self._log("COMMON_FOV_REQUESTED");self._log("CALIBRATION_RESOLVED");self._log("VIDEO_PAIR_READY")
         self._refresh_common_fov()
 
     def _refresh_common_fov(self)->None:
         if self.calibration_data is None:return
         left,right=self.metadata.get("left_measurement"),self.metadata.get("right_measurement")
         if left is None or right is None:return
-        self.common_fov_state="COMMON_FOV_COMPUTING"
+        self.common_fov_state="COMPUTING_COMMON_FOV";self._common_fov_generation+=1
+        generation=self._common_fov_generation;self._common_fov_started_at=time.perf_counter()
         if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("正在计算双目公共区域…")
+        self._log("COMMON_FOV_WORKER_STARTED");self._log("RECTIFICATION_STARTED")
+        calibration=dict(self.calibration_data);image_size=(right.width,right.height)
+        def work()->None:
+            started=time.perf_counter()
+            try:
+                if (left.width,left.height)!=(right.width,right.height):raise ValueError("LEFT/RIGHT measurement video sizes differ")
+                common=compute_common_fov(calibration,image_size,safety_margin_px=0)
+                self._worker_messages.put(("common_fov_ready",(generation,common,(time.perf_counter()-started)*1000.0)))
+            except Exception as error:self._worker_messages.put(("common_fov_error",(generation,f"{type(error).__name__}: {error}")))
+        threading.Thread(target=work,daemon=True).start()
+
+    def _apply_common_fov(self,common:CommonFov,compute_ms:float)->None:
         try:
-            if (left.width,left.height)!=(right.width,right.height):raise ValueError("LEFT/RIGHT measurement video sizes differ")
-            common=compute_common_fov(self.calibration_data,(right.width,right.height),safety_margin_px=0)
+            self._log("VALID_MASK_READY");self._log("COMMON_MASK_READY");self._log("COMMON_BBOX_READY");self._log("COMMON_FOV_CALLBACK_POSTED")
             _mask,metadata=save_common_fov(common,self.session.directory/"common_fov")
             self.mapping_file=save_canonical_cam1_wass_mapping(self.calibration_data,self.session.directory/"common_fov"/"canonical_cam1_wass_mapping.yaml")
             saved_metadata=yaml.safe_load(metadata.read_text(encoding="utf-8"));self.common_fov=common;self.common_fov_file=metadata;self.session.set_common_fov(saved_metadata,metadata)
             self.common_fov_state="COMMON_FOV_READY"
+            total_ms=(time.perf_counter()-self._common_fov_started_at)*1000.0 if self._common_fov_started_at else compute_ms
+            self._common_fov_started_at=None
             self.water_roi=None;self._invalidate_reference("COMMON_FOV_CHANGED")
             if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共有效区域已识别：{common.metadata['coverage_ratio']*100:.1f}%　请在公共区域内框选水面测量区域。")
             self._log(f"AUTO_STEREO_COMMON_FOV_READY {common.identity} coverage={common.metadata['coverage_ratio']:.6f} bbox={common.bbox}")
+            self._log(f"COMMON_FOV_GUI_APPLIED compute_ms={compute_ms:.3f} total_gui_latency_ms={total_ms:.3f}")
             if self.variables.get("right_measurement") and self.variables["right_measurement"].get():self._show_video_frame(self.current_time)
         except Exception as error:
             self.common_fov=None;self.common_fov_file=None
@@ -215,6 +242,18 @@ class StereoWaveHeightApplication:
             if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共区域计算失败：{error}")
             self._log(f"common FOV failed: {error}")
         self._refresh_step_state();self._refresh_reference_controls()
+
+    def _fail_common_fov(self,message:str)->None:
+        self._common_fov_generation+=1;self._common_fov_started_at=None
+        self.common_fov=None;self.common_fov_file=None;self.common_fov_state="COMMON_FOV_FAILED"
+        if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("双目公共区域计算失败，请查看错误信息。")
+        self._log(f"COMMON_FOV_FAILED: {message}");self._refresh_step_state();self._refresh_reference_controls()
+
+    def _check_common_fov_timeout(self,now:float|None=None)->bool:
+        current=time.perf_counter() if now is None else now
+        if self.common_fov_state=="COMPUTING_COMMON_FOV" and self._common_fov_started_at is not None and current-self._common_fov_started_at>self._common_fov_timeout_seconds:
+            self._fail_common_fov("TIMEOUT_AFTER_10_SECONDS");return True
+        return False
 
     def _calibration_mode_changed(self) -> None:
         self.input_state.set_mode(self.variables["calibration_mode"].get())
@@ -250,7 +289,12 @@ class StereoWaveHeightApplication:
             self.variables["step1_status"].set("○ 未完成"); self.notebook.tab(self.step2_frame,state="disabled")
         inputs_ready=self.input_state.measurement_ready
         ready=inputs_ready and self.common_fov is not None
-        self.variables["step2_status"].set("✓ 左右测量视频及双目公共区域已准备" if ready else ("⚠ 左右视频已加载，等待双目公共区域" if inputs_ready else "○ 等待左右测量视频"))
+        if ready:step_status="✓ 左右测量视频及双目公共区域已准备"
+        elif self.common_fov_state=="COMPUTING_COMMON_FOV":step_status="● 正在计算双目公共区域…"
+        elif self.common_fov_state=="COMMON_FOV_FAILED":step_status="✕ 双目公共区域计算失败，请查看错误信息"
+        elif inputs_ready:step_status="● 左右视频已加载，正在启动双目公共区域计算…"
+        else:step_status="○ 等待左右测量视频"
+        self.variables["step2_status"].set(step_status)
         self.enter_measurement_button.configure(state=tk.NORMAL if ready else tk.DISABLED)
 
     def _enter_measurement(self) -> None:
@@ -308,6 +352,7 @@ class StereoWaveHeightApplication:
             self._last_status_refresh=now
             self.variables["run_status"].set(f"正在执行单帧三维解算… {time.perf_counter()-self.backend_started_at:.1f} s")
         self._poll_worker()
+        self._check_common_fov_timeout()
         if not self._closing:self._after_id=self.root.after(33,self._tick)
 
     def _start_roi_selection(self) -> None:
@@ -410,7 +455,19 @@ class StereoWaveHeightApplication:
     def _poll_worker(self) -> None:
         try: kind,payload=self._worker_messages.get_nowait()
         except queue.Empty: return
+        if kind=="initial_preview_ready":
+            generation,image=payload
+            if generation==self._preview_request_generation:self._show_pil(image)
+            return
         if kind == "preview_error": self._log(f"预览帧读取失败：{payload}"); return
+        if kind=="common_fov_ready":
+            generation,common,compute_ms=payload
+            if generation==self._common_fov_generation and self.common_fov_state=="COMPUTING_COMMON_FOV":self._apply_common_fov(common,compute_ms)
+            return
+        if kind=="common_fov_error":
+            generation,message=payload
+            if generation==self._common_fov_generation:self._fail_common_fov(message)
+            return
         if kind == "calibration_error":
             self.calibrate_button.configure(state=tk.NORMAL); self.variables["calibration_load_status"].set("✕ 双目标定失败")
             messagebox.showerror(self.title,f"双目标定未完成。请检查棋盘参数、视频清晰度和左右视频身份。\n\n{payload}"); return
