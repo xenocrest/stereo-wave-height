@@ -15,8 +15,9 @@ from PIL import Image, ImageDraw
 from scipy.spatial import ConvexHull, cKDTree
 
 from .mls import evaluate_holdout, quadratic_mls_predict
+from .constrained_full_domain import fit_constrained_surface
 
-OBSERVED, ESTIMATED, UNSUPPORTED = np.uint8(1), np.uint8(2), np.uint8(0)
+OBSERVED, ESTIMATED, UNSUPPORTED, ESTIMATED_GLOBAL_MODEL = np.uint8(1), np.uint8(2), np.uint8(0), np.uint8(3)
 
 
 def scale_dense_height_for_png(dense_h: np.ndarray) -> np.ndarray:
@@ -252,6 +253,16 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
             diagnostics[int(flat_index)] = diagnostic
     dense_h = dense_h.reshape(image_height, width)
     status = status.reshape(image_height, width)
+    if bool(config.get("demo_global_completion", False)):
+        # Presentation-only last-resort fill.  Direct observations and local
+        # estimates always retain priority and provenance.
+        lo, hi = support_xy.min(axis=0), support_xy.max(axis=0)
+        span = np.maximum(hi - lo, 1e-12)
+        normalized = (support_xy - lo) / span
+        global_result = fit_constrained_surface(normalized, height, output_shape=(image_height, width))
+        missing = roi & (status == UNSUPPORTED)
+        dense_h[missing] = global_result.height_m[missing] * 1000.0
+        status[missing] = ESTIMATED_GLOBAL_MODEL
     output = Path(config["output_directory"]); output.mkdir(parents=True, exist_ok=True)
     stem = str(config.get("artifact_stem", "dense_height_case2"))
     metadata = {
@@ -262,7 +273,7 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
         "calibrated_baseline_m": float(frozen["calibrated_baseline_m"]),
         "p90_spacing_m": p90, "maximum_gap_m": max_gap,
         "completion_rule": f"scene-local maximum gap = {float(config['completion']['maximum_gap_multiplier']):g} * frame P90 nearest-neighbor spacing",
-        "status_semantics": {"OBSERVED":"direct WASS observation","ESTIMATED":"ESTIMATED_LOCAL within support gate","UNSUPPORTED":"no defensible local support"},
+        "status_semantics": {"OBSERVED":"direct WASS observation","ESTIMATED":"ESTIMATED_LOCAL within support gate","ESTIMATED_GLOBAL_MODEL":"demo-only bounded global model","UNSUPPORTED":"no result"},
         "extrapolation_policy":"reject outside scene-local support distance/topology gate",
         "water_roi": roi_config,
     }
@@ -275,18 +286,19 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
     status_rgb = np.zeros((image_height, width, 3), dtype=np.uint8)
     status_rgb[status == OBSERVED] = (0, 180, 255)
     status_rgb[status == ESTIMATED] = (70, 210, 80)
+    status_rgb[status == ESTIMATED_GLOBAL_MODEL] = (80, 170, 220)
     status_rgb[roi & (status == UNSUPPORTED)] = (220, 50, 50)
     Image.fromarray(status_rgb, "RGB").save(output / f"{stem}_status.png")
     roi_count = int(roi.sum())
     counts = {name: int(np.count_nonzero(status[roi] == code)) for name, code in
-              (("observed", OBSERVED), ("estimated", ESTIMATED), ("unsupported", UNSUPPORTED))}
+              (("observed", OBSERVED), ("estimated", ESTIMATED), ("estimated_global_model", ESTIMATED_GLOBAL_MODEL), ("unsupported", UNSUPPORTED))}
     qa = evaluate_holdout(support_xy, height, holdout_ratio=0.01, maximum_test_points=50,
                           seed=20260829, radius_multiplier=float(config["mls"]["radius_multiplier"]),
                           sigma_multiplier=float(config["mls"]["sigma_multiplier"]),
                           minimum_points=int(config["mls"]["minimum_points"]),
                           maximum_neighbors=int(config["mls"]["maximum_neighbors"]),
                           maximum_condition_number=float(config["mls"]["maximum_condition_number"]))
-    target_names = {int(UNSUPPORTED): "UNSUPPORTED", int(OBSERVED): "OBSERVED", int(ESTIMATED): "ESTIMATED"}
+    target_names = {int(UNSUPPORTED): "UNSUPPORTED", int(OBSERVED): "OBSERVED", int(ESTIMATED): "ESTIMATED_LOCAL", int(ESTIMATED_GLOBAL_MODEL): "ESTIMATED_GLOBAL_MODEL"}
     target = None
     if config.get("case2_check_canonical_px") is not None:
         target_u, target_v = (int(v) for v in config["case2_check_canonical_px"])

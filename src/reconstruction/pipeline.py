@@ -123,6 +123,9 @@ class ReconstructionPipeline:
                 original_right = computational_left if swapped else computational_right
                 original_left.save(rectified_dir / f"{frame_id}_left.png")
                 original_right.save(rectified_dir / f"{frame_id}_right.png")
+            # P0cam is the computational-left camera.  WASS swaps the input
+            # roles when required by baseline direction; after that swap the
+            # computational-left camera is the original input RIGHT/cam1.
             pixel_role = "input_right" if swapped else "input_left"
             correspondence = project_wass_points(
                 cloud.points_camera,

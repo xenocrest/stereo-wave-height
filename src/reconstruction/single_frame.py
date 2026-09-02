@@ -47,6 +47,7 @@ class DenseHeightSpec:
     method: str = "mls_quadratic"
     max_gap_spacing_multiplier: float = 3.0
     common_fov_file: Path | None = None
+    demo_global_completion: bool = False
 
     def __post_init__(self) -> None:
         if self.enabled and self.mapping_file is None:
@@ -457,7 +458,8 @@ class SingleFrameMeasurementBackend:
                 requested_timestamp_s=float(request.target_time_s or 0.0),actual_timestamp_s=actual,fallback_frame_offset=0,
                 left_frame_id=str(pair_metadata["left_frame_id"]),right_frame_id=str(pair_metadata["right_frame_id"]),sync_residual_ms=float(pair_metadata["pair_residual_s"])*1000,
                 calibration_id=str(request.calibration_id),calibration_package_hash=request.calibration_package_hash,video_pair_id=str(request.video_pair_id),
-                roi=request.dense_height.water_roi or {},xyz_point_count=int(frame["point_count"]),source_videos={"left":str(request.left_video or request.left_image),"right":str(request.right_video or request.right_image)},surface_distance_threshold_m=request.surface_distance_threshold_m)
+                roi=request.dense_height.water_roi or {},xyz_point_count=int(frame["point_count"]),source_videos={"left":str(request.left_video or request.left_image),"right":str(request.right_video or request.right_image)},surface_distance_threshold_m=request.surface_distance_threshold_m,
+                mapping_file=request.dense_height.mapping_file,allow_demo_quality_warning=request.dense_height.demo_global_completion)
             except Exception as error:
                 message=str(error);status=next((name for name in ("REFERENCE_SUPPORT_INSUFFICIENT","REFERENCE_PLANE_FIT_FAILED","REFERENCE_GEOMETRY_QA_FAILED") if name in message),"REFERENCE_PLANE_FIT_FAILED")
                 failed=SingleFrameMeasurementResult(status=status,requested_time_s=request.target_time_s,left_timestamp_s=selection.left.timestamp_s if selection else None,right_timestamp_s=selection.right.timestamp_s if selection else None,pair_time_error_ms=selection.residual_s*1000 if selection else 0,left_frame_id=str(pair_metadata["left_frame_id"]),right_frame_id=str(pair_metadata["right_frame_id"]),calibration_source=str(request.calibration_source),xyz_point_count=int(frame["point_count"]),pixel_xyz_count=int(frame["pixel_xyz_correspondence_count"]),reference_plane=None,reference_plane_source=None,height_statistics=None,plane_rms_m=None,wass_seconds=wass_seconds,qa_status=status,physical_accuracy_status="PHYSICAL_ACCURACY_NOT_ESTABLISHED",warnings=(message,),output_paths={"selected_pair":"selected_pair","pointcloud":"reconstruction/pointcloud","pixel_xyz":"reconstruction/pixel_xyz","result_json":"single_frame_result.json","report":"report/single_frame_report.md"},total_seconds=wass_seconds,solve_mode="reference")
@@ -491,13 +493,15 @@ class SingleFrameMeasurementBackend:
                     "observation_gate_px": request.dense_height.observation_gate_px,
                     "water_roi": request.dense_height.water_roi or {"type": "observed_convex_hull"},
                     "completion": {"maximum_gap_multiplier": request.dense_height.max_gap_spacing_multiplier},
+                    "demo_global_completion": request.dense_height.demo_global_completion,
                     "mls": {"radius_multiplier": 6.0, "sigma_multiplier": 3.0, "minimum_points": 12,
                             "maximum_neighbors": 64, "maximum_condition_number": 1e8},
                     "output_directory": str(dense_output), "artifact_stem": "dense_height",
                 })
                 dense_seconds = time.perf_counter() - dense_started
                 status_counts = dense_result["status"]
-                valid_count = int(status_counts["observed"]["count"] + status_counts["estimated"]["count"])
+                global_count = int(status_counts.get("estimated_global_model", {}).get("count", 0))
+                valid_count = int(status_counts["observed"]["count"] + status_counts["estimated"]["count"] + global_count)
                 dense_summary = {
                     "status": "COMPLETED", "roi_type": (request.dense_height.water_roi or {"type": "observed_convex_hull"})["type"],
                     "water_roi":request.dense_height.water_roi,
@@ -505,6 +509,8 @@ class SingleFrameMeasurementBackend:
                     "roi_pixel_count": dense_result["water_roi_pixel_count"],
                     "observed_count": status_counts["observed"]["count"],
                     "estimated_count": status_counts["estimated"]["count"],
+                    "estimated_local_count": status_counts["estimated"]["count"],
+                    "estimated_global_model_count": global_count,
                     "unsupported_count": status_counts["unsupported"]["count"],
                     "valid_height_count": valid_count, "generation_time_sec": dense_seconds,
                     "artifact_paths": {"npz": "dense_height/dense_height.npz", "height_png": "dense_height/dense_height.png",

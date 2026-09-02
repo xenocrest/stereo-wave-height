@@ -51,12 +51,14 @@ $Resource005 = Join-Path $App "resources\HomeTank_005"
 $RuntimeWass = Join-Path $App "runtime\wass"
 $RuntimeFfmpeg = Join-Path $App "runtime\ffmpeg"
 New-Item -ItemType Directory -Force -Path $Resource, $Resource005, (Join-Path $Resource "manual_reference"), (Join-Path $Resource "wass_config"), $RuntimeWass, $RuntimeFfmpeg | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $Resource005 "wass_config") | Out-Null
 
 Copy-Item -LiteralPath (Join-Path $Repo "packaging\resources\HomeTank_004\single_frame_dense_template.yaml") -Destination $Resource
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_004\calibration_result.yaml") -Destination $Resource
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_004\static_reference_plane.yaml") -Destination $Resource
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_004\manual_reference\frozen_cam1_validation_mapping.yaml") -Destination (Join-Path $Resource "manual_reference")
 Copy-Item -Path (Join-Path $WassConfig "*") -Destination (Join-Path $Resource "wass_config") -Recurse
+Copy-Item -Path (Join-Path $WassConfig "*") -Destination (Join-Path $Resource005 "wass_config") -Recurse
 Copy-Item -Path (Join-Path $WassBin "*") -Destination $RuntimeWass -Recurse
 Copy-Item -LiteralPath $PolicyStereo -Destination (Join-Path $RuntimeWass "wass_stereo_policy.exe")
 Copy-Item -LiteralPath (Join-Path $Repo "packaging\runtime_binding.json") -Destination (Join-Path $RuntimeWass "runtime_binding.json")
@@ -66,6 +68,7 @@ Copy-Item -LiteralPath (Join-Path $Repo "DEMO_RUN.md") -Destination $App
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\calibration_adaptive\adaptive_calibration.yaml") -Destination $Resource005
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\DEMO_READINESS_REPORT.md") -Destination $Resource005
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_run_template.yaml") -Destination $Resource005
+Copy-Item -LiteralPath (Join-Path $Repo "packaging\resources\HomeTank_005\single_frame_dense_template.yaml") -Destination $Resource005
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_reference_artifact.yaml") -Destination $Resource005
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_full_pixel_config.yaml") -Destination $Resource005
 Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\calibrations") -Destination $Resource005 -Recurse

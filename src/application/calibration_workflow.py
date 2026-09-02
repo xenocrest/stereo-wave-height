@@ -48,8 +48,12 @@ def calibrate_from_videos(
         objects.append(spec.object_points_m())
         left_points.append(ld.corners_px)
         right_points.append(rd.corners_px)
-    if len(objects) < 6:
-        raise RuntimeError(f"有效同步标定视图不足：检测到 {len(objects)} 组，至少需要 6 组。请检查棋盘参数、清晰度和左右同步画面。")
+    # Four complete paired poses are sufficient for OpenCV to produce finite
+    # candidate geometry for the GUI's explicitly non-production demo route.
+    # Quality gates still decide whether that candidate is validated; sparse
+    # capture coverage is therefore diagnostic, not an unconditional UI exit.
+    if len(objects) < 4:
+        raise RuntimeError(f"有效同步标定视图不足：检测到 {len(objects)} 组，至少需要 4 组才能求解演示候选。请检查棋盘参数、清晰度和左右同步画面。")
     result = calibrate_stereo_official(
         objects, left_points, right_points, (left_meta.width, left_meta.height),
         square_size_m=spec.square_size_m,

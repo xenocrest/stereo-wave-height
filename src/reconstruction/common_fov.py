@@ -119,6 +119,43 @@ def save_common_fov(value: CommonFov, directory: Path) -> tuple[Path, Path]:
     return mask_path, metadata_path
 
 
+def save_canonical_cam1_wass_mapping(calibration: dict[str, Any], destination: Path) -> Path:
+    """Save the exact canonical-cam1 -> WASS computational-cam0 mapping.
+
+    The fixed HomeTank geometry makes WASS swap the input cameras.  Its
+    computational cam0 is therefore input RIGHT/cam1.  WASS receives images
+    already undistorted by prepare and rectifies with zero distortion.
+    """
+    width, height = _image_size(calibration)
+    k0, d0 = _matrix(calibration, 0, "K"), _matrix(calibration, 0, "D")
+    k1, d1 = _matrix(calibration, 1, "K"), _matrix(calibration, 1, "D")
+    stereo, policy = calibration["stereo"], calibration.get("rectification", {})
+    r = np.asarray(stereo["R_right_from_left"], dtype=np.float64)
+    t = np.asarray(stereo["T_right_from_left_m"], dtype=np.float64).reshape(3, 1)
+    swapped_r, swapped_t = r.T, -r.T @ t
+    alpha = float(policy.get("alpha", 1.0))
+    flags = cv2.CALIB_ZERO_DISPARITY if str(policy.get("flags", "")).upper() == "CALIB_ZERO_DISPARITY" else 0
+    rr, _r_other, pp, _p_other, _q, _roi0, _roi1 = cv2.stereoRectify(
+        k1, np.zeros_like(d1), k0, np.zeros_like(d0), (width, height), swapped_r, swapped_t,
+        flags=flags, alpha=alpha,
+    )
+    payload = {
+        "schema_version": 1,
+        "status": "GENERATED_FROM_SELECTED_FIXED_CALIBRATION",
+        "coordinate_mapping": "canonical_cam1_to_wass_rectified_computational_cam0",
+        "wass_role_mapping": {"computational_cam0": "input_right_cam1", "auto_swap_required": True},
+        "image_size_px": [width, height],
+        "prepare_undistortion": {"K1": k1.tolist(), "D1": d1.reshape(-1).tolist()},
+        "stereo_rectification": {
+            "input_distortion": "zero_after_prepare", "policy": {"alpha": alpha, "zero_disparity": bool(flags)},
+            "R_computational_cam0": rr.tolist(), "P_computational_cam0": pp.tolist(),
+        },
+    }
+    destination = Path(destination); destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8")
+    return destination
+
+
 def load_common_fov(metadata_path: Path) -> CommonFov:
     path = Path(metadata_path); data = yaml.safe_load(path.read_text(encoding="utf-8"))
     with np.load(path.parent / data["mask_artifact"]) as payload:

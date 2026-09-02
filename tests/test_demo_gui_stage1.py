@@ -8,7 +8,7 @@ from unittest import mock
 from application.backend_runner import BackendResultError, parse_backend_result
 from application.backend_runner import FrozenBackendRunner, backend_command
 from application.runtime_paths import resolve_runtime_paths
-from application.input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, GuidedInputState
+from application.input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, GuidedInputState, load_calibration_selection
 from application.fallback import FALLBACK_FRAME_OFFSETS, run_bounded_fallback
 from application.video_tools import LatestFrameDecoder
 from process_utils import hidden_process_kwargs
@@ -67,9 +67,19 @@ class DemoGuiStage1Tests(unittest.TestCase):
         repository=Path(__file__).resolve().parents[1]
         development=resolve_runtime_paths(repository,frozen=False)
         packaged=resolve_runtime_paths(executable=Path("C:/portable/StereoWaveHeightDemo/StereoWaveHeightDemo.exe"),frozen=True)
-        self.assertEqual(development.experiment,repository/"experiments/real_video/HomeTank_004")
-        self.assertEqual(packaged.experiment,Path("C:/portable/StereoWaveHeightDemo/resources/HomeTank_004"))
+        self.assertEqual(development.experiment,repository/"experiments/real_video/HomeTank_005")
+        self.assertEqual(packaged.experiment,Path("C:/portable/StereoWaveHeightDemo/resources/HomeTank_005"))
         self.assertEqual(packaged.ffmpeg,Path("C:/portable/StereoWaveHeightDemo/runtime/ffmpeg/ffmpeg.exe"))
+
+    def test_demo_only_calibration_package_loads_without_relaxing_production_status(self):
+        repository=Path(__file__).resolve().parents[1]
+        manifest=repository/"experiments/real_video/HomeTank_005/calibrations/HomeTank_005_demo_only_v1/manifest.yaml"
+        calibration,path,mode=load_calibration_selection(manifest)
+        self.assertEqual(mode,"DEMO_ESTIMATION_MODE")
+        self.assertEqual(calibration["status"],"CALIBRATION_OPERATIONAL_DOMAIN_FAIL")
+        self.assertEqual(path.name,"opencv_calibration.yaml")
+        state=GuidedInputState();state.mark_calibration_ready(operating_mode=mode)
+        self.assertTrue(state.calibration_ready);self.assertEqual(state.operating_mode,"DEMO_ESTIMATION_MODE")
 
     def test_backend_command_switches_to_packaged_executable_mode(self):
         config=Path("C:/request.yaml")

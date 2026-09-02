@@ -31,16 +31,24 @@ def _inside_polygon(u:np.ndarray,v:np.ndarray,points:list[list[float]])->np.ndar
 def fit_reference_artifact(pixel_xyz_path:str|Path, *, reference_id:str,requested_timestamp_s:float,actual_timestamp_s:float,
         fallback_frame_offset:int,left_frame_id:str,right_frame_id:str,sync_residual_ms:float,calibration_id:str,
         calibration_package_hash:str|None,video_pair_id:str,roi:dict[str,Any],xyz_point_count:int,
-        source_videos:dict[str,str],surface_distance_threshold_m:float)->dict[str,Any]:
-    data=np.load(pixel_xyz_path);u,v,xyz=data["u_px"],data["v_px"],data["xyz_m"]
+        source_videos:dict[str,str],surface_distance_threshold_m:float,mapping_file:str|Path|None=None,
+        allow_demo_quality_warning:bool=False)->dict[str,Any]:
+    with np.load(pixel_xyz_path) as data:
+        u,v,xyz=data["u_px"].copy(),data["v_px"].copy(),data["xyz_m"].copy()
     if roi.get("type")!="polygon" or len(roi.get("points",[]))<3:raise ValueError("REFERENCE_SUPPORT_INSUFFICIENT: polygon water ROI required")
-    selected=_inside_polygon(u,v,roi["points"]);points=np.asarray(xyz[selected],float)
+    polygon=roi["points"]
+    if roi.get("coordinate_system")=="canonical_cam1" and mapping_file is not None:
+        from surface_completion.dense_map import canonical_to_rectified
+        mapping=yaml.safe_load(Path(mapping_file).read_text(encoding="utf-8"))
+        polygon=canonical_to_rectified(np.asarray(polygon,float),mapping).tolist()
+    selected=_inside_polygon(u,v,polygon);points=np.asarray(xyz[selected],float)
     if len(points)<12:raise ValueError("REFERENCE_SUPPORT_INSUFFICIENT: fewer than 12 direct observations in ROI")
     extent=points.max(0)-points.min(0)
     if np.count_nonzero(extent>1e-6)<2 or np.linalg.matrix_rank(points-points.mean(0),tol=1e-9)<2:raise ValueError("REFERENCE_GEOMETRY_QA_FAILED: spatial support is degenerate")
     fit=fit_plane_orthogonal(points);normal=np.asarray(fit.normal,float);offset=float(fit.offset)
     if not np.all(np.isfinite(normal)) or not np.isfinite(offset) or not np.isfinite(fit.residual_rmse):raise ValueError("REFERENCE_PLANE_FIT_FAILED")
-    if fit.residual_rmse>surface_distance_threshold_m:raise ValueError("REFERENCE_GEOMETRY_QA_FAILED: plane RMS exceeds existing surface threshold")
+    rms_warning=fit.residual_rmse>surface_distance_threshold_m
+    if rms_warning and not allow_demo_quality_warning:raise ValueError("REFERENCE_GEOMETRY_QA_FAILED: plane RMS exceeds existing surface threshold")
     xy=points[:,:2];span=np.maximum(xy.max(0)-xy.min(0),1e-12);normalized=(xy-xy.min(0))/span;cells={(min(2,int(v*3)),min(2,int(u*3))) for u,v in normalized};cov=np.cov(xy,rowvar=False);eigen=np.linalg.eigvalsh(cov);anisotropy=float(eigen[0]/max(eigen[-1],1e-18));weak=len(cells)<4 or anisotropy<.02
     return {"schema_version":"1.0","status":"REFERENCE_PLANE_READY","reference_id":reference_id,
       "source":"user_selected_reference_frame_WASS_final_XYZ_ROI_plane_fit","created_at":datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds"),
@@ -51,7 +59,7 @@ def fit_reference_artifact(pixel_xyz_path:str|Path, *, reference_id:str,requeste
       "source_videos":source_videos,"canonical_convention":CANONICAL_CONVENTION,"roi":roi,"roi_id":roi_identity(roi),
       "plane":{"model":"aX+bY+cZ+d=0","a":float(normal[0]),"b":float(normal[1]),"c":float(normal[2]),"d":offset,"normal":normal.tolist(),"offset_m":offset},
       "unit":"m","plane_rms_m":float(fit.residual_rmse),"support_count":len(points),"xyz_point_count":xyz_point_count,
-      "reference_confidence":"MEDIUM" if weak else "HIGH","reference_quality_reasons":["REFERENCE_PLANE_WEAK_SPATIAL_SUPPORT"] if weak else [],"support_spatial_occupancy_3x3":len(cells),"support_anisotropy_ratio":anisotropy,
+      "reference_confidence":"LOW" if rms_warning else ("MEDIUM" if weak else "HIGH"),"reference_quality_reasons":((["REFERENCE_PLANE_RMS_EXCEEDS_FORMAL_GATE"] if rms_warning else []) + (["REFERENCE_PLANE_WEAK_SPATIAL_SUPPORT"] if weak else [])),"support_spatial_occupancy_3x3":len(cells),"support_anisotropy_ratio":anisotropy,
       "spatial_extent_m":{"x":[float(points[:,0].min()),float(points[:,0].max())],"y":[float(points[:,1].min()),float(points[:,1].max())],"z":[float(points[:,2].min()),float(points[:,2].max())]},
       "height_definition":"signed orthogonal distance to user-selected reference plane"}
 

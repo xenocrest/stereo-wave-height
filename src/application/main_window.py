@@ -17,11 +17,13 @@ from .video_tools import LatestFrameDecoder, VideoMetadata, extract_frame, probe
 from .visualization import DenseMeasurementView, DisplayTransform, make_height_overlay
 from .export import delete_session, export_session
 from .runtime_paths import resolve_runtime_paths
-from .input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, VIDEO_FORMAT_TEXT, GuidedInputState
+from .input_workflow import (CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, VIDEO_FORMAT_TEXT,
+                             GuidedInputState, load_calibration_selection)
 from .calibration_workflow import calibrate_from_videos
 from reconstruction.reference_frame import load_reference_artifact
 from reconstruction.reference_frame import file_identity
-from reconstruction.common_fov import CommonFov,compute_common_fov,save_common_fov,validate_roi
+from reconstruction.common_fov import (CommonFov,compute_common_fov,save_common_fov,
+                                       save_canonical_cam1_wass_mapping,validate_roi)
 
 
 class StereoWaveHeightApplication:
@@ -50,7 +52,7 @@ class StereoWaveHeightApplication:
         self._after_id: str | None=None; self._closing=False
         self._worker_messages: queue.Queue[tuple[str, Any]] = queue.Queue()
         self.active_reference_path=self.session.active_reference_path
-        self.calibration_data:dict[str,Any]|None=None;self.common_fov:CommonFov|None=None;self.common_fov_file:Path|None=None
+        self.calibration_data:dict[str,Any]|None=None;self.common_fov:CommonFov|None=None;self.common_fov_file:Path|None=None;self.mapping_file:Path|None=None
         self.crop_origin=(0,0)
 
     def _var(self, key: str, value: str = "") -> tk.StringVar:
@@ -118,11 +120,11 @@ class StereoWaveHeightApplication:
         path_text = filedialog.askopenfilename(title="选择已有双目标定结果", initialdir=self.experiment, filetypes=list(CALIBRATION_FILE_TYPES))
         if not path_text: return
         try:
-            data = yaml.safe_load(Path(path_text).read_text(encoding="utf-8"))
-            self._apply_calibration(data, Path(path_text))
+            data, calibration_path, operating_mode = load_calibration_selection(path_text)
+            self._apply_calibration(data, calibration_path, operating_mode=operating_mode)
         except Exception as error: messagebox.showerror(self.title,f"标定结果文件读取失败。\n请选择由本系统生成或兼容格式的双目标定 YAML 文件。\n\n{error}")
 
-    def _apply_calibration(self, data: dict[str, Any], path: Path) -> None:
+    def _apply_calibration(self, data: dict[str, Any], path: Path, *, operating_mode: str = "VALIDATED_MODE") -> None:
         if self.variables.get("calibration_path") and self.variables["calibration_path"].get()!=str(path):
             self._invalidate_reference("CALIBRATION_CHANGED");self.water_roi=None;self.common_fov=None;self.common_fov_file=None
         data=dict(data);data["calibration_id"]=file_identity(path,"cal");self.calibration_data=data
@@ -144,13 +146,18 @@ class StereoWaveHeightApplication:
             "⚠ 标定质量：不建议测量。当前误差超过项目既有质量门限，三维结果可能不可靠，建议重新标定。"
             if failed else "✓ 标定质量：通过现有项目质量检查。"
         )
-        if failed:
+        if failed and operating_mode != "DEMO_ESTIMATION_MODE":
             self.input_state.mark_calibration_failed()
             self.variables["calibration_load_status"].set("⚠ 标定 QA 已加载，但几何未通过；测量与公共视场已阻止")
             self.common_fov=None;self.common_fov_file=None
             self._log(f"loaded calibration QA limitation: {path}")
         else:
-            self.input_state.mark_calibration_ready();self._log(f"loaded calibration: {path}");self._refresh_common_fov()
+            self.input_state.mark_calibration_ready(operating_mode=operating_mode)
+            if operating_mode == "DEMO_ESTIMATION_MODE":
+                self.variables["calibration_quality"].set("⚠ 演示标定（几何精度未完成物理验证）；仅用于演示估计。")
+                self.variables["calibration_load_status"].set("✓ 演示标定已加载，可以进入步骤 2")
+                self.variables["app_state"].set("当前模式：演示估计（标定精度未完成物理验证）")
+            self._log(f"loaded calibration: {path} mode={operating_mode}");self._refresh_common_fov()
         self._refresh_step_state()
 
     def _refresh_common_fov(self)->None:
@@ -161,6 +168,7 @@ class StereoWaveHeightApplication:
             if (left.width,left.height)!=(right.width,right.height):raise ValueError("LEFT/RIGHT measurement video sizes differ")
             common=compute_common_fov(self.calibration_data,(right.width,right.height),safety_margin_px=0)
             _mask,metadata=save_common_fov(common,self.session.directory/"common_fov")
+            self.mapping_file=save_canonical_cam1_wass_mapping(self.calibration_data,self.session.directory/"common_fov"/"canonical_cam1_wass_mapping.yaml")
             saved_metadata=yaml.safe_load(metadata.read_text(encoding="utf-8"));self.common_fov=common;self.common_fov_file=metadata;self.session.set_common_fov(saved_metadata,metadata)
             self.water_roi=None;self._invalidate_reference("COMMON_FOV_CHANGED")
             if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共有效区域已识别：{common.metadata['coverage_ratio']*100:.1f}%　请在公共区域内框选水面测量区域。")
@@ -348,7 +356,7 @@ class StereoWaveHeightApplication:
                 record=self.runner.run_with_fallback(Path(left),Path(right),self.current_time,output,self.session.log_path,
                     Path(self.variables["calibration_path"].get()),frame_period_sec=1.0/fps,
                     water_roi=self._roi_mapping(),solve_mode=solve_mode,reference_artifact=self.active_reference_path,
-                    common_fov_file=self.common_fov_file)
+                    common_fov_file=self.common_fov_file,mapping_file=self.mapping_file)
                 record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put((("reference_success" if solve_mode=="reference" else "success"),(record,time.perf_counter()-started)))
             except Exception as error: self._worker_messages.put((("reference_error" if solve_mode=="reference" else "error"),str(error)))
         threading.Thread(target=work,daemon=True).start()
@@ -362,7 +370,18 @@ class StereoWaveHeightApplication:
             messagebox.showerror(self.title,f"双目标定未完成。请检查棋盘参数、视频清晰度和左右视频身份。\n\n{payload}"); return
         if kind == "calibration_success":
             self.calibrate_button.configure(state=tk.NORMAL)
-            data=yaml.safe_load(payload.result_path.read_text(encoding="utf-8")); self._apply_calibration(data,payload.result_path)
+            data=yaml.safe_load(payload.result_path.read_text(encoding="utf-8"))
+            stereo=data["stereo"];thresholds=CalibrationQualityThresholds()
+            failed=(float(stereo["rms_px"])>thresholds.maximum_stereo_rms_px or
+                    float(stereo.get("symmetric_epipolar_rms_px",float("inf")))>thresholds.maximum_epipolar_rms_px)
+            mode="VALIDATED_MODE"
+            if failed:
+                if not messagebox.askyesno(self.title,"标定几何未通过正式精度验证，可保存为演示估计标定并继续。\n\n继续用于演示？"):
+                    self._apply_calibration(data,payload.result_path);return
+                mode="DEMO_ESTIMATION_MODE"
+                data["status"]="DEMO_ONLY";data["approved_for_wass"]=False
+                payload.result_path.write_text(yaml.safe_dump(data,sort_keys=False,allow_unicode=True),encoding="utf-8")
+            self._apply_calibration(data,payload.result_path,operating_mode=mode)
             self.variables["calibration_load_status"].set(f"✓ 双目标定完成（{payload.paired_views} 组有效视图），可以进入步骤 2"); return
         self.backend_running=False; self.backend_started_at=None; self._refresh_reference_controls()
         if kind=="reference_error":self.variables["run_status"].set("参考面建立失败");self._log(f"reference failed: {payload}");messagebox.showerror(self.title,f"参考帧解算失败，原有有效参考面已保留。\n\n{payload}");return
@@ -390,7 +409,9 @@ class StereoWaveHeightApplication:
         reference=s.get("reference_metadata") or {};reference_line=f"\n参考：{reference.get('actual_timestamp_s','LEGACY_REFERENCE_UNSPECIFIED')} s | ID：{s.get('reference_id','N/A')}"
         return (f"目标时刻：{s.get('requested_target_time_sec',s.get('requested_time_s'))} s\n左右实际时刻：{s.get('left_timestamp_s')} / {s.get('right_timestamp_s')} s\n同步残差：{s.get('pair_time_error_ms')} ms{fallback}{reference_line}\n"
                 f"状态：{s.get('status')}\nXYZ 点数：{s.get('xyz_point_count')}\n测量 ROI：{roi}\n直接双目观测（OBSERVED）：{d.get('observed_count')} ({pct(d.get('observed_count',0))})\n"
-                f"空间曲面估算（ESTIMATED）：{d.get('estimated_count')} ({pct(d.get('estimated_count',0))})\n无可靠结果（UNSUPPORTED）：{d.get('unsupported_count')} ({pct(d.get('unsupported_count',0))})\n"
+                f"局部估算（ESTIMATED_LOCAL）：{d.get('estimated_local_count',d.get('estimated_count'))} ({pct(d.get('estimated_local_count',d.get('estimated_count',0)))})\n"
+                f"全局模型估算（ESTIMATED_GLOBAL_MODEL）：{d.get('estimated_global_model_count',0)} ({pct(d.get('estimated_global_model_count',0))})\n"
+                f"无可靠结果（UNSUPPORTED）：{d.get('unsupported_count')} ({pct(d.get('unsupported_count',0))})\n"
                 f"高度 最小/最大/平均：{mm(h.get('minimum'))} / {mm(h.get('maximum'))} / {mm(h.get('mean'))} mm\nWASS：{s.get('wass_seconds')} s | 稠密图：{d.get('generation_time_sec')} s | 总计：{s.get('total_seconds')} s")
 
     def _show_record(self,record:MeasurementRecord,state:str="MEASUREMENT_RESULT") -> None:

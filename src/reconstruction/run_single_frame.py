@@ -42,6 +42,7 @@ def load_request(path: str | Path) -> SingleFrameMeasurementRequest:
         water_roi=dense_data.get("water_roi"), observation_gate_px=float(dense_data.get("observation_gate_px", 2.0)),
         method=str(completion.get("method", "mls_quadratic")),
         max_gap_spacing_multiplier=float(completion.get("max_gap_spacing_multiplier", 3.0)),
+        demo_global_completion=bool(dense_data.get("demo_global_completion", False)),
         common_fov_file=_path(base,dense_data.get("common_fov_file")),
     )
     rotations = inputs.get("canonical_rotation_deg", {})

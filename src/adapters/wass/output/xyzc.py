@@ -38,7 +38,12 @@ def read_wass_xyzc(path: str | Path) -> WassXyzcPointCloud:
             raise ValueError("xyzC header is truncated")
         point_count = struct.unpack("<I", count_raw)[0]
         limits = np.fromfile(stream, dtype="<f8", count=6)
-        rotation_inverse = np.fromfile(stream, dtype="<f8", count=9).reshape(3, 3).T
+        # PovMesh writes the matrix row-by-row.  The upstream MATLAB reader
+        # uses ``fread([3,3])'``: fread first constructs a column-major matrix
+        # and the trailing transpose restores the original row-major matrix.
+        # NumPy reshape is already row-major, so transposing here a second time
+        # corrupts the camera-frame coordinates and therefore pixel projection.
+        rotation_inverse = np.fromfile(stream, dtype="<f8", count=9).reshape(3, 3)
         translation_inverse = np.fromfile(stream, dtype="<f8", count=3)
         quantized = np.fromfile(stream, dtype="<u2", count=3 * point_count)
         trailing = stream.read(1)

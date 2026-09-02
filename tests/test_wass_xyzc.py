@@ -42,6 +42,15 @@ class WassXyzcTests(unittest.TestCase):
             )
             np.testing.assert_allclose(aligned, [[0.0, 0.0, 0.0]])
 
+    def test_row_major_inverse_rotation_matches_upstream_matlab_loader(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "mesh_cam.xyzC"
+            limits = np.ones(6, dtype="<f8"); limits[3:] = 0.0
+            rotation = np.array([[0., -1., 0.], [1., 0., 0.], [0., 0., 1.]], dtype="<f8")
+            path.write_bytes(struct.pack("<I", 1) + limits.tobytes() + rotation.ravel().tobytes()
+                             + np.zeros(3, dtype="<f8").tobytes() + np.array([2, 3, 4], dtype="<u2").tobytes())
+            np.testing.assert_allclose(read_wass_xyzc(path).points_camera, [[-3., 2., 4.]])
+
     def test_scale_must_be_explicit(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "mesh_cam.xyzC"

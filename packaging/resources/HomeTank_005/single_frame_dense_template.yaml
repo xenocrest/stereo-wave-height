@@ -1,0 +1,25 @@
+schema_version: '1.0'
+input_mode: video_time
+synchronization_source: HomeTank_005_PTS_initial_relation_demo_warning
+input:
+  left_video: USER_SELECTED
+  right_video: USER_SELECTED
+  target_time_s: 9.0
+  canonical_rotation_deg: {left: 180, right: 0}
+  ffmpeg_executable: ../../runtime/ffmpeg/ffmpeg.exe
+synchronization: {a: 1.0, b_s: -0.0024, source: HomeTank_005 intake PTS relation, confidence: WARNING, frame_level_established: false, event_count: 2, fit_residual_rmse_s: 0.0, fit_residual_max_abs_s: 0.0}
+on_demand_sync_tolerance: {status: ON_DEMAND_SYNC_TOLERANCE_ESTABLISHED, strict_max_abs_frames: 0, warning_max_abs_frames: 1, evidence_source: engineering demo R0 only}
+calibration: {source: calibrations/HomeTank_005_demo_only_v1/opencv_calibration.yaml, quality_mode: diagnostic_allow_failed_gate}
+processing:
+  wass_config_dir: wass_config
+  wass_runtime_binding: ../../runtime/wass/runtime_binding.json
+  surface_distance_threshold_m: 0.01
+dense_height:
+  enabled: true
+  mapping_file: null
+  common_fov_file: demo_common_fov/common_fov.yaml
+  water_roi: null
+  observation_gate_px: 2.0
+  demo_global_completion: true
+  surface_completion: {method: mls_quadratic, max_gap_spacing_multiplier: 3.0}
+output: {directory: USER_SESSION_OUTPUT}

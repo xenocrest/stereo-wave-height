@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 
 from src.surface_completion.dense_map import (
-    ESTIMATED, OBSERVED, UNSUPPORTED, estimate_ray_surface, metric_projection,
+    ESTIMATED, ESTIMATED_GLOBAL_MODEL, OBSERVED, UNSUPPORTED, estimate_ray_surface, metric_projection,
     plane_basis, plane_xy, ray_from_projection,
     rasterize_water_roi, scale_dense_height_for_png,
 )
@@ -38,7 +38,7 @@ class DenseHeightMapTests(unittest.TestCase):
 
     def test_status_codes_are_distinct_and_unsupported_is_zero(self) -> None:
         self.assertEqual(int(UNSUPPORTED), 0)
-        self.assertEqual({int(UNSUPPORTED), int(OBSERVED), int(ESTIMATED)}, {0, 1, 2})
+        self.assertEqual({int(UNSUPPORTED), int(OBSERVED), int(ESTIMATED), int(ESTIMATED_GLOBAL_MODEL)}, {0, 1, 2, 3})
 
     def test_metric_projection_preserves_projected_pixel(self) -> None:
         projection = np.array([[2., 0., 0., 1.], [0., 2., 0., 0.], [0., 0., 1., 0.]])

@@ -21,11 +21,11 @@ def resolve_runtime_paths(repository: Path | None = None, *, executable: Path | 
     is_frozen = bool(getattr(sys, "frozen", False)) if frozen is None else frozen
     if is_frozen:
         root = (executable or Path(sys.executable)).resolve().parent
-        experiment = root / "resources" / "HomeTank_004"
+        experiment = root / "resources" / "HomeTank_005"
         ffmpeg = root / "runtime" / "ffmpeg" / "ffmpeg.exe"
     else:
         root = (repository or Path(__file__).resolve().parents[2]).resolve()
-        experiment = root / "experiments" / "real_video" / "HomeTank_004"
+        experiment = root / "experiments" / "real_video" / "HomeTank_005"
         ffmpeg = Path(os.environ.get("STEREO_WAVE_HEIGHT_FFMPEG", "D:/FormatFactory/ffmpeg.exe"))
     local = Path(os.environ.get("LOCALAPPDATA", str(Path.home())))
     session_root = Path(os.environ.get("STEREO_WAVE_HEIGHT_GUI_SESSIONS", str(local / "StereoWaveHeightDemo" / "gui_sessions")))
