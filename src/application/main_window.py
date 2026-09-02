@@ -19,6 +19,7 @@ from .export import delete_session, export_session
 from .runtime_paths import resolve_runtime_paths
 from .input_workflow import (CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, VIDEO_FORMAT_TEXT,
                              GuidedInputState, load_calibration_selection)
+from .input_workflow import validate_gui_calibration
 from .calibration_workflow import calibrate_from_videos
 from reconstruction.reference_frame import load_reference_artifact
 from reconstruction.reference_frame import file_identity
@@ -128,7 +129,7 @@ class StereoWaveHeightApplication:
     def _apply_calibration(self, data: dict[str, Any], path: Path, *, operating_mode: str = "VALIDATED_MODE") -> None:
         if self.variables.get("calibration_path") and self.variables["calibration_path"].get()!=str(path):
             self._invalidate_reference("CALIBRATION_CHANGED");self.water_roi=None;self.common_fov=None;self.common_fov_file=None
-        data=dict(data);data["calibration_id"]=file_identity(path,"cal");self.calibration_data=data
+        data=dict(data);validate_gui_calibration(data);data["calibration_id"]=file_identity(path,"cal");self.calibration_data=data
         for prefix, node in (("left", data["mono_cam0"]), ("right", data["mono_cam1"])):
             k=node["K"]
             self.variables[f"{prefix}_model"].set(str(node.get("model", "LEFT/cam0" if prefix=="left" else "RIGHT/cam1")))
@@ -143,17 +144,15 @@ class StereoWaveHeightApplication:
         self.variables["calibration_load_status"].set("✓ 标定结果已加载，可以进入步骤 2")
         thresholds=CalibrationQualityThresholds(); stereo_rms=float(stereo["rms_px"]); epi=epipolar
         failed=("FAIL" in str(data.get("status","")) or stereo_rms>thresholds.maximum_stereo_rms_px or epi>thresholds.maximum_epipolar_rms_px)
-        self.variables["calibration_quality"].set(
-            "⚠ 标定质量：不建议测量。当前误差超过项目既有质量门限，三维结果可能不可靠，建议重新标定。"
-            if failed else "✓ 标定质量：通过现有项目质量检查。"
-        )
+        quality_status="QA_FAIL" if failed else "QA_PASS"
+        self.variables["calibration_quality"].set("详细质量数据已保存在标定文件中。")
         if operating_mode == "DEMO_ESTIMATION_MODE":
-            self.pending_demo_calibration=(data,path)
-            self.input_state.mark_calibration_failed()
-            self.variables["calibration_quality"].set("⚠ 标定完成，但精度未通过正式验证。可继续用于演示估计。")
-            self.variables["calibration_load_status"].set("⚠ 演示标定已加载；请点击“继续用于演示”")
-            if hasattr(self,"demo_continue_button"):self.demo_continue_button.configure(state=tk.NORMAL)
-            self._log(f"demo calibration awaiting acknowledgement: {path}")
+            self.pending_demo_calibration=None
+            self.input_state.mark_calibration_ready(operating_mode=operating_mode,quality_status=quality_status)
+            self.variables["calibration_load_status"].set("✓ 标定完成，可以进入测量")
+            self.variables["app_state"].set("当前模式：演示模式")
+            if hasattr(self,"demo_continue_button"):self.demo_continue_button.configure(state=tk.DISABLED)
+            self._log(f"loaded demo calibration: {path}");self._refresh_common_fov()
         elif failed:
             self.input_state.mark_calibration_failed()
             self.variables["calibration_load_status"].set("⚠ 标定 QA 已加载，但几何未通过；测量与公共视场已阻止")
@@ -162,7 +161,7 @@ class StereoWaveHeightApplication:
         else:
             self.pending_demo_calibration=None
             if hasattr(self,"demo_continue_button"):self.demo_continue_button.configure(state=tk.DISABLED)
-            self.input_state.mark_calibration_ready(operating_mode=operating_mode)
+            self.input_state.mark_calibration_ready(operating_mode=operating_mode,quality_status=quality_status)
             self._log(f"loaded calibration: {path} mode={operating_mode}");self._refresh_common_fov()
         self._refresh_step_state()
 
@@ -170,10 +169,10 @@ class StereoWaveHeightApplication:
         if self.pending_demo_calibration is None:
             messagebox.showwarning(self.title,"尚未加载可用于演示的标定包。")
             return
-        self.input_state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE")
-        self.variables["calibration_load_status"].set("✓ 演示标定已加载，可以进入步骤 2")
-        self.variables["calibration_quality"].set("⚠ 当前精度尚未完成物理验证；结果仅用于演示估计。")
-        self.variables["app_state"].set("当前模式：演示估计（标定精度未完成物理验证）")
+        self.input_state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE",quality_status="QA_FAIL")
+        self.variables["calibration_load_status"].set("✓ 标定完成，可以进入测量")
+        self.variables["calibration_quality"].set("详细质量数据已保存在标定文件中。")
+        self.variables["app_state"].set("当前模式：演示模式")
         self.demo_continue_button.configure(state=tk.DISABLED)
         self._log("DEMO_ESTIMATION_MODE acknowledged by user")
         self._refresh_common_fov();self._refresh_step_state()
@@ -404,10 +403,11 @@ class StereoWaveHeightApplication:
                     float(stereo.get("symmetric_epipolar_rms_px",float("inf")))>thresholds.maximum_epipolar_rms_px)
             mode="VALIDATED_MODE"
             if failed:
-                if not messagebox.askyesno(self.title,"标定几何未通过正式精度验证，可保存为演示估计标定并继续。\n\n继续用于演示？"):
-                    self._apply_calibration(data,payload.result_path);return
+                if not messagebox.askyesno(self.title,"标定已完成，是否继续用于当前演示？"):
+                    self.variables["calibration_load_status"].set("○ 标定已完成，尚未用于当前会话")
+                    return
                 mode="DEMO_ESTIMATION_MODE"
-                data["status"]="DEMO_ONLY";data["approved_for_wass"]=False
+                data["gui_operating_mode"]="DEMO_ESTIMATION_MODE"
                 payload.result_path.write_text(yaml.safe_dump(data,sort_keys=False,allow_unicode=True),encoding="utf-8")
             self._apply_calibration(data,payload.result_path,operating_mode=mode)
             self.variables["calibration_load_status"].set(f"✓ 双目标定完成（{payload.paired_views} 组有效视图），可以进入步骤 2"); return
@@ -550,7 +550,7 @@ class StereoWaveHeightApplication:
         stereo=ttk.LabelFrame(parent,text="双目外参与标定质量"); stereo.grid(row=0,column=2,sticky="nsew",padx=4); parent.columnconfigure(2,weight=1)
         self.stereo_text=tk.Text(stereo,width=48,height=7); self.stereo_text.pack(fill="both",expand=True); self.stereo_text.configure(state=tk.DISABLED)
         self._var("calibration_path"); self._var("calibration_file","尚未加载标定结果")
-        ttk.Label(stereo,textvariable=self._var("calibration_quality","标定质量：尚未评估"),wraplength=420,foreground="#a33").pack(anchor="w",padx=4,pady=4)
+        ttk.Label(stereo,textvariable=self._var("calibration_quality","详细质量数据将在标定文件中保留"),wraplength=420,foreground="#555").pack(anchor="w",padx=4,pady=4)
 
     def _video_selector(self,parent:ttk.Frame,row:int,key:str,title:str,description:str,button_text:str,preview:bool=False) -> None:
         box=ttk.LabelFrame(parent,text=title); box.grid(row=row,column=0,sticky="ew",padx=8,pady=6); box.columnconfigure(0,weight=1)

@@ -1,14 +1,16 @@
 from pathlib import Path
 import json
+import queue
 import subprocess
 import tempfile
 import unittest
 from unittest import mock
+from types import SimpleNamespace
 
 from application.backend_runner import BackendResultError, parse_backend_result
 from application.backend_runner import FrozenBackendRunner, backend_command
 from application.runtime_paths import resolve_runtime_paths
-from application.input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, GuidedInputState, load_calibration_selection
+from application.input_workflow import CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, GuidedInputState, load_calibration_selection, validate_gui_calibration
 from application.fallback import FALLBACK_FRAME_OFFSETS, run_bounded_fallback
 from application.video_tools import LatestFrameDecoder
 from process_utils import hidden_process_kwargs
@@ -16,9 +18,27 @@ from application.session import MeasurementRecord, MeasurementSession
 from application.export import export_session
 from application.visualization import DisplayTransform, DenseMeasurementView, make_height_overlay
 import numpy as np
+import yaml
 
 
 class DemoGuiStage1Tests(unittest.TestCase):
+    @staticmethod
+    def _gui_calibration_harness():
+        from application.main_window import StereoWaveHeightApplication
+        app=StereoWaveHeightApplication.__new__(StereoWaveHeightApplication)
+        app.variables={key:mock.Mock() for key in (
+            "calibration_path","calibration_file","calibration_load_status","calibration_quality","app_state",
+            "left_model","left_fx","left_fy","left_cx","left_cy","left_D",
+            "right_model","right_fx","right_fy","right_cx","right_cy","right_D")}
+        app.variables["calibration_path"].get.return_value=""
+        app.stereo_text=mock.Mock();app.demo_continue_button=mock.Mock()
+        app.input_state=GuidedInputState();app.pending_demo_calibration=None
+        app.calibration_data=None;app.common_fov=None;app.common_fov_file=None;app.water_roi=None
+        app._refresh_common_fov=mock.Mock();app._refresh_step_state=mock.Mock();app._log=mock.Mock()
+        app._invalidate_reference=mock.Mock()
+        app._worker_messages=queue.Queue();app.calibrate_button=mock.Mock()
+        return app
+
     def _record(self, directory: Path, name: str) -> MeasurementRecord:
         return MeasurementRecord(29.4654055, name, directory, directory/"single_frame_result.json",
             directory/"right.png", directory/"height.png", directory/"status.png", None,
@@ -79,7 +99,8 @@ class DemoGuiStage1Tests(unittest.TestCase):
         self.assertEqual(calibration["status"],"CALIBRATION_OPERATIONAL_DOMAIN_FAIL")
         self.assertEqual(path.name,"opencv_calibration.yaml")
         state=GuidedInputState();state.mark_calibration_ready(operating_mode=mode)
-        self.assertTrue(state.calibration_ready);self.assertEqual(state.operating_mode,"DEMO_ESTIMATION_MODE")
+        self.assertTrue(state.calibration_ready);self.assertTrue(state.calibration_step_completed)
+        self.assertEqual(state.operating_mode,"DEMO_ESTIMATION_MODE")
 
     def test_backend_command_switches_to_packaged_executable_mode(self):
         config=Path("C:/request.yaml")
@@ -94,8 +115,70 @@ class DemoGuiStage1Tests(unittest.TestCase):
         state.set_mode("videos"); state.mark_measurement_video("left"); state.mark_measurement_video("right")
         self.assertFalse(state.measurement_ready)
         state.mark_calibration_ready(); self.assertTrue(state.measurement_ready)
+        self.assertTrue(state.calibration_step_completed)
         state.mark_calibration_failed(); self.assertFalse(state.measurement_ready)
+        self.assertFalse(state.calibration_step_completed)
         state.set_mode("existing"); self.assertFalse(state.calibration_ready)
+
+    def test_scientific_qa_status_does_not_reset_gui_completion(self):
+        state=GuidedInputState()
+        state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE",quality_status="QA_FAIL")
+        self.assertTrue(state.calibration_step_completed)
+        self.assertTrue(state.calibration_ready)
+        self.assertEqual(state.calibration_quality_status,"QA_FAIL")
+
+    def test_non_finite_calibration_is_an_engineering_failure(self):
+        data={"image_size_wh":[10,10],"mono_cam0":{"K":[[1,0,0],[0,1,0],[0,0,1]],"D":[0]},
+              "mono_cam1":{"K":[[1,0,0],[0,1,0],[0,0,1]],"D":[0]},
+              "stereo":{"R_right_from_left":[[1,0,0],[0,1,0],[0,0,1]],"T_right_from_left_m":[float("nan"),0,0]}}
+        with self.assertRaisesRegex(ValueError,"NaN or Inf"):validate_gui_calibration(data)
+
+    def test_loaded_demo_calibration_is_immediately_completed_without_qa_mutation(self):
+        from application.main_window import StereoWaveHeightApplication
+        repository=Path(__file__).resolve().parents[1]
+        manifest=repository/"experiments/real_video/HomeTank_005/calibrations/HomeTank_005_demo_only_v1/manifest.yaml"
+        calibration,path,mode=load_calibration_selection(manifest);original_status=calibration["status"]
+        app=self._gui_calibration_harness()
+        StereoWaveHeightApplication._apply_calibration(app,calibration,path,operating_mode=mode)
+        self.assertTrue(app.input_state.calibration_step_completed)
+        self.assertTrue(app.input_state.calibration_ready)
+        self.assertEqual(app.input_state.calibration_quality_status,"QA_FAIL")
+        self.assertEqual(app.calibration_data["status"],original_status)
+        app.variables["calibration_load_status"].set.assert_any_call("✓ 标定完成，可以进入测量")
+        app.variables["app_state"].set.assert_called_with("当前模式：演示模式")
+        app.demo_continue_button.configure.assert_called_with(state="disabled")
+
+    def test_validated_calibration_completion_keeps_validated_mode(self):
+        from application.main_window import StereoWaveHeightApplication
+        repository=Path(__file__).resolve().parents[1]
+        source=repository/"experiments/real_video/HomeTank_004/calibration_result.yaml"
+        data=yaml.safe_load(source.read_text(encoding="utf-8"));data["status"]="PASS"
+        data["stereo"]["rms_px"]=0.1;data["stereo"]["symmetric_epipolar_rms_px"]=0.1
+        app=self._gui_calibration_harness()
+        StereoWaveHeightApplication._apply_calibration(app,data,source)
+        self.assertTrue(app.input_state.calibration_step_completed)
+        self.assertEqual(app.input_state.operating_mode,"VALIDATED_MODE")
+        self.assertEqual(app.input_state.calibration_quality_status,"QA_PASS")
+
+    def test_video_calibration_continue_completes_workflow_in_one_confirmation(self):
+        from application.main_window import StereoWaveHeightApplication
+        repository=Path(__file__).resolve().parents[1]
+        source=repository/"experiments/real_video/HomeTank_005/calibrations/HomeTank_005_demo_only_v1/opencv_calibration.yaml"
+        with tempfile.TemporaryDirectory() as temporary:
+            result=Path(temporary)/"calibration.yaml";result.write_bytes(source.read_bytes())
+            original=yaml.safe_load(source.read_text(encoding="utf-8"))
+            app=self._gui_calibration_harness()
+            app._worker_messages.put(("calibration_success",SimpleNamespace(result_path=result,paired_views=68)))
+            with mock.patch("application.main_window.messagebox.askyesno",return_value=True):
+                StereoWaveHeightApplication._poll_worker(app)
+            self.assertTrue(app.input_state.calibration_step_completed)
+            self.assertTrue(app.input_state.calibration_ready)
+            self.assertEqual(app.input_state.operating_mode,"DEMO_ESTIMATION_MODE")
+            app.variables["calibration_load_status"].set.assert_called_with("✓ 双目标定完成（68 组有效视图），可以进入步骤 2")
+            saved=yaml.safe_load(result.read_text(encoding="utf-8"))
+            self.assertEqual(saved["status"],"CALIBRATION_OPERATIONAL_DOMAIN_FAIL")
+            self.assertEqual(saved.get("approved_for_wass"),original.get("approved_for_wass"))
+            self.assertEqual(saved["gui_operating_mode"],"DEMO_ESTIMATION_MODE")
 
     def test_guided_file_dialog_filters_match_supported_inputs(self):
         self.assertEqual(CALIBRATION_FILE_TYPES,(("YAML 双目标定文件","*.yaml *.yml"),))
