@@ -14,6 +14,10 @@ left_frame_id: pts_771712
 right_frame_id: pts_771020
 sync_residual_ms: -5.289000000001209
 calibration_id: cal_828c065a519c80ef
+calibration_display_id: HomeTank_005_demo_only_v1
+canonical_calibration_identity: calgeom_5bac77e334157b99
+source_calibration_file: calibrations/HomeTank_005_demo_only_v1/opencv_calibration.yaml
+source_calibration_sha256: 74f4e4e85921880a28484f5d39736bee97586f0d71388969c58b8d2535edc5c6
 calibration_package_hash: null
 video_pair_id: pair_444b133420030ce3
 source_videos:

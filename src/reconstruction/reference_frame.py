@@ -22,6 +22,22 @@ def file_identity(path: str|Path, prefix: str) -> str:
 def video_pair_identity(left: str|Path,right: str|Path)->str:return stable_identity([file_identity(left,"video"),file_identity(right,"video")],"pair")
 def roi_identity(roi:dict[str,Any])->str:return stable_identity(roi,"roi")
 
+def canonical_calibration_identity(calibration:dict[str,Any])->str:
+    """Return an ID for stereo geometry, independent of package/file names."""
+    left=calibration.get("camera_left") or calibration.get("mono_cam0") or calibration.get("left") or {}
+    right=calibration.get("camera_right") or calibration.get("mono_cam1") or calibration.get("right") or {}
+    stereo=calibration.get("stereo") or {}
+    payload={
+      "K0":left.get("K"),"D0":left.get("D"),"K1":right.get("K"),"D1":right.get("D"),
+      "R":stereo.get("R",stereo.get("R_right_from_left")),
+      "T_m":stereo.get("T_m",stereo.get("T_right_from_left_m")),
+      "image_size_wh":calibration.get("image_size_wh",[1920,1080]),
+      "canonical_convention":CANONICAL_CONVENTION,
+    }
+    missing=[key for key in ("K0","D0","K1","D1","R","T_m") if payload[key] is None]
+    if missing:raise ValueError("CALIBRATION_GEOMETRY_IDENTITY_UNAVAILABLE: "+", ".join(missing))
+    return stable_identity(payload,"calgeom")
+
 def _inside_polygon(u:np.ndarray,v:np.ndarray,points:list[list[float]])->np.ndarray:
     polygon=np.asarray(points,float);inside=np.zeros(u.shape,dtype=bool);j=len(polygon)-1
     for i in range(len(polygon)):

@@ -17,11 +17,43 @@ from process_utils import hidden_process_kwargs
 from application.session import MeasurementRecord, MeasurementSession
 from application.export import export_session
 from application.visualization import DisplayTransform, DenseMeasurementView, make_height_overlay
+from reconstruction.reference_frame import canonical_calibration_identity, video_pair_identity
 import numpy as np
 import yaml
 
 
 class DemoGuiStage1Tests(unittest.TestCase):
+    def test_calibration_display_id_does_not_change_geometry_identity(self):
+        root=Path(__file__).resolve().parents[1]/"experiments/real_video/HomeTank_005/calibrations/HomeTank_005_demo_only_v1"
+        manifest=yaml.safe_load((root/"manifest.yaml").read_text(encoding="utf-8"))
+        opencv=yaml.safe_load((root/"opencv_calibration.yaml").read_text(encoding="utf-8"))
+        self.assertNotEqual(manifest["calibration_id"],"cal_828c065a519c80ef")
+        self.assertEqual(canonical_calibration_identity(manifest),canonical_calibration_identity(opencv))
+
+    def test_different_calibration_geometry_is_rejected(self):
+        root=Path(__file__).resolve().parents[1]/"experiments/real_video/HomeTank_005/calibrations/HomeTank_005_demo_only_v1"
+        calibration=yaml.safe_load((root/"manifest.yaml").read_text(encoding="utf-8"))
+        changed=yaml.safe_load(yaml.safe_dump(calibration));changed["camera_left"]["K"][0][0]+=1.0
+        self.assertNotEqual(canonical_calibration_identity(calibration),canonical_calibration_identity(changed))
+
+    def test_demo_reference_binding_accepts_package_identity_and_enables_measurement(self):
+        from application.main_window import StereoWaveHeightApplication
+        repository=Path(__file__).resolve().parents[1]
+        calibration=yaml.safe_load((repository/"experiments/real_video/HomeTank_005/calibrations/HomeTank_005_demo_only_v1/manifest.yaml").read_text(encoding="utf-8"))
+        calibration["calibration_id"]="cal_manifest_file_identity"
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary);experiment=base/"experiment";experiment.mkdir();left=base/"left.mp4";right=base/"right.mp4";left.write_bytes(b"L");right.write_bytes(b"R")
+            artifact=yaml.safe_load((repository/"experiments/real_video/HomeTank_005/demo_reference_artifact.yaml").read_text(encoding="utf-8"));artifact["video_pair_id"]=video_pair_identity(left,right)
+            (experiment/"demo_reference_artifact.yaml").write_text(yaml.safe_dump(artifact,sort_keys=False),encoding="utf-8")
+            app=StereoWaveHeightApplication.__new__(StereoWaveHeightApplication);app.experiment=experiment;app.session=MeasurementSession(base/"sessions","fixture")
+            app.calibration_data=calibration;app.current_time=4.0;app.water_roi=(10,20,30,40);app.common_fov=None;app.backend_running=False
+            app.input_state=SimpleNamespace(measurement_ready=True,operating_mode="DEMO_ESTIMATION_MODE")
+            app.variables={key:mock.Mock() for key in ("left_measurement","right_measurement","reference_status","run_status","app_state")};app.variables["left_measurement"].get.return_value=str(left);app.variables["right_measurement"].get.return_value=str(right)
+            app.reference_button=mock.Mock();app.solve_button=mock.Mock();app._log=mock.Mock()
+            app._bind_precomputed_demo_reference()
+            self.assertIsNotNone(app.active_reference_path);self.assertEqual(len(app.session.references),1)
+            app.solve_button.configure.assert_called_with(state="normal")
+
     @staticmethod
     def _gui_calibration_harness():
         from application.main_window import StereoWaveHeightApplication

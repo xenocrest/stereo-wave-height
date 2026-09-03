@@ -22,7 +22,8 @@ from .input_workflow import (CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, VIDEO_FOR
 from .input_workflow import validate_gui_calibration
 from .calibration_workflow import calibrate_from_videos
 from reconstruction.reference_frame import load_reference_artifact
-from reconstruction.reference_frame import file_identity, roi_identity, save_reference_artifact, video_pair_identity
+from reconstruction.reference_frame import (canonical_calibration_identity, file_identity, roi_identity,
+                                            save_reference_artifact, video_pair_identity)
 from reconstruction.common_fov import (CommonFov,compute_common_fov,save_common_fov,
                                        save_canonical_cam1_wass_mapping,validate_roi)
 
@@ -469,9 +470,11 @@ class StereoWaveHeightApplication:
         metadata=load_reference_artifact(source)
         if self.calibration_data is None:raise ValueError("calibration is not loaded")
         calibration_id=str(self.calibration_data.get("calibration_id"))
+        canonical_id=canonical_calibration_identity(self.calibration_data)
         left=Path(self.variables["left_measurement"].get());right=Path(self.variables["right_measurement"].get())
         pair_id=video_pair_identity(left,right)
-        if metadata.get("calibration_id")!=calibration_id:raise ValueError("calibration_id mismatch")
+        reference_canonical_id=metadata.get("canonical_calibration_identity")
+        if reference_canonical_id!=canonical_id:raise ValueError("calibration geometry identity mismatch")
         if metadata.get("video_pair_id")!=pair_id:raise ValueError("video_pair_id mismatch")
         roi=self._roi_mapping()
         bound=dict(metadata)
@@ -479,6 +482,9 @@ class StereoWaveHeightApplication:
             "reference_id":f"{metadata['reference_id']}_demo_session",
             "source":"PRECOMPUTED_REAL_WASS_REFERENCE__DEMO_SESSION_BINDING",
             "requested_timestamp_s":self.current_time,
+            "calibration_id":calibration_id,
+            "canonical_calibration_identity":canonical_id,
+            "original_calibration_id":metadata.get("calibration_id"),
             "roi":roi,
             "roi_id":roi_identity(roi),
             "precomputed_source_artifact":str(source.resolve()),
