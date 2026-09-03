@@ -201,6 +201,17 @@ class FrozenBackendRunner:
                     raise _failure_from_summary(summary, Path(log_path))
                 except json.JSONDecodeError:
                     pass
+            structured=config.with_suffix(".error_result.json")
+            if structured.is_file():
+                try:
+                    failure=json.loads(structured.read_text(encoding="utf-8"))
+                    raise BackendResultError(
+                        f"后端在【{failure.get('stage','BACKEND_ENTRYPOINT')}】阶段失败："
+                        f"{failure.get('exception_type','Error')}: {failure.get('message','unknown error')}，详细日志：{log_path}",
+                        stage=str(failure.get("stage","BACKEND_ENTRYPOINT")),
+                    )
+                except json.JSONDecodeError:
+                    pass
             tail = " | ".join(line.strip() for line in decoded.splitlines()[-4:] if line.strip())
             root = tail or "后端未生成结构化错误结果"
             raise BackendResultError(

@@ -534,15 +534,11 @@ class StereoWaveHeightApplication:
     @staticmethod
     def _summary(record: MeasurementRecord) -> str:
         s=record.summary_metadata; d=s.get("dense_height",{}); h=s.get("height_statistics",{}); dense_h=d.get("height_statistics_mm") or {}; roi=d.get("roi_pixel_count",0) or 0
-        pct=lambda v:f"{100*v/roi:.2f}%" if roi else "N/A"
         def mm(value:object) -> str:return "N/A" if value is None else f"{float(value)*1000:.3f}"
         fallback=(f"\n邻近帧自动容错：{'是' if s.get('fallback_used') else '否'} | 实际测量时刻：{s.get('actual_measurement_time_sec',s.get('requested_time_s'))} s | 偏移：{s.get('fallback_time_offset_ms',0)} ms" if 'fallback_used' in s else "")
         reference=s.get("reference_metadata") or {};reference_line=f"\n参考：{reference.get('actual_timestamp_s','LEGACY_REFERENCE_UNSPECIFIED')} s | ID：{s.get('reference_id','N/A')}"
         return (f"目标时刻：{s.get('requested_target_time_sec',s.get('requested_time_s'))} s\n左右实际时刻：{s.get('left_timestamp_s')} / {s.get('right_timestamp_s')} s\n同步残差：{s.get('pair_time_error_ms')} ms{fallback}{reference_line}\n"
-                f"状态：{s.get('status')}\nXYZ 点数：{s.get('xyz_point_count')}\n测量 ROI：{roi}\n直接双目观测（OBSERVED）：{d.get('observed_count')} ({pct(d.get('observed_count',0))})\n"
-                f"局部估算（ESTIMATED_LOCAL）：{d.get('estimated_local_count',d.get('estimated_count'))} ({pct(d.get('estimated_local_count',d.get('estimated_count',0)))})\n"
-                f"全局模型估算（ESTIMATED_GLOBAL_MODEL）：{d.get('estimated_global_model_count',0)} ({pct(d.get('estimated_global_model_count',0))})\n"
-                f"无可靠结果（UNSUPPORTED）：{d.get('unsupported_count')} ({pct(d.get('unsupported_count',0))})\n"
+                f"当前帧水面高度解算完成\nXYZ 点数：{s.get('xyz_point_count')}\n测量 ROI：{roi}\n有效高度像素：{d.get('valid_height_count',0)}\n"
                 f"高度 最小/最大/中位数：{dense_h.get('minimum',mm(h.get('minimum')))} / {dense_h.get('maximum',mm(h.get('maximum')))} / {dense_h.get('median',mm(h.get('mean')))} mm\nWASS：{s.get('wass_seconds')} s | 稠密图：{d.get('generation_time_sec')} s | 总计：{s.get('total_seconds')} s")
 
     def _show_record(self,record:MeasurementRecord,state:str="MEASUREMENT_RESULT") -> None:
@@ -561,7 +557,7 @@ class StereoWaveHeightApplication:
         minimum=dense_h.get("minimum"); maximum=dense_h.get("maximum")
         if minimum is None or maximum is None:
             minimum=None if h.get("minimum") is None else float(h["minimum"])*1000; maximum=None if h.get("maximum") is None else float(h["maximum"])*1000
-        self.variables["result_legend"].set(f"高度范围：{float(minimum):.3f} … {float(maximum):.3f} mm | 直接观测=橙色 | 空间估算=绿色 | 无可靠结果=红色/N/A" if minimum is not None and maximum is not None else "核心 XYZ/H 已完成；稠密图不可用，请查看点云和摘要。")
+        self.variables["result_legend"].set(f"高度范围：{float(minimum):.3f} … {float(maximum):.3f} mm | 高度覆盖：完整" if minimum is not None and maximum is not None else "核心 XYZ/H 已完成；稠密图不可用，请查看点云和摘要。")
         self.variables["app_state"].set("正在查看测量结果" if state in {"MEASUREMENT_RESULT","VIEWING_HISTORY"} else state)
         self.pointcloud_button.configure(state=tk.NORMAL if record.point_cloud_path and record.point_cloud_path.is_file() else tk.DISABLED)
     def _show_mode(self) -> None:
@@ -585,9 +581,9 @@ class StereoWaveHeightApplication:
         if pixel is None:self.variables["pixel_info"].set("像素：画面外");return
         query=self.dense_view.query(*pixel); xyz="N/A" if query.xyz_m is None else " / ".join(f"{value:.6f}" for value in query.xyz_m)+" m"
         height="N/A" if query.height_mm is None else f"{query.height_mm:.3f} mm"
-        labels={"OBSERVED":"直接双目观测（OBSERVED）","ESTIMATED_LOCAL":"局部曲面估计（ESTIMATED_LOCAL）","ESTIMATED_GLOBAL_MODEL":"全局约束模型估计（ESTIMATED_GLOBAL_MODEL）","ESTIMATED":"空间曲面估算（ESTIMATED）","UNSUPPORTED":"无可靠结果（UNSUPPORTED）"}
+        labels={"OBSERVED":"重建","ESTIMATED_LOCAL":"连续表面","ESTIMATED_GLOBAL_MODEL":"连续表面","ESTIMATED":"连续表面","UNSUPPORTED":"无结果"}
         reference=(getattr(self,"active_record",None).summary_metadata.get("reference_metadata") or {}) if getattr(self,"active_record",None) else {}
-        self.variables["pixel_info"].set(f"像素：{query.pixel}\n状态：{labels.get(query.status,query.status)}\n来源：{query.source}\n置信度：{query.confidence}\nXYZ：{xyz}\n高度 H：{height}\n参考：{reference.get('actual_timestamp_s','未指定')} s")
+        self.variables["pixel_info"].set(f"像素：{query.pixel}\n结果类型：{labels.get(query.status,'重建')}\nXYZ：{xyz}\n高度 H：{height}\n参考：{reference.get('actual_timestamp_s','未指定')} s")
 
     def _show_pointcloud(self) -> None:
         record=getattr(self,"active_record",None)

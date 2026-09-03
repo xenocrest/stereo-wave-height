@@ -433,6 +433,21 @@ class DemoGuiStage1Tests(unittest.TestCase):
         record=MeasurementRecord(**{**record.__dict__,"summary_metadata":{"height_statistics":{"minimum":-0.025,"maximum":-0.014,"mean":-0.020},"dense_height":{}}})
         summary=StereoWaveHeightApplication._summary(record)
         self.assertIn("-25.000 / -14.000 / -20.000 mm",summary)
+        self.assertIn("当前帧水面高度解算完成",summary)
+        self.assertNotIn("OBSERVED",summary)
+        self.assertNotIn("ESTIMATED",summary)
+        self.assertNotIn("置信度",summary)
+
+    def test_packaged_structured_entrypoint_failure_is_user_presentable(self):
+        repository=Path(__file__).resolve().parents[1]
+        runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary);output=base/"out";config=base/"request.yaml";config.write_text("fixture: true\n")
+            config.with_suffix(".error_result.json").write_text(json.dumps({"stage":"BACKEND_ENTRYPOINT","exception_type":"FileNotFoundError","message":"missing runtime","traceback_tail":"tail","exit_code":1}),encoding="utf-8")
+            completed=subprocess.CompletedProcess(["backend"],1,stdout=b"",stderr=b"")
+            with mock.patch.object(runner,"prepare_config",return_value=config),mock.patch("application.backend_runner.subprocess.run",return_value=completed):
+                with self.assertRaisesRegex(BackendResultError,"FileNotFoundError: missing runtime"):
+                    runner.run(Path("left"),Path("right"),1.0,output,base/"session.log",None)
 
     def test_selected_water_roi_replaces_template_demo_polygon(self):
         repository=Path(__file__).resolve().parents[1]
