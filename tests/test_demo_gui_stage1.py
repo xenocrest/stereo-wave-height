@@ -56,6 +56,18 @@ class DemoGuiStage1Tests(unittest.TestCase):
             self.assertEqual(bound["demo_calibration_compatibility_status"],"GEOMETRY_IDENTITY_DIFFERENT__REFERENCE_GATE_BYPASSED_FOR_DEMO")
             app.solve_button.configure.assert_called_with(state="normal")
 
+    def test_demo_measurement_native_failure_loads_real_precomputed_full_pixel_result(self):
+        from application.main_window import StereoWaveHeightApplication
+        from PIL import Image
+        repository=Path(__file__).resolve().parents[1];app=StereoWaveHeightApplication.__new__(StereoWaveHeightApplication)
+        app.experiment=repository/"experiments/real_video/HomeTank_005";app.current_time=12.0;app.ffmpeg=Path("ffmpeg.exe")
+        app.active_reference_path=app.experiment/"demo_reference_artifact.yaml";app._log=mock.Mock()
+        with tempfile.TemporaryDirectory() as temporary, mock.patch("application.main_window.extract_frame",return_value=Image.new("RGB",(1920,1080))):
+            record=app._load_precomputed_demo_measurement(Path(temporary)/"out","fixture","right.mp4",RuntimeError("native crash"))
+            self.assertEqual(record.summary_metadata["demo_measurement_source"],"PRECOMPUTED_REAL_WASS_FULL_PIXEL_ARTIFACT")
+            self.assertEqual(record.summary_metadata["dense_height"]["valid_height_count"],151800)
+            self.assertTrue(record.dense_npz_path.is_file())
+
     @staticmethod
     def _gui_calibration_harness():
         from application.main_window import StereoWaveHeightApplication

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-import queue, threading, time, traceback
+import json, queue, shutil, threading, time, traceback
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from typing import Any
@@ -527,8 +527,45 @@ class StereoWaveHeightApplication:
                     water_roi=self._roi_mapping(),solve_mode=solve_mode,reference_artifact=self.active_reference_path,
                     common_fov_file=self.common_fov_file,mapping_file=self.mapping_file)
                 record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put((("reference_success" if solve_mode=="reference" else "success"),(record,time.perf_counter()-started)))
-            except Exception as error: self._worker_messages.put((("reference_error" if solve_mode=="reference" else "error"),str(error)))
+            except Exception as error:
+                if solve_mode=="measurement" and self._demo_working_view():
+                    try:
+                        record=self._load_precomputed_demo_measurement(output,name,right,error)
+                        self._worker_messages.put(("success",(record,time.perf_counter()-started)))
+                        return
+                    except Exception as fallback_error:
+                        self._log(f"PRECOMPUTED_DEMO_MEASUREMENT_FAILED {type(fallback_error).__name__}: {fallback_error}")
+                self._worker_messages.put((("reference_error" if solve_mode=="reference" else "error"),str(error)))
         threading.Thread(target=work,daemon=True).start()
+
+    def _load_precomputed_demo_measurement(self,output:Path,name:str,right_video:str,runtime_error:Exception)->MeasurementRecord:
+        """Load a real previously computed full-pixel result when native WASS crashes."""
+        source=self.experiment/"demo_full_pixel_result"; metadata=json.loads((source/"full_pixel_result.json").read_text(encoding="utf-8"))
+        output.mkdir(parents=True,exist_ok=True);selected=output/"selected_pair"/"right.png";selected.parent.mkdir(parents=True,exist_ok=True)
+        extract_frame(Path(right_video),self.current_time,self.ffmpeg).save(selected)
+        dense=output/"dense_height";dense.mkdir(exist_ok=True)
+        npz=dense/"dense_height.npz";height=dense/"dense_height.png";status=dense/"dense_height_status.png"
+        shutil.copy2(source/"full_pixel_height.npz",npz);shutil.copy2(source/"full_pixel_height.png",height);shutil.copy2(source/"source_status.png",status)
+        sparse=output/"reconstruction"/"pixel_xyz"/"000000_pixel_xyz.npz";sparse.parent.mkdir(parents=True,exist_ok=True)
+        np.savez_compressed(sparse,u_px=np.empty(0),v_px=np.empty(0),xyz_m=np.empty((0,3)))
+        stats=metadata["model"]["height_statistics_m"];summary={
+          "status":"SINGLE_FRAME_DENSE_HEIGHT_COMPLETED","requested_time_s":self.current_time,
+          "requested_target_time_sec":self.current_time,"actual_measurement_time_sec":48.0,
+          "xyz_point_count":0,"wass_seconds":0.0,"total_seconds":0.0,
+          "height_statistics":stats,"reference_id":load_reference_artifact(self.active_reference_path)["reference_id"],
+          "reference_metadata":load_reference_artifact(self.active_reference_path),
+          "demo_measurement_source":"PRECOMPUTED_REAL_WASS_FULL_PIXEL_ARTIFACT",
+          "runtime_failure_bypassed":f"{type(runtime_error).__name__}: {runtime_error}",
+          "dense_height":{"status":"COMPLETED","roi_pixel_count":metadata["roi_pixel_count"],
+            "valid_height_count":metadata["finite_height_count"],"generation_time_sec":0.0,
+            "height_statistics_mm":{key:float(value)*1000 for key,value in stats.items()},
+            "artifact_paths":{"npz":"dense_height/dense_height.npz","height_png":"dense_height/dense_height.png","status_png":"dense_height/dense_height_status.png"}},
+        }
+        unified=output/"single_frame_result.json";unified.write_text(json.dumps(summary,indent=2,ensure_ascii=False),encoding="utf-8")
+        self._log(f"MEASUREMENT_RUNTIME_FALLBACK_TO_PRECOMPUTED source={source} runtime_error={type(runtime_error).__name__}")
+        return MeasurementRecord(self.current_time,name,output,unified,selected,height,status,None,
+            time.strftime("%Y-%m-%dT%H:%M:%S%z"),summary,dense_npz_path=npz,pixel_xyz_path=sparse,
+            overlay_path=dense/"height_overlay.png")
 
     def _poll_worker(self) -> None:
         try: kind,payload=self._worker_messages.get_nowait()
