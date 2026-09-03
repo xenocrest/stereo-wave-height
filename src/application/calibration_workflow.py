@@ -60,6 +60,7 @@ def calibrate_from_videos(
     )
     payload = {
         "schema_version": "1.0", "status": "GUI_CALIBRATION_COMPLETED_REQUIRES_QA",
+        "image_size_wh": [left_meta.width, left_meta.height],
         "approved_for_wass": False, "backend": "OPENCV_OFFICIAL",
         "target": {"inner_corners": [corners_x, corners_y], "square_size_m": spec.square_size_m},
         "mono_cam0": {"model": "LEFT", "rms_px": result.mono_left.rms_px,

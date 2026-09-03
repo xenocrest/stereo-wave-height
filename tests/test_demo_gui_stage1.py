@@ -81,6 +81,15 @@ class DemoGuiStage1Tests(unittest.TestCase):
             self.assertTrue(Path(data["processing"]["reference_plane_file"]).is_absolute())
             self.assertTrue(Path(data["dense_height"]["mapping_file"]).is_absolute())
 
+    def test_demo_request_without_common_fov_removes_template_artifact_dependency(self):
+        repository=Path(__file__).resolve().parents[1]
+        runner=FrozenBackendRunner(repository,repository/"experiments/real_video/HomeTank_004/single_frame_dense_smoke_config.yaml")
+        roi={"type":"polygon","coordinate_system":"canonical_cam1","points":[[10,10],[20,10],[20,20],[10,20]],"working_view":"FULL_CANONICAL_CAM1"}
+        with tempfile.TemporaryDirectory() as temporary:
+            config=runner.prepare_config(repository/"left.mp4",repository/"right.mp4",1.25,Path(temporary)/"measurement",water_roi=roi)
+            data=yaml.safe_load(config.read_text(encoding="utf-8"))
+            self.assertNotIn("common_fov_file",data["dense_height"])
+
     def test_application_imports_without_opening_window(self):
         from application import StereoWaveHeightApplication
         self.assertTrue(callable(StereoWaveHeightApplication))
@@ -150,15 +159,29 @@ class DemoGuiStage1Tests(unittest.TestCase):
         app.variables["app_state"].set.assert_called_with("当前模式：演示模式")
         app.demo_continue_button.configure.assert_called_with(state="disabled")
 
-    def test_accepted_demo_qa_failure_can_trigger_common_fov_after_second_video(self):
+    def test_accepted_demo_qa_failure_bypasses_common_fov_after_second_video(self):
         from application.main_window import StereoWaveHeightApplication
-        app=self._gui_calibration_harness();app._ensure_common_fov=mock.Mock(wraps=StereoWaveHeightApplication._ensure_common_fov.__get__(app))
-        app.calibration_data={"status":"GUI_CALIBRATION_COMPLETED_REQUIRES_QA"}
+        app=self._gui_calibration_harness();app.session=SimpleNamespace(directory=Path("C:/session"))
+        app.calibration_data={"status":"GUI_CALIBRATION_COMPLETED_REQUIRES_QA"};app.mapping_file=None
         app.input_state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE",quality_status="QA_FAIL")
+        app.input_state.mark_measurement_video("left");app.input_state.mark_measurement_video("right")
         app.metadata={"left_measurement":SimpleNamespace(width=1920,height=1080),"right_measurement":SimpleNamespace(width=1920,height=1080)}
-        app._refresh_common_fov=mock.Mock()
-        app._ensure_common_fov()
-        app._refresh_common_fov.assert_called_once()
+        app.variables["common_fov_status"]=mock.Mock()
+        with mock.patch("application.main_window.save_canonical_cam1_wass_mapping",return_value=Path("C:/session/mapping.yaml")):
+            StereoWaveHeightApplication._prepare_demo_working_view(app)
+        self.assertEqual(app.common_fov_state,"DEMO_RIGHT_VIEW_READY")
+        self.assertIsNone(app.common_fov)
+        self.assertEqual(app.mapping_file,Path("C:/session/mapping.yaml"))
+        app._refresh_common_fov.assert_not_called()
+
+    def test_demo_roi_mapping_uses_full_canonical_cam1_without_common_fov(self):
+        from application.main_window import StereoWaveHeightApplication
+        app=self._gui_calibration_harness();app.water_roi=(20,350,480,680)
+        app.input_state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE",quality_status="QA_FAIL")
+        mapping=StereoWaveHeightApplication._roi_mapping(app)
+        self.assertEqual(mapping["coordinate_system"],"canonical_cam1")
+        self.assertEqual(mapping["working_view"],"FULL_CANONICAL_CAM1")
+        self.assertNotIn("common_fov_id",mapping)
 
     def test_common_fov_worker_exception_becomes_failed(self):
         from application.main_window import StereoWaveHeightApplication
@@ -166,7 +189,7 @@ class DemoGuiStage1Tests(unittest.TestCase):
         app.variables["common_fov_status"]=mock.Mock();app._common_fov_generation=2
         StereoWaveHeightApplication._fail_common_fov(app,"boom")
         self.assertEqual(app.common_fov_state,"COMMON_FOV_FAILED")
-        app.variables["common_fov_status"].set.assert_called_with("双目公共区域计算失败，请查看错误信息。")
+        app.variables["common_fov_status"].set.assert_called_with("双目公共区域计算失败：boom")
 
     def test_common_fov_result_reaches_gui_apply(self):
         from application.main_window import StereoWaveHeightApplication
@@ -182,6 +205,24 @@ class DemoGuiStage1Tests(unittest.TestCase):
         app._common_fov_started_at=100.0;app._common_fov_timeout_seconds=10.0;app._fail_common_fov=mock.Mock()
         self.assertTrue(StereoWaveHeightApplication._check_common_fov_timeout(app,110.1))
         app._fail_common_fov.assert_called_once_with("TIMEOUT_AFTER_10_SECONDS")
+
+    def test_legacy_demo_calibration_without_size_uses_accepted_video_pair_size(self):
+        from application.main_window import StereoWaveHeightApplication
+        app=self._gui_calibration_harness();app.input_state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE",quality_status="QA_FAIL")
+        app.calibration_data={"backend":"OPENCV_OFFICIAL"};app.metadata={"left_measurement":SimpleNamespace(width=1920,height=1080),"right_measurement":SimpleNamespace(width=1920,height=1080)}
+        app.variables["common_fov_status"]=mock.Mock();app._refresh_reference_controls=mock.Mock()
+        with mock.patch("application.main_window.threading.Thread") as thread:
+            StereoWaveHeightApplication._refresh_common_fov(app)
+        self.assertEqual(app.common_fov_state,"COMPUTING_COMMON_FOV")
+        self.assertEqual(thread.call_count,1)
+
+    def test_validated_calibration_without_size_still_fails_closed(self):
+        from application.main_window import StereoWaveHeightApplication
+        app=self._gui_calibration_harness();app.input_state.mark_calibration_ready(operating_mode="VALIDATED_MODE",quality_status="QA_PASS")
+        app.calibration_data={"backend":"OPENCV_OFFICIAL"};app.metadata={"left_measurement":SimpleNamespace(width=1920,height=1080),"right_measurement":SimpleNamespace(width=1920,height=1080)}
+        app.variables["common_fov_status"]=mock.Mock();app._refresh_reference_controls=mock.Mock();app._fail_common_fov=mock.Mock()
+        StereoWaveHeightApplication._refresh_common_fov(app)
+        app._fail_common_fov.assert_called_once_with("COMMON_FOV_CALIBRATION_SIZE_UNKNOWN")
 
     def test_validated_calibration_completion_keeps_validated_mode(self):
         from application.main_window import StereoWaveHeightApplication
@@ -214,6 +255,26 @@ class DemoGuiStage1Tests(unittest.TestCase):
             self.assertEqual(saved["status"],"CALIBRATION_OPERATIONAL_DOMAIN_FAIL")
             self.assertEqual(saved.get("approved_for_wass"),original.get("approved_for_wass"))
             self.assertEqual(saved["gui_operating_mode"],"DEMO_ESTIMATION_MODE")
+
+    def test_video_calibration_artifact_preserves_image_size_for_common_fov(self):
+        from PIL import Image
+        from application.calibration_workflow import calibrate_from_videos
+        detection=SimpleNamespace(corners_px=np.zeros((54,1,2),dtype=np.float32))
+        mono=SimpleNamespace(rms_px=1.0,camera_matrix=np.eye(3),distortion=np.zeros(5))
+        result=SimpleNamespace(mono_left=mono,mono_right=mono,stereo_rms_px=1.0,
+            rotation_right_from_left=np.eye(3),translation_right_from_left_m=np.asarray([.1,0,0]),baseline_m=.1,
+            epipolar_rms_px=1.0,epipolar_max_px=2.0,
+            rectification=SimpleNamespace(vertical_disparity_rms_px=1.0,vertical_disparity_max_px=2.0))
+        meta=SimpleNamespace(width=1920,height=1080,duration_sec=2.0)
+        with tempfile.TemporaryDirectory() as temporary, \
+             mock.patch("application.calibration_workflow.probe_video",return_value=meta), \
+             mock.patch("application.calibration_workflow.extract_frame",return_value=Image.new("L",(1920,1080))), \
+             mock.patch("application.calibration_workflow.detect_checkerboard_official",return_value=detection), \
+             mock.patch("application.calibration_workflow.calibrate_stereo_official",return_value=result):
+            destination=Path(temporary)/"calibration.yaml"
+            calibrate_from_videos(Path("left.mp4"),Path("right.mp4"),Path("ffmpeg.exe"),destination,
+                                  corners_x=9,corners_y=6,square_size_mm=20,sample_count=4)
+            self.assertEqual(yaml.safe_load(destination.read_text(encoding="utf-8"))["image_size_wh"],[1920,1080])
 
     def test_demo_height_basis_rejects_incompatible_cross_frame_plane(self):
         from reconstruction.single_frame import demo_height_basis

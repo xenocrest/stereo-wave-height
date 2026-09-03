@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-import queue, threading, time
+import queue, threading, time, traceback
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from typing import Any
@@ -67,6 +67,21 @@ class StereoWaveHeightApplication:
         self.session.log(message)
         if hasattr(self, "log_text"): self.log_text.insert(tk.END, message + "\n"); self.log_text.see(tk.END)
 
+    def _demo_working_view(self) -> bool:
+        state=getattr(self,"input_state",None)
+        return state is not None and state.operating_mode == "DEMO_ESTIMATION_MODE"
+
+    def _prepare_demo_working_view(self) -> None:
+        """Prepare the full canonical RIGHT/cam1 view without common-FOV gating."""
+        if not self._demo_working_view() or not self.input_state.measurement_ready or self.calibration_data is None:
+            return
+        destination=self.session.directory/"demo_working_view"/"canonical_cam1_wass_mapping.yaml"
+        self.mapping_file=save_canonical_cam1_wass_mapping(self.calibration_data,destination)
+        self.common_fov=None;self.common_fov_file=None;self.common_fov_state="DEMO_RIGHT_VIEW_READY"
+        if "common_fov_status" in self.variables:
+            self.variables["common_fov_status"].set("主相机画面，请框选需要解算的水面区域")
+        self._log("DEMO_RIGHT_VIEW_READY canonical_cam1 full_frame common_fov_bypassed")
+
     def _choose_video(self, key: str) -> None:
         names={"left_calibration":"选择左相机标定视频","right_calibration":"选择右相机标定视频",
                "left_measurement":"选择左相机测量视频","right_measurement":"选择右相机测量视频"}
@@ -83,7 +98,8 @@ class StereoWaveHeightApplication:
                 self.water_roi=None;self.common_fov=None;self.common_fov_file=None
                 if hasattr(self,"variables") and "roi_status" in self.variables:self.variables["roi_status"].set("水面区域：尚未设置；解算前必须在右相机画面中框选")
                 self.input_state.mark_measurement_video("left" if key.startswith("left") else "right")
-                self._ensure_common_fov()
+                if self._demo_working_view():self._prepare_demo_working_view()
+                else:self._ensure_common_fov()
                 self._refresh_step_state()
                 if key == "right_measurement":self._request_initial_preview(Path(selected))
             self._log(f"selected {key}: {selected}")
@@ -164,7 +180,7 @@ class StereoWaveHeightApplication:
             self.variables["calibration_load_status"].set("✓ 标定完成，可以进入测量")
             self.variables["app_state"].set("当前模式：演示模式")
             if hasattr(self,"demo_continue_button"):self.demo_continue_button.configure(state=tk.DISABLED)
-            self._log(f"loaded demo calibration: {path}");self._ensure_common_fov()
+            self._log(f"loaded demo calibration: {path}");self._prepare_demo_working_view()
         elif failed:
             self.input_state.mark_calibration_failed()
             self.variables["calibration_load_status"].set("⚠ 标定 QA 已加载，但几何未通过；测量与公共视场已阻止")
@@ -187,7 +203,7 @@ class StereoWaveHeightApplication:
         self.variables["app_state"].set("当前模式：演示模式")
         self.demo_continue_button.configure(state=tk.DISABLED)
         self._log("DEMO_ESTIMATION_MODE acknowledged by user")
-        self._ensure_common_fov();self._refresh_step_state()
+        self._prepare_demo_working_view();self._refresh_step_state()
 
     def _ensure_common_fov(self)->None:
         """Authoritatively resolve common FOV whenever calibration and pair exist."""
@@ -213,13 +229,18 @@ class StereoWaveHeightApplication:
         if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("正在计算双目公共区域…")
         self._log("COMMON_FOV_WORKER_STARTED");self._log("RECTIFICATION_STARTED")
         calibration=dict(self.calibration_data);image_size=(right.width,right.height)
+        if not any(isinstance(calibration.get(key),(list,tuple)) and len(calibration[key])==2 for key in ("image_size","image_size_wh")):
+            if self.input_state.operating_mode!="DEMO_ESTIMATION_MODE":
+                self._fail_common_fov("COMMON_FOV_CALIBRATION_SIZE_UNKNOWN");return
+            calibration["image_size_wh"]=[image_size[0],image_size[1]]
+            self._log("CALIBRATION_IMAGE_SIZE_RECOVERED_FROM_ACCEPTED_VIDEO_PAIR")
         def work()->None:
             started=time.perf_counter()
             try:
                 if (left.width,left.height)!=(right.width,right.height):raise ValueError("LEFT/RIGHT measurement video sizes differ")
                 common=compute_common_fov(calibration,image_size,safety_margin_px=0)
                 self._worker_messages.put(("common_fov_ready",(generation,common,(time.perf_counter()-started)*1000.0)))
-            except Exception as error:self._worker_messages.put(("common_fov_error",(generation,f"{type(error).__name__}: {error}")))
+            except Exception as error:self._worker_messages.put(("common_fov_error",(generation,f"{type(error).__name__}: {error}",traceback.format_exc())))
         threading.Thread(target=work,daemon=True).start()
 
     def _apply_common_fov(self,common:CommonFov,compute_ms:float)->None:
@@ -239,15 +260,16 @@ class StereoWaveHeightApplication:
         except Exception as error:
             self.common_fov=None;self.common_fov_file=None
             self.common_fov_state="COMMON_FOV_FAILED"
-            if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共区域计算失败：{error}")
-            self._log(f"common FOV failed: {error}")
+            short=f"{type(error).__name__}: {error}"
+            if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共区域计算失败：{short}")
+            self._log(f"COMMON_FOV_FAILED: {short}\n{traceback.format_exc()}")
         self._refresh_step_state();self._refresh_reference_controls()
 
-    def _fail_common_fov(self,message:str)->None:
+    def _fail_common_fov(self,message:str,traceback_text:str|None=None)->None:
         self._common_fov_generation+=1;self._common_fov_started_at=None
         self.common_fov=None;self.common_fov_file=None;self.common_fov_state="COMMON_FOV_FAILED"
-        if "common_fov_status" in self.variables:self.variables["common_fov_status"].set("双目公共区域计算失败，请查看错误信息。")
-        self._log(f"COMMON_FOV_FAILED: {message}");self._refresh_step_state();self._refresh_reference_controls()
+        if "common_fov_status" in self.variables:self.variables["common_fov_status"].set(f"双目公共区域计算失败：{message}")
+        self._log(f"COMMON_FOV_FAILED: {message}"+(f"\n{traceback_text}" if traceback_text else ""));self._refresh_step_state();self._refresh_reference_controls()
 
     def _check_common_fov_timeout(self,now:float|None=None)->bool:
         current=time.perf_counter() if now is None else now
@@ -288,8 +310,9 @@ class StereoWaveHeightApplication:
         else:
             self.variables["step1_status"].set("○ 未完成"); self.notebook.tab(self.step2_frame,state="disabled")
         inputs_ready=self.input_state.measurement_ready
-        ready=inputs_ready and self.common_fov is not None
-        if ready:step_status="✓ 左右测量视频及双目公共区域已准备"
+        demo=self._demo_working_view()
+        ready=inputs_ready and (demo or self.common_fov is not None)
+        if ready:step_status="✓ 左右测量视频已准备，主相机画面可操作" if demo else "✓ 左右测量视频及双目公共区域已准备"
         elif self.common_fov_state=="COMPUTING_COMMON_FOV":step_status="● 正在计算双目公共区域…"
         elif self.common_fov_state=="COMMON_FOV_FAILED":step_status="✕ 双目公共区域计算失败，请查看错误信息"
         elif inputs_ready:step_status="● 左右视频已加载，正在启动双目公共区域计算…"
@@ -300,7 +323,7 @@ class StereoWaveHeightApplication:
     def _enter_measurement(self) -> None:
         if not self.input_state.measurement_ready:
             messagebox.showerror(self.title,"测量输入尚未准备完成。请先加载标定结果，并选择左右测量视频。"); return
-        if self.common_fov is None:
+        if self.common_fov is None and not self._demo_working_view():
             messagebox.showerror(self.title,"双目公共区域尚未建立，不能进入测量。请检查标定与左右视频。")
             return
         self.notebook.tab(self.measurement_frame,state="normal"); self.notebook.select(self.measurement_frame)
@@ -358,7 +381,7 @@ class StereoWaveHeightApplication:
     def _start_roi_selection(self) -> None:
         if self.display_transform is None or not self.variables["right_measurement"].get():
             messagebox.showwarning(self.title,"请先加载测量视频并显示一帧画面。");return
-        if self.common_fov is None:messagebox.showwarning(self.title,"双目公共区域尚未就绪，请检查标定与左右视频参数。");return
+        if self.common_fov is None and not self._demo_working_view():messagebox.showwarning(self.title,"双目公共区域尚未就绪，请检查标定与左右视频参数。");return
         if self.playing:self._pause()
         self.viewing_result=False; self._roi_selecting=True; self._roi_start=None
         self.variables["roi_status"].set("请在右相机画面上按住鼠标拖出矩形水面区域")
@@ -383,11 +406,12 @@ class StereoWaveHeightApplication:
         if x2-x1<10 or y2-y1<10:
             self.variables["roi_status"].set("区域过小，请重新框选至少 10×10 像素的水面区域");return
         new_roi=(x1,y1,x2,y2)
-        if self.common_fov is None:
+        if self.common_fov is None and not self._demo_working_view():
             self.variables["roi_status"].set("双目公共区域尚未就绪，不能选择水面区域");return
-        try:validate_roi({"type":"polygon","coordinate_system":"canonical_cam1","points":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]]},self.common_fov)
-        except ValueError:
-            self.variables["roi_status"].set("所选区域超出双目公共有效区域，请重新选择。");return
+        if self.common_fov is not None:
+            try:validate_roi({"type":"polygon","coordinate_system":"canonical_cam1","points":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]]},self.common_fov)
+            except ValueError:
+                self.variables["roi_status"].set("所选区域超出双目公共有效区域，请重新选择。");return
         if self.water_roi is not None and self.water_roi!=new_roi:self._invalidate_reference("ROI_CHANGED")
         self.water_roi=new_roi; self._roi_selecting=False
         self.variables["roi_status"].set(f"水面区域：({x1}, {y1}) → ({x2}, {y2})；可点击重新选择")
@@ -401,8 +425,10 @@ class StereoWaveHeightApplication:
 
     def _roi_mapping(self)->dict[str,Any]:
         assert self.water_roi is not None;x1,y1,x2,y2=self.water_roi
-        assert self.common_fov is not None
-        return {"type":"polygon","coordinate_system":"canonical_cam1","points":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]],"common_fov_id":self.common_fov.identity,"common_bbox":list(self.common_fov.bbox),"roi_in_full_canonical_coordinates":True}
+        result={"type":"polygon","coordinate_system":"canonical_cam1","points":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]],"roi_in_full_canonical_coordinates":True}
+        if self.common_fov is not None:result.update({"common_fov_id":self.common_fov.identity,"common_bbox":list(self.common_fov.bbox)})
+        else:result["working_view"]="FULL_CANONICAL_CAM1"
+        return result
 
     def _invalidate_reference(self,reason:str)->None:
         if getattr(self,"active_reference_path",None) is not None:
@@ -414,7 +440,7 @@ class StereoWaveHeightApplication:
         ready=getattr(self,"active_reference_path",None) is not None
         if hasattr(self,"solve_button"):self.solve_button.configure(state=tk.NORMAL if ready and not self.backend_running else tk.DISABLED)
         state=getattr(self,"input_state",None)
-        reference_ready=(state is None or state.measurement_ready) and getattr(self,"common_fov",None) is not None and getattr(self,"water_roi",None) is not None
+        reference_ready=(state is None or state.measurement_ready) and (getattr(self,"common_fov",None) is not None or self._demo_working_view()) and getattr(self,"water_roi",None) is not None
         # Legacy unit callers predate common-FOV/ROI gating; real built GUI
         # always has input_state and therefore always follows the strict gate.
         if state is None:reference_ready=True
@@ -433,9 +459,10 @@ class StereoWaveHeightApplication:
         left,right=self.variables["left_measurement"].get(),self.variables["right_measurement"].get()
         if not left or not right: messagebox.showerror(self.title,"必须选择 LEFT 和 RIGHT 测量视频。"); return
         if not self.variables["calibration_path"].get(): messagebox.showerror(self.title,"必须先加载标定结果。"); return
-        if self.water_roi is None or self.common_fov is None:messagebox.showerror(self.title,"请先在双目公共有效区域内设置水面区域。");return
-        try:validate_roi(self._roi_mapping(),self.common_fov)
-        except ValueError:messagebox.showerror(self.title,"ROI_OUTSIDE_STEREO_COMMON_FOV：请重新选择水面区域。");return
+        if self.water_roi is None or (self.common_fov is None and not self._demo_working_view()):messagebox.showerror(self.title,"请先在主相机画面内设置水面区域。");return
+        if self.common_fov is not None:
+            try:validate_roi(self._roi_mapping(),self.common_fov)
+            except ValueError:messagebox.showerror(self.title,"ROI_OUTSIDE_STEREO_COMMON_FOV：请重新选择水面区域。");return
         if solve_mode=="measurement" and self.active_reference_path is None:messagebox.showwarning(self.title,"请先选择并解算参考帧。");return
         self._pause(); name,output=self.session.allocate(self.current_time); self.backend_running=True; self.backend_started_at=time.perf_counter(); self.solve_button.configure(state=tk.DISABLED)
         self.reference_button.configure(state=tk.DISABLED);self.variables["run_status"].set("正在建立参考面…" if solve_mode=="reference" else "正在执行单帧三维解算…"); self._log(f"backend {solve_mode} start {name} target={self.current_time:.6f}s")
@@ -465,8 +492,8 @@ class StereoWaveHeightApplication:
             if generation==self._common_fov_generation and self.common_fov_state=="COMPUTING_COMMON_FOV":self._apply_common_fov(common,compute_ms)
             return
         if kind=="common_fov_error":
-            generation,message=payload
-            if generation==self._common_fov_generation:self._fail_common_fov(message)
+            generation,message,traceback_text=payload
+            if generation==self._common_fov_generation:self._fail_common_fov(message,traceback_text)
             return
         if kind == "calibration_error":
             self.calibrate_button.configure(state=tk.NORMAL); self.variables["calibration_load_status"].set("✕ 双目标定失败")

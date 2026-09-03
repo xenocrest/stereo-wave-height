@@ -162,6 +162,7 @@ class FrozenBackendRunner:
         if water_roi is not None:
             data["dense_height"]["water_roi"] = water_roi
             if common_fov_file is not None:data["dense_height"]["common_fov_file"]=str(Path(common_fov_file).resolve())
+            else:data["dense_height"].pop("common_fov_file",None)
         data["output"]["directory"] = str(Path(output_directory).resolve())
         config = Path(output_directory).parent / f"{Path(output_directory).name}_request.yaml"
         config.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")

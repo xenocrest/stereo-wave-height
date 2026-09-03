@@ -343,12 +343,11 @@ class SingleFrameMeasurementBackend:
         output.mkdir(parents=True, exist_ok=True)
         common_fov=None
         if request.dense_height.water_roi is not None and request.solve_mode!="legacy":
-            if request.dense_height.common_fov_file is None:
-                raise ValueError("ROI_COMMON_FOV_ARTIFACT_REQUIRED")
-            common_fov=load_common_fov(request.dense_height.common_fov_file)
-            if request.calibration_id and common_fov.metadata["calibration_id"]!=request.calibration_id:
-                raise ValueError("COMMON_FOV_CALIBRATION_ID_MISMATCH")
-            validate_roi(request.dense_height.water_roi,common_fov)
+            if request.dense_height.common_fov_file is not None:
+                common_fov=load_common_fov(request.dense_height.common_fov_file)
+                if request.calibration_id and common_fov.metadata["calibration_id"]!=request.calibration_id:
+                    raise ValueError("COMMON_FOV_CALIBRATION_ID_MISMATCH")
+                validate_roi(request.dense_height.water_roi,common_fov)
         if request.solve_mode=="measurement":
             assert request.reference_artifact_file is not None and request.calibration_id and request.video_pair_id
             validate_reference_artifact(request.reference_artifact_file,calibration_id=request.calibration_id,video_pair_id=request.video_pair_id,roi=request.dense_height.water_roi or {})
