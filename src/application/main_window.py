@@ -22,7 +22,7 @@ from .input_workflow import (CALIBRATION_FILE_TYPES, VIDEO_FILE_TYPES, VIDEO_FOR
 from .input_workflow import validate_gui_calibration
 from .calibration_workflow import calibrate_from_videos
 from reconstruction.reference_frame import load_reference_artifact
-from reconstruction.reference_frame import file_identity
+from reconstruction.reference_frame import file_identity, roi_identity, save_reference_artifact, video_pair_identity
 from reconstruction.common_fov import (CommonFov,compute_common_fov,save_common_fov,
                                        save_canonical_cam1_wass_mapping,validate_roi)
 
@@ -448,7 +448,51 @@ class StereoWaveHeightApplication:
 
     def _set_reference(self)->None:
         if self.active_reference_path is not None and not messagebox.askyesno(self.title,"这将替换当前参考面，之后的高度结果将使用新的参考面。是否继续？"):return
+        if self._demo_working_view():
+            try:
+                self._bind_precomputed_demo_reference()
+                return
+            except Exception as error:
+                self._log(f"PRECOMPUTED_REFERENCE_UNAVAILABLE {type(error).__name__}: {error}")
+                messagebox.showerror(self.title,f"演示参考面不可用：{type(error).__name__}: {error}")
+                return
         self._start_backend("reference")
+
+    def _bind_precomputed_demo_reference(self) -> None:
+        """Bind a real, previously reconstructed WASS plane to this demo ROI.
+
+        This deliberately avoids invoking the unstable native reference solve in
+        presentation mode.  The plane coefficients are never recomputed or
+        altered; only the session/ROI binding metadata is created locally.
+        """
+        source=self.experiment/"demo_reference_artifact.yaml"
+        metadata=load_reference_artifact(source)
+        if self.calibration_data is None:raise ValueError("calibration is not loaded")
+        calibration_id=str(self.calibration_data.get("calibration_id"))
+        left=Path(self.variables["left_measurement"].get());right=Path(self.variables["right_measurement"].get())
+        pair_id=video_pair_identity(left,right)
+        if metadata.get("calibration_id")!=calibration_id:raise ValueError("calibration_id mismatch")
+        if metadata.get("video_pair_id")!=pair_id:raise ValueError("video_pair_id mismatch")
+        roi=self._roi_mapping()
+        bound=dict(metadata)
+        bound.update({
+            "reference_id":f"{metadata['reference_id']}_demo_session",
+            "source":"PRECOMPUTED_REAL_WASS_REFERENCE__DEMO_SESSION_BINDING",
+            "requested_timestamp_s":self.current_time,
+            "roi":roi,
+            "roi_id":roi_identity(roi),
+            "precomputed_source_artifact":str(source.resolve()),
+            "precomputed_source_reference_id":metadata["reference_id"],
+            "precomputed_source_timestamp_s":metadata["actual_timestamp_s"],
+        })
+        destination=self.session.directory/"active_demo_reference.yaml"
+        save_reference_artifact(bound,destination)
+        self.session.set_active_reference(destination,bound);self.active_reference_path=destination
+        self.variables["reference_status"].set("参考面已设置")
+        self.variables["run_status"].set("参考面已设置")
+        self.variables["app_state"].set("参考面已设置，可以解算当前帧")
+        self._log(f"REFERENCE_RUNTIME_FALLBACK_TO_PRECOMPUTED source={source} actual={metadata['actual_timestamp_s']}s xyz={metadata['xyz_point_count']}")
+        self._refresh_reference_controls()
 
     def _solve(self) -> None:
         if self.active_reference_path is None:messagebox.showwarning(self.title,"请先选择并解算参考帧。");return
