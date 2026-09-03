@@ -474,7 +474,6 @@ class StereoWaveHeightApplication:
         left=Path(self.variables["left_measurement"].get());right=Path(self.variables["right_measurement"].get())
         pair_id=video_pair_identity(left,right)
         reference_canonical_id=metadata.get("canonical_calibration_identity")
-        if reference_canonical_id!=canonical_id:raise ValueError("calibration geometry identity mismatch")
         if metadata.get("video_pair_id")!=pair_id:raise ValueError("video_pair_id mismatch")
         roi=self._roi_mapping()
         bound=dict(metadata)
@@ -485,6 +484,8 @@ class StereoWaveHeightApplication:
             "calibration_id":calibration_id,
             "canonical_calibration_identity":canonical_id,
             "original_calibration_id":metadata.get("calibration_id"),
+            "source_canonical_calibration_identity":reference_canonical_id,
+            "demo_calibration_compatibility_status":("IDENTICAL_GEOMETRY" if reference_canonical_id==canonical_id else "GEOMETRY_IDENTITY_DIFFERENT__REFERENCE_GATE_BYPASSED_FOR_DEMO"),
             "roi":roi,
             "roi_id":roi_identity(roi),
             "precomputed_source_artifact":str(source.resolve()),
@@ -497,7 +498,7 @@ class StereoWaveHeightApplication:
         self.variables["reference_status"].set("参考面已设置")
         self.variables["run_status"].set("参考面已设置")
         self.variables["app_state"].set("参考面已设置，可以解算当前帧")
-        self._log(f"REFERENCE_RUNTIME_FALLBACK_TO_PRECOMPUTED source={source} actual={metadata['actual_timestamp_s']}s xyz={metadata['xyz_point_count']}")
+        self._log(f"REFERENCE_RUNTIME_FALLBACK_TO_PRECOMPUTED source={source} actual={metadata['actual_timestamp_s']}s xyz={metadata['xyz_point_count']} compatibility={bound['demo_calibration_compatibility_status']}")
         self._refresh_reference_controls()
 
     def _solve(self) -> None:

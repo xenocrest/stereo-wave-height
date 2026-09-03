@@ -43,7 +43,7 @@ class DemoGuiStage1Tests(unittest.TestCase):
         calibration["calibration_id"]="cal_manifest_file_identity"
         with tempfile.TemporaryDirectory() as temporary:
             base=Path(temporary);experiment=base/"experiment";experiment.mkdir();left=base/"left.mp4";right=base/"right.mp4";left.write_bytes(b"L");right.write_bytes(b"R")
-            artifact=yaml.safe_load((repository/"experiments/real_video/HomeTank_005/demo_reference_artifact.yaml").read_text(encoding="utf-8"));artifact["video_pair_id"]=video_pair_identity(left,right)
+            artifact=yaml.safe_load((repository/"experiments/real_video/HomeTank_005/demo_reference_artifact.yaml").read_text(encoding="utf-8"));artifact["video_pair_id"]=video_pair_identity(left,right);artifact["canonical_calibration_identity"]="calgeom_deliberately_different"
             (experiment/"demo_reference_artifact.yaml").write_text(yaml.safe_dump(artifact,sort_keys=False),encoding="utf-8")
             app=StereoWaveHeightApplication.__new__(StereoWaveHeightApplication);app.experiment=experiment;app.session=MeasurementSession(base/"sessions","fixture")
             app.calibration_data=calibration;app.current_time=4.0;app.water_roi=(10,20,30,40);app.common_fov=None;app.backend_running=False
@@ -52,6 +52,8 @@ class DemoGuiStage1Tests(unittest.TestCase):
             app.reference_button=mock.Mock();app.solve_button=mock.Mock();app._log=mock.Mock()
             app._bind_precomputed_demo_reference()
             self.assertIsNotNone(app.active_reference_path);self.assertEqual(len(app.session.references),1)
+            bound=yaml.safe_load(app.active_reference_path.read_text(encoding="utf-8"))
+            self.assertEqual(bound["demo_calibration_compatibility_status"],"GEOMETRY_IDENTITY_DIFFERENT__REFERENCE_GATE_BYPASSED_FOR_DEMO")
             app.solve_button.configure.assert_called_with(state="normal")
 
     @staticmethod
