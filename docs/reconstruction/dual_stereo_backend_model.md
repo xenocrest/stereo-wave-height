@@ -43,3 +43,22 @@ incompatible with the tank scene and reaches the disparity boundary. This is
 evidence that changing the stereo implementation alone does not repair the
 current calibration/image correspondence. Classification:
 `ALTERNATE_BACKEND_IMPLEMENTED__HOMETANK005_GEOMETRY_NOT_VALID_FOR_HEIGHT`.
+
+## Backend-neutral full-pixel height field
+
+`reconstruction.dense_height_solver` accepts direct height observations from
+either backend and the physical water-plane coordinates of every ROI pixel. It
+first fits the observed base plane and then solves the residual field:
+
+\[
+\underset{h}{\operatorname{argmin}}\;
+\lVert W^{1/2}(h-h_{obs})\rVert^2+
+\lambda\lVert Bh\rVert^2+
+\mu\lVert B^TBh\rVert^2,
+\]
+
+where neighbour operator `B` is weighted by distance in metres, not raw pixel
+distance. Direct observations are restored exactly after the solve. Every
+connected ROI component must contain direct stereo anchors, otherwise the
+solver fails instead of inventing an unconstrained surface. The output records
+`DIRECT_STEREO` and `VARIATIONAL_ESTIMATE` separately.
