@@ -6,10 +6,11 @@ from pathlib import Path
 import numpy as np
 
 from src.surface_completion.dense_map import (
-    ESTIMATED, ESTIMATED_GLOBAL_MODEL, OBSERVED, UNSUPPORTED, estimate_ray_surface, metric_projection,
+    ESTIMATED, ESTIMATED_GLOBAL_MODEL, OBSERVED, UNSUPPORTED, estimate_global_ray_surface, estimate_ray_surface, metric_projection,
     plane_basis, plane_xy, ray_from_projection,
     rasterize_water_roi, scale_dense_height_for_png,
 )
+from src.surface_completion.constrained_full_domain import fit_physical_height_trend
 from scipy.spatial import cKDTree
 
 
@@ -72,6 +73,17 @@ class DenseHeightMapTests(unittest.TestCase):
                                         normal, -1., basis, xyz[-1], p90_spacing_m=.001,
                                         maximum_gap_m=.003, mls=policy)
         self.assertTrue(np.isnan(value))
+
+    def test_global_surface_uses_calibrated_ray_and_physical_plane_coordinates(self) -> None:
+        normal=np.array([0.,0.,1.]);basis=plane_basis(normal)
+        x,y=np.meshgrid(np.linspace(-.2,.2,12),np.linspace(-.1,.1,10));xyz=np.column_stack((x.ravel(),y.ravel(),np.ones(x.size)))
+        xy=plane_xy(xyz,normal,basis);height=.004+.003*xy[:,0]-.002*xy[:,1]
+        coefficients,quadratic=fit_physical_height_trend(xy,height)
+        projection=np.array([[100.,0.,50.,0.],[0.,100.,40.,0.],[0.,0.,1.,0.]])
+        pixels=np.array([[50.,40.],[60.,45.]])
+        values,valid=estimate_global_ray_surface(pixels,projection,normal,-1.,basis,coefficients,quadratic)
+        self.assertTrue(np.all(valid));self.assertTrue(np.all(np.isfinite(values)))
+        self.assertAlmostEqual(float(values[0]),.004,places=8)
 
 
 if __name__ == "__main__":

@@ -51,6 +51,29 @@ def _robust_fit(xy: np.ndarray, h: np.ndarray, quadratic: bool) -> np.ndarray:
     return coefficients
 
 
+def fit_physical_height_trend(support_xy_m: np.ndarray, support_h_m: np.ndarray) -> tuple[np.ndarray, bool]:
+    """Fit a robust height trend in metre-valued water-plane coordinates.
+
+    This is intentionally a small, explicit model used by the packaged demo
+    fallback.  It never treats image coordinates as physical coordinates.
+    """
+    xy = np.asarray(support_xy_m, dtype=float)
+    h = np.asarray(support_h_m, dtype=float)
+    finite = np.all(np.isfinite(xy), axis=1) & np.isfinite(h)
+    xy, h = xy[finite], h[finite]
+    if len(h) < 12 or np.linalg.matrix_rank(xy - xy.mean(0)) < 2:
+        raise ValueError("PHYSICAL_SURFACE_MODEL_NOT_IDENTIFIABLE")
+    quadratic = len(h) >= 30 and np.linalg.cond(_design(xy, True)) < 1e8
+    return _robust_fit(xy, h, quadratic), quadratic
+
+
+def evaluate_physical_height_trend(
+    query_xy_m: np.ndarray, coefficients: np.ndarray, quadratic: bool,
+) -> np.ndarray:
+    """Evaluate a fitted height trend at physical water-plane coordinates."""
+    return _design(np.asarray(query_xy_m, dtype=float), quadratic) @ np.asarray(coefficients, dtype=float)
+
+
 def _laplacian(rows: int, cols: int) -> sparse.csr_matrix:
     one_r = np.ones(rows); one_c = np.ones(cols)
     lr = sparse.diags((-one_r[:-1], 2*one_r, -one_r[:-1]), (-1, 0, 1), shape=(rows, rows))

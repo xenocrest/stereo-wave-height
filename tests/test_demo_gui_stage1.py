@@ -61,11 +61,19 @@ class DemoGuiStage1Tests(unittest.TestCase):
         from PIL import Image
         repository=Path(__file__).resolve().parents[1];app=StereoWaveHeightApplication.__new__(StereoWaveHeightApplication)
         app.experiment=repository/"experiments/real_video/HomeTank_005";app.current_time=12.0;app.ffmpeg=Path("ffmpeg.exe")
-        app.active_reference_path=app.experiment/"demo_reference_artifact.yaml";app._log=mock.Mock()
-        with tempfile.TemporaryDirectory() as temporary, mock.patch("application.main_window.extract_frame",return_value=Image.new("RGB",(1920,1080))):
+        app.active_reference_path=app.experiment/"demo_reference_artifact.yaml";app._log=mock.Mock();app.water_roi=(500,300,900,600)
+        app.mapping_file=Path("mapping.yaml")
+        def fake_dense(config):
+            target=Path(config["output_directory"]);target.mkdir(parents=True,exist_ok=True)
+            height=np.full((1080,1920),np.nan,np.float32);mask=np.zeros((1080,1920),bool);mask[300:601,500:901]=True;height[mask]=0.004
+            np.savez_compressed(target/"dense_height.npz",height_mm=height*1000,status=np.where(mask,3,0),valid_mask=mask,water_roi_mask=mask)
+            Image.fromarray(np.zeros((1080,1920),np.uint8)).save(target/"dense_height.png");Image.fromarray(np.zeros((1080,1920),np.uint8)).save(target/"dense_height_status.png")
+            return {"generation_seconds":0.2,"water_roi_pixel_count":int(mask.sum())}
+        with tempfile.TemporaryDirectory() as temporary, mock.patch("surface_completion.dense_map.build_dense_map",side_effect=fake_dense):
             record=app._load_precomputed_demo_measurement(Path(temporary)/"out","fixture","right.mp4",RuntimeError("native crash"))
-            self.assertEqual(record.summary_metadata["demo_measurement_source"],"PRECOMPUTED_REAL_WASS_FULL_PIXEL_ARTIFACT")
-            self.assertEqual(record.summary_metadata["dense_height"]["valid_height_count"],151800)
+            self.assertEqual(record.summary_metadata["demo_measurement_source"],"FROZEN_REAL_WASS_POINTS_REEVALUATED_ON_USER_ROI")
+            self.assertEqual(record.summary_metadata["water_roi_bbox_xyxy"],[500,300,900,600])
+            self.assertEqual(record.summary_metadata["actual_measurement_time_sec"],48.0)
             self.assertTrue(record.dense_npz_path.is_file())
 
     @staticmethod

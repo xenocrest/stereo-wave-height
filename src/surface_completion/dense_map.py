@@ -15,7 +15,11 @@ from PIL import Image, ImageDraw
 from scipy.spatial import ConvexHull, cKDTree
 
 from .mls import evaluate_holdout, quadratic_mls_predict
-from .constrained_full_domain import fit_constrained_surface
+from .constrained_full_domain import (
+    evaluate_physical_height_trend,
+    fit_constrained_surface,
+    fit_physical_height_trend,
+)
 
 OBSERVED, ESTIMATED, UNSUPPORTED, ESTIMATED_GLOBAL_MODEL = np.uint8(1), np.uint8(2), np.uint8(0), np.uint8(3)
 
@@ -186,6 +190,42 @@ def estimate_ray_surface(
     return float("nan"), {**last, "status": "UNSUPPORTED_NO_CONVERGENCE"}
 
 
+def estimate_global_ray_surface(
+    rectified_pixels: np.ndarray,
+    projection_metric: np.ndarray,
+    normal: np.ndarray,
+    offset: float,
+    basis: np.ndarray,
+    coefficients: np.ndarray,
+    quadratic: bool,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Evaluate a small-height surface on calibrated reference-plane rays.
+
+    The fitted equation is ``signed_plane_distance = q(X_plane, Y_plane)``.
+    Each ray is intersected with the base water plane and the height trend is
+    evaluated at that physical footprint.  This is the standard first-order
+    small-height approximation (surface displacement is small relative to
+    camera distance). Returned values are estimates, never observations.
+    """
+    pixels = np.asarray(rectified_pixels, dtype=float)
+    matrix, translation = projection_metric[:, :3], projection_metric[:, 3]
+    center = -np.linalg.solve(matrix, translation)
+    homogeneous = np.column_stack((pixels, np.ones(len(pixels))))
+    directions = np.linalg.solve(matrix, homogeneous.T).T
+    directions /= np.linalg.norm(directions, axis=1)[:, None]
+    unit = np.asarray(normal, float) / np.linalg.norm(normal)
+    denominator = directions @ unit
+    valid = np.abs(denominator) > 1e-10
+    plane_parameter = np.divide(
+        -(float(center @ normal) + float(offset)), directions @ normal,
+        out=np.zeros(len(directions)), where=valid,
+    )
+    points = center + plane_parameter[:, None] * directions
+    values = evaluate_physical_height_trend(plane_xy(points, normal, basis), coefficients, quadratic)
+    valid &= np.isfinite(values)
+    return values, valid
+
+
 def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
     started = time.perf_counter()
     frozen = config["frozen"]
@@ -235,7 +275,8 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
     rejection_nearest: list[float] = []
     missing_indices = roi_indices[~direct]
     missing_nearest = nearest_i[~direct]
-    for flat_index, seed_index in zip(missing_indices, missing_nearest):
+    global_mode = config.get("completion_strategy") == "global_physical_ray_surface"
+    for flat_index, seed_index in (() if global_mode else zip(missing_indices, missing_nearest)):
         value, diagnostic = estimate_ray_surface(
             rectified[flat_index], projection, xyz, height, support_xy, physical_tree,
             normal, offset, basis, xyz[int(seed_index)],
@@ -253,7 +294,23 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
             diagnostics[int(flat_index)] = diagnostic
     dense_h = dense_h.reshape(image_height, width)
     status = status.reshape(image_height, width)
-    if bool(config.get("demo_global_completion", False)):
+    if global_mode:
+        missing = roi & (status == UNSUPPORTED)
+        missing_flat = np.flatnonzero(missing.ravel())
+        if len(missing_flat):
+            query_rectified = rectified[missing_flat]
+            coefficients, quadratic = fit_physical_height_trend(support_xy, height)
+            values, solved = estimate_global_ray_surface(
+                query_rectified, projection, normal, offset, basis,
+                coefficients, quadratic,
+            )
+            median = float(np.median(height)); scale = float(1.4826*np.median(np.abs(height-median)))
+            p01,p99=np.percentile(height,(1,99)); margin=max(3.0*scale,float(p99-p01)*0.25,1e-6)
+            values=np.clip(values,float(p01-margin),float(p99+margin))
+            solved_flat = missing_flat[solved]
+            dense_h.ravel()[solved_flat] = values[solved].astype(np.float32) * 1000.0
+            status.ravel()[solved_flat] = ESTIMATED_GLOBAL_MODEL
+    elif bool(config.get("demo_global_completion", False)):
         # Presentation-only last-resort fill.  Direct observations and local
         # estimates always retain priority and provenance.
         lo, hi = support_xy.min(axis=0), support_xy.max(axis=0)
@@ -274,8 +331,15 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
         "p90_spacing_m": p90, "maximum_gap_m": max_gap,
         "completion_rule": f"scene-local maximum gap = {float(config['completion']['maximum_gap_multiplier']):g} * frame P90 nearest-neighbor spacing",
         "status_semantics": {"OBSERVED":"direct WASS observation","ESTIMATED":"ESTIMATED_LOCAL within support gate","ESTIMATED_GLOBAL_MODEL":"demo-only bounded global model","UNSUPPORTED":"no result"},
-        "extrapolation_policy":"reject outside scene-local support distance/topology gate",
+        "extrapolation_policy":(
+            "bounded robust global trend; values outside direct support remain ESTIMATED_GLOBAL_MODEL"
+            if global_mode else "reject outside scene-local support distance/topology gate"
+        ),
         "water_roi": roi_config,
+        "global_completion_geometry": (
+            "calibrated camera ray to base-plane footprint, then robust height trend in metre-valued water-plane coordinates (first-order small-height model)"
+            if global_mode else None
+        ),
     }
     np.savez_compressed(output / f"{stem}.npz", height_mm=dense_h, status=status,
                         valid_mask=status != UNSUPPORTED, water_roi_mask=roi,

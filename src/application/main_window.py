@@ -539,30 +539,51 @@ class StereoWaveHeightApplication:
         threading.Thread(target=work,daemon=True).start()
 
     def _load_precomputed_demo_measurement(self,output:Path,name:str,right_video:str,runtime_error:Exception)->MeasurementRecord:
-        """Load a real previously computed full-pixel result when native WASS crashes."""
-        source=self.experiment/"demo_full_pixel_result"; metadata=json.loads((source/"full_pixel_result.json").read_text(encoding="utf-8"))
+        """Re-evaluate the frozen real WASS surface on the user's actual ROI."""
+        from reconstruction.height import height_from_plane
+        from surface_completion.dense_map import build_dense_map
+        source_run=Path(r"D:\stereo-wave-height-runs\HomeTank_005\demo-measurement-48s-20260902")
+        reconstruction=source_run/"reconstruction"; source_config=yaml.safe_load((self.experiment/"demo_full_pixel_config.yaml").read_text(encoding="utf-8"))
+        pixel_source=reconstruction/"pixel_xyz"/"000000_pixel_xyz.npz"; old_height=reconstruction/"height"/"000000_height_points.npz"
+        projection=reconstruction/"wass_workspace"/"work"/"000000_wd"/"P0cam.txt"
+        if self.mapping_file is None or self.water_roi is None:raise ValueError("DEMO_ROI_OR_MAPPING_NOT_READY")
         output.mkdir(parents=True,exist_ok=True);selected=output/"selected_pair"/"right.png";selected.parent.mkdir(parents=True,exist_ok=True)
-        extract_frame(Path(right_video),self.current_time,self.ffmpeg).save(selected)
-        dense=output/"dense_height";dense.mkdir(exist_ok=True)
-        npz=dense/"dense_height.npz";height=dense/"dense_height.png";status=dense/"dense_height_status.png"
-        shutil.copy2(source/"full_pixel_height.npz",npz);shutil.copy2(source/"full_pixel_height.png",height);shutil.copy2(source/"source_status.png",status)
-        sparse=output/"reconstruction"/"pixel_xyz"/"000000_pixel_xyz.npz";sparse.parent.mkdir(parents=True,exist_ok=True)
-        np.savez_compressed(sparse,u_px=np.empty(0),v_px=np.empty(0),xyz_m=np.empty((0,3)))
-        stats=metadata["model"]["height_statistics_m"];summary={
+        shutil.copy2(source_run/"selected_pair"/"right.png",selected)
+        sparse=output/"reconstruction"/"pixel_xyz"/"000000_pixel_xyz.npz";sparse.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(pixel_source,sparse)
+        plane=source_config["current_frame_base_plane"]
+        with np.load(pixel_source) as points, np.load(old_height) as old:
+            xyz=np.asarray(points["xyz_m"],float); water=np.asarray(old["water_mask"],bool)
+        physical_height=height_from_plane(xyz,np.asarray(plane["normal"],float),float(plane["offset_m"]))
+        height_source=output/"reconstruction"/"height"/"000000_height_points.npz";height_source.parent.mkdir(parents=True,exist_ok=True)
+        np.savez_compressed(height_source,x_m=xyz[:,0],y_m=xyz[:,1],height_m=physical_height,water_mask=water)
+        x0,y0,x1,y1=self.water_roi;dense=output/"dense_height"
+        config={"frozen":{"pixel_xyz_npz":str(sparse),"height_npz":str(height_source),"mapping_yaml":str(self.mapping_file),
+            "reference_plane":plane,"projection_txt":str(projection),"calibrated_baseline_m":0.09334524170492753,"frame_identity":"HomeTank_005_wave_48.0s_frozen_real_WASS"},
+            "water_roi":{"type":"polygon","coordinate_system":"canonical_cam1","points":[[x0,y0],[x1,y0],[x1,y1],[x0,y1]]},
+            "observation_gate_px":2.0,"completion":{"maximum_gap_multiplier":3.0},
+            "mls":{"radius_multiplier":6.0,"sigma_multiplier":2.0,"minimum_points":12,"maximum_neighbors":160,"maximum_condition_number":1e8},
+            "completion_strategy":"global_physical_ray_surface","output_directory":str(dense),"artifact_stem":"dense_height"}
+        result=build_dense_map(config);npz=dense/"dense_height.npz";height=dense/"dense_height.png";status=dense/"dense_height_status.png"
+        with np.load(npz) as generated:
+            values=np.asarray(generated["height_mm"],float);valid=np.asarray(generated["valid_mask"],bool);metres=values[valid]/1000.0
+        if not np.any(valid):raise ValueError("SELECTED_ROI_SURFACE_COULD_NOT_BE_EVALUATED")
+        stats={"minimum":float(metres.min()),"maximum":float(metres.max()),"median":float(np.median(metres)),"mean":float(metres.mean())};summary={
           "status":"SINGLE_FRAME_DENSE_HEIGHT_COMPLETED","requested_time_s":self.current_time,
           "requested_target_time_sec":self.current_time,"actual_measurement_time_sec":48.0,
-          "xyz_point_count":0,"wass_seconds":0.0,"total_seconds":0.0,
+          "xyz_point_count":int(len(xyz)),"wass_seconds":0.0,"total_seconds":float(result["generation_seconds"]),
           "height_statistics":stats,"reference_id":load_reference_artifact(self.active_reference_path)["reference_id"],
           "reference_metadata":load_reference_artifact(self.active_reference_path),
-          "demo_measurement_source":"PRECOMPUTED_REAL_WASS_FULL_PIXEL_ARTIFACT",
+          "demo_measurement_source":"FROZEN_REAL_WASS_POINTS_REEVALUATED_ON_USER_ROI",
+          "height_mathematical_definition":"signed normal distance to the frozen frame water plane; missing pixels use calibrated-ray base-plane footprints and a robust physical-coordinate water-surface trend under the small-height approximation",
+          "water_roi_bbox_xyxy":[x0,y0,x1,y1],"displayed_frame_warning":"Result is for the frozen real WASS frame at 48.0 s, not the requested frame.",
           "runtime_failure_bypassed":f"{type(runtime_error).__name__}: {runtime_error}",
-          "dense_height":{"status":"COMPLETED","roi_pixel_count":metadata["roi_pixel_count"],
-            "valid_height_count":metadata["finite_height_count"],"generation_time_sec":0.0,
+          "dense_height":{"status":"COMPLETED","roi_pixel_count":result["water_roi_pixel_count"],
+            "valid_height_count":int(np.count_nonzero(valid)),"generation_time_sec":float(result["generation_seconds"]),
             "height_statistics_mm":{key:float(value)*1000 for key,value in stats.items()},
             "artifact_paths":{"npz":"dense_height/dense_height.npz","height_png":"dense_height/dense_height.png","status_png":"dense_height/dense_height_status.png"}},
         }
         unified=output/"single_frame_result.json";unified.write_text(json.dumps(summary,indent=2,ensure_ascii=False),encoding="utf-8")
-        self._log(f"MEASUREMENT_RUNTIME_FALLBACK_TO_PRECOMPUTED source={source} runtime_error={type(runtime_error).__name__}")
+        self._log(f"MEASUREMENT_RUNTIME_FALLBACK_TO_FROZEN_WASS_RAY_SURFACE roi={self.water_roi} actual=48.0s runtime_error={type(runtime_error).__name__}")
         return MeasurementRecord(self.current_time,name,output,unified,selected,height,status,None,
             time.strftime("%Y-%m-%dT%H:%M:%S%z"),summary,dense_npz_path=npz,pixel_xyz_path=sparse,
             overlay_path=dense/"height_overlay.png")
@@ -613,6 +634,9 @@ class StereoWaveHeightApplication:
             self._refresh_reference_controls()
         self.session.add(record); self.history.insert(tk.END,record.display_name)
         self.variables["run_status"].set(f"完成（{elapsed:.1f} s）"); self._log(f"backend completed {record.display_name}"); self._show_record(record,"REFERENCE_RESULT" if kind=="reference_success" else "MEASUREMENT_RESULT")
+        if record.summary_metadata.get("demo_measurement_source")=="FROZEN_REAL_WASS_POINTS_REEVALUATED_ON_USER_ROI":
+            messagebox.showinfo(self.title,"实时 WASS 未完成，当前展示使用冻结的 48.000 s 真实 WASS 点。\n"
+                "高度已严格按本次框选 ROI 重新计算；浅蓝区域为连续水面模型估计，不等同于直接观测。")
         if record.summary_metadata.get("fallback_used"):
             messagebox.showinfo(self.title,"目标帧三维匹配不足，已自动使用最近可可靠解算帧。\n"
                 f"用户暂停时刻：{record.summary_metadata['requested_target_time_sec']:.3f} s\n"
