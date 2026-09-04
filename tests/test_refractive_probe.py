@@ -5,7 +5,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'tools'))
 from hometank006_refraction_probe import bottom_intersections
-from hometank006_refractive_height_probe import snell_normal, sample
+from hometank006_refractive_height_probe import snell_normal, sample, air_water_entry_valid
 
 
 def test_normal_incidence_reaches_bottom_not_water():
@@ -52,3 +52,13 @@ def test_nonzero_surface_height_uses_water_intersection_not_bottom():
             # Same fixed bottom for BOTH heights: not mistaken for water surface.
             np.testing.assert_allclose(n@bottom+c+depth,0,atol=1e-12)
         np.testing.assert_allclose(normals,[n,n],atol=1e-12)
+
+
+def test_snell_nonphysical_air_exit_branch_rejected():
+    air=np.array([0.,0.,1.])
+    water=np.array([np.sin(np.pi/3),0.,np.cos(np.pi/3)])
+    n=snell_normal(air,water)
+    # The tangential equality is satisfied algebraically but air points out.
+    np.testing.assert_allclose(np.cross(n,air-1.333*water),0,atol=1e-12)
+    assert not air_water_entry_valid(air,water,n)
+    assert air_water_entry_valid(air,air,np.array([0.,0.,-1.]))

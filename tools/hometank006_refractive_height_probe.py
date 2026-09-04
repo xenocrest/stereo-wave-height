@@ -7,6 +7,7 @@ No WASS, calibration edits, GUI changes or full-pixel fill.
 """
 from pathlib import Path
 import argparse
+import hashlib
 import json
 import cv2
 import numpy as np
@@ -62,20 +63,33 @@ def snell_normal(air, water, index=1.333):
     return n/np.linalg.norm(n, axis=-1, keepdims=True)
 
 
+def air_water_entry_valid(air, water, normal):
+    """Both directed rays must enter the water side of the oriented interface.
+
+    Tangential Snell equality alone also admits a nonphysical branch, whose
+    incoming air ray points OUT of water. Reject it rather than fitting height.
+    """
+    return (np.sum(air*normal,axis=-1)<0)&(np.sum(water*normal,axis=-1)<0)
+
+
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--correspondence',choices=['raft','dis','dis_chain'],default='raft')
     parser.add_argument('--target-time',type=int,default=10)
     parser.add_argument('--right-offset',type=float)
+    parser.add_argument('--reference-model',type=Path,default=ROOT/'refraction_probe/result.json')
     args=parser.parse_args()
     out = ROOT/('refractive_height_probe' if args.correspondence=='raft' else 'refractive_height_probe_dis')
     if args.correspondence=='dis_chain': out=ROOT/'refractive_height_probe_dis_chain'
     if args.target_time!=10 or args.right_offset is not None:
         out=ROOT/(out.name+f'_t{args.target_time}_offset{args.right_offset}')
+    reference_hash=hashlib.sha256(args.reference_model.read_bytes()).hexdigest()
+    if args.reference_model.resolve() != (ROOT/'refraction_probe/result.json').resolve():
+        out=out.with_name(out.name+'_reference_'+reference_hash[:12])
     out.mkdir(exist_ok=True)
     reference = np.load(ROOT/'surface_chain_raft_centered/frame_01_correspondences.npz')
     # Freeze first static time only; times 2/3 are held out from reference fitting.
-    fit = json.loads((ROOT/'refraction_probe/result.json').read_text())['frames'][0]['fit']
+    fit = json.loads(args.reference_model.read_text())['frames'][0]['fit']
     n, c, d = np.array(fit['normal']), fit['offset_m'], fit['water_depth_m']
     Ks = [reference[f'P{i}'][:, :3] for i in [0, 1]]
     Cs = [-np.linalg.inv(Ks[i]) @ reference[f'P{i}'][:, 3] for i in [0, 1]]
@@ -160,7 +174,7 @@ def main():
                 w1 = bg1-Q; w1 /= np.linalg.norm(w1, axis=1)[:, None]
                 n0, n1 = snell_normal(np.broadcast_to(v, w0.shape), w0), snell_normal(vv, w1)
                 error = np.linalg.norm(n0-n1, axis=1)
-                valid = (n0@n > 0) & (n1@n > 0) & (np.sum(w0*n0, axis=1) < 0) & (np.sum(w1*n1, axis=1) < 0)
+                valid = (n0@n > 0) & (n1@n > 0) & air_water_entry_valid(v,w0,n0) & air_water_entry_valid(vv,w1,n1)
                 return np.where(valid & np.isfinite(error), error, 1e3)
             errors = evaluate(levels)
             k = int(np.argmin(errors))
@@ -190,19 +204,21 @@ def main():
                            median_normal_discrepancy=float(np.median([r['normal_discrepancy'] for r in candidates])),
                            median_near_minimum_span_m=float(np.median([r['near_minimum_height_span_m'] for r in candidates])))
         frames.append(summary)
-        (out/f'frame_{time:02d}_queries.json').write_text(json.dumps(records, indent=2), encoding='utf-8')
+        (out/f'frame_{time:02d}_physical_entry_queries.json').write_text(json.dumps(records, indent=2), encoding='utf-8')
         print(json.dumps(summary), flush=True)
     result = dict(status='CONDITIONAL_REFRACTIVE_HEIGHT_NOT_PHYSICALLY_VALIDATED',
                   independent_background_geometry=False, reference=fit,
+                  reference_model_path=str(args.reference_model),reference_model_sha256=reference_hash,
                   reference_time_s=1, reference_includes_test_frames=False,
                   normal_agreement_gate_deg=1.0,
                   gate_source='DIAGNOSTIC_ENGINEERING_ASSUMPTION_NOT_ACCURACY_GUARANTEE',
+                  air_water_entry_gate=True,
                   correspondence='temporal bottom-marking identity, not temporal height interpolation',
                   correspondence_backend=args.correspondence,
                   target_right_minus_left_offset_s=offset, synchronization_verified=False,
                   search_height_range_m=[float(levels[0]), float(levels[-1])], frames=frames,
                   no_gui_promotion=True, no_full_pixel_claim=True)
-    (out/'common_interface_result.json').write_text(json.dumps(result, indent=2, allow_nan=False), encoding='utf-8')
+    (out/'physical_entry_result.json').write_text(json.dumps(result, indent=2, allow_nan=False), encoding='utf-8')
 
 
 if __name__=='__main__': main()

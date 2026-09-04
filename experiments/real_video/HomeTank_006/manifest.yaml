@@ -1,6 +1,6 @@
 experiment_id: HomeTank_006
 status: INPUT_FILES_PRESENT
-processing_status: GEOMETRY_AND_SYNC_VALIDATION_PENDING
+processing_status: REFRACTIVE_HEIGHT_MODEL_VALIDATION_IN_PROGRESS
 camera_roles:
   cam0: LEFT
   cam1: RIGHT
@@ -65,3 +65,6 @@ optical_scene:
     source: USER_SPECIFIED_MODEL_ASSUMPTION
     independent_verification_required: false
     qualification: adopted_model_assumption_not_measured_geometry
+  independent_static_water_depth_m: null
+  independent_static_water_depth_status: AWAITING_USER_PHYSICAL_INPUT
+  latest_diagnostic: refractive_entry_and_tracking_fix.md

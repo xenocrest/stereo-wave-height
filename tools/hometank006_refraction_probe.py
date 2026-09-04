@@ -7,6 +7,7 @@ Fits and hold-outs assess this hypothesis, not independent physical accuracy.
 """
 from pathlib import Path
 import hashlib
+import argparse
 import json
 import cv2
 import numpy as np
@@ -103,6 +104,15 @@ def describe(solution, test_rays, centers, fixed_depth=None):
 
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--water-depth-mm',type=float)
+    parser.add_argument('--source-note')
+    args=parser.parse_args()
+    fixed_depth=None
+    if args.water_depth_mm is not None:
+        if not np.isfinite(args.water_depth_mm) or args.water_depth_mm<=0 or not args.source_note:
+            parser.error('positive finite water depth and explicit source-note required')
+        fixed_depth=args.water_depth_mm/1000
     records = []
     pooled = [[], []]
     hashes = {}
@@ -112,15 +122,15 @@ def main():
         rays, centers, available = observations(path)
         for i in [0, 1]: pooled[i].append(rays[i])
         train, test = [v[::2] for v in rays], [v[1::2] for v in rays]
-        solution = fit(train, centers)
+        solution = fit(train, centers, fixed_depth)
         records.append(dict(time_s=t, available_correspondences=available,
                             train_count=len(train[0]), heldout_count=len(test[0]),
-                            fit=describe(solution, test, centers)))
+                            fit=describe(solution, test, centers, fixed_depth)))
     rays = [np.concatenate(v) for v in pooled]
     train, test = [v[::2] for v in rays], [v[1::2] for v in rays]
-    solution = fit(train, centers)
+    solution = fit(train, centers, fixed_depth)
     profiles = []
-    for depth in [solution.x[3]*.5, solution.x[3], solution.x[3]*2]:
+    for depth in ([solution.x[3]*.5, solution.x[3], solution.x[3]*2] if fixed_depth is None else []):
         profiles.append(describe(fit(train, centers, depth), test, centers, depth))
     for path, value in hashes.items():
         assert hashlib.sha256(Path(path).read_bytes()).hexdigest() == value
@@ -130,10 +140,13 @@ def main():
                   assumptions={'water_refractive_index':1.333, 'source':'IDEAL_ASSUMPTION_NOT_MEASURED',
                                'surface':'static plane', 'bottom':'parallel plane, USER_SPECIFIED_MODEL_ASSUMPTION',
                                'interfaces':'single air-water interface, unverified for all pixels'},
-                  random_seed=42, frames=records, pooled=describe(solution, test, centers),
+                  water_depth_constraint=dict(value_m=fixed_depth,source=args.source_note,
+                      status='NOT_PROVIDED_ESTIMATED_FROM_IMAGES' if fixed_depth is None else 'EXPLICIT_PHYSICAL_MODEL_INPUT',
+                      uncertainty_m=None),
+                  random_seed=42, frames=records, pooled=describe(solution, test, centers, fixed_depth),
                   depth_profiles=profiles, source_sha256=hashes,
                   produces_water_height=False)
-    out = ROOT/'refraction_probe'; out.mkdir(exist_ok=True)
+    out = ROOT/('refraction_probe' if fixed_depth is None else f'refraction_probe_depth_{args.water_depth_mm:g}mm'); out.mkdir(exist_ok=True)
     (out/'result.json').write_text(json.dumps(result, indent=2, allow_nan=False), encoding='utf-8')
     print(json.dumps(result, indent=2))
 
