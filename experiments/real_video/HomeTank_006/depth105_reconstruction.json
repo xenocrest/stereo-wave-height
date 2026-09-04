@@ -1,0 +1,1583 @@
+{
+  "status": "DEPTH_CONSTRAINED_RECONSTRUCTION_NOT_PHYSICALLY_VALIDATED",
+  "water_depth": {
+    "value": 0.105,
+    "unit": "m",
+    "source": "USER_REPORTED_APPROXIMATE",
+    "uncertainty": null
+  },
+  "plane_parallel": "USER_SPECIFIED_ASSUMPTION",
+  "full_pixel_height_goal_achieved": false,
+  "calibration_modified": false,
+  "gui_modified": false,
+  "wass_runs": 0,
+  "records": {
+    "reference_model": {
+      "path": "D:\\stereo-wave-height-runs\\HomeTank_006\\refraction_probe_depth_105mm\\result.json",
+      "sha256": "e0b69662e78a37aa997f68727c0baacd82da49c989960eb35f9ca87b2090de56",
+      "result": {
+        "status": "REFRACTION_HYPOTHESIS_DIAGNOSTIC_NOT_HEIGHT_MEASUREMENT",
+        "source_identity": "USER_CONFIRMED_BOTTOM_TEXTURE_NO_SURFACE_MARKERS",
+        "geometry_status": "UNAPPROVED_CANDIDATE_UNCHANGED",
+        "assumptions": {
+          "water_refractive_index": 1.333,
+          "source": "IDEAL_ASSUMPTION_NOT_MEASURED",
+          "surface": "static plane",
+          "bottom": "parallel plane, USER_SPECIFIED_MODEL_ASSUMPTION",
+          "interfaces": "single air-water interface, unverified for all pixels"
+        },
+        "water_depth_constraint": {
+          "value_m": 0.105,
+          "source": "USER_REPORTED_APPROXIMATE_STATIC_WATER_DEPTH_2026_09_04",
+          "status": "EXPLICIT_PHYSICAL_MODEL_INPUT",
+          "uncertainty_m": null
+        },
+        "random_seed": 42,
+        "frames": [
+          {
+            "time_s": 1,
+            "available_correspondences": 23964,
+            "train_count": 300,
+            "heldout_count": 300,
+            "fit": {
+              "normal": [
+                -0.45415076166722146,
+                -0.7563663927475857,
+                -0.4708045938593713
+              ],
+              "offset_m": 0.22151035014426923,
+              "water_depth_m": 0.105,
+              "train_ray_closure_rms_rad": 0.0006088705909924356,
+              "heldout_ray_closure_rms_rad": 0.0006182663086550551,
+              "jacobian_singular_values": [
+                14.118248237813434,
+                0.18913005266511465,
+                0.022836937966692672
+              ],
+              "jacobian_condition": 618.2198444644674,
+              "active_bounds": [
+                0,
+                0,
+                0
+              ],
+              "solver_success": true
+            }
+          },
+          {
+            "time_s": 2,
+            "available_correspondences": 23668,
+            "train_count": 300,
+            "heldout_count": 300,
+            "fit": {
+              "normal": [
+                -0.44541357879272386,
+                -0.7662411849178239,
+                -0.4631211400517008
+              ],
+              "offset_m": 0.21832888606356027,
+              "water_depth_m": 0.105,
+              "train_ray_closure_rms_rad": 0.0007219953138465355,
+              "heldout_ray_closure_rms_rad": 0.0007129845872410107,
+              "jacobian_singular_values": [
+                14.266378547697506,
+                0.19333836593116302,
+                0.023507387236831007
+              ],
+              "jacobian_condition": 606.8891622861926,
+              "active_bounds": [
+                0,
+                0,
+                0
+              ],
+              "solver_success": true
+            }
+          },
+          {
+            "time_s": 3,
+            "available_correspondences": 24233,
+            "train_count": 300,
+            "heldout_count": 300,
+            "fit": {
+              "normal": [
+                -0.4498233905048897,
+                -0.7683689096377442,
+                -0.4552671040793413
+              ],
+              "offset_m": 0.21829747676944092,
+              "water_depth_m": 0.105,
+              "train_ray_closure_rms_rad": 0.0007573601276887279,
+              "heldout_ray_closure_rms_rad": 0.0007636160667738453,
+              "jacobian_singular_values": [
+                14.292402095501604,
+                0.19065456972800288,
+                0.022402980433605547
+              ],
+              "jacobian_condition": 637.9687799960006,
+              "active_bounds": [
+                0,
+                0,
+                0
+              ],
+              "solver_success": true
+            }
+          }
+        ],
+        "pooled": {
+          "normal": [
+            -0.44988933857174085,
+            -0.7638910417229422,
+            -0.46267705736822495
+          ],
+          "offset_m": 0.21934828097500317,
+          "water_depth_m": 0.105,
+          "train_ray_closure_rms_rad": 0.0007112747125407004,
+          "heldout_ray_closure_rms_rad": 0.0007098648560982694,
+          "jacobian_singular_values": [
+            24.63984272162673,
+            0.33082663506872023,
+            0.03964525339127355
+          ],
+          "jacobian_condition": 621.5080145521354,
+          "active_bounds": [
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "depth_profiles": [],
+        "source_sha256": {
+          "D:\\stereo-wave-height-runs\\HomeTank_006\\surface_chain_raft_centered\\frame_01_correspondences.npz": "8472396e87075bb9cd7328a42b7727a11119b7b7bb23fbc2a008cbec922b62e9",
+          "D:\\stereo-wave-height-runs\\HomeTank_006\\surface_chain_raft_centered\\frame_02_correspondences.npz": "43018116c2bdb4dfde4be6c202b9248b42c8c0709667c3e016086fc7be350fdf",
+          "D:\\stereo-wave-height-runs\\HomeTank_006\\surface_chain_raft_centered\\frame_03_correspondences.npz": "33a3d4c5a8d42323b98062782d279d38a3853b4ecba23f82b3f6255889496b6c"
+        },
+        "produces_water_height": false
+      }
+    },
+    "ray_normal_inverse": {
+      "path": "D:\\stereo-wave-height-runs\\HomeTank_006\\refractive_height_probe_dis_t10_offset-0.225_reference_e0b69662e78a\\physical_entry_result.json",
+      "sha256": "dd33b345d636431eb278a10e4a9f4bd1d7a284527802eb2c864e9a076bf87de7",
+      "result": {
+        "status": "CONDITIONAL_REFRACTIVE_HEIGHT_NOT_PHYSICALLY_VALIDATED",
+        "independent_background_geometry": false,
+        "reference": {
+          "normal": [
+            -0.45415076166722146,
+            -0.7563663927475857,
+            -0.4708045938593713
+          ],
+          "offset_m": 0.22151035014426923,
+          "water_depth_m": 0.105,
+          "train_ray_closure_rms_rad": 0.0006088705909924356,
+          "heldout_ray_closure_rms_rad": 0.0006182663086550551,
+          "jacobian_singular_values": [
+            14.118248237813434,
+            0.18913005266511465,
+            0.022836937966692672
+          ],
+          "jacobian_condition": 618.2198444644674,
+          "active_bounds": [
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "reference_model_path": "D:\\stereo-wave-height-runs\\HomeTank_006\\refraction_probe_depth_105mm\\result.json",
+        "reference_model_sha256": "e0b69662e78a37aa997f68727c0baacd82da49c989960eb35f9ca87b2090de56",
+        "reference_time_s": 1,
+        "reference_includes_test_frames": false,
+        "normal_agreement_gate_deg": 1.0,
+        "gate_source": "DIAGNOSTIC_ENGINEERING_ASSUMPTION_NOT_ACCURACY_GUARANTEE",
+        "air_water_entry_gate": true,
+        "correspondence": "temporal bottom-marking identity, not temporal height interpolation",
+        "correspondence_backend": "dis",
+        "target_right_minus_left_offset_s": -0.225,
+        "synchronization_verified": false,
+        "search_height_range_m": [
+          -0.0945,
+          0.0945
+        ],
+        "frames": [
+          {
+            "time_s": 1,
+            "background_counts": [
+              82070,
+              46756
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 18300,
+            "available_query_domain_pixels": 18300,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": -1.9124647871482403e-07,
+            "height_p5_p95_m": [
+              -4.705215579485527e-07,
+              2.811724050482507e-08
+            ],
+            "height_rms_m": 2.579855918468155e-07,
+            "median_normal_discrepancy": 4.84262473924301e-07,
+            "median_near_minimum_span_m": 0.0063
+          },
+          {
+            "time_s": 2,
+            "background_counts": [
+              81150,
+              45853
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 18300,
+            "available_query_domain_pixels": 18189,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0003605687210736965,
+            "height_p5_p95_m": [
+              -9.664367545501384e-05,
+              0.0009735561859738296
+            ],
+            "height_rms_m": 0.0004835336105484306,
+            "median_normal_discrepancy": 0.0018642487658233039,
+            "median_near_minimum_span_m": 0.007349999999999995
+          },
+          {
+            "time_s": 3,
+            "background_counts": [
+              80891,
+              45746
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 18300,
+            "available_query_domain_pixels": 18154,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0002977817396921345,
+            "height_p5_p95_m": [
+              -0.0002278896685636654,
+              0.0011645787322671862
+            ],
+            "height_rms_m": 0.0005770692785817051,
+            "median_normal_discrepancy": 0.0016731679527710757,
+            "median_near_minimum_span_m": 0.007349999999999995
+          },
+          {
+            "time_s": 10,
+            "background_counts": [
+              3230,
+              15701
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 18300,
+            "available_query_domain_pixels": 1527,
+            "query_count": 200,
+            "conditional_candidates": 0,
+            "unsupported_count": 200,
+            "rejection_counts": {
+              "REJECTED_SNELL_INCONSISTENCY": 199,
+              "UNSUPPORTED_NO_INTERIOR_SOLUTION": 1
+            }
+          }
+        ],
+        "no_gui_promotion": true,
+        "no_full_pixel_claim": true
+      }
+    },
+    "photometric_inverse": {
+      "path": "D:\\stereo-wave-height-runs\\HomeTank_006\\photometric_refraction_105mm\\masked_continuous_sampler_result.json",
+      "sha256": "4b9ca48a67aa54b4daeb9492583d6777785818cbac6fb8224e96b921c09b6383",
+      "result": {
+        "status": "PHOTOMETRIC_REFRACTION_DIAGNOSTIC_NOT_VALIDATED",
+        "water_depth_m": 0.105,
+        "reference_time_s": 1,
+        "patch_size_px": 17,
+        "seed": 42,
+        "plane_model": "local plane",
+        "input_geometry": "unchanged unapproved candidate",
+        "synchronization": "candidate, not verified",
+        "water_domain_gates": true,
+        "no_gui_promotion": true,
+        "frames": [
+          {
+            "time_s": 1,
+            "patches": [
+              {
+                "center_uv": [
+                  621,
+                  469
+                ],
+                "height_m": 0.0,
+                "slopes": [
+                  0.0,
+                  0.0
+                ],
+                "train_intensity_rms": 1.5144766376266449e-10,
+                "heldout_intensity_rms": 1.427376620870534e-10,
+                "start_height_results_m": [
+                  0.0,
+                  -0.020646753540160212,
+                  0.021000627356932422
+                ],
+                "start_train_intensity_rms": [
+                  1.5144766376266449e-10,
+                  0.6433757840030819,
+                  0.7790976171079284
+                ],
+                "start_heldout_intensity_rms": [
+                  1.427376620870534e-10,
+                  0.6509610042562572,
+                  0.7862236921121023
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  25.24077407731231,
+                  15.01299805249443,
+                  3.0207111911435915
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  718,
+                  509
+                ],
+                "height_m": 0.0,
+                "slopes": [
+                  0.0,
+                  0.0
+                ],
+                "train_intensity_rms": 5.01843328705309e-11,
+                "heldout_intensity_rms": 5.993520591731164e-11,
+                "start_height_results_m": [
+                  0.0,
+                  -0.014541829720978821,
+                  0.0212446947323886
+                ],
+                "start_train_intensity_rms": [
+                  5.01843328705309e-11,
+                  0.0075935388006441425,
+                  0.018987528147906815
+                ],
+                "start_heldout_intensity_rms": [
+                  5.993520591731164e-11,
+                  0.007497170843952445,
+                  0.0190891097488237
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  11.421391118679384,
+                  7.725121736195325,
+                  1.742529561558406
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  605,
+                  519
+                ],
+                "height_m": 1.6684411155084047e-12,
+                "slopes": [
+                  -3.691471655207793e-11,
+                  -2.2556970559192453e-11
+                ],
+                "train_intensity_rms": 1.836388699571803e-10,
+                "heldout_intensity_rms": 1.887602655383516e-10,
+                "start_height_results_m": [
+                  1.6684411155084047e-12,
+                  -0.0200095584326752,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  1.836388699571803e-10,
+                  0.02523774678796408,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  1.887602655383516e-10,
+                  0.025405507140032573,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  28.70210618272042,
+                  5.66430480060361,
+                  3.9957822698022447
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  620,
+                  507
+                ],
+                "height_m": 0.0,
+                "slopes": [
+                  0.0,
+                  0.0
+                ],
+                "train_intensity_rms": 9.143193217966508e-11,
+                "heldout_intensity_rms": 9.101329946676108e-11,
+                "start_height_results_m": [
+                  0.0,
+                  -0.02127930354027204,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  9.143193217966508e-11,
+                  0.012973783649780218,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  9.101329946676108e-11,
+                  0.012927161286282999,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  16.21802902811567,
+                  11.38540001302178,
+                  2.187586475123427
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  645,
+                  493
+                ],
+                "height_m": 0.0,
+                "slopes": [
+                  0.0,
+                  0.0
+                ],
+                "train_intensity_rms": 9.455617433015212e-11,
+                "heldout_intensity_rms": 8.79649510970605e-11,
+                "start_height_results_m": [
+                  0.0,
+                  -0.02287100403206915,
+                  0.020522087593910096
+                ],
+                "start_train_intensity_rms": [
+                  9.455617433015212e-11,
+                  0.007651824230062014,
+                  0.20521270687303028
+                ],
+                "start_heldout_intensity_rms": [
+                  8.79649510970605e-11,
+                  0.007664445116186347,
+                  0.22211790699941483
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  18.211231116040178,
+                  10.999104630074955,
+                  2.0795499063762093
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  704,
+                  493
+                ],
+                "height_m": 0.0,
+                "slopes": [
+                  0.0,
+                  0.0
+                ],
+                "train_intensity_rms": 7.710823081839979e-11,
+                "heldout_intensity_rms": 1.011511493124739e-10,
+                "start_height_results_m": [
+                  0.0,
+                  -0.017425118181989312,
+                  0.021122809926928308
+                ],
+                "start_train_intensity_rms": [
+                  7.710823081839979e-11,
+                  0.008046992894030488,
+                  0.018700569008027447
+                ],
+                "start_heldout_intensity_rms": [
+                  1.011511493124739e-10,
+                  0.007962205912129466,
+                  0.01879949486005278
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  16.76668977230916,
+                  11.41079164901116,
+                  2.131982347202675
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  654,
+                  469
+                ],
+                "height_m": 0.0,
+                "slopes": [
+                  0.0,
+                  0.0
+                ],
+                "train_intensity_rms": 1.217984021818144e-10,
+                "heldout_intensity_rms": 1.214256758715034e-10,
+                "start_height_results_m": [
+                  0.0,
+                  -0.020973645086293954,
+                  0.020635755037929342
+                ],
+                "start_train_intensity_rms": [
+                  1.217984021818144e-10,
+                  0.7878995181125246,
+                  0.016390290265726744
+                ],
+                "start_heldout_intensity_rms": [
+                  1.214256758715034e-10,
+                  0.7906307846891747,
+                  0.016442930341753807
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  20.960684559485742,
+                  11.100804171949788,
+                  2.16380451888764
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  627,
+                  514
+                ],
+                "height_m": 0.0,
+                "slopes": [
+                  0.0,
+                  0.0
+                ],
+                "train_intensity_rms": 1.0266127936591011e-10,
+                "heldout_intensity_rms": 9.751875222166585e-11,
+                "start_height_results_m": [
+                  0.0,
+                  -0.01971911800708044,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  1.0266127936591011e-10,
+                  0.015960511404770405,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  9.751875222166585e-11,
+                  0.015866215929277883,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  22.105504935409563,
+                  19.658426295208105,
+                  2.4544767256409434
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              }
+            ]
+          },
+          {
+            "time_s": 2,
+            "patches": [
+              {
+                "center_uv": [
+                  621,
+                  469
+                ],
+                "height_m": 1.5056772775512282e-18,
+                "slopes": [
+                  5.416508495797097e-17,
+                  3.6881318451090413e-17
+                ],
+                "train_intensity_rms": 0.0038303120414559712,
+                "heldout_intensity_rms": 0.003944866277336584,
+                "start_height_results_m": [
+                  1.5056772775512282e-18,
+                  -0.02081693534096331,
+                  0.021001856944435834
+                ],
+                "start_train_intensity_rms": [
+                  0.0038303120414559712,
+                  0.643377278716381,
+                  0.7790894425172933
+                ],
+                "start_heldout_intensity_rms": [
+                  0.003944866277336584,
+                  0.6456040004610024,
+                  0.7862161634136364
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  718,
+                  509
+                ],
+                "height_m": -0.0003140090326718624,
+                "slopes": [
+                  0.0008646341651031115,
+                  0.003124068614849454
+                ],
+                "train_intensity_rms": 0.004006580377068418,
+                "heldout_intensity_rms": 0.004095151883804267,
+                "start_height_results_m": [
+                  -0.0003140090326718624,
+                  -0.014204320586486822,
+                  0.021084462820341054
+                ],
+                "start_train_intensity_rms": [
+                  0.004006580377068418,
+                  0.00824021348724914,
+                  0.019405446101578735
+                ],
+                "start_heldout_intensity_rms": [
+                  0.004095151883804267,
+                  0.0082791543174694,
+                  0.019550051332163504
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  11.750283271577826,
+                  7.87896343712429,
+                  5.301768986221765
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  605,
+                  519
+                ],
+                "height_m": -1.1113229697469133e-05,
+                "slopes": [
+                  -0.0005513995068073959,
+                  -0.0012091024500834207
+                ],
+                "train_intensity_rms": 0.004071828904813926,
+                "heldout_intensity_rms": 0.004089688345129514,
+                "start_height_results_m": [
+                  -1.1113229697469133e-05,
+                  -0.01970602852214443,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.004071828904813926,
+                  0.020555768913101197,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.004089688345129514,
+                  0.02072576169033405,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  26.791271203609657,
+                  26.28453616975325,
+                  11.184988978017474
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  620,
+                  507
+                ],
+                "height_m": 0.0001918153849591051,
+                "slopes": [
+                  -0.0008893156384496484,
+                  -0.0024447732881490774
+                ],
+                "train_intensity_rms": 0.0034345095309765866,
+                "heldout_intensity_rms": 0.0035962801720101968,
+                "start_height_results_m": [
+                  0.0001918153849591051,
+                  -0.021308687506076653,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.0034345095309765866,
+                  0.013091921481940138,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.0035962801720101968,
+                  0.012872315691035129,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  16.262883559513433,
+                  12.832363415159728,
+                  7.729603096539154
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  645,
+                  493
+                ],
+                "height_m": -3.542022033623016e-05,
+                "slopes": [
+                  -0.0007199423043625743,
+                  0.0009610051228753717
+                ],
+                "train_intensity_rms": 0.00371062624562442,
+                "heldout_intensity_rms": 0.0037192026306851526,
+                "start_height_results_m": [
+                  -3.542022033623016e-05,
+                  -0.023076713057630482,
+                  0.02049908510459449
+                ],
+                "start_train_intensity_rms": [
+                  0.00371062624562442,
+                  0.007541926631456383,
+                  0.20527618833048378
+                ],
+                "start_heldout_intensity_rms": [
+                  0.0037192026306851526,
+                  0.007581743976162676,
+                  0.2221694476162419
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  18.52413696667665,
+                  11.401063309511816,
+                  10.075761474182583
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  704,
+                  493
+                ],
+                "height_m": -0.00023193890005606592,
+                "slopes": [
+                  -0.0003988422221984799,
+                  -0.0003178147281723624
+                ],
+                "train_intensity_rms": 0.003394837620506668,
+                "heldout_intensity_rms": 0.0033002224471032487,
+                "start_height_results_m": [
+                  -0.00023193890005606592,
+                  -0.01747249106439236,
+                  0.02115323015930491
+                ],
+                "start_train_intensity_rms": [
+                  0.003394837620506668,
+                  0.008263969012784,
+                  0.017418878388785364
+                ],
+                "start_heldout_intensity_rms": [
+                  0.0033002224471032487,
+                  0.008121133173526512,
+                  0.017512698445419864
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  16.675759537445852,
+                  11.491740283051842,
+                  7.712578877914224
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  654,
+                  469
+                ],
+                "height_m": 9.253855231815852e-05,
+                "slopes": [
+                  -0.0011627913298965,
+                  0.0007477773350198652
+                ],
+                "train_intensity_rms": 0.0033840279833746542,
+                "heldout_intensity_rms": 0.0034435404852149435,
+                "start_height_results_m": [
+                  9.253855231815852e-05,
+                  -0.020910748550184016,
+                  0.021301607005838042
+                ],
+                "start_train_intensity_rms": [
+                  0.0033840279833746542,
+                  0.787893497890048,
+                  0.016237842077242888
+                ],
+                "start_heldout_intensity_rms": [
+                  0.0034435404852149435,
+                  0.7906244543077439,
+                  0.01629170186703334
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  21.511885046778836,
+                  12.116888437880963,
+                  8.266908210588529
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  627,
+                  514
+                ],
+                "height_m": -4.060337006179259e-05,
+                "slopes": [
+                  -7.478189187955032e-05,
+                  -0.0018120683882438835
+                ],
+                "train_intensity_rms": 0.004168884076866532,
+                "heldout_intensity_rms": 0.00422024741456353,
+                "start_height_results_m": [
+                  -4.060337006179259e-05,
+                  -0.02134113951265056,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.004168884076866532,
+                  0.01846055928317703,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.00422024741456353,
+                  0.018545392582183486,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  20.277298039227453,
+                  17.79478945675711,
+                  11.799850972095337
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              }
+            ]
+          },
+          {
+            "time_s": 8,
+            "patches": [
+              {
+                "center_uv": [
+                  621,
+                  469
+                ],
+                "height_m": -0.003658852889990612,
+                "slopes": [
+                  0.10180508895573226,
+                  -0.02293850838247615
+                ],
+                "train_intensity_rms": 0.013979334419884573,
+                "heldout_intensity_rms": 0.013749249906089897,
+                "start_height_results_m": [
+                  -0.003658852889990612,
+                  -0.02184564881583147,
+                  0.02099913131231302
+                ],
+                "start_train_intensity_rms": [
+                  0.013979334419884573,
+                  0.02375018932819988,
+                  0.7790710584292304
+                ],
+                "start_heldout_intensity_rms": [
+                  0.013749249906089897,
+                  0.02357812395588605,
+                  0.7817705054174272
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  23.650342378869603,
+                  10.260040108887095,
+                  6.405588726360975
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  718,
+                  509
+                ],
+                "height_m": -0.0009067597355750534,
+                "slopes": [
+                  0.005531680228303347,
+                  0.005241437189932985
+                ],
+                "train_intensity_rms": 0.007943968216442741,
+                "heldout_intensity_rms": 0.00786194916561143,
+                "start_height_results_m": [
+                  -0.0009067597355750534,
+                  -0.024396956727350098,
+                  0.023054993182523208
+                ],
+                "start_train_intensity_rms": [
+                  0.007943968216442741,
+                  0.011225162317726087,
+                  0.017307326496654243
+                ],
+                "start_heldout_intensity_rms": [
+                  0.00786194916561143,
+                  0.011304117259962125,
+                  0.017242762570367044
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  10.973888379275794,
+                  7.464370670214651,
+                  4.6161313021091575
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  605,
+                  519
+                ],
+                "height_m": -0.00019822714576927928,
+                "slopes": [
+                  0.0033745679116536347,
+                  0.001467997512947508
+                ],
+                "train_intensity_rms": 0.01904390543564763,
+                "heldout_intensity_rms": 0.019209290720026147,
+                "start_height_results_m": [
+                  -0.00019822714576927928,
+                  -0.02579729498231015,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.01904390543564763,
+                  0.019970497807612928,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.019209290720026147,
+                  0.019798965416364802,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  40.806035748031704,
+                  18.10611468446784,
+                  4.411698114814892
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  620,
+                  507
+                ],
+                "height_m": -0.002704847954198974,
+                "slopes": [
+                  0.019841740640041624,
+                  0.0013374503033068829
+                ],
+                "train_intensity_rms": 0.015516007457912134,
+                "heldout_intensity_rms": 0.015603407093991722,
+                "start_height_results_m": [
+                  -0.002704847954198974,
+                  -0.021600357393870083,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.015516007457912134,
+                  0.015968437975415438,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.015603407093991722,
+                  0.015991171861645205,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  20.51442221930077,
+                  9.461344039719258,
+                  4.968040017056234
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  645,
+                  493
+                ],
+                "height_m": -0.018913324473021177,
+                "slopes": [
+                  -0.046593128554997795,
+                  0.03786743962549158
+                ],
+                "train_intensity_rms": 0.00693555622115246,
+                "heldout_intensity_rms": 0.006875252182397786,
+                "start_height_results_m": [
+                  -0.001799759706820576,
+                  -0.018913324473021177,
+                  0.02033334568366642
+                ],
+                "start_train_intensity_rms": [
+                  0.008360200450735038,
+                  0.00693555622115246,
+                  0.22079196927011505
+                ],
+                "start_heldout_intensity_rms": [
+                  0.008298560328699748,
+                  0.006875252182397786,
+                  0.23669933031928866
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  10.523647436483113,
+                  7.3966822149034215,
+                  4.513765409822713
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  704,
+                  493
+                ],
+                "height_m": -0.0047637984436252195,
+                "slopes": [
+                  0.060208676189990734,
+                  0.021614439902386255
+                ],
+                "train_intensity_rms": 0.0078592870417947,
+                "heldout_intensity_rms": 0.007825169569428003,
+                "start_height_results_m": [
+                  -0.0047637984436252195,
+                  -0.020688611527432642,
+                  0.02644066173353698
+                ],
+                "start_train_intensity_rms": [
+                  0.0078592870417947,
+                  0.008026352792328321,
+                  0.00841023564374928
+                ],
+                "start_heldout_intensity_rms": [
+                  0.007825169569428003,
+                  0.007987600623553479,
+                  0.008329741568492803
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  13.88075158199318,
+                  8.22941746531783,
+                  4.824778377347759
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  654,
+                  469
+                ],
+                "height_m": 0.0014147384934116078,
+                "slopes": [
+                  -0.024384811186636844,
+                  0.008234718322263105
+                ],
+                "train_intensity_rms": 0.013838156255679161,
+                "heldout_intensity_rms": 0.013759036735669838,
+                "start_height_results_m": [
+                  0.0014147384934116078,
+                  -0.02103900355871169,
+                  0.02524687745398141
+                ],
+                "start_train_intensity_rms": [
+                  0.013838156255679161,
+                  0.7878955960346428,
+                  0.02021442941946971
+                ],
+                "start_heldout_intensity_rms": [
+                  0.013759036735669838,
+                  0.7906242292251833,
+                  0.02013681827665139
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  24.345110281398117,
+                  9.575060402256659,
+                  4.739587648717104
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  627,
+                  514
+                ],
+                "height_m": -0.021230411562895114,
+                "slopes": [
+                  0.02212624435123367,
+                  -0.01305049120207113
+                ],
+                "train_intensity_rms": 0.011564108473270619,
+                "heldout_intensity_rms": 0.011624208194512816,
+                "start_height_results_m": [
+                  -0.003984637012779931,
+                  -0.021230411562895114,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.014333075134553527,
+                  0.011564108473270619,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.014463157362218822,
+                  0.011624208194512816,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  16.56108751332988,
+                  8.384568453472186,
+                  4.54501438376511
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              }
+            ]
+          },
+          {
+            "time_s": 10,
+            "patches": [
+              {
+                "center_uv": [
+                  621,
+                  469
+                ],
+                "height_m": 0.0034272325448268643,
+                "slopes": [
+                  -0.02054471662977689,
+                  -0.006517734434303963
+                ],
+                "train_intensity_rms": 0.015080390818713254,
+                "heldout_intensity_rms": 0.01514908189986978,
+                "start_height_results_m": [
+                  0.0034272325448268643,
+                  -0.021253467148100367,
+                  0.02100208027264865
+                ],
+                "start_train_intensity_rms": [
+                  0.015080390818713254,
+                  0.604632572353972,
+                  0.7790874897933651
+                ],
+                "start_heldout_intensity_rms": [
+                  0.01514908189986978,
+                  0.6009791850576502,
+                  0.7862128443605254
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  26.75536784577597,
+                  13.166857841702832,
+                  8.04287589769996
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  718,
+                  509
+                ],
+                "height_m": -0.0030181221389082454,
+                "slopes": [
+                  0.020074717826659736,
+                  0.010531349327283633
+                ],
+                "train_intensity_rms": 0.005491298900159696,
+                "heldout_intensity_rms": 0.005397603920396416,
+                "start_height_results_m": [
+                  -0.0030181221389082454,
+                  -0.01469497119290258,
+                  0.020742527476333563
+                ],
+                "start_train_intensity_rms": [
+                  0.005491298900159696,
+                  0.006382598377948104,
+                  0.01491916589793264
+                ],
+                "start_heldout_intensity_rms": [
+                  0.005397603920396416,
+                  0.006505706987448893,
+                  0.015116562276257019
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  11.073415961403974,
+                  7.410248232367184,
+                  4.662748584099439
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  605,
+                  519
+                ],
+                "height_m": -0.021415307024176516,
+                "slopes": [
+                  0.11757336083476111,
+                  -0.03924833484841652
+                ],
+                "train_intensity_rms": 0.011153571126665986,
+                "heldout_intensity_rms": 0.011269877657744048,
+                "start_height_results_m": [
+                  -0.0016079828236417988,
+                  -0.021415307024176516,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.01931601229605243,
+                  0.011153571126665986,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.019138017761989933,
+                  0.011269877657744048,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  16.79988553402362,
+                  6.825138142886317,
+                  4.841043936465211
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  620,
+                  507
+                ],
+                "height_m": -0.026989085247972455,
+                "slopes": [
+                  0.08431883406324593,
+                  0.004259932524626545
+                ],
+                "train_intensity_rms": 0.009807943370991097,
+                "heldout_intensity_rms": 0.009851332050404907,
+                "start_height_results_m": [
+                  -0.002053633872777548,
+                  -0.026989085247972455,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.012651103975229533,
+                  0.009807943370991097,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.0127230750728515,
+                  0.009851332050404907,
+                  1.0
+                ],
+                "solver_success": false,
+                "singular_values": [
+                  15.599488893418382,
+                  7.8119015000214445,
+                  3.6258070422053863
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  645,
+                  493
+                ],
+                "height_m": -0.019838852444948266,
+                "slopes": [
+                  -0.06152830889431062,
+                  0.0331495369153072
+                ],
+                "train_intensity_rms": 0.00595394077192608,
+                "heldout_intensity_rms": 0.00584267567884519,
+                "start_height_results_m": [
+                  -0.0006881598986409642,
+                  -0.019838852444948266,
+                  0.02059248626846147
+                ],
+                "start_train_intensity_rms": [
+                  0.014447073130175821,
+                  0.00595394077192608,
+                  0.22087269538129314
+                ],
+                "start_heldout_intensity_rms": [
+                  0.014440703881158704,
+                  0.00584267567884519,
+                  0.23678579390354987
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  11.868990627321566,
+                  7.218541226402002,
+                  4.548739333155271
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  704,
+                  493
+                ],
+                "height_m": -0.001570229083664358,
+                "slopes": [
+                  -0.020656477589205403,
+                  0.02369626974672419
+                ],
+                "train_intensity_rms": 0.007361694635843723,
+                "heldout_intensity_rms": 0.00738634420918352,
+                "start_height_results_m": [
+                  -0.001570229083664358,
+                  -0.02140255593941721,
+                  0.02148890504537286
+                ],
+                "start_train_intensity_rms": [
+                  0.007361694635843723,
+                  0.014220514713485776,
+                  0.01467897227366872
+                ],
+                "start_heldout_intensity_rms": [
+                  0.00738634420918352,
+                  0.014189857234434753,
+                  0.014494455356341755
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  12.55488057210806,
+                  7.889541353522796,
+                  5.690961866793467
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  654,
+                  469
+                ],
+                "height_m": 0.021789393647850215,
+                "slopes": [
+                  0.030408888122963575,
+                  -0.02879456809292761
+                ],
+                "train_intensity_rms": 0.01063599806815286,
+                "heldout_intensity_rms": 0.010497237059860375,
+                "start_height_results_m": [
+                  -0.005959738966292822,
+                  -0.021037329811372227,
+                  0.021789393647850215
+                ],
+                "start_train_intensity_rms": [
+                  0.01233532025435801,
+                  0.7878776856643934,
+                  0.01063599806815286
+                ],
+                "start_heldout_intensity_rms": [
+                  0.01235159206292434,
+                  0.7906082982901484,
+                  0.010497237059860375
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  22.497412027733585,
+                  10.283935708307105,
+                  7.326483083015361
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              {
+                "center_uv": [
+                  627,
+                  514
+                ],
+                "height_m": -0.0022144986686355875,
+                "slopes": [
+                  0.018432351436010085,
+                  -0.011018807805698642
+                ],
+                "train_intensity_rms": 0.0135927029716348,
+                "heldout_intensity_rms": 0.013550261048918674,
+                "start_height_results_m": [
+                  -0.0022144986686355875,
+                  -0.02076932555949122,
+                  0.021
+                ],
+                "start_train_intensity_rms": [
+                  0.0135927029716348,
+                  0.020598507308171823,
+                  1.0
+                ],
+                "start_heldout_intensity_rms": [
+                  0.013550261048918674,
+                  0.02056404257031698,
+                  1.0
+                ],
+                "solver_success": true,
+                "singular_values": [
+                  27.734798083047544,
+                  12.220614822435266,
+                  7.964901330593177
+                ],
+                "active_bounds": [
+                  0,
+                  0,
+                  0
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

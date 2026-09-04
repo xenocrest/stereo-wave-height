@@ -6,6 +6,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'tools'))
 from hometank006_refraction_probe import bottom_intersections
 from hometank006_refractive_height_probe import snell_normal, sample, air_water_entry_valid
+from hometank006_photometric_refraction import project_static_bottom, refract_bottom, sample as continuous_sample
 
 
 def test_normal_incidence_reaches_bottom_not_water():
@@ -62,3 +63,31 @@ def test_snell_nonphysical_air_exit_branch_rejected():
     np.testing.assert_allclose(np.cross(n,air-1.333*water),0,atol=1e-12)
     assert not air_water_entry_valid(air,water,n)
     assert air_water_entry_valid(air,air,np.array([0.,0.,-1.]))
+
+
+def test_static_refraction_inverse_pixel_roundtrip():
+    K=np.array([[500.,0,300],[0,500,200],[0,0,1]])
+    C=np.array([.1,0,0]);n=np.array([0.,0.,-1.])
+    uv=np.array([[200.,180.],[300.,200.],[450.,280.]])
+    v=np.column_stack([uv,np.ones(len(uv))])@np.linalg.inv(K).T
+    v/=np.linalg.norm(v,axis=1)[:,None]
+    bottom=bottom_intersections(v,C,n,.4,.105)
+    recovered=project_static_bottom(bottom,C,K,n,.4,.105)
+    np.testing.assert_allclose(recovered,uv,atol=1e-7)
+
+
+def test_tilted_dynamic_plane_keeps_fixed_bottom():
+    n=np.array([0.,0.,-1.]);N=np.array([.1,0.,-1.]);N/=np.linalg.norm(N)
+    P=np.array([0.,0.,.39]);v=np.array([[0.,0.,1.],[.1,0.,1.]])
+    v/=np.linalg.norm(v,axis=1)[:,None]
+    E,B,valid=refract_bottom(v,np.zeros(3),N,P,n,.4,.105)
+    assert valid.all()
+    np.testing.assert_allclose((E-P)@N,0,atol=1e-12)
+    np.testing.assert_allclose(B@n+.4+.105,0,atol=1e-12)
+
+
+def test_photometric_sampler_has_subpixel_continuity():
+    y,x=np.indices((20,20));im=.1*x+.01*y
+    uv=np.array([[5.21,7.32],[5.210001,7.32]])
+    values=continuous_sample(im,uv)[:,0]
+    np.testing.assert_allclose(values[1]-values[0],1e-7,atol=1e-12)

@@ -65,6 +65,9 @@ optical_scene:
     source: USER_SPECIFIED_MODEL_ASSUMPTION
     independent_verification_required: false
     qualification: adopted_model_assumption_not_measured_geometry
-  independent_static_water_depth_m: null
-  independent_static_water_depth_status: AWAITING_USER_PHYSICAL_INPUT
-  latest_diagnostic: refractive_entry_and_tracking_fix.md
+  independent_static_water_depth_m: 0.105
+  independent_static_water_depth_status: USER_REPORTED_APPROXIMATE
+  independent_static_water_depth_source: USER_REPLY_2026_09_04
+  independent_static_water_depth_uncertainty_m: null
+  independent_static_water_depth_uncertainty_status: UNKNOWN
+  latest_diagnostic: depth105_reconstruction.md
