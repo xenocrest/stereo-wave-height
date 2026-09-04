@@ -6,12 +6,22 @@ from dataclasses import dataclass
 from io import BytesIO
 from pathlib import Path
 import re
+import math
 import subprocess
 import threading
 import time
 
 from PIL import Image
 from process_utils import hidden_process_kwargs
+
+
+def preview_frame_interval(source_fps: float, display_fps: float) -> float:
+    """Pace decoded frames at source rate; display limit must not slow source time."""
+    if not math.isfinite(display_fps) or display_fps <= 0:
+        raise ValueError("display_fps must be finite and positive")
+    if not math.isfinite(source_fps) or source_fps <= 0:
+        raise ValueError("source fps unknown; cannot establish preview playback rate")
+    return 1.0 / source_fps
 
 
 @dataclass(frozen=True)
@@ -69,16 +79,20 @@ class LatestFrameDecoder:
     def _decode(self,path:Path,start:float,generation:int,continuous:bool) -> None:
         import cv2
         capture=cv2.VideoCapture(str(path)); capture.set(cv2.CAP_PROP_POS_MSEC,max(start,0)*1000.0)
-        interval=1.0/self.display_fps; deadline=time.perf_counter()
         try:
+            interval=preview_frame_interval(float(capture.get(cv2.CAP_PROP_FPS)),self.display_fps)
+            deadline=time.perf_counter(); next_publish=deadline
             while not self._stop.is_set():
                 ok,frame=capture.read()
                 if not ok: break
                 timestamp=float(capture.get(cv2.CAP_PROP_POS_MSEC)/1000.0)
-                rgb=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-                with self._lock:
-                    if generation != self._generation: break
-                    self._version+=1; self._latest=(self._version,timestamp,Image.fromarray(rgb))
+                now=time.perf_counter()
+                if not continuous or now >= next_publish:
+                    rgb=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+                    with self._lock:
+                        if generation != self._generation: break
+                        self._version+=1; self._latest=(self._version,timestamp,Image.fromarray(rgb))
+                    next_publish=now+1.0/self.display_fps
                 if not continuous: break
                 deadline+=interval; self._stop.wait(max(0.0,deadline-time.perf_counter()))
         finally: capture.release()
