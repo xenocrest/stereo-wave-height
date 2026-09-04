@@ -25,8 +25,13 @@ class DenseHeightPolicy:
     curvature_weight: float = 2e-5
     minimum_observations: int = 12
     maximum_data_residual_m: float = 0.01
+    anchor_mode: str = "soft_legacy"
 
     def __post_init__(self) -> None:
+        if self.anchor_mode not in {"soft_legacy", "hard"}:
+            raise ValueError("unknown anchor mode")
+        if not all(np.isfinite(v) for v in (self.gradient_weight,self.curvature_weight,self.maximum_data_residual_m)):
+            raise ValueError("policy values must be finite")
         if self.gradient_weight < 0 or self.curvature_weight < 0:
             raise ValueError("regularization weights must be non-negative")
         if self.gradient_weight == 0 and self.curvature_weight == 0:
@@ -72,18 +77,21 @@ def solve_dense_height(
 ) -> DenseHeightSolution:
     """Solve a complete ROI height field with traceable stereo anchors.
 
-    The minimized objective is ``||W^(1/2)(h-h_obs)||² + λ||Bh||² +
-    μ||B'Bh||²`` where ``B`` is the physical-distance-weighted neighbour
-    incidence matrix.  Every ROI connected component must contain observations.
+    Fit a base plane p to the anchors and solve for residual q=h-p. Legacy
+    mode minimizes ``||W^(1/2)(q-q_obs)||² + λ||Bq||² + μ||B'Bq||²``.
+    Hard mode minimizes only the regularizer subject to q_obs fixed exactly.
+    B is the physical-distance-weighted neighbour incidence matrix. Every ROI
+    connected component must contain observations. This is a discrete graph
+    regularizer, not an area-consistent continuous biharmonic discretization.
     """
-    observed=np.asarray(observed_height_m,float);mask=np.asarray(observed_mask,bool);roi=np.asarray(roi_mask,bool)
+    observed=np.asarray(observed_height_m,float);mask=np.array(observed_mask,bool,copy=True);roi=np.asarray(roi_mask,bool)
     x=np.asarray(x_m,float);y=np.asarray(y_m,float)
     if not (observed.shape==mask.shape==roi.shape==x.shape==y.shape) or observed.ndim!=2:
         raise ValueError("all dense-height inputs must share one two-dimensional shape")
-    if np.count_nonzero(mask&roi)<policy.minimum_observations:
+    mask &= roi & np.isfinite(observed)
+    if np.count_nonzero(mask)<policy.minimum_observations:
         raise ValueError("INSUFFICIENT_DIRECT_STEREO_OBSERVATIONS")
     if np.any(roi&(~np.isfinite(x)|~np.isfinite(y))):raise ValueError("ROI_PHYSICAL_COORDINATES_UNKNOWN")
-    mask &= roi & np.isfinite(observed)
     B,flat=_physical_graph(roi,x,y);n=len(flat)
     adjacency=(abs(B).T@abs(B)).astype(bool);component_count,labels=connected_components(adjacency,directed=False)
     observed_local=mask.ravel()[flat]
@@ -94,12 +102,26 @@ def solve_dense_height(
         raise ValueError("observation weights must be finite and positive at observations")
     data_weight=np.zeros(n);data_weight[observed_local]=weights.ravel()[flat][observed_local]
     physical=np.column_stack((x.ravel()[flat],y.ravel()[flat]));design=np.column_stack((np.ones(n),physical))
+    if np.linalg.matrix_rank(design[observed_local])<3:
+        raise ValueError("OBSERVATION_SPATIAL_SUPPORT_DEGENERATE")
     plane_coefficients=np.linalg.lstsq(design[observed_local],observed.ravel()[flat][observed_local],rcond=None)[0]
     base=design@plane_coefficients
     target=np.zeros(n);target[observed_local]=observed.ravel()[flat][observed_local]-base[observed_local]
     lap=B.T@B
-    system=sparse.diags(data_weight)+policy.gradient_weight*lap+policy.curvature_weight*(lap.T@lap)+sparse.eye(n)*1e-12
-    correction=np.asarray(spsolve(system.tocsc(),data_weight*target),float);solution=base+correction
+    regularizer=policy.gradient_weight*lap+policy.curvature_weight*(lap.T@lap)
+    if policy.anchor_mode=="hard":
+        # Solve missing values with observed residuals as exact Dirichlet data.
+        # Unlike overwriting a soft fit afterwards, neighbouring estimates see
+        # the same anchors that will be returned to the caller.
+        unknown=~observed_local;correction=target.copy()
+        if unknown.any():
+            system=regularizer[unknown][:,unknown].tocsc()
+            rhs=-(regularizer[unknown][:,observed_local]@target[observed_local])
+            correction[unknown]=spsolve(system,rhs)
+    else:
+        system=sparse.diags(data_weight)+regularizer+sparse.eye(n)*1e-12
+        correction=np.asarray(spsolve(system.tocsc(),data_weight*target),float)
+    solution=base+correction
     if not np.all(np.isfinite(solution)):raise ValueError("DENSE_HEIGHT_LINEAR_SOLVE_FAILED")
     residual=solution[observed_local]-observed.ravel()[flat][observed_local]
     rms=float(np.sqrt(np.mean(residual**2)));maximum=float(np.max(np.abs(residual)))
@@ -111,7 +133,10 @@ def solve_dense_height(
     confidence=np.zeros(observed.shape,np.uint8);confidence_values=np.where(distance<=3*scale,2,1).astype(np.uint8);confidence[roi]=confidence_values;confidence[mask]=3
     return DenseHeightSolution(output,source,confidence,{
         "model":"OBSERVATION_ANCHORED_PHYSICAL_VARIATIONAL_SURFACE",
-        "objective":"weighted stereo data + metric gradient + metric bi-Laplacian",
+        "anchor_mode":policy.anchor_mode,
+        "data_residual_is_accuracy_validation":False,
+        "objective":("metric graph gradient and squared graph Laplacian of detrended height; exact observation constraints"
+                     if policy.anchor_mode=="hard" else "weighted stereo data + metric graph regularization of detrended height"),
         "roi_pixel_count":int(roi.sum()),"direct_observation_count":int(mask.sum()),"coverage_ratio":1.0,
         "direct_ratio":float(mask.sum()/roi.sum()),"component_count":int(component_count),
         "data_residual_rmse_m":rms,"data_residual_max_m":maximum,

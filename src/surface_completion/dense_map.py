@@ -255,6 +255,12 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
     roi_config = config.get("water_roi", {"type": "observed_convex_hull"})
     roi = rasterize_water_roi(roi_config, width=width, height=image_height,
                               observed_rectified_px=observed_uv, canonical_rectified_px=rectified)
+    ocean_mode=config.get("completion_strategy")=="ocean_observation_anchored"
+    if ocean_mode:
+        with np.load(frozen["common_fov_npz"]) as common_data:
+            common_mask=np.asarray(common_data["safe_common_mask"],bool)
+        if common_mask.shape!=roi.shape:raise ValueError("COMMON_FOV_PIXEL_SHAPE_MISMATCH")
+        roi = roi & common_mask
     roi_indices = np.flatnonzero(roi.ravel())
     basis = plane_basis(normal)
     support_xy = plane_xy(xyz, normal, basis)
@@ -276,7 +282,7 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
     missing_indices = roi_indices[~direct]
     missing_nearest = nearest_i[~direct]
     global_mode = config.get("completion_strategy") == "global_physical_ray_surface"
-    for flat_index, seed_index in (() if global_mode else zip(missing_indices, missing_nearest)):
+    for flat_index, seed_index in (() if global_mode or ocean_mode else zip(missing_indices, missing_nearest)):
         value, diagnostic = estimate_ray_surface(
             rectified[flat_index], projection, xyz, height, support_xy, physical_tree,
             normal, offset, basis, xyz[int(seed_index)],
@@ -294,7 +300,27 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
             diagnostics[int(flat_index)] = diagnostic
     dense_h = dense_h.reshape(image_height, width)
     status = status.reshape(image_height, width)
-    if global_mode:
+    if ocean_mode:
+        from reconstruction.ocean_surface import OceanSurfacePolicy, complete_water_surface
+        from reconstruction.dense_height_solver import DenseHeightPolicy
+        policy_config=config["ocean_policy"]
+        matrix,translation=projection[:,:3],projection[:,3]
+        center=-np.linalg.solve(matrix,translation)
+        rays=np.linalg.solve(matrix,np.column_stack((rectified,np.ones(len(rectified)))).T).T
+        denominator=rays@normal
+        with np.errstate(divide='ignore',invalid='ignore'):
+            distance=-(center@normal+offset)/denominator
+        points=center+distance[:,None]*rays
+        points[~np.isfinite(distance)|(distance<=0)]=np.nan
+        xy=plane_xy(points,normal,basis)
+        solution=complete_water_surface(dense_h/1000,status==OBSERVED,roi,common_mask,
+            xy[:,0].reshape(roi.shape),xy[:,1].reshape(roi.shape),
+            observation_subject=config["observation_subject"],
+            policy=OceanSurfacePolicy(float(policy_config["minimum_observed_ratio"]),
+                DenseHeightPolicy(anchor_mode="hard",**policy_config.get("regularization",{}))))
+        dense_h=solution.height_m.astype(np.float32)*1000
+        status=solution.source_status
+    elif global_mode:
         missing = roi & (status == UNSUPPORTED)
         missing_flat = np.flatnonzero(missing.ravel())
         if len(missing_flat):
@@ -329,13 +355,16 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
         "metric_scale_source": "frozen OpenCV calibrated baseline",
         "calibrated_baseline_m": float(frozen["calibrated_baseline_m"]),
         "p90_spacing_m": p90, "maximum_gap_m": max_gap,
-        "completion_rule": f"scene-local maximum gap = {float(config['completion']['maximum_gap_multiplier']):g} * frame P90 nearest-neighbor spacing",
-        "status_semantics": {"OBSERVED":"direct WASS observation","ESTIMATED":"ESTIMATED_LOCAL within support gate","ESTIMATED_GLOBAL_MODEL":"demo-only bounded global model","UNSUPPORTED":"no result"},
+        "completion_rule": ("hard-anchor metric graph variational completion; no independent accuracy established" if ocean_mode
+                            else f"scene-local maximum gap = {float(config['completion']['maximum_gap_multiplier']):g} * frame P90 nearest-neighbor spacing"),
+        "status_semantics": {"OBSERVED":"direct WASS observation","ESTIMATED":("observation-anchored variational estimate" if ocean_mode else "ESTIMATED_LOCAL within support gate"),"ESTIMATED_GLOBAL_MODEL":"demo-only bounded global model","UNSUPPORTED":"no result"},
         "extrapolation_policy":(
-            "bounded robust global trend; values outside direct support remain ESTIMATED_GLOBAL_MODEL"
+            "hard observed anchors; metric variational estimates within anchored common-water components; accuracy unverified"
+            if ocean_mode else "bounded robust global trend; values outside direct support remain ESTIMATED_GLOBAL_MODEL"
             if global_mode else "reject outside scene-local support distance/topology gate"
         ),
         "water_roi": roi_config,
+        "ocean_completion":solution.metadata if ocean_mode else None,
         "global_completion_geometry": (
             "calibrated camera ray to base-plane footprint, then robust height trend in metre-valued water-plane coordinates (first-order small-height model)"
             if global_mode else None
@@ -384,7 +413,7 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
                                                    "maximum": max(rejection_nearest)}
                                                   if rejection_nearest else None),
               "case2_manual_point_check": target,
-              "small_holdout_qa": qa.to_dict(),
+              "small_holdout_qa": ({"status":"NOT_EVALUATED_FOR_VARIATIONAL_MODEL"} if ocean_mode else qa.to_dict()),
               "frozen_artifacts_unchanged": all(_sha256(Path(path)) == digest for path, digest in original_hashes.items())}
     (output / f"{stem}_result.yaml").write_text(yaml.safe_dump(result, sort_keys=False), encoding="utf-8")
     return result
