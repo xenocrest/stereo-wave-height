@@ -1,0 +1,246 @@
+status: GEOMETRY_AND_TIMING_NOT_YET_VALIDATED
+rig_unchanged:
+  value: true
+  source: USER_CONFIRMED_2026_09_04
+  scope: no movement, reclamping, angle, lens or zoom change
+board_registration:
+  LEFT:
+    complete_views: 7
+    flips: 0
+  RIGHT:
+    complete_views: 6
+    flips: 0
+audio:
+  calibration:
+    status: AUDIO_SYNC_NOT_ESTABLISHED
+    offset_s: null
+    maximum_window_residual_s: null
+    windows:
+    - left_audio_time_s: 5.0
+      right_minus_left_s: -0.4985
+      correlation: 0.24011867410984739
+    - left_audio_time_s: 15.0
+      right_minus_left_s: -0.497
+      correlation: 0.17806220284600635
+    - left_audio_time_s: 25.0
+      right_minus_left_s: -0.4969166666666667
+      correlation: 0.2344072044656791
+    - left_audio_time_s: 35.0
+      right_minus_left_s: -0.4969166666666667
+      correlation: 0.2278280102647787
+    - left_audio_time_s: 45.0
+      right_minus_left_s: -0.4980833333333333
+      correlation: 0.17747154896958872
+    - left_audio_time_s: 55.0
+      right_minus_left_s: -0.4965833333333333
+      correlation: 0.20335671737353703
+    - left_audio_time_s: 65.0
+      right_minus_left_s: -0.49775
+      correlation: 0.23258923810350043
+    - left_audio_time_s: 75.0
+      right_minus_left_s: -0.4975833333333333
+      correlation: 0.09168924195587799
+    - left_audio_time_s: 85.0
+      right_minus_left_s: -0.4946666666666667
+      correlation: 0.1900775939945646
+    - left_audio_time_s: 95.0
+      right_minus_left_s: -0.49775
+      correlation: 0.2922268417535287
+    good_window_count: 0
+    left_audio_start_pts_s: 0.0
+    right_audio_start_pts_s: 0.0
+    video_frame_sync_established: false
+    warning: Audio/video latency and acoustic propagation not independently measured;
+      visual verification required.
+  wave:
+    status: AUDIO_SYNC_NOT_ESTABLISHED
+    offset_s: null
+    maximum_window_residual_s: null
+    windows:
+    - left_audio_time_s: 5.0
+      right_minus_left_s: -0.22599999999999998
+      correlation: 0.43868324085030175
+    - left_audio_time_s: 15.0
+      right_minus_left_s: -0.22533333333333333
+      correlation: 0.38937160806826376
+    - left_audio_time_s: 25.0
+      right_minus_left_s: -0.22433333333333333
+      correlation: 0.1016255999489243
+    - left_audio_time_s: 35.0
+      right_minus_left_s: -0.22424999999999998
+      correlation: 0.36021754740944234
+    - left_audio_time_s: 45.0
+      right_minus_left_s: -0.22266666666666665
+      correlation: 0.5108985575741191
+    - left_audio_time_s: 55.0
+      right_minus_left_s: -0.22424999999999998
+      correlation: 0.4640378839734579
+    - left_audio_time_s: 65.0
+      right_minus_left_s: -0.22541666666666665
+      correlation: 0.15339264820890605
+    - left_audio_time_s: 75.0
+      right_minus_left_s: -0.22324999999999998
+      correlation: 0.12707306716589048
+    - left_audio_time_s: 85.0
+      right_minus_left_s: -0.22549999999999998
+      correlation: 0.33436760620391903
+    good_window_count: 0
+    left_audio_start_pts_s: 0.0
+    right_audio_start_pts_s: 0.0
+    video_frame_sync_established: false
+    warning: Audio/video latency and acoustic propagation not independently measured;
+      visual verification required.
+calibration_timing:
+  offset_s: -0.28333333333333344
+  rms_px: 3.883004799904781
+  heldout_epipolar_rms_px:
+  - 4.551558017730713
+  - 4.07098913192749
+  - 4.260183334350586
+  R:
+  - - 0.9888741750877273
+    - -0.022466259916692943
+    - -0.14704806360480366
+  - - 0.007386452307854942
+    - 0.9947258326211519
+    - -0.10230326602049375
+  - - 0.1485708792693594
+    - 0.1000788942860168
+    - 0.9838246331291048
+  T_m:
+  - -0.08304133551092452
+  - 0.0031585198075351237
+  - -0.06925411600821202
+  baseline_m: 0.10817565453877047
+  pairs:
+  - left_s: 70.01111111111112
+    right_s: 69.73333333333333
+    count: 47
+  - left_s: 94.99362222222223
+    right_s: 94.7
+    count: 54
+  - left_s: 104.9999888888889
+    right_s: 104.7
+    count: 53
+calibration_heldout_rms_px: 4.298790331528121
+non_ruler_scene_geometry:
+  status: INSUFFICIENT_NON_RULER_FEATURES
+  matched_features: 6
+  approved_for_reconstruction: false
+disparity_validity:
+  status: DIAGNOSTIC_NOT_WATER_HEIGHT_VALIDATION
+  frames:
+  - time_s: 1.0
+    legacy_mask_count: 8193
+    legacy_endpoint_count: 2933
+    diagnostic_window_legacy_count: 2159
+    diagnostic_window_legacy_endpoint_count: 1308
+    corrected_mask_count: 5691
+    gates:
+      left_search_endpoint_count: 23766
+      left_interior_search_count: 37307
+      left_source_support_count: 501740
+      right_source_support_count: 509436
+      bidirectional_observation_count: 5691
+    corrected_disparity_px:
+      count: 5691
+      percentiles_p0_p5_p50_p95_p100:
+      - 4.9375
+      - 125.875
+      - 233.125
+      - 253.375
+      - 254.5
+    corrected_depth_m:
+      count: 5691
+      percentiles_p0_p5_p50_p95_p100:
+      - 0.3219525218009949
+      - 0.32338201999664307
+      - 0.35147202014923096
+      - 0.6509387493133545
+      - 16.594818115234375
+  - time_s: 2.0
+    legacy_mask_count: 7284
+    legacy_endpoint_count: 2731
+    diagnostic_window_legacy_count: 1934
+    diagnostic_window_legacy_endpoint_count: 1340
+    corrected_mask_count: 4815
+    gates:
+      left_search_endpoint_count: 21298
+      left_interior_search_count: 37227
+      left_source_support_count: 501740
+      right_source_support_count: 509436
+      bidirectional_observation_count: 4815
+    corrected_disparity_px:
+      count: 4815
+      percentiles_p0_p5_p50_p95_p100:
+      - 0.5625
+      - 128.625
+      - 234.8125
+      - 253.75
+      - 254.5
+    corrected_depth_m:
+      count: 4815
+      percentiles_p0_p5_p50_p95_p100:
+      - 0.3219525218009949
+      - 0.322904109954834
+      - 0.34894615411758423
+      - 0.6370217204093933
+      - 145.66563415527344
+  - time_s: 10.0
+    legacy_mask_count: 7264
+    legacy_endpoint_count: 3703
+    diagnostic_window_legacy_count: 1730
+    diagnostic_window_legacy_endpoint_count: 1181
+    corrected_mask_count: 3451
+    gates:
+      left_search_endpoint_count: 24332
+      left_interior_search_count: 26576
+      left_source_support_count: 501740
+      right_source_support_count: 509436
+      bidirectional_observation_count: 3451
+    corrected_disparity_px:
+      count: 3451
+      percentiles_p0_p5_p50_p95_p100:
+      - 0.625
+      - 14.34375
+      - 219.75
+      - 253.875
+      - 254.5
+    corrected_depth_m:
+      count: 3451
+      percentiles_p0_p5_p50_p95_p100:
+      - 0.3219525218009949
+      - 0.32274511456489563
+      - 0.3728642463684082
+      - 5.712404727935791
+      - 131.0990753173828
+  limitations:
+  - Unapproved candidate geometry unchanged
+  - Nominal timestamps are NOT verified synchronization
+  - Whole-image support is not a water-surface mask
+  - Legacy diagnostic window is not a validated water ROI
+  - No height, completion, reference update or GUI change
+sources:
+  audio_timing/calibration.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\audio_timing\calibration.json
+    sha256: a6e26d4b812dc0303ef71ada9858070fd8e75f9843ac4ccb0f4686b108d2d7e9
+  audio_timing/wave.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\audio_timing\wave.json
+    sha256: d29d0c2fbb69f022cea7f03ae70d1ba62c0caedcd0a272b8eac34e1a03900eba
+  registered_board/observations.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\registered_board\observations.json
+    sha256: 92c58c6f1f5b04b6a38027058aad1af257b035f292e8363d29f0e08587157a50
+  board_timing/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\board_timing\result.json
+    sha256: 82b1aae5ea8e6a0af22644cfd3bc24bd385f1204e26e5da52373caa334362763
+  static_geometry_no_ruler/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\static_geometry_no_ruler\result.json
+    sha256: 4e6008efdba98bcc994018a2fa6e2bf84affd3c980401e4595c51062bf2c050d
+  disparity_validity/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\disparity_validity\result.json
+    sha256: d918def1dc76f2bda9b018e0e5c96a4da9fb62ff70ee0b98ef405f06800d9fbf
+calibration_approved: false
+water_height_validated: false
+no_reference_zeroing: true
+no_gui_changes: true
+no_wass_execution: true

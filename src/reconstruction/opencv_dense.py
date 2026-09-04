@@ -43,7 +43,7 @@ class DenseStereoResult:
 
 
 def _matcher(policy: DenseStereoPolicy, *, right: bool = False) -> cv2.StereoSGBM:
-    minimum = -policy.min_disparity-policy.num_disparities if right else policy.min_disparity
+    minimum = -policy.min_disparity-policy.num_disparities+1 if right else policy.min_disparity
     channels = 1
     return cv2.StereoSGBM_create(
         minDisparity=minimum, numDisparities=policy.num_disparities,
@@ -61,10 +61,47 @@ def left_right_consistency(left_disparity: np.ndarray, right_disparity: np.ndarr
     left=np.asarray(left_disparity,float);right=np.asarray(right_disparity,float)
     if left.shape != right.shape or left.ndim != 2:
         raise ValueError("left/right disparity shapes must match and be two-dimensional")
-    rows,cols=left.shape;yy,xx=np.indices(left.shape);xr=np.rint(xx-left).astype(np.int64)
+    rows,cols=left.shape;yy,xx=np.indices(left.shape)
+    xr=np.rint(xx-np.where(np.isfinite(left),left,0)).astype(np.int64)
     inside=(xr>=0)&(xr<cols)&np.isfinite(left)
     sampled=np.full(left.shape,np.nan);sampled[inside]=right[yy[inside],xr[inside]]
     return inside & np.isfinite(sampled) & (np.abs(left+sampled)<=float(tolerance_px))
+
+
+def disparity_observation_mask(left: np.ndarray, right: np.ndarray,
+                               source_left: np.ndarray, source_right: np.ndarray,
+                               policy: DenseStereoPolicy) -> tuple[np.ndarray, dict[str, int]]:
+    """Reject invalid, censored search-endpoint and unobserved remap matches.
+
+    Values at either search endpoint have no evidence that the optimum lies
+    within the search interval. This gate reports missing observations; it
+    does not change, interpolate or repair any disparity value.
+    """
+    left=np.asarray(left,float);right=np.asarray(right,float)
+    if left.ndim != 2 or any(np.shape(a)!=left.shape for a in (right,source_left,source_right)):
+        raise ValueError("disparities and source support masks must share a 2D shape")
+    low=policy.min_disparity;high=low+policy.num_disparities-1
+    left_ok=np.isfinite(left)&(left>low)&(left<high)
+    right_ok=np.isfinite(right)&(right>-high)&(right<-low)
+    clean_right=np.where(right_ok&np.asarray(source_right,bool),right,np.nan)
+    consistent=left_right_consistency(left,clean_right,policy.left_right_tolerance_px)
+    valid=left_ok&np.asarray(source_left,bool)&consistent
+    return valid,{
+        "left_search_endpoint_count":int(np.sum(np.isfinite(left)&((left==low)|(left==high)))),
+        "left_interior_search_count":int(left_ok.sum()),
+        "left_source_support_count":int(np.count_nonzero(source_left)),
+        "right_source_support_count":int(np.count_nonzero(source_right)),
+        "bidirectional_observation_count":int(valid.sum()),
+    }
+
+
+def _remap_support(maps: tuple[np.ndarray, np.ndarray], width: int, height: int,
+                   block_size: int) -> np.ndarray:
+    """Require the bilinear source footprint and matching block to be observed."""
+    x,y=maps
+    valid=np.isfinite(x)&np.isfinite(y)&(x>=0)&(x<width-1)&(y>=0)&(y<height-1)
+    return cv2.erode(valid.astype(np.uint8),np.ones((block_size,block_size),np.uint8),
+                     borderType=cv2.BORDER_CONSTANT,borderValue=0).astype(bool)
 
 
 def reconstruct_dense_stereo(
@@ -93,9 +130,13 @@ def reconstruct_dense_stereo(
     gray1=cv2.cvtColor(rect1,cv2.COLOR_BGR2GRAY) if rect1.ndim==3 else rect1
     dl=_matcher(policy).compute(gray0,gray1).astype(np.float32)/16.0
     dr=_matcher(policy,right=True).compute(gray1,gray0).astype(np.float32)/16.0
-    consistent=left_right_consistency(dl,dr,policy.left_right_tolerance_px)
-    valid=consistent & (dl>policy.min_disparity) & (dl<policy.min_disparity+policy.num_disparities)
-    xyz=cv2.reprojectImageTo3D(dl,Q).astype(np.float64);valid &= np.all(np.isfinite(xyz),axis=2)
+    valid,counts=disparity_observation_mask(dl,dr,
+        _remap_support(map0,width,height,policy.block_size),
+        _remap_support(map1,width,height,policy.block_size),policy)
+    xyz=cv2.reprojectImageTo3D(dl,Q).astype(np.float64)
+    physical=np.all(np.isfinite(xyz),axis=2)&(xyz[:,:,2]>0)
+    counts['nonpositive_or_nonfinite_depth_rejected']=int(np.sum(valid&~physical))
+    valid &= physical
     xyz[~valid]=np.nan;disparity=dl.copy();disparity[~valid]=np.nan
     return DenseStereoResult(disparity,xyz,valid,rect0,rect1,{
         "backend":"OPENCV_STEREOSGBM_CALIBRATED_FALLBACK","coordinate_system":"rectified_left_camera",
@@ -103,4 +144,6 @@ def reconstruct_dense_stereo(
         "baseline_m":float(np.linalg.norm(T)),"rectification_roi_left":list(roi0),"rectification_roi_right":list(roi1),
         "left_right_tolerance_px":policy.left_right_tolerance_px,
         "rectification_alpha":rectification_alpha,
+        "observation_gates":counts,
+        "search_endpoint_policy":"REJECT_CENSORED_MATCHES_NO_FILL",
     })

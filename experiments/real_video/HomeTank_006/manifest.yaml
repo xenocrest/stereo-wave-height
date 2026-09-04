@@ -1,6 +1,6 @@
 experiment_id: HomeTank_006
 status: INPUT_FILES_PRESENT
-processing_status: BLOCKED_AT_CALIBRATION_OBSERVATIONS
+processing_status: GEOMETRY_AND_SYNC_VALIDATION_PENDING
 camera_roles:
   cam0: LEFT
   cam1: RIGHT
@@ -22,7 +22,7 @@ videos:
     cam0: videos/wave/HomeTank_006_wave_cam0_LEFT.mp4
     cam1: videos/wave/HomeTank_006_wave_cam1_RIGHT.mp4
 calibration:
-  status: INSUFFICIENT_BILATERAL_CORNER_OBSERVATIONS
+  status: CANDIDATE_GEOMETRY_NOT_VALIDATED
   approved_for_reconstruction: false
   file: null
   board_inner_corners: [9, 6]
@@ -37,7 +37,7 @@ calibration:
     photo_source: C:/Users/徐彻/Desktop/微信图片_20260904124607.jpg
     board_flatness: UNKNOWN
 synchronization:
-  status: NOT_PROCESSED
+  status: CANDIDATE_OFFSETS_NOT_VERIFIED
   offset_s: null
 reference:
   source: wave_video_opening_static_segment
@@ -49,3 +49,8 @@ reference:
 geometry:
   baseline_m: null
   working_distance_m: null
+  rig_unchanged_between_calibration_and_wave:
+    value: true
+    source: USER_CONFIRMED_2026_09_04
+    scope: no_movement_reclamping_angle_lens_or_zoom_change
+    qualification: user_report_not_an_independent_geometry_accuracy_test
