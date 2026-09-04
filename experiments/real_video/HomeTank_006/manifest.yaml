@@ -1,6 +1,6 @@
 experiment_id: HomeTank_006
 status: INPUT_FILES_PRESENT
-processing_status: NOT_PROCESSED
+processing_status: BLOCKED_AT_CALIBRATION_OBSERVATIONS
 camera_roles:
   cam0: LEFT
   cam1: RIGHT
@@ -22,11 +22,12 @@ videos:
     cam0: videos/wave/HomeTank_006_wave_cam0_LEFT.mp4
     cam1: videos/wave/HomeTank_006_wave_cam1_RIGHT.mp4
 calibration:
-  status: NOT_PROCESSED
+  status: INSUFFICIENT_BILATERAL_CORNER_OBSERVATIONS
   approved_for_reconstruction: false
   file: null
-  board_inner_corners: null
-  square_size_m: null
+  board_inner_corners: [9, 6]
+  square_size_m: 0.020
+  board_source: USER_CONFIRMED_2026_09_04
 synchronization:
   status: NOT_PROCESSED
   offset_s: null
