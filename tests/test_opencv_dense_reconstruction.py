@@ -5,6 +5,12 @@ from reconstruction.opencv_dense import DenseStereoPolicy,left_right_consistency
 
 
 class OpenCvDenseReconstructionTests(unittest.TestCase):
+    def test_invalid_rectification_alpha_rejected(self):
+        image=np.zeros((96,160),np.uint8);k=np.array([[120.,0,80],[0,120.,48],[0,0,1.]])
+        for alpha in [float('nan'),-2.,2.]:
+            with self.assertRaises(ValueError):
+                reconstruct_dense_stereo(image,image,K0=k,D0=np.zeros(5),K1=k,D1=np.zeros(5),R_right_from_left=np.eye(3),T_right_from_left_m=np.array([-.1,0.,0.]),rectification_alpha=alpha)
+
     def test_policy_rejects_non_opencv_disparity_multiple(self):
         with self.assertRaises(ValueError):DenseStereoPolicy(num_disparities=30)
 
@@ -21,6 +27,7 @@ class OpenCvDenseReconstructionTests(unittest.TestCase):
             R_right_from_left=np.eye(3),T_right_from_left_m=np.array([-.1,0.,0.]),
             policy=DenseStereoPolicy(num_disparities=32,block_size=5,uniqueness_ratio=0,speckle_window_size=0))
         self.assertEqual(result.xyz_m.shape,(96,160,3));self.assertEqual(result.valid_mask.shape,(96,160))
+        self.assertEqual(result.metadata['rectification_alpha'],0.)
         self.assertEqual(result.metadata["xyz_unit"],"m");self.assertGreater(result.metadata["valid_count"],0)
         depth=result.xyz_m[...,2][result.valid_mask]
         self.assertTrue(np.all(np.isfinite(depth)))

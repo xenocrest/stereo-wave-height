@@ -72,6 +72,7 @@ def reconstruct_dense_stereo(
     K0: np.ndarray, D0: np.ndarray, K1: np.ndarray, D1: np.ndarray,
     R_right_from_left: np.ndarray, T_right_from_left_m: np.ndarray,
     policy: DenseStereoPolicy = DenseStereoPolicy(),
+    rectification_alpha: float = 0.0,
 ) -> DenseStereoResult:
     """Rectify, match and reproject a stereo pair using calibrated geometry."""
     left=np.asarray(left_image);right=np.asarray(right_image)
@@ -82,7 +83,9 @@ def reconstruct_dense_stereo(
     R=np.asarray(R_right_from_left,float);T=np.asarray(T_right_from_left_m,float).reshape(3,1)
     if K0.shape!=(3,3) or K1.shape!=(3,3) or R.shape!=(3,3) or not np.all(np.isfinite(T)) or np.linalg.norm(T)<=0:
         raise ValueError("finite K0/D0/K1/D1/R/T with non-zero metric T are required")
-    R0,R1,P0,P1,Q,roi0,roi1=cv2.stereoRectify(K0,D0,K1,D1,size,R,T,flags=cv2.CALIB_ZERO_DISPARITY,alpha=0)
+    if not np.isfinite(rectification_alpha) or not -1 <= rectification_alpha <= 1:
+        raise ValueError("rectification alpha must be finite and between -1 and 1")
+    R0,R1,P0,P1,Q,roi0,roi1=cv2.stereoRectify(K0,D0,K1,D1,size,R,T,flags=cv2.CALIB_ZERO_DISPARITY,alpha=rectification_alpha)
     map0=cv2.initUndistortRectifyMap(K0,D0,R0,P0,size,cv2.CV_32FC1)
     map1=cv2.initUndistortRectifyMap(K1,D1,R1,P1,size,cv2.CV_32FC1)
     rect0=cv2.remap(left,*map0,cv2.INTER_LINEAR);rect1=cv2.remap(right,*map1,cv2.INTER_LINEAR)
@@ -99,4 +102,5 @@ def reconstruct_dense_stereo(
         "xyz_unit":"m","valid_count":int(valid.sum()),"valid_ratio":float(valid.mean()),
         "baseline_m":float(np.linalg.norm(T)),"rectification_roi_left":list(roi0),"rectification_roi_right":list(roi1),
         "left_right_tolerance_px":policy.left_right_tolerance_px,
+        "rectification_alpha":rectification_alpha,
     })
