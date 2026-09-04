@@ -833,5 +833,10 @@ class StereoWaveHeightApplication:
         reference_controls=ttk.Frame(self.measurement_frame);reference_controls.pack(fill="x",padx=8,pady=2);ttk.Label(reference_controls,textvariable=self._var("reference_status","参考面未建立"),foreground="#075").pack(side="left");ttk.Label(reference_controls,text="高度 H 为当前三维水面点到用户所选参考面的有符号法向距离。",foreground="#555").pack(side="left",padx=14)
         bottom=ttk.Panedwindow(self.measurement_frame,orient=tk.HORIZONTAL); bottom.pack(fill="x",padx=8,pady=5); history_box=ttk.LabelFrame(bottom,text="本次测量记录"); log_box=ttk.LabelFrame(bottom,text="运行日志"); bottom.add(history_box,weight=1); bottom.add(log_box,weight=3); self.history=tk.Listbox(history_box,height=5); self.history.pack(fill="both",expand=True); self.history.bind("<<ListboxSelect>>",self._history_selected)
         for record in self.session.records:self.history.insert(tk.END,record.display_name)
+        from .observed_results import ObservedResultsPanel
+        review_path=self.repository/"resources"/"wass_observation_review"/"review.json"
+        self.observed_results=ObservedResultsPanel(self.notebook,review_path)
+        self.notebook.add(self.observed_results,text="最新实测结果（只读）")
+        if self.observed_results.data is not None:self.notebook.select(self.observed_results)
         self.log_text=tk.Text(log_box,height=5); self.log_text.pack(fill="both",expand=True); self._log(f"会话目录：{self.session.directory}"); self._refresh_step_state();self._refresh_reference_controls();root.protocol("WM_DELETE_WINDOW",self._request_close); self._after_id=root.after(200,self._tick); return root
     def run(self) -> None:(self.root or self.build()).mainloop()

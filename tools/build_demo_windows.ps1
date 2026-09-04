@@ -76,5 +76,9 @@ Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_commo
 Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_full_pixel_result") -Destination $Resource005 -Recurse
 
 $exe = Join-Path $App "StereoWaveHeightDemo.exe"
+$Review = Join-Path $Repo "resources\wass_observation_review"
+if (Test-Path -LiteralPath (Join-Path $Review "review.json")) {
+    Copy-Item -LiteralPath $Review -Destination (Join-Path $App "resources") -Recurse
+}
 if (-not (Test-Path -LiteralPath $exe)) { throw "Packaged executable missing: $exe" }
 Write-Host "Windows offline demo built: $exe"

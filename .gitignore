@@ -77,3 +77,6 @@ external/WASS/*
 external/WASS/diagnostics/*
 !external/WASS/diagnostics/README.md
 !external/WASS/diagnostics/observability.patch
+
+# Generated read-only demo previews; regenerated from recorded WASS results.
+/resources/wass_observation_review/
