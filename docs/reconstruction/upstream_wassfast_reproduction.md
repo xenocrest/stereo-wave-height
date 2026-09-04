@@ -55,7 +55,7 @@ CNN 路径使用批次统计量归一化及反归一化，不能脱离该处理�
 反归一化后未同样乘 1000，二者属性却均声明毫米。接入前必须用真实样例数值验证，
 不能仅信属性自动混用；本轮不补丁上游。
 
-## 当前实际状态与下一步
+## 第一轮环境验证（历史记录）
 
 安装完成，`python -m wassfast --help` 退出码 0。官方网络契约检查 PASS：
 
@@ -86,3 +86,101 @@ CNN 路径使用批次统计量归一化及反归一化，不能脱离该处理�
 下一步依次为：官方网络运行检查 → 官方原始样例及其配置完整复现 →
 核对坐标/单位/观测支持 → 少量项目帧同域比较。
 只在证据支持时接入现有后端；不重新包装演示程序，不宣称已解决全水面高度。
+
+## 第二轮：官方样例完整闭环已执行
+
+继续任务起始 HEAD：`37f86ded3f728a36e5a6275ff286a2947e54b819`。
+使用 requests 的四连接分块下载解决了下载阻塞；每块检查 HTTP 206、Content-Range、
+ETag 和长度，合并后成功解压。完整档案 SHA256：
+`cec7ebc72a4ceb89d9784b2843094891acb52bdc52ffe6350e1335e578ed146c`。
+没有伪造缺失样例或用自造图像替换。
+
+执行样例脚本中的全部数值参数，仅将旧模块入口改为发布包的 `python -m wassfast`。
+
+```powershell
+python -m wassfast ./input ./config256.mat ./config ./settings.cfg RLTB CNN --batchsize 16 -n 49 -r 15.0 --debug_stats --nographics -o <isolated>/official_output.nc
+```
+
+第一轮 return code=0。随后增加官方 `--savepts --saveCNNinput -dd <isolated>/official_observations`
+再次执行，return code=0，输出 `official_observable.nc`。这些仅增加诊断保存，不改变参数。
+上游对点云有随机排列，第二轮数值与第一轮有小差异；没有选最优结果。
+正式统计来自第二轮。未执行原 WASS 核心程序、未运行标定或修改模型。
+
+| 项目 | 实际结果 |
+| --- | --- |
+| 官方左右图像数 | 各 50 张 |
+| 图像尺寸 | 2456×2058 |
+| 生成高度帧数 | 50；该版本 `-n 49` 实际包含 0…49 |
+| 网格 | 256×256；dx=dy=0.352941 m |
+| X/Y范围 | X=−45…45 m；Y=−115…−25 m |
+| 样例基线 | 3.323 m，来自官方 config256.mat，不是本项目硬件参数 |
+| 原始观测网格平均支持率 | 14.9382%（逐帧 14.6927%…15.1367%） |
+| CNN 有限估计平均比例 | 91.7367%（逐帧 91.6321%…91.8137%） |
+| 相对官方平面高度范围 | −0.938343…+0.972388 m |
+| 独立物理精度 | NOT_VALIDATED；样例未提供本轮可用的独立高度真值 |
+| HomeTank_006 同模型运行 | NOT_RUN；不能将官方海面结果归给水槽视频 |
+
+原始观测支持率由官方 `Zinput` 的有限位置统计，仅使用 mask、不读取其有争议的数值单位。
+有限估计比例不是测量成功率；缺失的约 8.26% 仍保留 NaN，不强填。
+这也说明官方 CNN 本身不是保证“任何 ROI 全像素都有可靠高度”的接口。
+
+### 已处理的输出接口问题
+
+1. 官方 CNN 的 `X_grid` 沿列变化、`Y_grid` 沿行变化，尽管维度名为 `(X,Y)`。
+   项目读取器检查真实坐标数组可分离性及单调性，保留实际 `[time,y,x]` 排列，不盲目转置。
+2. 官方 `workdir` 在每批重置为 0…15；不能拿它作为全局帧 ID。
+   输出使用独立 output_index 和原有相对时间，保留原始 workdir 供审计。
+3. 样例脚本用 `-r 15.0` 覆盖文件名时间间隔；本轮照官方复现，记录为相对时间，
+   不将它认定为本项目视频的同步结果。
+4. CNN 输出的 `maskZ` 未填充，不能当作有效 mask。
+   使用 finite_estimate_mask，并单独保存 raw_support_mask。
+5. `Z` 毫米除以 1000 得米；检查版本、单位、baseline、平面矩阵、网格范围。
+   非匹配配置明确报错，未经验证版本不自动兼容。
+
+项目薄适配器：`src/adapters/wassfast/output.py`。
+复用既有 `reconstruction.height.height_from_plane`：
+
+```text
+P_plane = (X_grid, Y_grid, Z_official)
+H = (n dot P_plane + D) / norm(n)
+n = (0,0,1), D = 0 in the official plane-aligned coordinate system
+```
+
+这里 Z 已是官方平面变换后的垂直分量，**不是 camera Z**。
+没有对每帧重新拟合或重新置零，也没有标尺参与解算。
+
+```powershell
+$env:PYTHONPATH='<repo>/src'
+python tools/report_upstream_wassfast.py --input <isolated>/official_observable.nc --config <sample>/config256.mat --output <new-output-directory>
+```
+
+实际结果路径：
+
+- `D:/stereo-wave-height-runs/upstream_wassfast/project_height_v2/result.json`
+- `D:/stereo-wave-height-runs/upstream_wassfast/project_height_v2/height_estimates.npz`
+- `D:/stereo-wave-height-runs/upstream_wassfast/project_height_v2/support_and_estimate.png`
+- 原始运行日志 `official_run.log`、`official_observable.log` 位于 isolated 目录。
+
+### HomeTank_006 接入关口：不能通过复制配置绕过
+
+检查现有 `rig_features_metric/result.json`：
+`approved_for_reconstruction=false`，基线 0.115797906 m，状态仍为候选尺度。
+已有 fixed-ROI 记录的同步也是 audio candidate，不是 verified frame sync。
+没有发现该实验可直接复用的官方 `config.mat` 水面参考坐标配置。
+
+这不是重新归咎于水面质量。缺少的是可确认的**观测对象与水面参考几何**：
+现有记录已确认部分纹理是槽底，墙面/标尺点不能作为水面控制点。
+WASSfast 的 `Cam2SeaH` 在匹配前就需要共同水面参考平面；任取墙面拟合平面、
+搬用官方海面平面或旧水槽平面，均会把错误几何包装成完整高度。
+因此本轮没有这样接入 HomeTank_006，也没有宣称用户视频目标已完成。
+
+可复用成果已经是官方模型到项目高度文件的真实闭环。后续只有建立可信的当前数据
+水面观测/参考几何，或使用带标定与参考的真实海面双目数据，才能推进可靠的物理验证。
+更换匹配模型可作为观测能力对照，但不能直接证明匹配到的槽底就是水面。
+
+### 检查
+
+新增 3 项读取器测试：物理轴/尺度与未知支持、未知单位拒绝、错误网格方向拒绝。
+全部测试：466 passed、1 skipped、4 subtests passed。
+Windows NetCDF 在中文临时路径下创建测试文件失败；改用 ASCII 的隔离 pytest basetemp 后通过，
+未修改算法或吞掉异常。真实运行及所有大型结果都位于仓库外。
