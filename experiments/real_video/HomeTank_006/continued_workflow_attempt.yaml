@@ -1,0 +1,974 @@
+status: WORKFLOW_EXECUTED_MEASUREMENT_NOT_VALIDATED
+full_pixel_goal_complete: false
+gui_changed: false
+wass_runs: 0
+source_videos_modified: false
+metric_baseline_m: 0.11579790568065551
+metric_baseline_spread_m: 0.0013276568064476552
+scale_observations:
+- time_s: 70
+  right_pts_s: 69.66666666666667
+  status: SCALE_OBSERVATION
+  baseline_m: 0.11579790568065551
+  normalized_span: 1.381717562675476
+  endpoint_reprojection_px:
+  - 1.3751318338594687
+  - 2.0020301513666108
+- time_s: 95
+  right_pts_s: 94.63333333333334
+  status: SCALE_OBSERVATION
+  baseline_m: 0.11706987171290374
+  normalized_span: 1.3667051792144775
+  endpoint_reprojection_px:
+  - 1.8803260780979336
+  - 1.8513217307065186
+- time_s: 105
+  right_pts_s: 104.63333333333334
+  status: SCALE_OBSERVATION
+  baseline_m: 0.11574221490645609
+  normalized_span: 1.3823823928833008
+  endpoint_reprojection_px:
+  - 0.18086779563458938
+  - 0.1893980549887424
+guide_corner_validation:
+  LEFT:
+  - count: 52
+    rms_px: 4.75605583190918
+    p95_px: 8.135053634643555
+  - count: 52
+    rms_px: 3.986853837966919
+    p95_px: 7.116690158843994
+  - count: 53
+    rms_px: 3.3975605964660645
+    p95_px: 6.330854892730713
+  - count: 53
+    rms_px: 4.061001300811768
+    p95_px: 7.851826190948486
+  - count: 50
+    rms_px: 10.532078742980957
+    p95_px: 22.212675094604492
+  - count: 47
+    rms_px: 11.911600112915039
+    p95_px: 22.278587341308594
+  - count: 52
+    rms_px: 3.410202980041504
+    p95_px: 8.796826362609863
+  RIGHT:
+  - count: 51
+    rms_px: 10.10875129699707
+    p95_px: 18.93581199645996
+  - count: 50
+    rms_px: 12.510982513427734
+    p95_px: 23.90054702758789
+  - count: 48
+    rms_px: 9.458441734313965
+    p95_px: 19.375743865966797
+  - count: 29
+    rms_px: 12.683743476867676
+    p95_px: 23.460790634155273
+  - count: 41
+    rms_px: 16.150897979736328
+    p95_px: 28.620161056518555
+  - count: 41
+    rms_px: 8.698862075805664
+    p95_px: 19.05571937561035
+background_capture_transfer:
+- camera: LEFT
+  match_count: 34
+  status: DIAGNOSTIC_BACKGROUND_TRANSFER_NOT_APPROVED
+  inliers: 21
+  median_shift_halfres_px:
+  - 2.8092041015625
+  - -0.9158611297607422
+  p95_identity_error_halfres_px: 3.466792345046997
+  H_halfres:
+  - - 1.0024881975210183
+    - -0.00046664189524147417
+    - -0.7573970962811842
+  - - 0.002076167636734904
+    - 1.0136394572535936
+    - -4.58189290178221
+  - - 8.813271020877305e-08
+    - 2.9471984785879e-06
+    - 1.0
+- camera: RIGHT
+  match_count: 20
+  status: DIAGNOSTIC_BACKGROUND_TRANSFER_NOT_APPROVED
+  inliers: 13
+  median_shift_halfres_px:
+  - -1.4466552734375
+  - -5.9620361328125
+  p95_identity_error_halfres_px: 6.619988918304443
+  H_halfres:
+  - - 0.5944155122240911
+    - 2.060244828687347
+    - 88.53211243440258
+  - - -0.05458364268223189
+    - 1.3037649187781568
+    - -2.143036746889856
+  - - -0.00018924780466359574
+    - 0.0010896472869033928
+    - 1.0
+model_vertical_residuals:
+- time_s: 1
+  dry_wall_diagnostic:
+    cycle_consistent_count: 35537
+    vertical_p5_p50_p95_px:
+    - -2.39249849319458
+    - -1.071742296218872
+    - 1.6258423805236812
+  water_candidate:
+    cycle_consistent_count: 24082
+    vertical_p5_p50_p95_px:
+    - 4.502920866012573
+    - 6.338093042373657
+    - 7.116838645935059
+- time_s: 2
+  dry_wall_diagnostic:
+    cycle_consistent_count: 36078
+    vertical_p5_p50_p95_px:
+    - -1.838160753250122
+    - -0.8869370520114899
+    - 2.6496132612228416
+  water_candidate:
+    cycle_consistent_count: 23736
+    vertical_p5_p50_p95_px:
+    - 4.684401154518127
+    - 6.742095470428467
+    - 7.558833003044128
+- time_s: 3
+  dry_wall_diagnostic:
+    cycle_consistent_count: 32321
+    vertical_p5_p50_p95_px:
+    - -1.9980921745300293
+    - -0.9998295903205872
+    - 2.464771032333374
+  water_candidate:
+    cycle_consistent_count: 24311
+    vertical_p5_p50_p95_px:
+    - 4.3644092082977295
+    - 6.4384565353393555
+    - 7.69671106338501
+- time_s: 10
+  dry_wall_diagnostic:
+    cycle_consistent_count: 16442
+    vertical_p5_p50_p95_px:
+    - -8.160174226760864
+    - -3.2185604572296143
+    - -1.891436016559601
+  water_candidate:
+    cycle_consistent_count: 0
+    vertical_p5_p50_p95_px: null
+runs:
+  surface_chain_padded:
+    status: FULL_PIXEL_WATER_HEIGHT_NOT_VALIDATED
+    frames:
+    - time_s: 1.0
+      actual_pts_s:
+      - 1.0006666666666668
+      - 0.9333333333333333
+      point_count: 359
+      candidate_left_roi_pixels: 327428
+      candidate_roi_coverage: 0.0010964242520493054
+      left_roi_point_count: 359
+      matcher:
+        backend: OPENCV_STEREOSGBM_CALIBRATED_FALLBACK
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 70111
+        valid_ratio: 0.03381124614197531
+        baseline_m: 0.10817565453877045
+        rectification_roi_left:
+        - 0
+        - 0
+        - 1920
+        - 833
+        rectification_roi_right:
+        - 0
+        - 91
+        - 1920
+        - 924
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 46349
+          left_interior_search_count: 181291
+          left_source_support_count: 2042392
+          right_source_support_count: 2055636
+          bidirectional_observation_count: 70111
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      depth_percentiles_m:
+      - 1.0677497386932373
+      - 1.0807475090026855
+      - 6.860434532165527
+      - 13.363554954528809
+      - 14.414620399475098
+      candidate_plane:
+        normal:
+        - 0.29848869726029587
+        - 0.7810030435438782
+        - -0.5485788398972848
+        offset_m: -0.013491190842411127
+        inlier_count: 152
+        inlier_ratio: 0.4233983286908078
+        rms_m: 0.002366017811027805
+        distance_gate_m: 0.005
+      raw_height_m:
+        mean: -0.04557727502009558
+        rms: 0.08586800919721341
+        p5_p50_p95:
+        - -0.1855034501668834
+        - -0.003320012469196742
+        - 0.017380085956167086
+        minimum: -0.19710547461594283
+        maximum: 0.03519370140312965
+      plane_inlier_height_diagnostic_m:
+        mean: -4.5102810375396984e-17
+        rms: 0.002366017811027805
+      status: EXPERIMENTAL_POINT_HEIGHT_OUTPUT_NOT_PHYSICAL_PASS
+    - time_s: 2.0
+      actual_pts_s:
+      - 2.0013333333333336
+      - 1.9333333333333333
+      point_count: 137
+      candidate_left_roi_pixels: 327428
+      candidate_roi_coverage: 0.00041841259757870435
+      left_roi_point_count: 137
+      matcher:
+        backend: OPENCV_STEREOSGBM_CALIBRATED_FALLBACK
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 73317
+        valid_ratio: 0.035357349537037036
+        baseline_m: 0.10817565453877045
+        rectification_roi_left:
+        - 0
+        - 0
+        - 1920
+        - 833
+        rectification_roi_right:
+        - 0
+        - 91
+        - 1920
+        - 924
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 49012
+          left_interior_search_count: 183643
+          left_source_support_count: 2042392
+          right_source_support_count: 2055636
+          bidirectional_observation_count: 73317
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      depth_percentiles_m:
+      - 1.0717637538909912
+      - 1.074906826019287
+      - 2.4671177864074707
+      - 15.27263355255127
+      - 15.45664119720459
+      candidate_plane:
+        normal:
+        - 0.37201680708359564
+        - 0.7170351224169744
+        - -0.5894608795058426
+        offset_m: -0.013470247405256597
+        inlier_count: 101
+        inlier_ratio: 0.7372262773722628
+        rms_m: 0.002351119553006591
+        distance_gate_m: 0.005
+      raw_height_m:
+        mean: -0.01789409558130026
+        rms: 0.03480743799281695
+        p5_p50_p95:
+        - -0.08420556134696518
+        - -0.0026771778655887055
+        - 0.002243891297331979
+        minimum: -0.09931441266673124
+        maximum: 0.0043261166035091355
+      plane_inlier_height_diagnostic_m:
+        mean: -0.008266825704324963
+        rms: 0.02268096144738487
+      status: EXPERIMENTAL_POINT_HEIGHT_OUTPUT_NOT_PHYSICAL_PASS
+    - time_s: 3.0
+      actual_pts_s:
+      - 3.002
+      - 2.9333333333333336
+      point_count: 393
+      candidate_left_roi_pixels: 327428
+      candidate_roi_coverage: 0.0012002638748060642
+      left_roi_point_count: 393
+      matcher:
+        backend: OPENCV_STEREOSGBM_CALIBRATED_FALLBACK
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 71087
+        valid_ratio: 0.034281925154320984
+        baseline_m: 0.10817565453877045
+        rectification_roi_left:
+        - 0
+        - 0
+        - 1920
+        - 833
+        rectification_roi_right:
+        - 0
+        - 91
+        - 1920
+        - 924
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 48450
+          left_interior_search_count: 183113
+          left_source_support_count: 2042392
+          right_source_support_count: 2055636
+          bidirectional_observation_count: 71087
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      depth_percentiles_m:
+      - 1.0642067193984985
+      - 1.0786122798919677
+      - 3.080195188522339
+      - 55.778316497802734
+      - 75.46478271484375
+      candidate_plane:
+        normal:
+        - 0.5726949551913825
+        - 0.5446180174827755
+        - -0.6127084978449961
+        offset_m: -0.23223981561674623
+        inlier_count: 181
+        inlier_ratio: 0.46055979643765904
+        rms_m: 0.00261690137998587
+        distance_gate_m: 0.005
+      raw_height_m:
+        mean: -0.0165117798724612
+        rms: 0.07101150503045021
+        p5_p50_p95:
+        - -0.11294634959462689
+        - -0.0018788382849345988
+        - 0.11790927752899473
+        minimum: -0.1292638864641891
+        maximum: 0.2057320418066782
+      plane_inlier_height_diagnostic_m:
+        mean: -0.030933195776915563
+        rms: 0.05795092495553055
+      status: EXPERIMENTAL_POINT_HEIGHT_OUTPUT_NOT_PHYSICAL_PASS
+    - time_s: 10.0
+      actual_pts_s:
+      - 10.006366666666667
+      - 9.933333333333334
+      point_count: 148
+      candidate_left_roi_pixels: 327428
+      candidate_roi_coverage: 0.00045200776964706747
+      left_roi_point_count: 282
+      matcher:
+        backend: OPENCV_STEREOSGBM_CALIBRATED_FALLBACK
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 25146
+        valid_ratio: 0.01212673611111111
+        baseline_m: 0.10817565453877045
+        rectification_roi_left:
+        - 0
+        - 0
+        - 1920
+        - 833
+        rectification_roi_right:
+        - 0
+        - 91
+        - 1920
+        - 924
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 46267
+          left_interior_search_count: 120779
+          left_source_support_count: 2042392
+          right_source_support_count: 2055636
+          bidirectional_observation_count: 25146
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      depth_percentiles_m:
+      - 0.15745949745178223
+      - 0.15745949745178223
+      - 0.1575271636247635
+      - 13.225786209106445
+      - 14.414620399475098
+      candidate_plane:
+        normal:
+        - 0.2537303870635101
+        - 0.8082663542866784
+        - -0.53134394812468
+        offset_m: -0.03598944818808808
+        inlier_count: 145
+        inlier_ratio: 0.9797297297297297
+        rms_m: 0.000753448913731745
+        distance_gate_m: 0.005
+      raw_height_m:
+        mean: 0.05165538939160672
+        rms: 0.0938524234180152
+        p5_p50_p95:
+        - 0.02996825407170894
+        - 0.030631353269063247
+        - 0.3333590660678984
+        minimum: 0.02984066756542514
+        maximum: 0.35944222290758665
+      plane_inlier_height_diagnostic_m:
+        mean: 0.0456129082234927
+        rms: 0.08089818973396891
+      status: EXPERIMENTAL_POINT_HEIGHT_OUTPUT_NOT_PHYSICAL_PASS
+    limitations:
+    - geometry unapproved
+    - frame synchronization unverified
+    - candidate water region may include refracted background
+    - plane inliers are only diagnostic; all supported raw heights retained
+    - 1920x1080 evaluation, not full 4K
+    - no completion of unsupported pixels; no ruler inputs
+  surface_chain_full_search:
+    status: FULL_PIXEL_WATER_HEIGHT_NOT_VALIDATED
+    frames:
+    - time_s: 1.0
+      actual_pts_s:
+      - 1.0006666666666668
+      - 0.9333333333333333
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: OPENCV_STEREOSGBM_CALIBRATED_FALLBACK
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 45616
+        valid_ratio: 0.08799382716049382
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 11940
+          left_interior_search_count: 75265
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 45616
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 2.0
+      actual_pts_s:
+      - 2.0013333333333336
+      - 1.9333333333333333
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: OPENCV_STEREOSGBM_CALIBRATED_FALLBACK
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 46115
+        valid_ratio: 0.08895640432098766
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 12779
+          left_interior_search_count: 73970
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 46115
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 3.0
+      actual_pts_s:
+      - 3.002
+      - 2.9333333333333336
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 40
+      matcher:
+        backend: OPENCV_STEREOSGBM_CALIBRATED_FALLBACK
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 45784
+        valid_ratio: 0.0883179012345679
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 14283
+          left_interior_search_count: 74979
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 45784
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 10.0
+      actual_pts_s:
+      - 10.006366666666667
+      - 9.933333333333334
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: OPENCV_STEREOSGBM_CALIBRATED_FALLBACK
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 23277
+        valid_ratio: 0.04490162037037037
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 10064
+          left_interior_search_count: 49468
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 23277
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    limitations:
+    - geometry unapproved
+    - frame synchronization unverified
+    - candidate water region may include refracted background
+    - plane inliers are only diagnostic; all supported raw heights retained
+    - 960x540 evaluation, not full 4K
+    - no completion of unsupported pixels; no ruler inputs
+  surface_chain_raft:
+    status: FULL_PIXEL_WATER_HEIGHT_NOT_VALIDATED
+    frames:
+    - time_s: 1.0
+      actual_pts_s:
+      - 1.0006666666666668
+      - 0.9333333333333333
+      point_count: 3
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 3.655416108200317e-05
+      left_roi_point_count: 3
+      matcher:
+        backend: TORCHVISION_RAFT_SAME_TIME_STEREO_ESTIMATE
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 50064
+        valid_ratio: 0.09657407407407408
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 0
+          left_interior_search_count: 126700
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 50064
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 2.0
+      actual_pts_s:
+      - 2.0013333333333336
+      - 1.9333333333333333
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: TORCHVISION_RAFT_SAME_TIME_STEREO_ESTIMATE
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 54056
+        valid_ratio: 0.1042746913580247
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 0
+          left_interior_search_count: 141886
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 54056
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 3.0
+      actual_pts_s:
+      - 3.002
+      - 2.9333333333333336
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: TORCHVISION_RAFT_SAME_TIME_STEREO_ESTIMATE
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 50212
+        valid_ratio: 0.09685956790123457
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 0
+          left_interior_search_count: 131361
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 50212
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 10.0
+      actual_pts_s:
+      - 10.006366666666667
+      - 9.933333333333334
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: TORCHVISION_RAFT_SAME_TIME_STEREO_ESTIMATE
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 0
+        valid_ratio: 0.0
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 0
+          left_interior_search_count: 56624
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 0
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    limitations:
+    - geometry unapproved
+    - frame synchronization unverified
+    - candidate water region may include refracted background
+    - plane inliers are only diagnostic; all supported raw heights retained
+    - 960x540 evaluation, not full 4K
+    - no completion of unsupported pixels; no ruler inputs
+  surface_chain_raft_centered:
+    status: FULL_PIXEL_WATER_HEIGHT_NOT_VALIDATED
+    frames:
+    - time_s: 1.0
+      actual_pts_s:
+      - 1.0006666666666668
+      - 0.9333333333333333
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: TORCHVISION_RAFT_SAME_TIME_STEREO_ESTIMATE
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 68913
+        valid_ratio: 0.13293402777777777
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 0
+          left_interior_search_count: 96864
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 68913
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      ungated_model_flow_in_roi_px:
+        horizontal:
+        - -475.78321533203126
+        - -435.9727783203125
+        - -406.09910888671874
+        vertical:
+        - 4.401671409606934
+        - 6.246847629547119
+        - 7.1113790512084964
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 2.0
+      actual_pts_s:
+      - 2.0013333333333336
+      - 1.9333333333333333
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: TORCHVISION_RAFT_SAME_TIME_STEREO_ESTIMATE
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 72712
+        valid_ratio: 0.14026234567901236
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 0
+          left_interior_search_count: 104677
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 72712
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      ungated_model_flow_in_roi_px:
+        horizontal:
+        - -475.7051635742188
+        - -436.04437255859375
+        - -405.92868652343753
+        vertical:
+        - 4.276626110076904
+        - 6.625246524810791
+        - 7.550808620452881
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 3.0
+      actual_pts_s:
+      - 3.002
+      - 2.9333333333333336
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: TORCHVISION_RAFT_SAME_TIME_STEREO_ESTIMATE
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 64562
+        valid_ratio: 0.1245408950617284
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 0
+          left_interior_search_count: 99042
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 64562
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      ungated_model_flow_in_roi_px:
+        horizontal:
+        - -476.4770874023437
+        - -436.30328369140625
+        - -405.66932373046876
+        vertical:
+        - 4.2619250297546385
+        - 6.3257880210876465
+        - 7.681869125366211
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    - time_s: 10.0
+      actual_pts_s:
+      - 10.006366666666667
+      - 9.933333333333334
+      point_count: 0
+      candidate_left_roi_pixels: 82070
+      candidate_roi_coverage: 0.0
+      left_roi_point_count: 0
+      matcher:
+        backend: TORCHVISION_RAFT_SAME_TIME_STEREO_ESTIMATE
+        coordinate_system: rectified_left_camera
+        xyz_unit: m
+        valid_count: 12561
+        valid_ratio: 0.024230324074074074
+        baseline_m: 0.11579790568065551
+        rectification_roi_left:
+        - 0
+        - 0
+        - 960
+        - 416
+        rectification_roi_right:
+        - 0
+        - 46
+        - 960
+        - 462
+        left_right_tolerance_px: 1.5
+        rectification_alpha: -1
+        observation_gates:
+          left_search_endpoint_count: 0
+          left_interior_search_count: 28493
+          left_source_support_count: 506080
+          right_source_support_count: 509436
+          bidirectional_observation_count: 12561
+          nonpositive_or_nonfinite_depth_rejected: 0
+        search_endpoint_policy: REJECT_CENSORED_MATCHES_NO_FILL
+        pad_search_canvas: true
+      ungated_model_flow_in_roi_px:
+        horizontal:
+        - -482.8810180664062
+        - -457.96258544921875
+        - -433.01507568359375
+        vertical:
+        - -53.19682083129883
+        - -42.08106994628906
+        - -30.432080078125004
+      status: INSUFFICIENT_SURFACE_OBSERVATIONS
+    limitations:
+    - geometry unapproved
+    - frame synchronization unverified
+    - candidate water region may include refracted background
+    - plane inliers are only diagnostic; all supported raw heights retained
+    - 960x540 evaluation, not full 4K
+    - no completion of unsupported pixels; no ruler inputs
+model:
+  name: torchvision RAFT C_T_SKHT_V2 (NOT RAFT-Stereo)
+  torch: 2.7.1+cpu
+  torchvision: 0.22.1
+  source: https://docs.pytorch.org/vision/main/models/generated/torchvision.models.optical_flow.raft_large.html
+  checkpoint_source: https://download.pytorch.org/models/raft_large_C_T_SKHT_V2-ff5fadd5.pth
+  checkpoint_sha256: ff5fadd56d26b40647388883af1547351ea17868b765c05b27231e72dd16a322
+  limitation: Official general correspondence model, not validated here as water metrology
+external_information_required: Are visible white patterns attached to water surface
+  or tank bottom?
+sources:
+  rig_features_metric/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\rig_features_metric\result.json
+    sha256: aea8e6f505f1a891fc34dc9c13b6602973583d4168ec962ef7b5ae74f9fb8904
+  surface_chain_padded/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\surface_chain_padded\result.json
+    sha256: 398f49d385b3e73a9508d3266d6e093b0e168150bdfc97759ee89906884b11f5
+  surface_chain_full_search/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\surface_chain_full_search\result.json
+    sha256: 9330093a019e8043279dff08b0cd69c4b63028e64838dc31b7587734d8e9079b
+  surface_chain_raft/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\surface_chain_raft\result.json
+    sha256: db493b611b926dabf85be6052a38ec1c9021ff828d36e450c1f1725bbbe88eda
+  surface_chain_raft_centered/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\surface_chain_raft_centered\result.json
+    sha256: 686231030d868af8003660183d3745b87bab84c19e010c9b657eb1f6ec3a365e
+  capture_transfer/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\capture_transfer\result.json
+    sha256: 31a2f69c1aa048316a02d1a24761aed63db11af0083a96019499a535d5547934
+  guided_corners/result.json:
+    path: D:\stereo-wave-height-runs\HomeTank_006\guided_corners\result.json
+    sha256: d4fead8f354a890c5e25f6faaad77df978eb11b8916506ad5b5619bda7015a0f

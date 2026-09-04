@@ -1,10 +1,22 @@
 import unittest
 import numpy as np
 
-from reconstruction.opencv_dense import DenseStereoPolicy,left_right_consistency,reconstruct_dense_stereo
+from reconstruction.opencv_dense import DenseStereoPolicy,left_right_consistency,reconstruct_dense_stereo,compute_bidirectional_disparities,disparity_observation_mask
 
 
 class OpenCvDenseReconstructionTests(unittest.TestCase):
+    def test_padding_recovers_observable_border_without_changing_disparity(self):
+        rng=np.random.default_rng(73);left=rng.integers(0,256,(80,192),dtype=np.uint8)
+        right=np.zeros_like(left);right[:,:-24]=left[:,24:]
+        policy=DenseStereoPolicy(num_disparities=64,block_size=5,uniqueness_ratio=5,speckle_window_size=0,pad_search_canvas=True)
+        dl,dr=compute_bidirectional_disparities(left,right,policy)
+        support=np.ones(left.shape,bool)
+        valid,_=disparity_observation_mask(dl,dr,support,support,policy)
+        self.assertEqual(dl.shape,left.shape)
+        self.assertGreater(np.mean(valid[10:70,35:60]),.8)
+        self.assertAlmostEqual(float(np.median(dl[10:70,35:60][valid[10:70,35:60]])),24.,delta=.2)
+        self.assertFalse(valid[:,:20].any())
+
     def test_invalid_rectification_alpha_rejected(self):
         image=np.zeros((96,160),np.uint8);k=np.array([[120.,0,80],[0,120.,48],[0,0,1.]])
         for alpha in [float('nan'),-2.,2.]:

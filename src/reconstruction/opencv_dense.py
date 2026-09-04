@@ -7,10 +7,17 @@ explicit reference plane.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Protocol
 
 import cv2
 import numpy as np
+
+
+class DisparityBackend(Protocol):
+    """Optional same-time stereo matcher; outputs dL>0, dR<0 in input pixels."""
+    name: str
+
+    def compute(self, left_bgr: np.ndarray, right_bgr: np.ndarray) -> tuple[np.ndarray,np.ndarray]: ...
 
 
 @dataclass(frozen=True)
@@ -22,6 +29,7 @@ class DenseStereoPolicy:
     speckle_window_size: int = 100
     speckle_range: int = 2
     left_right_tolerance_px: float = 1.5
+    pad_search_canvas: bool = False
 
     def __post_init__(self) -> None:
         if self.num_disparities <= 0 or self.num_disparities % 16:
@@ -53,6 +61,24 @@ def _matcher(policy: DenseStereoPolicy, *, right: bool = False) -> cv2.StereoSGB
         speckleWindowSize=policy.speckle_window_size, speckleRange=policy.speckle_range,
         mode=cv2.STEREO_SGBM_MODE_SGBM_3WAY,
     )
+
+
+def compute_bidirectional_disparities(gray0: np.ndarray, gray1: np.ndarray,
+                                      policy: DenseStereoPolicy) -> tuple[np.ndarray,np.ndarray]:
+    """Match on an optional padded canvas, returning ORIGINAL pixel indexing.
+
+    Equal horizontal padding in both views preserves d=u_left-u_right and Q.
+    It avoids SGBM's unconditional whole-search-width border exclusion. Padding
+    is not image evidence: downstream remap/support and LR gates remain required.
+    """
+    if gray0.shape!=gray1.shape or gray0.ndim!=2:
+        raise ValueError('matching requires equal grayscale image shapes')
+    pad=max(abs(policy.min_disparity),abs(policy.min_disparity+policy.num_disparities-1))+policy.block_size if policy.pad_search_canvas else 0
+    images=[cv2.copyMakeBorder(g,0,0,pad,pad,cv2.BORDER_CONSTANT,value=0) if pad else g for g in [gray0,gray1]]
+    dl=_matcher(policy).compute(images[0],images[1]).astype(np.float32)/16.0
+    dr=_matcher(policy,right=True).compute(images[1],images[0]).astype(np.float32)/16.0
+    if pad:dl=dl[:,pad:pad+gray0.shape[1]];dr=dr[:,pad:pad+gray0.shape[1]]
+    return dl,dr
 
 
 def left_right_consistency(left_disparity: np.ndarray, right_disparity: np.ndarray,
@@ -110,6 +136,7 @@ def reconstruct_dense_stereo(
     R_right_from_left: np.ndarray, T_right_from_left_m: np.ndarray,
     policy: DenseStereoPolicy = DenseStereoPolicy(),
     rectification_alpha: float = 0.0,
+    disparity_backend: DisparityBackend | None = None,
 ) -> DenseStereoResult:
     """Rectify, match and reproject a stereo pair using calibrated geometry."""
     left=np.asarray(left_image);right=np.asarray(right_image)
@@ -128,8 +155,13 @@ def reconstruct_dense_stereo(
     rect0=cv2.remap(left,*map0,cv2.INTER_LINEAR);rect1=cv2.remap(right,*map1,cv2.INTER_LINEAR)
     gray0=cv2.cvtColor(rect0,cv2.COLOR_BGR2GRAY) if rect0.ndim==3 else rect0
     gray1=cv2.cvtColor(rect1,cv2.COLOR_BGR2GRAY) if rect1.ndim==3 else rect1
-    dl=_matcher(policy).compute(gray0,gray1).astype(np.float32)/16.0
-    dr=_matcher(policy,right=True).compute(gray1,gray0).astype(np.float32)/16.0
+    if disparity_backend is None:
+        dl,dr=compute_bidirectional_disparities(gray0,gray1,policy)
+    else:
+        dl,dr=disparity_backend.compute(rect0,rect1)
+        dl=np.asarray(dl,np.float32);dr=np.asarray(dr,np.float32)
+        if dl.shape!=(height,width) or dr.shape!=(height,width):
+            raise ValueError('backend disparity shape must match original rectified images')
     valid,counts=disparity_observation_mask(dl,dr,
         _remap_support(map0,width,height,policy.block_size),
         _remap_support(map1,width,height,policy.block_size),policy)
@@ -139,11 +171,13 @@ def reconstruct_dense_stereo(
     valid &= physical
     xyz[~valid]=np.nan;disparity=dl.copy();disparity[~valid]=np.nan
     return DenseStereoResult(disparity,xyz,valid,rect0,rect1,{
-        "backend":"OPENCV_STEREOSGBM_CALIBRATED_FALLBACK","coordinate_system":"rectified_left_camera",
+        "backend":"OPENCV_STEREOSGBM_CALIBRATED_FALLBACK" if disparity_backend is None else disparity_backend.name,"coordinate_system":"rectified_left_camera",
         "xyz_unit":"m","valid_count":int(valid.sum()),"valid_ratio":float(valid.mean()),
         "baseline_m":float(np.linalg.norm(T)),"rectification_roi_left":list(roi0),"rectification_roi_right":list(roi1),
         "left_right_tolerance_px":policy.left_right_tolerance_px,
         "rectification_alpha":rectification_alpha,
         "observation_gates":counts,
-        "search_endpoint_policy":"REJECT_CENSORED_MATCHES_NO_FILL",
+        "search_endpoint_policy":"REJECT_CENSORED_MATCHES_NO_FILL" if disparity_backend is None else "PIXEL_RANGE_AND_LR_GATES_NO_FILL",
+        "pad_search_canvas":policy.pad_search_canvas if disparity_backend is None else False,
+        "observation_kind":"CLASSICAL_STEREO_CANDIDATE" if disparity_backend is None else "LEARNED_CORRESPONDENCE_CANDIDATE",
     })

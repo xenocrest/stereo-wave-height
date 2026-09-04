@@ -1,6 +1,6 @@
 # HomeTank_006：新一轮高清双目采集
 
-状态：INPUT_FILES_PRESENT / NOT_PROCESSED。四段原始视频已到位并完成首帧解码检查；尚未执行标定或重建。
+状态：WORKFLOW_EXECUTED_MEASUREMENT_NOT_VALIDATED。四段原始视频已执行候选几何、时间对应和隔离视频到高度实验；静水与物理有效性尚未通过，未发布逐像素准确高度或更新演示程序。最新证据见 [继续执行报告](continued_workflow_attempt.md)。
 
 2026-09-04 更新：实际录制为 4K / 30 FPS；没有独立 static 视频。用户说明 wave 开头几秒是静水，作为待验证参考候选，不预先固定秒数。同步后验证静止区间，再建立参考；不得把动态验证帧纳入参考均值。下方六文件表为原采集计划，static 两个文件本次不要求补交。
 
