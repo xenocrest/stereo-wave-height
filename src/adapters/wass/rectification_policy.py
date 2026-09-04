@@ -25,8 +25,8 @@ class RectificationPolicy:
     def __post_init__(self) -> None:
         if isinstance(self.alpha, bool) or not isinstance(self.alpha, (int, float)):
             raise TypeError("rectification alpha must be a number")
-        if not self.test_id or not 0.0 <= float(self.alpha) <= 1.0:
-            raise ValueError("rectification policy requires an id and alpha in [0,1]")
+        if not self.test_id or not (float(self.alpha)==-1.0 or 0.0 <= float(self.alpha) <= 1.0):
+            raise ValueError("rectification policy requires an id and alpha=-1 (OpenCV automatic) or alpha in [0,1]")
         if not isinstance(self.zero_disparity, bool):
             raise TypeError("zero_disparity must be boolean")
 

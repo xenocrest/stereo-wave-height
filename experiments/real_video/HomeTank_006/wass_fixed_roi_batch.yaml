@@ -1,0 +1,20 @@
+status: ISOLATED_DIAGNOSTIC_PLAN_NOT_MEASUREMENT_APPROVAL
+geometry_file: D:/stereo-wave-height-runs/HomeTank_006/rig_features_metric/result.json
+runtime_binding: D:/stereo-wave-height-runs/HomeTank_004/reconstruction-pipeline-runtime-20260824.json
+existing_wass_config: D:/stereo-wave-height-runs/HomeTank_004/phase4-case2-candidate02-20260828/reconstruction/wass_workspace/config
+left_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_006/videos/wave/HomeTank_006_wave_cam0_LEFT.mp4
+right_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_006/videos/wave/HomeTank_006_wave_cam1_RIGHT.mp4
+image_size: [3840, 2160]
+rotation_deg: [180, 0]
+left_times_s: [1, 2, 3, 6, 10, 20, 35, 50, 65, 80]
+right_minus_left_s: -0.225
+synchronization_source: existing_audio_candidate_not_verified_frame_sync
+water_roi:
+  type: polygon
+  coordinate_system: canonical_cam1
+  selection: analyst_fixed_before_WASS_from_intake_image_NOT_user_selection
+  purpose: broad_visible_water_area_diagnostic_including_refracted_background_not_water_identity
+  points: [[320, 1260], [2300, 1260], [2500, 1440], [2700, 1440], [2760, 1260], [3100, 1260], [3700, 2159], [700, 2159], [0, 1700]]
+observation_gate_px: 0.75
+stage_timeout_s: 180
+output: D:/stereo-wave-height-runs/HomeTank_006/wass_fixed_roi_batch_v1

@@ -24,7 +24,11 @@ def main():
     parser.add_argument('--roi',nargs=4,type=int,required=True,metavar=('X0','Y0','X1','Y1'))
     parser.add_argument('--stride',type=int,default=4)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--allow-unverified-legacy-projection',action='store_true',
+                        help='Historical numeric reproduction only: P0cam is NOT a verified rectified image mapping')
     args=parser.parse_args()
+    if not args.allow_unverified_legacy_projection:
+        raise ValueError('LEGACY_P0CAM_PIXEL_DOMAIN_NOT_VERIFIED: use the corrected camera projection audit before reporting ROI coverage')
     if args.output.exists():raise FileExistsError('Use a new diagnostic directory')
     if args.stride<1:raise ValueError('positive image stride required')
     scale=float(args.baseline_file.read_text().strip())
@@ -58,7 +62,7 @@ def main():
     assert not np.intersect1d(nearest.reshape(u.shape)[support],hidden_xyz).size
     predicted=complete_water_surface(height,support,roi,roi,xy[:,0].reshape(u.shape),xy[:,1].reshape(u.shape),observation_subject='WATER_SURFACE',policy=policy)
     error=predicted.height_m[test]-height[test]
-    record=dict(status='REAL_SEA_WASS_SPATIAL_CONSISTENCY_NOT_PHYSICAL_ACCURACY',
+    record=dict(status='LEGACY_PIXEL_DOMAIN_UNVERIFIED_NUMERIC_REPRODUCTION_ONLY',
         source=str(source),source_sha256=sha,source_baseline_m=scale,source_baseline_file=str(args.baseline_file),
         scale_metrology_status='LEGACY_FILE_NOT_INDEPENDENTLY_VERIFIED',
         raw_wass_points=len(cloud),roi_rectified_xyxy=args.roi,stride_native_pixels=args.stride,

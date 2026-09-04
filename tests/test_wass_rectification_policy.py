@@ -59,6 +59,14 @@ class WassRectificationPolicyTests(unittest.TestCase):
             policy = RectificationPolicy.from_yaml(path)
         self.assertEqual((policy.alpha, policy.zero_disparity, policy.flags), (0.0, True, 1024))
 
+    def test_opencv_automatic_scaling_is_explicit_not_new_default(self):
+        policy=RectificationPolicy.from_mapping({'alpha':-1.0,'zero_disparity':True})
+        self.assertEqual(policy.wass_config_lines(),('RECTIFICATION_ALPHA=-1','RECTIFICATION_ZERO_DISPARITY=true'))
+        self.assertEqual(RectificationPolicy().alpha,1.0)
+        self.assertFalse(ProductionWassRectificationCapability().supports(policy))
+        for value in [-2.,-.5,float('nan')]:
+            with self.assertRaises(ValueError):RectificationPolicy(alpha=value)
+
 
 if __name__ == "__main__":
     unittest.main()

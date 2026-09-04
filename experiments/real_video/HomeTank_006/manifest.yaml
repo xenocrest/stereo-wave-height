@@ -1,6 +1,6 @@
 experiment_id: HomeTank_006
 status: INPUT_FILES_PRESENT
-processing_status: REFRACTIVE_HEIGHT_MODEL_VALIDATION_IN_PROGRESS
+processing_status: OCEAN_ORIENTED_WASS_FIXED_ROI_DIAGNOSTIC
 camera_roles:
   cam0: LEFT
   cam1: RIGHT
@@ -58,7 +58,8 @@ optical_scene:
   surface_markers: NONE
   visible_white_texture: TANK_BOTTOM_MARKINGS
   source: USER_CONFIRMED_2026_09_04
-  required_forward_model: REFRACTIVE_AIR_WATER_RAYS
+  required_forward_model: REFRACTION_IF_INTERPRETING_BOTTOM_MARKINGS_NOT_OCEAN_MAINLINE
+  tank_bottom_refraction_is_project_mainline: false
   direct_triangulation_is_water_height: false
   bottom_parallel_to_static_surface:
     value: true
@@ -70,4 +71,4 @@ optical_scene:
   independent_static_water_depth_source: USER_REPLY_2026_09_04
   independent_static_water_depth_uncertainty_m: null
   independent_static_water_depth_uncertainty_status: UNKNOWN
-  latest_diagnostic: depth105_reconstruction.md
+  latest_diagnostic: wass_fixed_roi_batch_report.md

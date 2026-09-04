@@ -27,6 +27,8 @@
 
 **当前模型主线明确面向海面：WASS 水面观测 → 观测严格约束的空间补全 → 公共水面 ROI 逐像素高度。** 槽底纹理、已知水深及槽底折射反演不作为工程主线。原始观测覆盖率与补全后覆盖率必须分别报告，完整输出不等于准确测量。已加入原生像素海面样例检验和现有 dense artifact 接口，尚未升级演示 EXE；依据、结果与边界见[海面观测与补全验证](docs/validation/ocean_observation_completion.md)。
 
+HomeTank_006 已实际完成[固定大 ROI 的十帧 WASS 诊断](experiments/real_video/HomeTank_006/wass_fixed_roi_batch_report.md)：受控校正策略使 XYZ 输出从0/10恢复至10/10，但固定范围观测支持仍仅0%～1.11%，尚未生成可信逐像素水面高度。旧海面91% ROI统计发现像素坐标约定问题，已撤回为未验证，不能作为本项目已达到高覆盖率的证明。
+
 当前新增：[双目系统参数设计模型](docs/stereo_system_design/disparity_depth_model.md)，用于指导未来专业双目相机选型和部署参数设计。
 
 ## 当前项目状态

@@ -1,0 +1,411 @@
+status: WASS_PROCESS_RECOVERY_NOT_WATER_MEASUREMENT_SUCCESS
+baseline_source: D:\stereo-wave-height-runs\HomeTank_006\wass_fixed_roi_batch_v1
+replay_source: D:\stereo-wave-height-runs\HomeTank_006\wass_fixed_roi_alpha_auto_v1
+planned_frames: 10
+baseline_xyz_frames: 0
+replay_xyz_frames: 10
+fixed_roi_pixels: 2770130
+fixed_roi_full_image_ratio: 0.33397593557098765
+roi_selection: analyst_predeclared_NOT_user_confirmed
+denominator: entire fixed canonical RIGHT polygon without support shrink
+controlled_change:
+  RECTIFICATION_ALPHA: -1.0
+frames:
+- frame_id: '000000'
+  left_target_s: 1
+  decoded_pts_s:
+  - 1.0006666666666668
+  - 0.7666666666666667
+  pair_residual_s: -0.009000000000000091
+  completed_xyz: true
+  final_xyz_count: 60660
+  raw_roi_support_ratio: 0.007580149668066119
+  filtered_points: null
+  valid_triangulated_points: 316823
+  largest_component_points: 60660
+  stereo_status: PASS
+  stereo_seconds: 73.9750400999983
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.05548486185832773
+  candidate_camera_depth_percentiles_m:
+  - 0.6647136779309795
+  - 0.6754259046556381
+  - 0.9337153095404211
+  - 4.453676342777327
+  - 23.076317885435422
+  component_count: 2970
+  top5_component_sizes:
+  - 60660
+  - 53444
+  - 37038
+  - 11767
+  - 6415
+  largest_component_retained_fraction: 0.1914633722930469
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=848207
+  - percentile_index=839724
+  - threshold=1.7717736144493905
+  final_candidate_camera_Z_median_m: 0.7418053369585613
+- frame_id: '000001'
+  left_target_s: 2
+  decoded_pts_s:
+  - 2.0013333333333336
+  - 1.7666666666666668
+  pair_residual_s: -0.009666666666666796
+  completed_xyz: true
+  final_xyz_count: 49746
+  raw_roi_support_ratio: 0.0
+  filtered_points: null
+  valid_triangulated_points: 319348
+  largest_component_points: 49746
+  stereo_status: PASS
+  stereo_seconds: 81.3475643999991
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.05592706231786595
+  candidate_camera_depth_percentiles_m:
+  - 0.6649447505397192
+  - 0.6746315599085286
+  - 0.9295633272198557
+  - 4.088272800325195
+  - 23.07315795963996
+  component_count: 3017
+  top5_component_sizes:
+  - 49746
+  - 48738
+  - 26644
+  - 13025
+  - 12609
+  largest_component_retained_fraction: 0.15577363878903266
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=855661
+  - percentile_index=847104
+  - threshold=1.4493824368555579
+  final_candidate_camera_Z_median_m: 0.7848106162874565
+- frame_id: '000002'
+  left_target_s: 3
+  decoded_pts_s:
+  - 3.002
+  - 2.7666666666666666
+  pair_residual_s: -0.010333333333333167
+  completed_xyz: true
+  final_xyz_count: 57509
+  raw_roi_support_ratio: 0.00747726640987968
+  filtered_points: null
+  valid_triangulated_points: 323362
+  largest_component_points: 57511
+  stereo_status: PASS
+  stereo_seconds: 73.43860029999996
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.05663002970186057
+  candidate_camera_depth_percentiles_m:
+  - 0.6653040712219284
+  - 0.6808754844261019
+  - 0.8265165532958794
+  - 4.281310492197294
+  - 23.06895056330763
+  component_count: 2844
+  top5_component_sizes:
+  - 57511
+  - 57087
+  - 32567
+  - 9369
+  - 9254
+  largest_component_retained_fraction: 0.17785330372771074
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=864160
+  - percentile_index=855518
+  - threshold=1.8403182654266743
+  final_candidate_camera_Z_median_m: 0.7452924343250186
+- frame_id: '000003'
+  left_target_s: 6
+  decoded_pts_s:
+  - 6.003900000000001
+  - 5.766666666666667
+  pair_residual_s: -0.012233333333334068
+  completed_xyz: true
+  final_xyz_count: 65156
+  raw_roi_support_ratio: 0.009795930154902478
+  filtered_points: null
+  valid_triangulated_points: 403694
+  largest_component_points: 65156
+  stereo_status: PASS
+  stereo_seconds: 97.54893599999923
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.07069848408428603
+  candidate_camera_depth_percentiles_m:
+  - 0.6645562712947566
+  - 0.6762750249285996
+  - 0.9452756417769146
+  - 3.1692240705561665
+  - 23.013982987154716
+  component_count: 3373
+  top5_component_sizes:
+  - 65156
+  - 63142
+  - 47880
+  - 9710
+  - 9499
+  largest_component_retained_fraction: 0.16139947584061196
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=1085199
+  - percentile_index=1074347
+  - threshold=1.7273944119170288
+  final_candidate_camera_Z_median_m: 0.7425881513685284
+- frame_id: '000004'
+  left_target_s: 10
+  decoded_pts_s:
+  - 10.006366666666667
+  - 9.766666666666667
+  pair_residual_s: -0.01469999999999913
+  completed_xyz: true
+  final_xyz_count: 109168
+  raw_roi_support_ratio: 0.0
+  filtered_points: null
+  valid_triangulated_points: 510005
+  largest_component_points: 109168
+  stereo_status: PASS
+  stereo_seconds: 102.75456430000122
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.08931661202645147
+  candidate_camera_depth_percentiles_m:
+  - 0.6640324243647948
+  - 0.7050627385266275
+  - 0.93989076851439
+  - 1.5784474913228976
+  - 23.033373902074363
+  component_count: 4152
+  top5_component_sizes:
+  - 109168
+  - 103582
+  - 79697
+  - 57298
+  - 18862
+  largest_component_retained_fraction: 0.2140528034038882
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=1405945
+  - percentile_index=1391885
+  - threshold=0.23771193289826442
+  final_candidate_camera_Z_median_m: 0.7812564057688663
+- frame_id: '000005'
+  left_target_s: 20
+  decoded_pts_s:
+  - 19.979377777777778
+  - 19.76666666666667
+  pair_residual_s: 0.012288888888891597
+  completed_xyz: true
+  final_xyz_count: 122741
+  raw_roi_support_ratio: 0.0
+  filtered_points: null
+  valid_triangulated_points: 512817
+  largest_component_points: 122741
+  stereo_status: PASS
+  stereo_seconds: 53.31207580000046
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.0898090744788164
+  candidate_camera_depth_percentiles_m:
+  - 0.657321230220751
+  - 0.7231142517349574
+  - 0.9348317531513304
+  - 2.144563029299353
+  - 22.89716376049625
+  component_count: 4069
+  top5_component_sizes:
+  - 122741
+  - 119809
+  - 38641
+  - 31038
+  - 25263
+  largest_component_retained_fraction: 0.23934658952413823
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=1414966
+  - percentile_index=1400816
+  - threshold=0.46383825779821564
+  final_candidate_camera_Z_median_m: 0.9501566750252886
+- frame_id: '000006'
+  left_target_s: 35
+  decoded_pts_s:
+  - 34.98887777777778
+  - 34.766666666666666
+  pair_residual_s: 0.002788888888885316
+  completed_xyz: true
+  final_xyz_count: 49778
+  raw_roi_support_ratio: 0.0
+  filtered_points: null
+  valid_triangulated_points: 375495
+  largest_component_points: 49778
+  stereo_status: PASS
+  stereo_seconds: 96.61343140000099
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.06576002437794216
+  candidate_camera_depth_percentiles_m:
+  - 0.6542671704894043
+  - 0.6704171272652234
+  - 0.9733373946376782
+  - 5.580131275333334
+  - 23.036712156788624
+  component_count: 3491
+  top5_component_sizes:
+  - 49778
+  - 40020
+  - 38917
+  - 28077
+  - 8695
+  largest_component_retained_fraction: 0.13256634575693418
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=996744
+  - percentile_index=986776
+  - threshold=2.2949693789267496
+  final_candidate_camera_Z_median_m: 0.7832350163007089
+- frame_id: '000007'
+  left_target_s: 50
+  decoded_pts_s:
+  - 49.99843333333334
+  - 49.766666666666666
+  pair_residual_s: -0.006766666666672444
+  completed_xyz: true
+  final_xyz_count: 119747
+  raw_roi_support_ratio: 0.0002736333673870901
+  filtered_points: null
+  valid_triangulated_points: 422534
+  largest_component_points: 119747
+  stereo_status: PASS
+  stereo_seconds: 74.32414849999986
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.07399791246357319
+  candidate_camera_depth_percentiles_m:
+  - 0.6644112795425967
+  - 0.6869056369707871
+  - 0.9616241158773374
+  - 2.4861104852710114
+  - 22.943952291779265
+  component_count: 3856
+  top5_component_sizes:
+  - 119747
+  - 55230
+  - 47631
+  - 13028
+  - 12374
+  largest_component_retained_fraction: 0.28340204575253114
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=1139917
+  - percentile_index=1128517
+  - threshold=0.77326741265504495
+  final_candidate_camera_Z_median_m: 0.9638752331367156
+- frame_id: 000008
+  left_target_s: 65
+  decoded_pts_s:
+  - 65.00792222222222
+  - 64.76666666666667
+  pair_residual_s: -0.01625555555555422
+  completed_xyz: true
+  final_xyz_count: 137085
+  raw_roi_support_ratio: 0.0
+  filtered_points: null
+  valid_triangulated_points: 421135
+  largest_component_points: 137085
+  stereo_status: PASS
+  stereo_seconds: 79.75229980000222
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.07375290713965478
+  candidate_camera_depth_percentiles_m:
+  - 0.6585528582215914
+  - 0.6772831932379852
+  - 0.9646554463051272
+  - 4.66901499569884
+  - 23.092495413514865
+  component_count: 3663
+  top5_component_sizes:
+  - 137085
+  - 47698
+  - 35281
+  - 16590
+  - 8022
+  largest_component_retained_fraction: 0.3255131964809384
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=1136409
+  - percentile_index=1125044
+  - threshold=1.5552898612329216
+  final_candidate_camera_Z_median_m: 0.978747807096655
+- frame_id: 000009
+  left_target_s: 80
+  decoded_pts_s:
+  - 80.01736666666667
+  - 79.76666666666667
+  pair_residual_s: -0.02570000000000902
+  completed_xyz: true
+  final_xyz_count: 72185
+  raw_roi_support_ratio: 0.011123304682451726
+  filtered_points: null
+  valid_triangulated_points: 335737
+  largest_component_points: 72185
+  stereo_status: PASS
+  stereo_seconds: 63.090664799998194
+  returncode: 0
+  precluster_raster_shape_hw:
+  - 1487
+  - 3840
+  precluster_valid_fraction_of_stereo_crop: 0.05879724977583502
+  candidate_camera_depth_percentiles_m:
+  - 0.6623664871362873
+  - 0.6961921822038244
+  - 0.7947886352229228
+  - 3.135147601880226
+  - 23.047111849131653
+  component_count: 2870
+  top5_component_sizes:
+  - 72185
+  - 28879
+  - 27033
+  - 20443
+  - 20193
+  largest_component_retained_fraction: 0.21500460181630265
+  zgap_metadata:
+  - ZGAP_PERCENTILE=99
+  - gap_count=918982
+  - percentile_index=909792
+  - threshold=0.97248540853155951
+  final_candidate_camera_Z_median_m: 0.7249230268244562
+water_height_computed: false
+limitations:
+- candidate calibration not approved
+- candidate audio offset not frame verified
+- visible texture includes user-confirmed tank bottom; XYZ support is not verified
+  water support
+- no common-FOV trimming of diagnostic denominator; stricter entire ROI statistic
+- legacy P0cam rectified pixel assumption invalid; earlier ocean ROI percentage withdrawn
