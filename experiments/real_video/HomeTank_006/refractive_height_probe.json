@@ -1,0 +1,1053 @@
+{
+  "status": "STATIC_REFRACTIVE_CANDIDATES_DYNAMIC_HEIGHT_NOT_VALIDATED",
+  "optical_texture": "USER_CONFIRMED_TANK_BOTTOM_NO_SURFACE_MARKERS",
+  "parallel_bottom": "USER_SPECIFIED_MODEL_ASSUMPTION_NO_ADDITIONAL_VERIFICATION_REQUIRED",
+  "gui_modified": false,
+  "wass_runs": 0,
+  "calibration_modified": false,
+  "full_pixel_goal_achieved": false,
+  "independent_physical_accuracy_pass": false,
+  "evidence": {
+    "D:\\stereo-wave-height-runs\\HomeTank_006\\refraction_probe\\result.json": {
+      "sha256": "fcb838e2602b07cb61519505c3c3fd96a4099c21fc4643dcea70fe3269a97398",
+      "result": {
+        "status": "REFRACTION_HYPOTHESIS_DIAGNOSTIC_NOT_HEIGHT_MEASUREMENT",
+        "source_identity": "USER_CONFIRMED_BOTTOM_TEXTURE_NO_SURFACE_MARKERS",
+        "geometry_status": "UNAPPROVED_CANDIDATE_UNCHANGED",
+        "assumptions": {
+          "water_refractive_index": 1.333,
+          "source": "IDEAL_ASSUMPTION_NOT_MEASURED",
+          "surface": "static plane",
+          "bottom": "parallel plane, USER_SPECIFIED_MODEL_ASSUMPTION",
+          "interfaces": "single air-water interface, unverified for all pixels"
+        },
+        "random_seed": 42,
+        "frames": [
+          {
+            "time_s": 1,
+            "available_correspondences": 23964,
+            "train_count": 300,
+            "heldout_count": 300,
+            "fit": {
+              "normal": [
+                -0.46404946614130244,
+                -0.7480117291318402,
+                -0.474485559374747
+              ],
+              "offset_m": 0.21991221429569757,
+              "water_depth_m": 0.11167896682712296,
+              "train_ray_closure_rms_rad": 0.0005927898304116453,
+              "heldout_ray_closure_rms_rad": 0.0006084589161175804,
+              "jacobian_singular_values": [
+                16.443231845822183,
+                0.6781670449521903,
+                0.0828678441195506,
+                0.02225916985160753
+              ],
+              "jacobian_condition": 738.7172098259842,
+              "active_bounds": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "solver_success": true
+            }
+          },
+          {
+            "time_s": 2,
+            "available_correspondences": 23668,
+            "train_count": 300,
+            "heldout_count": 300,
+            "fit": {
+              "normal": [
+                -0.46416556178663304,
+                -0.7501411978311501,
+                -0.4709973615294958
+              ],
+              "offset_m": 0.21557914588296184,
+              "water_depth_m": 0.11748048378016634,
+              "train_ray_closure_rms_rad": 0.000679599009020273,
+              "heldout_ray_closure_rms_rad": 0.0006642017102376297,
+              "jacobian_singular_values": [
+                16.32430921645029,
+                0.6853865218589504,
+                0.07690939272391564,
+                0.022604361053638528
+              ],
+              "jacobian_condition": 722.1752111335451,
+              "active_bounds": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "solver_success": true
+            }
+          },
+          {
+            "time_s": 3,
+            "available_correspondences": 24233,
+            "train_count": 300,
+            "heldout_count": 300,
+            "fit": {
+              "normal": [
+                -0.4699861233884914,
+                -0.7525955921819177,
+                -0.461208107529135
+              ],
+              "offset_m": 0.2147478005375598,
+              "water_depth_m": 0.11873010212861482,
+              "train_ray_closure_rms_rad": 0.0007093446486816102,
+              "heldout_ray_closure_rms_rad": 0.0007132653252647565,
+              "jacobian_singular_values": [
+                16.35732079952092,
+                0.6629655801335864,
+                0.07571380796038196,
+                0.02163083800137896
+              ],
+              "jacobian_condition": 756.2037494099002,
+              "active_bounds": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "solver_success": true
+            }
+          }
+        ],
+        "pooled": {
+          "normal": [
+            -0.46635123226589176,
+            -0.7502762060675804,
+            -0.4686172668318166
+          ],
+          "offset_m": 0.21668777337605297,
+          "water_depth_m": 0.1160918507820034,
+          "train_ray_closure_rms_rad": 0.0006761486734365985,
+          "heldout_ray_closure_rms_rad": 0.0006756177188958167,
+          "jacobian_singular_values": [
+            28.35497056472662,
+            1.1686639378336965,
+            0.13600360120060967,
+            0.03836310001737532
+          ],
+          "jacobian_condition": 739.120940484063,
+          "active_bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "depth_profiles": [
+          {
+            "normal": [
+              -0.3592687300268692,
+              -0.8273480523470932,
+              -0.43176519070248365
+            ],
+            "offset_m": 0.2219738496847892,
+            "water_depth_m": 0.0580459253910017,
+            "train_ray_closure_rms_rad": 0.00197142107745809,
+            "heldout_ray_closure_rms_rad": 0.0020049060487039795,
+            "jacobian_singular_values": [
+              29.29942726160441,
+              0.2713285920206003,
+              0.04423958126851251
+            ],
+            "jacobian_condition": 662.2898866011251,
+            "active_bounds": [
+              0,
+              0,
+              0
+            ],
+            "solver_success": true
+          },
+          {
+            "normal": [
+              -0.4663512345402103,
+              -0.7502762176044002,
+              -0.4686172460975554
+            ],
+            "offset_m": 0.21668777100791312,
+            "water_depth_m": 0.1160918507820034,
+            "train_ray_closure_rms_rad": 0.0006761486734365946,
+            "heldout_ray_closure_rms_rad": 0.0006756177221154243,
+            "jacobian_singular_values": [
+              23.909794704586464,
+              0.34107582296374506,
+              0.0388828911871565
+            ],
+            "jacobian_condition": 614.9181291458121,
+            "active_bounds": [
+              0,
+              0,
+              0
+            ],
+            "solver_success": true
+          },
+          {
+            "normal": [
+              -0.9425873782896949,
+              0.08372774661773315,
+              -0.3232935179295688
+            ],
+            "offset_m": 0.20210189940796283,
+            "water_depth_m": 0.2321837015640068,
+            "train_ray_closure_rms_rad": 0.0033790491979616495,
+            "heldout_ray_closure_rms_rad": 0.003477517964866471,
+            "jacobian_singular_values": [
+              20.116310285679358,
+              0.22124420086957242,
+              0.012966336425421061
+            ],
+            "jacobian_condition": 1551.425909807528,
+            "active_bounds": [
+              0,
+              0,
+              0
+            ],
+            "solver_success": true
+          }
+        ],
+        "source_sha256": {
+          "D:\\stereo-wave-height-runs\\HomeTank_006\\surface_chain_raft_centered\\frame_01_correspondences.npz": "8472396e87075bb9cd7328a42b7727a11119b7b7bb23fbc2a008cbec922b62e9",
+          "D:\\stereo-wave-height-runs\\HomeTank_006\\surface_chain_raft_centered\\frame_02_correspondences.npz": "43018116c2bdb4dfde4be6c202b9248b42c8c0709667c3e016086fc7be350fdf",
+          "D:\\stereo-wave-height-runs\\HomeTank_006\\surface_chain_raft_centered\\frame_03_correspondences.npz": "33a3d4c5a8d42323b98062782d279d38a3853b4ecba23f82b3f6255889496b6c"
+        },
+        "produces_water_height": false
+      }
+    },
+    "D:\\stereo-wave-height-runs\\HomeTank_006\\refractive_height_probe\\common_interface_result.json": {
+      "sha256": "da4a77367e4abcd6cacdd262bcc31df69699f594c0517f92bbc01a08b2a4fa4b",
+      "result": {
+        "status": "CONDITIONAL_REFRACTIVE_HEIGHT_NOT_PHYSICALLY_VALIDATED",
+        "independent_background_geometry": false,
+        "reference": {
+          "normal": [
+            -0.46404946614130244,
+            -0.7480117291318402,
+            -0.474485559374747
+          ],
+          "offset_m": 0.21991221429569757,
+          "water_depth_m": 0.11167896682712296,
+          "train_ray_closure_rms_rad": 0.0005927898304116453,
+          "heldout_ray_closure_rms_rad": 0.0006084589161175804,
+          "jacobian_singular_values": [
+            16.443231845822183,
+            0.6781670449521903,
+            0.0828678441195506,
+            0.02225916985160753
+          ],
+          "jacobian_condition": 738.7172098259842,
+          "active_bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "reference_time_s": 1,
+        "reference_includes_test_frames": false,
+        "normal_agreement_gate_deg": 1.0,
+        "gate_source": "DIAGNOSTIC_ENGINEERING_ASSUMPTION_NOT_ACCURACY_GUARANTEE",
+        "correspondence": "temporal bottom-marking identity, not temporal height interpolation",
+        "correspondence_backend": "raft",
+        "search_height_range_m": [
+          -0.10051107014441066,
+          0.10051107014441066
+        ],
+        "frames": [
+          {
+            "time_s": 1,
+            "background_counts": [
+              82070,
+              46756
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16969,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": -2.561004675530516e-07,
+            "height_p5_p95_m": [
+              -4.934520231930834e-07,
+              -7.784839022496926e-10
+            ],
+            "height_rms_m": 2.94458007747105e-07,
+            "median_normal_discrepancy": 4.2618791939030077e-07,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 2,
+            "background_counts": [
+              81248,
+              45841
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16967,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.00023005437367940414,
+            "height_p5_p95_m": [
+              0.00018232327111803224,
+              0.00029779631443221027
+            ],
+            "height_rms_m": 0.00024031685598911473,
+            "median_normal_discrepancy": 0.0013654377246097027,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 3,
+            "background_counts": [
+              81332,
+              45838
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16967,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.00022331085149242843,
+            "height_p5_p95_m": [
+              0.00019173304868977896,
+              0.00025421104090992346
+            ],
+            "height_rms_m": 0.00022607484244325382,
+            "median_normal_discrepancy": 0.0017318749197221494,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 10,
+            "background_counts": [
+              0,
+              1222
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 0,
+            "query_count": 0,
+            "conditional_candidates": 0,
+            "unsupported_count": 0,
+            "rejection_counts": {}
+          }
+        ],
+        "no_gui_promotion": true,
+        "no_full_pixel_claim": true
+      }
+    },
+    "D:\\stereo-wave-height-runs\\HomeTank_006\\refractive_height_probe_dis\\common_interface_result.json": {
+      "sha256": "f49cc97fc4e57eb14a327af8e10dc8eefe1d296e53d0b69b497f6d5b960a81dd",
+      "result": {
+        "status": "CONDITIONAL_REFRACTIVE_HEIGHT_NOT_PHYSICALLY_VALIDATED",
+        "independent_background_geometry": false,
+        "reference": {
+          "normal": [
+            -0.46404946614130244,
+            -0.7480117291318402,
+            -0.474485559374747
+          ],
+          "offset_m": 0.21991221429569757,
+          "water_depth_m": 0.11167896682712296,
+          "train_ray_closure_rms_rad": 0.0005927898304116453,
+          "heldout_ray_closure_rms_rad": 0.0006084589161175804,
+          "jacobian_singular_values": [
+            16.443231845822183,
+            0.6781670449521903,
+            0.0828678441195506,
+            0.02225916985160753
+          ],
+          "jacobian_condition": 738.7172098259842,
+          "active_bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "reference_time_s": 1,
+        "reference_includes_test_frames": false,
+        "normal_agreement_gate_deg": 1.0,
+        "gate_source": "DIAGNOSTIC_ENGINEERING_ASSUMPTION_NOT_ACCURACY_GUARANTEE",
+        "correspondence": "temporal bottom-marking identity, not temporal height interpolation",
+        "correspondence_backend": "dis",
+        "search_height_range_m": [
+          -0.10051107014441066,
+          0.10051107014441066
+        ],
+        "frames": [
+          {
+            "time_s": 1,
+            "background_counts": [
+              82070,
+              46756
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16969,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": -2.561004675530516e-07,
+            "height_p5_p95_m": [
+              -4.934520231930834e-07,
+              -7.784839022496926e-10
+            ],
+            "height_rms_m": 2.94458007747105e-07,
+            "median_normal_discrepancy": 4.2618791939030077e-07,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 2,
+            "background_counts": [
+              81150,
+              45853
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16872,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0003240018832080385,
+            "height_p5_p95_m": [
+              -0.00012322575207672173,
+              0.001171543636513226
+            ],
+            "height_rms_m": 0.0005109132422900999,
+            "median_normal_discrepancy": 0.002013992354485585,
+            "median_near_minimum_span_m": 0.007817527677898603
+          },
+          {
+            "time_s": 3,
+            "background_counts": [
+              80891,
+              45746
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16837,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0002691706484478859,
+            "height_p5_p95_m": [
+              -0.00015991000614969407,
+              0.0017508804458448862
+            ],
+            "height_rms_m": 0.000669342329362421,
+            "median_normal_discrepancy": 0.0018581484220633413,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 10,
+            "background_counts": [
+              3230,
+              5142
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 1527,
+            "query_count": 200,
+            "conditional_candidates": 0,
+            "unsupported_count": 200,
+            "rejection_counts": {
+              "REJECTED_SNELL_INCONSISTENCY": 176,
+              "UNSUPPORTED_NO_INTERIOR_SOLUTION": 24
+            }
+          }
+        ],
+        "no_gui_promotion": true,
+        "no_full_pixel_claim": true
+      }
+    },
+    "D:\\stereo-wave-height-runs\\HomeTank_006\\refractive_height_probe_dis_chain\\common_interface_result.json": {
+      "sha256": "72a863dde021d305b32196bf42a7d64b0de05af83cb1be63a6457704caf968c5",
+      "result": {
+        "status": "CONDITIONAL_REFRACTIVE_HEIGHT_NOT_PHYSICALLY_VALIDATED",
+        "independent_background_geometry": false,
+        "reference": {
+          "normal": [
+            -0.46404946614130244,
+            -0.7480117291318402,
+            -0.474485559374747
+          ],
+          "offset_m": 0.21991221429569757,
+          "water_depth_m": 0.11167896682712296,
+          "train_ray_closure_rms_rad": 0.0005927898304116453,
+          "heldout_ray_closure_rms_rad": 0.0006084589161175804,
+          "jacobian_singular_values": [
+            16.443231845822183,
+            0.6781670449521903,
+            0.0828678441195506,
+            0.02225916985160753
+          ],
+          "jacobian_condition": 738.7172098259842,
+          "active_bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "reference_time_s": 1,
+        "reference_includes_test_frames": false,
+        "normal_agreement_gate_deg": 1.0,
+        "gate_source": "DIAGNOSTIC_ENGINEERING_ASSUMPTION_NOT_ACCURACY_GUARANTEE",
+        "correspondence": "temporal bottom-marking identity, not temporal height interpolation",
+        "correspondence_backend": "dis_chain",
+        "target_right_minus_left_offset_s": -0.225,
+        "synchronization_verified": false,
+        "search_height_range_m": [
+          -0.10051107014441066,
+          0.10051107014441066
+        ],
+        "frames": [
+          {
+            "time_s": 1,
+            "background_counts": [
+              82070,
+              46756
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16969,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": -2.561004675530516e-07,
+            "height_p5_p95_m": [
+              -4.934520231930834e-07,
+              -7.784839022496926e-10
+            ],
+            "height_rms_m": 2.94458007747105e-07,
+            "median_normal_discrepancy": 4.2618791939030077e-07,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 2,
+            "background_counts": [
+              81150,
+              45853
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16872,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0003240018832080385,
+            "height_p5_p95_m": [
+              -0.00012322575207672173,
+              0.001171543636513226
+            ],
+            "height_rms_m": 0.0005109132422900999,
+            "median_normal_discrepancy": 0.002013992354485585,
+            "median_near_minimum_span_m": 0.007817527677898603
+          },
+          {
+            "time_s": 3,
+            "background_counts": [
+              80891,
+              45746
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16837,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0002691706484478859,
+            "height_p5_p95_m": [
+              -0.00015991000614969407,
+              0.0017508804458448862
+            ],
+            "height_rms_m": 0.000669342329362421,
+            "median_normal_discrepancy": 0.0018581484220633413,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 10,
+            "background_counts": [
+              0,
+              0
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 0,
+            "query_count": 0,
+            "conditional_candidates": 0,
+            "unsupported_count": 0,
+            "rejection_counts": {}
+          }
+        ],
+        "no_gui_promotion": true,
+        "no_full_pixel_claim": true
+      }
+    },
+    "D:\\stereo-wave-height-runs\\HomeTank_006\\refractive_height_probe_dis_t10_offset-0.225\\common_interface_result.json": {
+      "sha256": "3096d5ff9b2dd9a6ffc5d99709c150e4df09176e371b53eef165b800e539cb50",
+      "result": {
+        "status": "CONDITIONAL_REFRACTIVE_HEIGHT_NOT_PHYSICALLY_VALIDATED",
+        "independent_background_geometry": false,
+        "reference": {
+          "normal": [
+            -0.46404946614130244,
+            -0.7480117291318402,
+            -0.474485559374747
+          ],
+          "offset_m": 0.21991221429569757,
+          "water_depth_m": 0.11167896682712296,
+          "train_ray_closure_rms_rad": 0.0005927898304116453,
+          "heldout_ray_closure_rms_rad": 0.0006084589161175804,
+          "jacobian_singular_values": [
+            16.443231845822183,
+            0.6781670449521903,
+            0.0828678441195506,
+            0.02225916985160753
+          ],
+          "jacobian_condition": 738.7172098259842,
+          "active_bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "reference_time_s": 1,
+        "reference_includes_test_frames": false,
+        "normal_agreement_gate_deg": 1.0,
+        "gate_source": "DIAGNOSTIC_ENGINEERING_ASSUMPTION_NOT_ACCURACY_GUARANTEE",
+        "correspondence": "temporal bottom-marking identity, not temporal height interpolation",
+        "correspondence_backend": "dis",
+        "target_right_minus_left_offset_s": -0.225,
+        "synchronization_verified": false,
+        "search_height_range_m": [
+          -0.10051107014441066,
+          0.10051107014441066
+        ],
+        "frames": [
+          {
+            "time_s": 1,
+            "background_counts": [
+              82070,
+              46756
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16969,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": -2.561004675530516e-07,
+            "height_p5_p95_m": [
+              -4.934520231930834e-07,
+              -7.784839022496926e-10
+            ],
+            "height_rms_m": 2.94458007747105e-07,
+            "median_normal_discrepancy": 4.2618791939030077e-07,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 2,
+            "background_counts": [
+              81150,
+              45853
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16872,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0003240018832080385,
+            "height_p5_p95_m": [
+              -0.00012322575207672173,
+              0.001171543636513226
+            ],
+            "height_rms_m": 0.0005109132422900999,
+            "median_normal_discrepancy": 0.002013992354485585,
+            "median_near_minimum_span_m": 0.007817527677898603
+          },
+          {
+            "time_s": 3,
+            "background_counts": [
+              80891,
+              45746
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16837,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0002691706484478859,
+            "height_p5_p95_m": [
+              -0.00015991000614969407,
+              0.0017508804458448862
+            ],
+            "height_rms_m": 0.000669342329362421,
+            "median_normal_discrepancy": 0.0018581484220633413,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 10,
+            "background_counts": [
+              3230,
+              15701
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 1527,
+            "query_count": 200,
+            "conditional_candidates": 12,
+            "unsupported_count": 188,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 12,
+              "REJECTED_SNELL_INCONSISTENCY": 187,
+              "UNSUPPORTED_NO_INTERIOR_SOLUTION": 1
+            },
+            "height_median_m": -0.09513787627555137,
+            "height_p5_p95_m": [
+              -0.0956808350308112,
+              -0.08963112613300517
+            ],
+            "height_rms_m": 0.09421574314765394,
+            "median_normal_discrepancy": 0.004258612744275134,
+            "median_near_minimum_span_m": 0.0027919741706780785
+          }
+        ],
+        "no_gui_promotion": true,
+        "no_full_pixel_claim": true
+      }
+    },
+    "D:\\stereo-wave-height-runs\\HomeTank_006\\refractive_height_probe_dis_t6_offset-0.225\\common_interface_result.json": {
+      "sha256": "e8a80dc8fb95ad6b31836f89273999c4f1f9d84ab174b93e2ba01bb2ec0865ec",
+      "result": {
+        "status": "CONDITIONAL_REFRACTIVE_HEIGHT_NOT_PHYSICALLY_VALIDATED",
+        "independent_background_geometry": false,
+        "reference": {
+          "normal": [
+            -0.46404946614130244,
+            -0.7480117291318402,
+            -0.474485559374747
+          ],
+          "offset_m": 0.21991221429569757,
+          "water_depth_m": 0.11167896682712296,
+          "train_ray_closure_rms_rad": 0.0005927898304116453,
+          "heldout_ray_closure_rms_rad": 0.0006084589161175804,
+          "jacobian_singular_values": [
+            16.443231845822183,
+            0.6781670449521903,
+            0.0828678441195506,
+            0.02225916985160753
+          ],
+          "jacobian_condition": 738.7172098259842,
+          "active_bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "reference_time_s": 1,
+        "reference_includes_test_frames": false,
+        "normal_agreement_gate_deg": 1.0,
+        "gate_source": "DIAGNOSTIC_ENGINEERING_ASSUMPTION_NOT_ACCURACY_GUARANTEE",
+        "correspondence": "temporal bottom-marking identity, not temporal height interpolation",
+        "correspondence_backend": "dis",
+        "target_right_minus_left_offset_s": -0.225,
+        "synchronization_verified": false,
+        "search_height_range_m": [
+          -0.10051107014441066,
+          0.10051107014441066
+        ],
+        "frames": [
+          {
+            "time_s": 1,
+            "background_counts": [
+              82070,
+              46756
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16969,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": -2.561004675530516e-07,
+            "height_p5_p95_m": [
+              -4.934520231930834e-07,
+              -7.784839022496926e-10
+            ],
+            "height_rms_m": 2.94458007747105e-07,
+            "median_normal_discrepancy": 4.2618791939030077e-07,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 2,
+            "background_counts": [
+              81150,
+              45853
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16872,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0003240018832080385,
+            "height_p5_p95_m": [
+              -0.00012322575207672173,
+              0.001171543636513226
+            ],
+            "height_rms_m": 0.0005109132422900999,
+            "median_normal_discrepancy": 0.002013992354485585,
+            "median_near_minimum_span_m": 0.007817527677898603
+          },
+          {
+            "time_s": 3,
+            "background_counts": [
+              80891,
+              45746
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16837,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0002691706484478859,
+            "height_p5_p95_m": [
+              -0.00015991000614969407,
+              0.0017508804458448862
+            ],
+            "height_rms_m": 0.000669342329362421,
+            "median_normal_discrepancy": 0.0018581484220633413,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 6,
+            "background_counts": [
+              80368,
+              43510
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16756,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0012882480524242592,
+            "height_p5_p95_m": [
+              0.0005296414988289707,
+              0.0021301717965636247
+            ],
+            "height_rms_m": 0.0014141323855463954,
+            "median_normal_discrepancy": 0.0008920625846210496,
+            "median_near_minimum_span_m": 0.00670073800962738
+          }
+        ],
+        "no_gui_promotion": true,
+        "no_full_pixel_claim": true
+      }
+    },
+    "D:\\stereo-wave-height-runs\\HomeTank_006\\refractive_height_probe_dis_t8_offset-0.225\\common_interface_result.json": {
+      "sha256": "7b14d14153061543dfed833e170ba3a07783c9688021d71e9e0256f573cd74fd",
+      "result": {
+        "status": "CONDITIONAL_REFRACTIVE_HEIGHT_NOT_PHYSICALLY_VALIDATED",
+        "independent_background_geometry": false,
+        "reference": {
+          "normal": [
+            -0.46404946614130244,
+            -0.7480117291318402,
+            -0.474485559374747
+          ],
+          "offset_m": 0.21991221429569757,
+          "water_depth_m": 0.11167896682712296,
+          "train_ray_closure_rms_rad": 0.0005927898304116453,
+          "heldout_ray_closure_rms_rad": 0.0006084589161175804,
+          "jacobian_singular_values": [
+            16.443231845822183,
+            0.6781670449521903,
+            0.0828678441195506,
+            0.02225916985160753
+          ],
+          "jacobian_condition": 738.7172098259842,
+          "active_bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "solver_success": true
+        },
+        "reference_time_s": 1,
+        "reference_includes_test_frames": false,
+        "normal_agreement_gate_deg": 1.0,
+        "gate_source": "DIAGNOSTIC_ENGINEERING_ASSUMPTION_NOT_ACCURACY_GUARANTEE",
+        "correspondence": "temporal bottom-marking identity, not temporal height interpolation",
+        "correspondence_backend": "dis",
+        "target_right_minus_left_offset_s": -0.225,
+        "synchronization_verified": false,
+        "search_height_range_m": [
+          -0.10051107014441066,
+          0.10051107014441066
+        ],
+        "frames": [
+          {
+            "time_s": 1,
+            "background_counts": [
+              82070,
+              46756
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16969,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": -2.561004675530516e-07,
+            "height_p5_p95_m": [
+              -4.934520231930834e-07,
+              -7.784839022496926e-10
+            ],
+            "height_rms_m": 2.94458007747105e-07,
+            "median_normal_discrepancy": 4.2618791939030077e-07,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 2,
+            "background_counts": [
+              81150,
+              45853
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16872,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0003240018832080385,
+            "height_p5_p95_m": [
+              -0.00012322575207672173,
+              0.001171543636513226
+            ],
+            "height_rms_m": 0.0005109132422900999,
+            "median_normal_discrepancy": 0.002013992354485585,
+            "median_near_minimum_span_m": 0.007817527677898603
+          },
+          {
+            "time_s": 3,
+            "background_counts": [
+              80891,
+              45746
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 16837,
+            "query_count": 200,
+            "conditional_candidates": 200,
+            "unsupported_count": 0,
+            "rejection_counts": {
+              "CONDITIONAL_CANDIDATE": 200
+            },
+            "height_median_m": 0.0002691706484478859,
+            "height_p5_p95_m": [
+              -0.00015991000614969407,
+              0.0017508804458448862
+            ],
+            "height_rms_m": 0.000669342329362421,
+            "median_normal_discrepancy": 0.0018581484220633413,
+            "median_near_minimum_span_m": 0.00670073800962738
+          },
+          {
+            "time_s": 8,
+            "background_counts": [
+              16890,
+              19856
+            ],
+            "original_left_candidate_pixels": 82070,
+            "reference_common_interface_pixels": 16969,
+            "available_query_domain_pixels": 7400,
+            "query_count": 200,
+            "conditional_candidates": 0,
+            "unsupported_count": 200,
+            "rejection_counts": {
+              "REJECTED_SNELL_INCONSISTENCY": 197,
+              "UNSUPPORTED_NO_INTERIOR_SOLUTION": 3
+            }
+          }
+        ],
+        "no_gui_promotion": true,
+        "no_full_pixel_claim": true
+      }
+    }
+  }
+}

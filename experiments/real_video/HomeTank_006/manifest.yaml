@@ -54,3 +54,14 @@ geometry:
     source: USER_CONFIRMED_2026_09_04
     scope: no_movement_reclamping_angle_lens_or_zoom_change
     qualification: user_report_not_an_independent_geometry_accuracy_test
+optical_scene:
+  surface_markers: NONE
+  visible_white_texture: TANK_BOTTOM_MARKINGS
+  source: USER_CONFIRMED_2026_09_04
+  required_forward_model: REFRACTIVE_AIR_WATER_RAYS
+  direct_triangulation_is_water_height: false
+  bottom_parallel_to_static_surface:
+    value: true
+    source: USER_SPECIFIED_MODEL_ASSUMPTION
+    independent_verification_required: false
+    qualification: adopted_model_assumption_not_measured_geometry
