@@ -84,6 +84,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "fixed_calibration_rectification_policy_audit.md",
             "rectification_policy_compatibility.yaml",
             "rectification_policy_compatibility_report.md",
+            "wassfast_trial_config.json", "wassfast_trial_report.md",
         }
         self.assertEqual({path.name for path in root.iterdir()}, expected)
         self.assertIn("CALIBRATION_QUALITY_FAIL", (root / "manifest.yaml").read_text(encoding="utf-8"))

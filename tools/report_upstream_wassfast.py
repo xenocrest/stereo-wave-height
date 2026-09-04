@@ -15,6 +15,7 @@ def main() -> None:
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--dataset-label", default="official_sample")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     result = read_cnn_output(args.input, args.config)
@@ -38,7 +39,8 @@ def main() -> None:
                         finite_estimate_mask=g.valid_mask,
                         **({"raw_support_mask": result.raw_support_mask}
                            if result.raw_support_mask is not None else {}))
-    report = {"status": "OFFICIAL_SAMPLE_TO_PROJECT_HEIGHT_PASS_NOT_ACCURACY_VALIDATED",
+    report = {"status": "UPSTREAM_TO_PROJECT_HEIGHT_OUTPUT_NOT_ACCURACY_VALIDATED",
+              "dataset_label": args.dataset_label,
               "source": str(args.input), "source_sha256": hashlib.sha256(args.input.read_bytes()).hexdigest(),
               "config_sha256": hashlib.sha256(args.config.read_bytes()).hexdigest(),
               "coordinate_system": g.coordinate_system, "unit": g.unit,
@@ -48,9 +50,8 @@ def main() -> None:
               "baseline_m": result.baseline_m, "finite_estimate_fraction": float(g.valid_mask.mean()),
               "raw_support_fraction": (float(result.raw_support_mask.mean()) if result.raw_support_mask is not None else None),
               "source_workdir_is_unique": len(np.unique(result.source_workdir)) == len(result.source_workdir),
-              "timestamp_policy": "retain upstream relative time; upstream example overrides source filename timing with 15 Hz",
+              "timestamp_policy": "retain upstream relative time; consult input manifest/run argv for acquisition-time mapping and fps override",
               "physical_accuracy": "NOT_VALIDATED_NO_INDEPENDENT_REFERENCE",
-              "HomeTank_006_status": "NOT_RUN_WITH_THIS_MODEL",
               "frames": frames}
     (args.output / "result.json").write_text(json.dumps(report, indent=2, allow_nan=False)+"\n", encoding="utf-8")
     import matplotlib

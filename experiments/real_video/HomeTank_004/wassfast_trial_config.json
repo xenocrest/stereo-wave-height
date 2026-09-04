@@ -1,0 +1,24 @@
+{
+  "status": "ISOLATED_DIAGNOSTIC_ONLY",
+  "output": "D:/stereo-wave-height-runs/upstream_wassfast/HomeTank_004_v1",
+  "frozen_workdir": "D:/stereo-wave-height-runs/HomeTank_004/sync-tolerance-formal-r0-20260826/static/reconstruction/wass_workspace/work/000000_wd",
+  "wass_config": "D:/stereo-wave-height-runs/HomeTank_004/sync-tolerance-formal-r0-20260826/static/reconstruction/wass_workspace/config",
+  "calibration": "D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/calibration_result.yaml",
+  "gridder_python": "D:/stereo-wave-height-runs/wassgridsurface-0.11.4-venv/Scripts/python.exe",
+  "official_settings": "D:/stereo-wave-height-runs/upstream_wassfast/official_sample/wassfast_testdata_256/settings.cfg",
+  "baseline_m": 0.06868471158474378,
+  "fps": 15,
+  "frame_count": 8,
+  "candidate_roi_cam1_px": [[80,700],[1240,680],[1450,1030],[100,1030]],
+  "roi_note": "broad lower basin region selected from frozen canonical image before matching; candidate water only, not semantic confirmation",
+  "videos": {
+    "static": ["D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/videos/static/static_cam0_iQOO_Neo5S.mp4", "D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/videos/static/static_cam1_iQOO_Z10_TurboPlus.mp4"],
+    "wave": ["D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/videos/wave/wave_cam0_iQOO_Neo5S.mp4", "D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4"]
+  },
+  "sequences": {
+    "static": {"left_start_s": 10.012256, "right_minus_left_s": -0.02018575},
+    "wave": {"left_start_s": 20.0, "right_minus_left_s": -0.0654055}
+  },
+  "source_timing": "frame_level_synchronization.yaml; warning preserved",
+  "wave_physics": "upstream default infinite depth and AUTO direction; diagnostic applicability NOT established"
+}
