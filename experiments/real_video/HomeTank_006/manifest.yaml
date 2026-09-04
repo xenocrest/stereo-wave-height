@@ -1,15 +1,15 @@
 experiment_id: HomeTank_006
-status: NOT_CAPTURED
+status: INPUT_FILES_PRESENT
 processing_status: NOT_PROCESSED
 camera_roles:
   cam0: LEFT
   cam1: RIGHT
 capture_intent:
   resolution: 4K
-  fps: 60
-  source: USER_PLANNED
-  actual_width: null
-  actual_height: null
+  fps: 30
+  source: USER_REPORTED_CAPTURE
+  actual_width: 3840
+  actual_height: 2160
   actual_fps: null
   codec: null
   rotation: null
@@ -17,9 +17,7 @@ videos:
   calibration:
     cam0: videos/calibration/HomeTank_006_calibration_cam0_LEFT.mp4
     cam1: videos/calibration/HomeTank_006_calibration_cam1_RIGHT.mp4
-  static:
-    cam0: videos/static/HomeTank_006_static_cam0_LEFT.mp4
-    cam1: videos/static/HomeTank_006_static_cam1_RIGHT.mp4
+  static: null
   wave:
     cam0: videos/wave/HomeTank_006_wave_cam0_LEFT.mp4
     cam1: videos/wave/HomeTank_006_wave_cam1_RIGHT.mp4
@@ -33,7 +31,11 @@ synchronization:
   status: NOT_PROCESSED
   offset_s: null
 reference:
-  source: independent_static_capture
+  source: wave_video_opening_static_segment
+  source_status: USER_REPORTED_PENDING_VERIFICATION
+  selected_interval_s: null
+  requires_synchronized_pair: true
+  exclude_reference_frames_from_dynamic_validation: true
   artifact: null
 geometry:
   baseline_m: null
