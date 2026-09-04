@@ -28,6 +28,14 @@ calibration:
   board_inner_corners: [9, 6]
   square_size_m: 0.020
   board_source: USER_CONFIRMED_2026_09_04
+  measured_grid_span:
+    value_m: 0.160
+    endpoints: first_row_leftmost_to_rightmost_inner_corner_8_intervals
+    source: USER_REPORTED_MEASUREMENT_2026_09_04
+    uncertainty_m: null
+    uncertainty_status: UNKNOWN
+    photo_source: C:/Users/徐彻/Desktop/微信图片_20260904124607.jpg
+    board_flatness: UNKNOWN
 synchronization:
   status: NOT_PROCESSED
   offset_s: null

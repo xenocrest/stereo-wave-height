@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import cv2
 import numpy as np
+import yaml
 
 
 def orient_grid(record):
@@ -18,8 +19,13 @@ def orient_grid(record):
 
 def main():
     root=Path('D:/stereo-wave-height-runs/HomeTank_006')
-    out=root/'target_release_diagnostic';out.mkdir(exist_ok=True)
+    manifest=yaml.safe_load(Path('experiments/real_video/HomeTank_006/manifest.yaml').read_text(encoding='utf-8'))
+    span=manifest['calibration']['measured_grid_span']
+    span_m=float(span['value_m'])
+    if not np.isfinite(span_m) or span_m<=0:raise ValueError('positive measured span required')
+    out=root/'target_release_measured_span';out.mkdir(exist_ok=True)
     obj=np.zeros((54,3),np.float32);obj[:,:2]=np.mgrid[:9,:6].T.reshape(-1,2)*.020
+    obj[8,0]=span_m
     results={}
     for side in ['LEFT','RIGHT']:
         d=json.loads((root/'partial_calibration_larger'/f'{side}_result.json').read_text())
@@ -39,7 +45,7 @@ def main():
             heldout.append(dict(time_s=records[i]['time_s'],rms_px=float(np.sqrt(np.mean(np.sum(error**2,axis=1)))),K=hk.tolist()))
         results[side]=dict(times=[r['time_s'] for r in records],fixed_grid_rms_px=float(rms),released_grid_rms_px=float(ro),fixed_K=k.tolist(),released_K=kr.tolist(),released_D=dr.tolist(),released_object_points_m=np.asarray(newobj).reshape(-1,3).tolist(),heldout=heldout,approved_for_reconstruction=False)
         print(side,'views',len(images),'fixed',rms,'release',ro,'K',kr,flush=True)
-    payload=dict(status='DIAGNOSTIC_ONLY_NO_STEREO_OR_HEIGHT',scale_source='USER_NOMINAL_20MM_NOT_SURVEYED_160MM_EDGE',method='OPENCV_CALIBRATE_CAMERA_RO',results=results)
+    payload=dict(status='DIAGNOSTIC_ONLY_NO_STEREO_OR_HEIGHT',scale_source=span,method='OPENCV_CALIBRATE_CAMERA_RO',results=results)
     (out/'result.json').write_text(json.dumps(payload),encoding='utf-8')
 
 if __name__=='__main__':main()
