@@ -228,6 +228,9 @@ def estimate_global_ray_surface(
 
 def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
     started = time.perf_counter()
+    ocean_mode=config.get("completion_strategy")=="ocean_observation_anchored"
+    if ocean_mode and (config.get("water_roi") or {}).get("type")!="polygon":
+        raise ValueError("EXPLICIT_WATER_ROI_REQUIRED: select water ROI before reconstruction; observed hull is not a measurement domain")
     frozen = config["frozen"]
     pixel_path, height_path = Path(frozen["pixel_xyz_npz"]), Path(frozen["height_npz"])
     original_hashes = {str(path): _sha256(path) for path in (pixel_path, height_path)}
@@ -255,7 +258,7 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
     roi_config = config.get("water_roi", {"type": "observed_convex_hull"})
     roi = rasterize_water_roi(roi_config, width=width, height=image_height,
                               observed_rectified_px=observed_uv, canonical_rectified_px=rectified)
-    ocean_mode=config.get("completion_strategy")=="ocean_observation_anchored"
+    requested_roi_pixels=int(roi.sum())
     if ocean_mode:
         with np.load(frozen["common_fov_npz"]) as common_data:
             common_mask=np.asarray(common_data["safe_common_mask"],bool)
@@ -364,6 +367,16 @@ def build_dense_map(config: dict[str, Any]) -> dict[str, Any]:
             if global_mode else "reject outside scene-local support distance/topology gate"
         ),
         "water_roi": roi_config,
+        "measurement_domain": ({
+            "selection":"explicit canonical polygon fixed before reconstruction",
+            "requested_roi_pixel_count":requested_roi_pixels,
+            "excluded_non_common_pixel_count":requested_roi_pixels-int(roi.sum()),
+            "evaluation_pixel_count":int(roi.sum()),
+            "coverage_denominator":"explicit water ROI intersect calibration safe_common_mask",
+            "shrunk_to_observation_support":False,
+            "raw_observation_ratio":float(np.count_nonzero(status==OBSERVED)/roi.sum()),
+            "finite_model_ratio":float(np.count_nonzero(roi&np.isfinite(dense_h))/roi.sum()),
+        } if ocean_mode else None),
         "ocean_completion":solution.metadata if ocean_mode else None,
         "global_completion_geometry": (
             "calibrated camera ray to base-plane footprint, then robust height trend in metre-valued water-plane coordinates (first-order small-height model)"

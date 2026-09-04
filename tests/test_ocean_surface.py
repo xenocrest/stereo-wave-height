@@ -69,4 +69,32 @@ def test_existing_dense_artifact_pipeline_ocean_mode(tmp_path):
     assert result['water_roi_pixel_count']==35*32
     assert result['status']['unsupported']['count']==0
     assert result['metadata']['ocean_completion']['anchor_mode']=='hard'
+    domain=result['metadata']['measurement_domain']
+    assert domain['requested_roi_pixel_count']==40*32
+    assert domain['excluded_non_common_pixel_count']==5*32
+    assert domain['evaluation_pixel_count']==35*32
+    assert domain['raw_observation_ratio']==.5
+    assert domain['finite_model_ratio']==1.
+    assert not domain['shrunk_to_observation_support']
     assert result['frozen_artifacts_unchanged']
+
+
+@pytest.mark.parametrize('roi',[None,{'type':'observed_convex_hull'}])
+def test_ocean_requires_preselected_roi_before_loading_artifacts(roi):
+    from surface_completion.dense_map import build_dense_map
+    config={'completion_strategy':'ocean_observation_anchored'}
+    if roi is not None:config['water_roi']=roi
+    with pytest.raises(ValueError,match='EXPLICIT_WATER_ROI_REQUIRED'):
+        build_dense_map(config)
+
+
+def test_explicit_roi_does_not_follow_point_support():
+    from surface_completion.dense_map import rasterize_water_roi
+    roi={'type':'polygon','coordinate_system':'canonical_cam1',
+         'points':[[0,0],[39,0],[39,31],[0,31]]}
+    masks=[rasterize_water_roi(roi,width=40,height=32,
+        observed_rectified_px=points,canonical_rectified_px=np.zeros((1280,2)))
+        for points in (np.array([[1.,1.],[2.,1.],[1.,2.]]),
+                       np.array([[20.,20.],[35.,20.],[20.,30.]]))]
+    np.testing.assert_array_equal(masks[0],masks[1])
+    assert masks[0].sum()==1280
