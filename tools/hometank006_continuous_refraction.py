@@ -21,13 +21,22 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--times',type=int,nargs='+',default=[1,2,8,10])
     parser.add_argument('--output',type=Path,default=ROOT/'continuous_refraction_105mm')
+    parser.add_argument('--right-offset-s',type=float,default=-.225)
+    parser.add_argument('--static-fit-frame',type=int,choices=[1,2,3],default=1)
+    parser.add_argument('--sample-count',type=int,default=500)
+    parser.add_argument('--stable-jacobian',action='store_true')
+    parser.add_argument('--image-scales',type=float,nargs='+',default=[2.,0.])
     args=parser.parse_args()
     if any(t<1 for t in args.times):raise ValueError('times must be positive seconds')
+    if args.sample_count<6:raise ValueError('at least six samples required')
+    if not np.isfinite(args.right_offset_s):raise ValueError('time offset must be finite')
+    if any(not np.isfinite(s) or s<0 for s in args.image_scales) or args.image_scales[-1]!=0:
+        raise ValueError('image scales must be nonnegative and end with unfiltered images')
     out=args.output
     if (out/'result.json').exists():raise FileExistsError('Preserve previous diagnostics; select a new output directory')
     out.mkdir(parents=True,exist_ok=True)
     ref=np.load(ROOT/'surface_chain_raft_centered/frame_01_correspondences.npz')
-    fit=json.loads((ROOT/'refraction_probe_depth_105mm/result.json').read_text())['frames'][0]['fit']
+    fit=json.loads((ROOT/'refraction_probe_depth_105mm/result.json').read_text())['frames'][args.static_fit_frame-1]['fit']
     cal=json.loads((ROOT/'rig_features_metric/result.json').read_text())
     n=np.array(fit['normal']);c=fit['offset_m'];depth=fit['water_depth_m']
     K=[ref[f'P{i}'][:,:3] for i in [0,1]];C=[-np.linalg.inv(K[i])@ref[f'P{i}'][:,3] for i in [0,1]]
@@ -42,7 +51,7 @@ def main():
     make=lambda a:QuadraticWaterSurface(n,c,origin,e1,e2,scale,np.array(a,float))
     split=(x.ravel()//16+y.ravel()//16)%2
     rng=np.random.default_rng(42)
-    ids=[rng.choice(np.flatnonzero(fitmask&(split==i)),min(500,int((fitmask&(split==i)).sum())),replace=False) for i in [0,1]]
+    ids=[rng.choice(np.flatnonzero(fitmask&(split==i)),min(args.sample_count,int((fitmask&(split==i)).sum())),replace=False) for i in [0,1]]
     frames=[]
     for time in args.times:
         images=[];pts=[]
@@ -52,7 +61,7 @@ def main():
                 im=a[f'rectified_{side}'];pts.append(None)
             else:
                 video=Path('experiments/real_video/HomeTank_006/videos/wave')/f'HomeTank_006_wave_cam{i}_{side.upper()}.mp4'
-                cap=cv2.VideoCapture(str(video));cap.set(cv2.CAP_PROP_ORIENTATION_AUTO,0);cap.set(cv2.CAP_PROP_POS_MSEC,(time-i*.225)*1000)
+                cap=cv2.VideoCapture(str(video));cap.set(cv2.CAP_PROP_ORIENTATION_AUTO,0);cap.set(cv2.CAP_PROP_POS_MSEC,(time+i*args.right_offset_s)*1000)
                 ok,f=cap.read();pts.append(cap.get(cv2.CAP_PROP_POS_MSEC)/1000);cap.release()
                 if not ok:raise RuntimeError('decode failed')
                 if i==0:f=cv2.rotate(f,cv2.ROTATE_180)
@@ -85,10 +94,17 @@ def main():
         candidates=[]
         for initial in [0.,-.5,.5]:
             a=np.zeros(6);a[0]=initial
-            for sigma in [2.,0.]:
+            for sigma in args.image_scales:
                 blur=lambda im:cv2.GaussianBlur(im,(0,0),sigma) if sigma else im
                 refs=[blur(im) for im in reference];curs=[blur(im) for im in images]
-                solution=least_squares(lambda p:residual(p,ids[0],refs,curs)[0],a,
+                objective=lambda p:residual(p,ids[0],refs,curs)[0]
+                def absolute_jacobian(p):
+                    # Fixed dimensionless central step avoids near-zero coefficient
+                    # steps falling below inverse-projection numerical resolution.
+                    step=1e-4
+                    return np.column_stack([(objective(p+step*np.eye(6)[j])-objective(p-step*np.eye(6)[j]))/(2*step) for j in range(6)])
+                solution=least_squares(objective,a,
+                    jac=absolute_jacobian if args.stable_jacobian else '2-point',
                     bounds=([-depth*.9/scale]+[-1.]*5,[depth*.9/scale]+[1.]*5),
                     max_nfev=65,loss='soft_l1',f_scale=.02,diff_step=.001,x_scale='jac')
                 a=solution.x
@@ -110,6 +126,9 @@ def main():
         print(json.dumps(record),flush=True)
         (out/'result.json').write_text(json.dumps(dict(status='CONTINUOUS_REFRACTION_MODEL_NOT_VALIDATED',
             model='integrable quadratic in physical coordinates',scale_m=scale,water_depth_m=depth,
+            right_offset_s=args.right_offset_s,static_fit_frame=args.static_fit_frame,
+            jacobian='central_absolute_1e-4' if args.stable_jacobian else 'relative_2point',
+            optimization_image_scales=args.image_scales,
             train_count=len(ids[0]),heldout_count=len(ids[1]),split='16px spatial checkerboard blocks',
             common_domain_pixels=int(common.sum()),source_geometry='unchanged unapproved candidate',
             not_independent_physical_accuracy=True,no_gui_promotion=True,frames=frames),indent=2),encoding='utf-8')
