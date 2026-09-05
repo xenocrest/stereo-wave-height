@@ -33,10 +33,13 @@ class VideoMetadata:
 
 
 def probe_video(path: Path, ffmpeg: Path) -> VideoMetadata:
-    completed = subprocess.run([str(ffmpeg), "-hide_banner", "-i", str(path)], capture_output=True, text=True,
-                               encoding="utf-8",errors="replace",check=False,
-                               **hidden_process_kwargs())
-    text = completed.stderr
+    try:
+        completed = subprocess.run([str(ffmpeg), "-hide_banner", "-i", str(path)], capture_output=True, text=True,
+                                   encoding="utf-8",errors="replace",check=False,
+                                   **hidden_process_kwargs())
+        text = completed.stderr
+    except (OSError, FileNotFoundError):
+        text = ""
     duration_match = re.search(r"Duration:\s*(\d+):(\d+):([0-9.]+)", text)
     video_match = re.search(r"Video:.*?\b(\d{2,5})x(\d{2,5})\b.*?([0-9.]+) fps", text)
     if duration_match and video_match:
@@ -62,12 +65,18 @@ def probe_video(path: Path, ffmpeg: Path) -> VideoMetadata:
 def extract_frame(path: Path, time_sec: float, ffmpeg: Path) -> Image.Image:
     command = [str(ffmpeg), "-hide_banner", "-loglevel", "error", "-ss", f"{max(time_sec, 0.0):.6f}",
                "-i", str(path), "-frames:v", "1", "-f", "image2pipe", "-vcodec", "png", "pipe:1"]
-    completed = subprocess.run(command, capture_output=True, check=False, **hidden_process_kwargs())
-    if completed.returncode != 0 or not completed.stdout:
+    try:
+        completed = subprocess.run(command, capture_output=True, check=False, **hidden_process_kwargs())
+        if completed.returncode == 0 and completed.stdout:
+            image = Image.open(BytesIO(completed.stdout)); image.load(); return image.convert("RGB")
+    except (OSError, FileNotFoundError):
+        pass
+    import cv2
+    capture = cv2.VideoCapture(str(path)); capture.set(cv2.CAP_PROP_POS_MSEC, max(time_sec, 0.0) * 1000.0)
+    ok, frame = capture.read(); capture.release()
+    if not ok:
         raise RuntimeError(f"无法提取视频帧：{path}")
-    image = Image.open(BytesIO(completed.stdout))
-    image.load()
-    return image.convert("RGB")
+    return Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
 
 class LatestFrameDecoder:
