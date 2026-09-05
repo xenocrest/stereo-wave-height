@@ -193,7 +193,11 @@ class FrozenBackendRunner:
                 completed=subprocess.run(command,env=env,stdout=stream,stderr=stream,timeout=360,
                     **hidden_process_kwargs(enabled=True))
             if completed.returncode:
-                raise BackendResultError(f'官方模型运行失败，请查看 {log_path}',stage='官方稠密模型')
+                try:
+                    tail = Path(log_path).read_text(encoding='utf-8', errors='replace')[-1800:]
+                except Exception:
+                    tail = '（无法读取子进程日志）'
+                raise BackendResultError(f'官方模型运行失败（return code {completed.returncode}）：\n{tail}',stage='官方稠密模型')
             return parse_backend_result(output_directory)
         try:
             config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file, water_roi,solve_mode=solve_mode,reference_artifact=reference_artifact,common_fov_file=common_fov_file,mapping_file=mapping_file)
