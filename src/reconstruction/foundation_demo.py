@@ -139,7 +139,9 @@ def run(request):
     mx,my=rectuv[...,0].copy(),rectuv[...,1].copy()
     disp=cv2.remap(dr,mx,my,cv2.INTER_NEAREST,borderMode=cv2.BORDER_CONSTANT,borderValue=float('nan'))
     points=cv2.perspectiveTransform(np.dstack((mx,my,disp)).reshape(-1,1,3),q).reshape(*right.shape[:2],3)@r1
-    valid=(native_roi>0)&(cv2.remap(visible.astype(np.uint8),mx,my,cv2.INTER_NEAREST)>0)&np.isfinite(points).all(axis=2)
+    # roi_rect is the ROI expressed in the rectified/model (960x540) domain;
+    # native_roi is only used for validating the user's original coordinates.
+    valid=roi_rect&(cv2.remap(visible.astype(np.uint8),mx,my,cv2.INTER_NEAREST)>0)&np.isfinite(points).all(axis=2)
     h=(points@normal+offset)/np.linalg.norm(normal);h[~valid]=np.nan
     consistent=valid&(cv2.remap(lr.astype(np.uint8),mx,my,cv2.INTER_NEAREST)>0)
     if not valid.any():raise ValueError('Selected ROI has no positive in-FOV model estimates')
