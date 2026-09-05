@@ -533,6 +533,10 @@ class StereoWaveHeightApplication:
         def work() -> None:
             started=time.perf_counter()
             try:
+                if solve_mode=="measurement" and self._demo_working_view():
+                    record=self._load_precomputed_demo_measurement(output,name,right,None)
+                    self._worker_messages.put(("success",(record,time.perf_counter()-started)))
+                    return
                 fps=self.metadata.get("left_measurement").fps if self.metadata.get("left_measurement") else 60.0
                 record=self.runner.run_with_fallback(Path(left),Path(right),self.current_time,output,self.session.log_path,
                     Path(self.variables["calibration_path"].get()),frame_period_sec=1.0/fps,
