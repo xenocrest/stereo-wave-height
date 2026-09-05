@@ -14,6 +14,7 @@ import cv2
 import numpy as np
 import yaml
 from reconstruction.io import load_calibration, CalibrationParameters
+from application.input_workflow import load_calibration_selection
 from reconstruction.reference_frame import (canonical_calibration_identity, roi_identity,
     video_pair_identity, save_reference_artifact, load_reference_artifact)
 from validation.diagnostics import fit_plane_orthogonal
@@ -52,7 +53,7 @@ def run(request):
     if roi.get('coordinate_system')!='canonical_cam1' or roi.get('type')!='polygon':
         raise ValueError('Explicit canonical cam1 polygon ROI required')
     calibration_path=Path(request['calibration']['source'])
-    raw=yaml.safe_load(calibration_path.read_text(encoding='utf-8'))
+    raw, calibration_path, _mode = load_calibration_selection(calibration_path)
     if 'camera_left' in raw:
         l,r,s=raw['camera_left'],raw['camera_right'],raw['stereo']
         cal=CalibrationParameters(*[np.asarray(v,dtype=float) for v in
