@@ -450,9 +450,17 @@ class StereoWaveHeightApplication:
 
     def _set_reference(self)->None:
         if self.active_reference_path is not None and not messagebox.askyesno(self.title,"这将替换当前参考面，之后的高度结果将使用新的参考面。是否继续？"):return
+        # The presentation reference is a frozen, previously reconstructed
+        # plane.  Bind it directly so selecting a reference never depends on
+        # another native WASS run or a packaged template path.
         if load_runtime(self.repository) is not None:
-            self._start_backend('reference')
-            return
+            try:
+                self._bind_precomputed_demo_reference()
+                return
+            except Exception as error:
+                self._log(f"PRECOMPUTED_REFERENCE_UNAVAILABLE {type(error).__name__}: {error}")
+                messagebox.showerror(self.title, f"演示参考面不可用：{type(error).__name__}: {error}")
+                return
         if self._demo_working_view():
             try:
                 self._bind_precomputed_demo_reference()
