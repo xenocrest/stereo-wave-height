@@ -533,10 +533,6 @@ class StereoWaveHeightApplication:
         def work() -> None:
             started=time.perf_counter()
             try:
-                if solve_mode=="measurement" and self._demo_working_view():
-                    record=self._load_precomputed_demo_measurement(output,name,right,None)
-                    self._worker_messages.put(("success",(record,time.perf_counter()-started)))
-                    return
                 fps=self.metadata.get("left_measurement").fps if self.metadata.get("left_measurement") else 60.0
                 record=self.runner.run_with_fallback(Path(left),Path(right),self.current_time,output,self.session.log_path,
                     Path(self.variables["calibration_path"].get()),frame_period_sec=1.0/fps,
@@ -544,13 +540,6 @@ class StereoWaveHeightApplication:
                     common_fov_file=self.common_fov_file,mapping_file=self.mapping_file)
                 record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put((("reference_success" if solve_mode=="reference" else "success"),(record,time.perf_counter()-started)))
             except Exception as error:
-                if solve_mode=="measurement" and self._demo_working_view():
-                    try:
-                        record=self._load_precomputed_demo_measurement(output,name,right,error)
-                        self._worker_messages.put(("success",(record,time.perf_counter()-started)))
-                        return
-                    except Exception as fallback_error:
-                        self._log(f"PRECOMPUTED_DEMO_MEASUREMENT_FAILED {type(fallback_error).__name__}: {fallback_error}")
                 self._worker_messages.put((("reference_error" if solve_mode=="reference" else "error"),str(error)))
         threading.Thread(target=work,daemon=True).start()
 
