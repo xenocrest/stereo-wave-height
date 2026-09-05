@@ -175,7 +175,7 @@ class StereoWaveHeightApplication:
         thresholds=CalibrationQualityThresholds(); stereo_rms=float(stereo["rms_px"]); epi=epipolar
         failed=("FAIL" in str(data.get("status","")) or stereo_rms>thresholds.maximum_stereo_rms_px or epi>thresholds.maximum_epipolar_rms_px)
         quality_status="QA_FAIL" if failed else "QA_PASS"
-        self.variables["calibration_quality"].set("详细质量数据已保存在标定文件中。")
+        self.variables["calibration_quality"].set("")
         if operating_mode == "DEMO_ESTIMATION_MODE":
             self.pending_demo_calibration=None
             self.input_state.mark_calibration_ready(operating_mode=operating_mode,quality_status=quality_status)
@@ -201,7 +201,7 @@ class StereoWaveHeightApplication:
             return
         self.input_state.mark_calibration_ready(operating_mode="DEMO_ESTIMATION_MODE",quality_status="QA_FAIL")
         self.variables["calibration_load_status"].set("✓ 标定完成，可以进入测量")
-        self.variables["calibration_quality"].set("详细质量数据已保存在标定文件中。")
+        self.variables["calibration_quality"].set("")
         self.variables["app_state"].set("当前模式：演示模式")
         self.demo_continue_button.configure(state=tk.DISABLED)
         self._log("DEMO_ESTIMATION_MODE acknowledged by user")
@@ -785,7 +785,7 @@ class StereoWaveHeightApplication:
         ttk.Label(box,text=description,wraplength=900,justify="left").grid(row=0,column=0,columnspan=3,sticky="w",padx=8,pady=(6,2))
         ttk.Label(box,text=f"支持的视频格式：{VIDEO_FORMAT_TEXT}",foreground="#555").grid(row=1,column=0,columnspan=3,sticky="w",padx=8)
         ttk.Button(box,text=button_text,command=lambda:self._choose_video(key)).grid(row=2,column=0,sticky="w",padx=8,pady=6)
-        if preview: ttk.Button(box,text="查看代表帧",command=lambda:self._preview_calibration(key)).grid(row=2,column=1,sticky="w",padx=4)
+        # Calibration preview is an experiment aid, not part of the demo path.
         self._var(key); ttk.Label(box,textvariable=self._var(key+"_meta","尚未选择"),foreground="#444",justify="left").grid(row=3,column=0,columnspan=3,sticky="w",padx=8,pady=(0,6))
 
     def build(self) -> tk.Tk:
