@@ -48,17 +48,17 @@ flowchart LR
 本阶段的输入是空间点 `P_w=(X,Y,Z)^T`、相机姿态和镜头参数，输出是图像像素 `p=(u,v)^T`。针孔相机模型写为
 
 $$
-s
-\begin{bmatrix}u\\v\\1\end{bmatrix}
-=K\begin{bmatrix}R&t\end{bmatrix}
-\begin{bmatrix}X\\Y\\Z\\1\end{bmatrix},
+s\,(u,v,1)^T=K\,[R\mid t]\,(X,Y,Z,1)^T.
 $$
 
 其中
 
 $$
-K=\begin{bmatrix}f_x&0&c_x\\0&f_y&c_y\\0&0&1\end{bmatrix}.
+K_{11}=f_x,\quad K_{22}=f_y,\quad
+K_{13}=c_x,\quad K_{23}=c_y,\quad K_{33}=1,
 $$
+
+并且 `K` 的其余元素为 0。这个写法与常见的三行三列内参矩阵完全等价，但不依赖矩阵换行命令。
 
 `R,t` 先把世界坐标点变换到相机坐标系，`K` 再把相机坐标投影到图像；`f_x,f_y` 是以像素为单位的焦距，`c_x,c_y` 是主点，`s` 是齐次尺度。若点已经位于相机坐标系中，公式展开为
 
@@ -157,8 +157,10 @@ $$
 \{p^R\}\longrightarrow K_R,D_R,
 $$
 
+固定 `K_L,D_L,K_R,D_R` 后，联合观测与外参的求解关系为
+
 $$
-K_L,D_L,K_R,D_R\ \text{固定，bilateral pairs}\longrightarrow R,T.
+\{p^L,p^R\}_{bilateral}\longrightarrow R,T.
 $$
 
 两台相机各自的内参利用各自全部完整观测；只有求左右相对关系时，才要求两侧同时看到棋盘，并以固定内参方式求 `R,T`。这个分解与未知量的信息来源一致，不是针对某一手机型号的补偿。
@@ -328,7 +330,7 @@ HomeTank_004 三个静水帧分别得到 167,581、33,286 和 34,411 个最终 X
 WASS 的输出是无序三维点，用户操作的是图像像素。为了回答“画面中这个位置的三维坐标和高度是多少”，项目统一采用 canonical RIGHT/cam1 作为主像素域。若三维点已经转换到右相机坐标系，则
 
 $$
-\tilde p=K_R\begin{bmatrix}X\\Y\\Z\end{bmatrix},
+\widetilde p=K_R\,(X,Y,Z)^T,
 $$
 
 归一化后仍是
@@ -535,7 +537,7 @@ $$
 | 阶段 | 公式 | 求解量 | 作用 |
 |---|---|---|---|
 | 针孔成像 | `sp=K[R|t]P` | 像素或相机参数 | 连接三维点与二维图像 |
-| 相机内参 | `K=\begin{bmatrix}f_x&0&c_x\\0&f_y&c_y\\0&0&1\end{bmatrix}` | `f_x,f_y,c_x,c_y` | 描述投影尺度和主点 |
+| 相机内参 | `K11=fx, K22=fy, K13=cx, K23=cy, K33=1` | `f_x,f_y,c_x,c_y` | 描述投影尺度和主点，其余元素为 0 |
 | 标定优化 | `\min\sum\|p-\hat p\|^2` | `K,D,R_i,t_i` | 让预测角点贴近检测角点 |
 | 重投影 RMS | `\sqrt{\sum\|p-\hat p\|^2/N}` | 平均像素误差 | 衡量标定对观测的解释程度 |
 | 左右外参 | `P_R=RP_L+T` | `R,T` | 连接左右相机坐标系 |
