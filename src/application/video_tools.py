@@ -39,10 +39,24 @@ def probe_video(path: Path, ffmpeg: Path) -> VideoMetadata:
     text = completed.stderr
     duration_match = re.search(r"Duration:\s*(\d+):(\d+):([0-9.]+)", text)
     video_match = re.search(r"Video:.*?\b(\d{2,5})x(\d{2,5})\b.*?([0-9.]+) fps", text)
-    if not duration_match or not video_match:
-        raise RuntimeError(f"无法读取视频 metadata：{path}")
-    duration = int(duration_match.group(1)) * 3600 + int(duration_match.group(2)) * 60 + float(duration_match.group(3))
-    return VideoMetadata(int(video_match.group(1)), int(video_match.group(2)), float(video_match.group(3)), duration)
+    if duration_match and video_match:
+        duration = int(duration_match.group(1)) * 3600 + int(duration_match.group(2)) * 60 + float(duration_match.group(3))
+        return VideoMetadata(int(video_match.group(1)), int(video_match.group(2)), float(video_match.group(3)), duration)
+    # Some phone files omit the literal ``fps`` token or use a locale-specific
+    # stream description.  Fall back to OpenCV metadata instead of rejecting a
+    # valid local video at the file-selection stage.
+    try:
+        import cv2
+        capture = cv2.VideoCapture(str(path))
+        if not capture.isOpened():
+            raise RuntimeError
+        width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)); height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fps = float(capture.get(cv2.CAP_PROP_FPS)); frames = float(capture.get(cv2.CAP_PROP_FRAME_COUNT)); capture.release()
+        if width <= 0 or height <= 0 or fps <= 0:
+            raise RuntimeError
+        return VideoMetadata(width, height, fps, frames / fps if frames > 0 else 0.0)
+    except Exception as error:
+        raise RuntimeError(f"无法读取视频 metadata：{path}") from error
 
 
 def extract_frame(path: Path, time_sec: float, ffmpeg: Path) -> Image.Image:
