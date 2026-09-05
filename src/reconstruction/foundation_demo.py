@@ -88,15 +88,16 @@ def run(request):
     maps=[cv2.initUndistortRectifyMap(k,d,r,p,(960,540),cv2.CV_32FC1)
           for k,d,r,p in ((cal.k0,cal.d0,r0,p0),(cal.k1,cal.d1,r1,p1))]
     validmaps=[(mx>=0)&(mx<size[0]-1)&(my>=0)&(my<size[1]-1) for mx,my in maps]
+    model_io=Path('D:/stereo-wave-height-runs/foundation_model_io'); model_io.mkdir(parents=True,exist_ok=True)
     paths=[]
     for index,image in enumerate((left,right)):
         name=('left','right')[index]
         write_png(out/'selected_pair'/f'{name}.png',image)
         rect=cv2.remap(image,*maps[index],cv2.INTER_LINEAR)
-        path=out/'rectified'/f'{name}.png';write_png(path,rect);paths.append(str(path))
-        write_png(out/'rectified'/f'{name}_flip.png',cv2.flip(rect,1))
+        path=model_io/f'{name}.png';write_png(path,rect);paths.append(str(path))
+        write_png(model_io/f'{name}_flip.png',cv2.flip(rect,1))
     pairs={'pairs':[{'id':'frame','left':paths[0],'right':paths[1]},
-        {'id':'frame_reverse','left':str(out/'rectified/right_flip.png'),'right':str(out/'rectified/left_flip.png')}]}
+        {'id':'frame_reverse','left':str(model_io/'right_flip.png'),'right':str(model_io/'left_flip.png')}]}
     (out/'pairs.json').write_text(json.dumps(pairs),encoding='utf-8')
     env=os.environ.copy();env['TORCHDYNAMO_DISABLE']='1'
     cmd=[runtime['python'],str(Path(runtime['project_root'])/'tools/run_official_fast_foundationstereo.py'),
