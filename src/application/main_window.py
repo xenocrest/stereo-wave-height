@@ -12,6 +12,7 @@ import yaml
 from calibration.quality import CalibrationQualityThresholds
 
 from .backend_runner import FrozenBackendRunner
+from .foundation_runtime import load_runtime
 from .session import MeasurementRecord, MeasurementSession
 from .video_tools import LatestFrameDecoder, VideoMetadata, extract_frame, probe_video
 from .visualization import DenseMeasurementView, DisplayTransform, make_height_overlay
@@ -449,6 +450,9 @@ class StereoWaveHeightApplication:
 
     def _set_reference(self)->None:
         if self.active_reference_path is not None and not messagebox.askyesno(self.title,"这将替换当前参考面，之后的高度结果将使用新的参考面。是否继续？"):return
+        if load_runtime(self.repository) is not None:
+            self._start_backend('reference')
+            return
         if self._demo_working_view():
             try:
                 self._bind_precomputed_demo_reference()
@@ -528,7 +532,7 @@ class StereoWaveHeightApplication:
                     common_fov_file=self.common_fov_file,mapping_file=self.mapping_file)
                 record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put((("reference_success" if solve_mode=="reference" else "success"),(record,time.perf_counter()-started)))
             except Exception as error:
-                if solve_mode=="measurement" and self._demo_working_view():
+                if solve_mode=="measurement" and self._demo_working_view() and load_runtime(self.repository) is None:
                     try:
                         record=self._load_precomputed_demo_measurement(output,name,right,error)
                         self._worker_messages.put(("success",(record,time.perf_counter()-started)))
@@ -670,6 +674,12 @@ class StereoWaveHeightApplication:
         if minimum is None or maximum is None:
             minimum=None if h.get("minimum") is None else float(h["minimum"])*1000; maximum=None if h.get("maximum") is None else float(h["maximum"])*1000
         self.variables["result_legend"].set(f"高度范围：{float(minimum):.3f} … {float(maximum):.3f} mm | 高度覆盖：完整" if minimum is not None and maximum is not None else "核心 XYZ/H 已完成；稠密图不可用，请查看点云和摘要。")
+        if record.summary_metadata.get('stereo_backend')=='OFFICIAL_FAST_FOUNDATIONSTEREO':
+            coverage=record.summary_metadata['dense_height']['coverage_ratio']*100
+            self.variables['result_legend'].set(f'模型估算 | ROI 高度覆盖 {coverage:.2f}%')
+            self.summary_text.configure(state=tk.NORMAL)
+            self.summary_text.insert('1.0','高度来源：Fast-FoundationStereo 双目几何模型估算。\n')
+            self.summary_text.configure(state=tk.DISABLED)
         self.variables["app_state"].set("正在查看测量结果" if state in {"MEASUREMENT_RESULT","VIEWING_HISTORY"} else state)
         self.pointcloud_button.configure(state=tk.NORMAL if record.point_cloud_path and record.point_cloud_path.is_file() else tk.DISABLED)
     def _show_mode(self) -> None:
@@ -765,10 +775,10 @@ class StereoWaveHeightApplication:
                 label={"model":"型号","fx":"fx (px)","fy":"fy (px)","cx":"cx (px)","cy":"cy (px)","D":"畸变 D"}[field]
                 ttk.Label(box,text=f"{label}：").grid(row=row,column=0,sticky="nw")
                 ttk.Label(box,textvariable=self._var(f"{prefix}_{field}",defaults[field]),wraplength=360).grid(row=row,column=1,sticky="w")
-        stereo=ttk.LabelFrame(parent,text="双目外参与标定质量"); stereo.grid(row=0,column=2,sticky="nsew",padx=4); parent.columnconfigure(2,weight=1)
+        stereo=ttk.LabelFrame(parent,text="双目参数"); stereo.grid(row=0,column=2,sticky="nsew",padx=4); parent.columnconfigure(2,weight=1)
         self.stereo_text=tk.Text(stereo,width=48,height=7); self.stereo_text.pack(fill="both",expand=True); self.stereo_text.configure(state=tk.DISABLED)
         self._var("calibration_path"); self._var("calibration_file","尚未加载标定结果")
-        ttk.Label(stereo,textvariable=self._var("calibration_quality","详细质量数据将在标定文件中保留"),wraplength=420,foreground="#555").pack(anchor="w",padx=4,pady=4)
+        self._var("calibration_quality","")
 
     def _video_selector(self,parent:ttk.Frame,row:int,key:str,title:str,description:str,button_text:str,preview:bool=False) -> None:
         box=ttk.LabelFrame(parent,text=title); box.grid(row=row,column=0,sticky="ew",padx=8,pady=6); box.columnconfigure(0,weight=1)
@@ -833,10 +843,6 @@ class StereoWaveHeightApplication:
         reference_controls=ttk.Frame(self.measurement_frame);reference_controls.pack(fill="x",padx=8,pady=2);ttk.Label(reference_controls,textvariable=self._var("reference_status","参考面未建立"),foreground="#075").pack(side="left");ttk.Label(reference_controls,text="高度 H 为当前三维水面点到用户所选参考面的有符号法向距离。",foreground="#555").pack(side="left",padx=14)
         bottom=ttk.Panedwindow(self.measurement_frame,orient=tk.HORIZONTAL); bottom.pack(fill="x",padx=8,pady=5); history_box=ttk.LabelFrame(bottom,text="本次测量记录"); log_box=ttk.LabelFrame(bottom,text="运行日志"); bottom.add(history_box,weight=1); bottom.add(log_box,weight=3); self.history=tk.Listbox(history_box,height=5); self.history.pack(fill="both",expand=True); self.history.bind("<<ListboxSelect>>",self._history_selected)
         for record in self.session.records:self.history.insert(tk.END,record.display_name)
-        from .observed_results import ObservedResultsPanel
-        review_path=self.repository/"resources"/"wass_observation_review"/"review.json"
-        self.observed_results=ObservedResultsPanel(self.notebook,review_path)
-        self.notebook.add(self.observed_results,text="最新实测结果（只读）")
-        if self.observed_results.data is not None:self.notebook.select(self.observed_results)
+        self.notebook.select(step1)
         self.log_text=tk.Text(log_box,height=5); self.log_text.pack(fill="both",expand=True); self._log(f"会话目录：{self.session.directory}"); self._refresh_step_state();self._refresh_reference_controls();root.protocol("WM_DELETE_WINDOW",self._request_close); self._after_id=root.after(200,self._tick); return root
     def run(self) -> None:(self.root or self.build()).mainloop()

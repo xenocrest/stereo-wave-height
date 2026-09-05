@@ -1,0 +1,7 @@
+{
+  "enabled": false,
+  "python": "ABSOLUTE_PATH_TO_VERIFIED_MODEL_VENV/python.exe",
+  "project_root": "ABSOLUTE_PATH_TO_THIS_PROJECT",
+  "source": "ABSOLUTE_PATH_TO_OFFICIAL_Fast-FoundationStereo",
+  "weights": "ABSOLUTE_PATH_TO_VERIFIED_model_best_bp2_serialize.pth"
+}

@@ -19,6 +19,7 @@ from process_utils import hidden_process_kwargs
 from reconstruction.io import load_calibration
 from adapters.wass.input.opencv_xml import write_opencv_matrix_xml
 from reconstruction.reference_frame import file_identity,video_pair_identity
+from .foundation_runtime import load_runtime
 
 
 class BackendResultError(RuntimeError):
@@ -172,6 +173,28 @@ class FrozenBackendRunner:
             output_directory: Path, log_path: Path, calibration_file: Path | None = None,
             water_roi: dict[str, Any] | None = None, *,solve_mode:str="legacy",reference_artifact:Path|None=None,
             common_fov_file:Path|None=None,mapping_file:Path|None=None) -> MeasurementRecord:
+        runtime=load_runtime(self.repository)
+        if runtime is not None:
+            data=yaml.safe_load(self.template_config.read_text(encoding='utf-8'))
+            data['input'].update(left_video=str(left_video.resolve()),right_video=str(right_video.resolve()),target_time_s=target_time_sec)
+            if calibration_file is None:raise ValueError('Select a calibration before model inference')
+            data['calibration']['source']=str(calibration_file.resolve())
+            data['dense_height']['water_roi']=water_roi
+            data['solve_mode']=solve_mode;data['foundation_runtime']=runtime
+            data['output']['directory']=str(output_directory.resolve())
+            if reference_artifact:data['processing']['reference_artifact_file']=str(reference_artifact.resolve())
+            output_directory.parent.mkdir(parents=True,exist_ok=True)
+            config=output_directory.parent/f'{output_directory.name}_foundation_request.yaml'
+            config.write_text(yaml.safe_dump(data,allow_unicode=True),encoding='utf-8')
+            env=os.environ.copy();env['PYTHONPATH']=str(Path(runtime['project_root'])/'src');env['TORCHDYNAMO_DISABLE']='1';env['PYTHONIOENCODING']='utf-8'
+            command=[runtime['python'],'-m','reconstruction.foundation_demo','--config',str(config)]
+            with Path(log_path).open('a',encoding='utf-8') as stream:
+                stream.write('OFFICIAL_MODEL_BACKEND '+subprocess.list2cmdline(command)+'\n');stream.flush()
+                completed=subprocess.run(command,env=env,stdout=stream,stderr=stream,timeout=360,
+                    **hidden_process_kwargs(enabled=True))
+            if completed.returncode:
+                raise BackendResultError(f'官方模型运行失败，请查看 {log_path}',stage='官方稠密模型')
+            return parse_backend_result(output_directory)
         try:
             config = self.prepare_config(left_video, right_video, target_time_sec, output_directory, calibration_file, water_roi,solve_mode=solve_mode,reference_artifact=reference_artifact,common_fov_file=common_fov_file,mapping_file=mapping_file)
         except Exception as error:
