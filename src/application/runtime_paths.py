@@ -21,8 +21,9 @@ def resolve_runtime_paths(repository: Path | None = None, *, executable: Path | 
     is_frozen = bool(getattr(sys, "frozen", False)) if frozen is None else frozen
     if is_frozen:
         root = (executable or Path(sys.executable)).resolve().parent
-        experiment = root / "resources" / "HomeTank_005"
-        ffmpeg = root / "runtime" / "ffmpeg" / "ffmpeg.exe"
+        data_root = root / "_internal" if (root / "_internal").is_dir() else root
+        experiment = data_root / "resources" / "HomeTank_005"
+        ffmpeg = data_root / "runtime" / "ffmpeg" / "ffmpeg.exe"
     else:
         root = (repository or Path(__file__).resolve().parents[2]).resolve()
         experiment = root / "experiments" / "real_video" / "HomeTank_005"
