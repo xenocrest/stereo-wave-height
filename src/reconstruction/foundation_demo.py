@@ -44,6 +44,11 @@ def read_frame(path, timestamp, rotation):
     if rotation:image=cv2.rotate(image,{90:cv2.ROTATE_90_CLOCKWISE,180:cv2.ROTATE_180,270:cv2.ROTATE_90_COUNTERCLOCKWISE}[rotation])
     return image,actual
 
+def write_png(path, image):
+    ok, encoded = cv2.imencode('.png', image)
+    if not ok: raise RuntimeError(f'Cannot encode image: {path}')
+    Path(path).write_bytes(encoded.tobytes())
+
 
 def run(request):
     start=time.perf_counter(); runtime=request['foundation_runtime']
@@ -86,10 +91,10 @@ def run(request):
     paths=[]
     for index,image in enumerate((left,right)):
         name=('left','right')[index]
-        cv2.imwrite(str(out/'selected_pair'/f'{name}.png'),image)
+        write_png(out/'selected_pair'/f'{name}.png',image)
         rect=cv2.remap(image,*maps[index],cv2.INTER_LINEAR)
-        path=out/'rectified'/f'{name}.png';cv2.imwrite(str(path),rect);paths.append(str(path))
-        cv2.imwrite(str(out/'rectified'/f'{name}_flip.png'),cv2.flip(rect,1))
+        path=out/'rectified'/f'{name}.png';write_png(path,rect);paths.append(str(path))
+        write_png(out/'rectified'/f'{name}_flip.png',cv2.flip(rect,1))
     pairs={'pairs':[{'id':'frame','left':paths[0],'right':paths[1]},
         {'id':'frame_reverse','left':str(out/'rectified/right_flip.png'),'right':str(out/'rectified/left_flip.png')}]}
     (out/'pairs.json').write_text(json.dumps(pairs),encoding='utf-8')
