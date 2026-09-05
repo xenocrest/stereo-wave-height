@@ -1,0 +1,184 @@
+{
+  "classification": "HEIGHT_TREND_NOT_INDEPENDENTLY_VALIDATED",
+  "demo_promotion_allowed": false,
+  "reference_condition": "reference",
+  "coordinate_scope": "FIXED_RECTIFIED_CAMERA_RAYS_NOT_FIXED_WORLD_XY",
+  "reference_warning": "Reference window is not an independent water-surface truth.",
+  "consistency_warning": "Two network directions are not independent physical truth.",
+  "records": [
+    {
+      "id": "reference_000000",
+      "lr_consistent_ratio": 0.5471343473483316,
+      "height_lr_disagreement": {
+        "count": 18921,
+        "mean_mm": -0.07659853351664454,
+        "rms_mm": 0.9846193975693123,
+        "p95_abs_mm": 1.7138404003176904
+      },
+      "height_sensitivity_per_1px": {
+        "count": 18921,
+        "mean_mm": 1.9471089715449181,
+        "rms_mm": 1.9731981931692673,
+        "p95_abs_mm": 2.9624654256903242
+      }
+    },
+    {
+      "id": "reference_000003",
+      "lr_consistent_ratio": 0.6195419582441732,
+      "height_lr_disagreement": {
+        "count": 21425,
+        "mean_mm": -0.2799413574526074,
+        "rms_mm": 0.9527555207834397,
+        "p95_abs_mm": 1.9426564732932021
+      },
+      "height_sensitivity_per_1px": {
+        "count": 21425,
+        "mean_mm": 2.021034979067927,
+        "rms_mm": 2.050614874896491,
+        "p95_abs_mm": 2.929788211305307
+      }
+    },
+    {
+      "id": "reference_000007",
+      "lr_consistent_ratio": 0.5634434098664045,
+      "height_lr_disagreement": {
+        "count": 19485,
+        "mean_mm": -0.4238209695977648,
+        "rms_mm": 1.1050426922360854,
+        "p95_abs_mm": 2.050369176936762
+      },
+      "height_sensitivity_per_1px": {
+        "count": 19485,
+        "mean_mm": 2.0660750451245056,
+        "rms_mm": 2.099491848428762,
+        "p95_abs_mm": 3.0359424828813952
+      }
+    },
+    {
+      "id": "wave_000000",
+      "lr_consistent_ratio": 0.14608756000231335,
+      "height_lr_disagreement": {
+        "count": 5052,
+        "mean_mm": -0.2246588807717264,
+        "rms_mm": 1.0144316726753875,
+        "p95_abs_mm": 1.7945610570065047
+      },
+      "height_sensitivity_per_1px": {
+        "count": 5052,
+        "mean_mm": 1.8736332515136385,
+        "rms_mm": 1.9394524395425665,
+        "p95_abs_mm": 3.2222213807314883
+      }
+    },
+    {
+      "id": "wave_000003",
+      "lr_consistent_ratio": 0.21875542189578392,
+      "height_lr_disagreement": {
+        "count": 7565,
+        "mean_mm": -0.30924543441789204,
+        "rms_mm": 1.4217151968430615,
+        "p95_abs_mm": 2.6037313574418954
+      },
+      "height_sensitivity_per_1px": {
+        "count": 7565,
+        "mean_mm": 2.2419964897555493,
+        "rms_mm": 2.316515426300911,
+        "p95_abs_mm": 3.3350234676637625
+      }
+    },
+    {
+      "id": "wave_000007",
+      "lr_consistent_ratio": 0.3133711179226187,
+      "height_lr_disagreement": {
+        "count": 10837,
+        "mean_mm": 0.3182064436701379,
+        "rms_mm": 0.9901872073870771,
+        "p95_abs_mm": 1.7261473688679239
+      },
+      "height_sensitivity_per_1px": {
+        "count": 10837,
+        "mean_mm": 1.7891610467760006,
+        "rms_mm": 1.7989925141039032,
+        "p95_abs_mm": 2.1502312947666153
+      }
+    }
+  ],
+  "temporal": {
+    "reference": {
+      "common_pixels": 12611,
+      "common_roi_ratio": 0.3646694812330114,
+      "relative_to_first": [
+        {
+          "count": 12611,
+          "mean_mm": 0.0,
+          "rms_mm": 0.0,
+          "p95_abs_mm": 0.0
+        },
+        {
+          "count": 12611,
+          "mean_mm": -0.03093586357687374,
+          "rms_mm": 0.9721352620384857,
+          "p95_abs_mm": 1.9473165981718226
+        },
+        {
+          "count": 12611,
+          "mean_mm": 0.06908992645258931,
+          "rms_mm": 1.0246147402831667,
+          "p95_abs_mm": 2.072267824952484
+        }
+      ]
+    },
+    "wave": {
+      "common_pixels": 293,
+      "common_roi_ratio": 0.008472615811693944,
+      "relative_to_first": [
+        {
+          "count": 293,
+          "mean_mm": 0.0,
+          "rms_mm": 0.0,
+          "p95_abs_mm": 0.0
+        },
+        {
+          "count": 293,
+          "mean_mm": -4.594258248640689,
+          "rms_mm": 4.686965990850153,
+          "p95_abs_mm": 6.494865059581002
+        },
+        {
+          "count": 293,
+          "mean_mm": 0.48472587876144974,
+          "rms_mm": 1.3423178640713929,
+          "p95_abs_mm": 2.425918450126264
+        }
+      ]
+    }
+  },
+  "source_sha256": {
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_inputs_v1\\geometry.npz": "8453a729c087823f3c1932f0b6171639e10e376dedc31cd0b49b2a0895f2d912",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_independent_reference_v2\\summary.json": "3a898bfe6a68e932679d2d228f001e591f4916335b09bfd0d9a4e9264bc43623",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\reference_000000.npy": "e98ceb3fa2ff3ab3466a19c9df67e56faf371e434b8f63dbc46573f2b721dbef",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\reference_000000_reverse.npy": "3707121390bc2ce388dc636165f56f58805d126e3d317d900a5d2a7f112f20ba",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_analysis_v1\\reference_000000.npz": "d772e6db4811aa8dc8743658f26174ea0d9abc9205e76f0d1845de3d04e3ea33",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_independent_reference_v2\\reference_000000.npz": "bc1988972d2439c35860e928635c5fad23061d8a94d2243e873090e1e928d2c6",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\reference_000003.npy": "401b62525b5e790463ecd5ef7b635abd97310ec062cb2be41f8b92c4cb299747",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\reference_000003_reverse.npy": "04d972be28e69b71faa74d94d5a017590e8ca58aaf4f2ab6a6274ec07785027f",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_analysis_v1\\reference_000003.npz": "3c22467fb3626f1e53d9de947563c390ac7fba11f395da088af4b3b542ac531c",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_independent_reference_v2\\reference_000003.npz": "2f226be9bcb100c66bb025c859c6700bcef69122164dc4fa37709aaf9db336a1",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\reference_000007.npy": "71faf0e3919b8782d315f64584986d03b25608a7ab8d63d73a92a8da89a4f1a8",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\reference_000007_reverse.npy": "06f40fe02f85d3194b25cfb95634a4edb5ca2ff542492d376768e7c4977f36dd",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_analysis_v1\\reference_000007.npz": "31506e62e1ad4786cc63c13c7f2099ab7a9f1ddeb6dcf186cc928972f7563dd1",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_independent_reference_v2\\reference_000007.npz": "e0d48d3cfca042b905751cc7eb008fc64df0a9c19f063f037d76f48a2b3b832f",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\wave_000000.npy": "c39f16ebd855e3e8d319c544de2d9f480755ff2191712033422f78efccd0f20d",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\wave_000000_reverse.npy": "53be53a73f95816f3b64fd47776b992aece886e6fca57748590d2b86e69dc910",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_analysis_v1\\wave_000000.npz": "f1743b289fc62e5369bc284979caef840f3b8ff9920e181fbe2e39b471e393aa",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_independent_reference_v2\\wave_000000.npz": "958d2d493c70dac7f0590982795ce2e3d077a3d4997719acb08f95abf7a676c1",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\wave_000003.npy": "dab2d64ea664c6e9c921caef67417e3f2ff3da8ac801802513624f9c2f2d62d5",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\wave_000003_reverse.npy": "712850850089a36ec4524d70833ec6c2b4b161f9d671b7a34cfc6fff01aa17c4",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_analysis_v1\\wave_000003.npz": "3924b548aad28efebb510d078886f2f615be7b01c13bf2397b3376c6b8f7a945",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_independent_reference_v2\\wave_000003.npz": "aa2af264c939c33b7977aef9c876271f79d3ed87ccd3961505e675d87697d17c",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\wave_000007.npy": "f0aa80f0358e9886c443e360296221e9848a616ab9a26d9458c543812c8874cc",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_predictions_v1\\wave_000007_reverse.npy": "3580ea5dbb38e3e85b9bc49158cb1af16b2c83068fbd283d8bb3da8984303f31",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_analysis_v1\\wave_000007.npz": "22e2e48e3d443cc87907a8d9069a0ba9a1fb423d4d0e4097db7f4461d5573349",
+    "D:\\stereo-wave-height-runs\\upstream_fast_foundationstereo\\HomeTank_005_independent_reference_v2\\wave_000007.npz": "ff35c15c547a2b7f2808320571ad2610bf42c2a8772d57f642c2ee512f8a2df2"
+  }
+}
