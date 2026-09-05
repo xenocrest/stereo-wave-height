@@ -98,7 +98,9 @@ def run(request):
         '--source',runtime['source'],'--weights',runtime['weights'],'--pairs',str(out/'pairs.json'),'--output',str(out/'predictions')]
     completed=subprocess.run(cmd,env=env,capture_output=True,timeout=240,**hidden_process_kwargs(enabled=True))
     (out/'model.log').write_bytes(completed.stdout+b'\n'+completed.stderr)
-    if completed.returncode:raise RuntimeError(f'Official model failed ({completed.returncode}); see {out / "model.log"}')
+    if completed.returncode:
+        detail=(completed.stdout+completed.stderr).decode('utf-8','replace')[-1800:]
+        raise RuntimeError(f'Official model failed ({completed.returncode}): {detail}')
     dl=np.load(out/'predictions/frame.npy'); dr=np.fliplr(np.load(out/'predictions/frame_reverse.npy')).copy()
     yy,xx=np.indices(dr.shape,dtype=np.float32)
     sample=cv2.remap(dl,xx+dr,yy,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT,borderValue=float('nan'))
