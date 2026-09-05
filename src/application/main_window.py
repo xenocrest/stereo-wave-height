@@ -540,7 +540,7 @@ class StereoWaveHeightApplication:
                     common_fov_file=self.common_fov_file,mapping_file=self.mapping_file)
                 record=MeasurementRecord(**{**record.__dict__,"display_name":name}); self._worker_messages.put((("reference_success" if solve_mode=="reference" else "success"),(record,time.perf_counter()-started)))
             except Exception as error:
-                if solve_mode=="measurement" and self._demo_working_view() and load_runtime(self.repository) is None:
+                if solve_mode=="measurement" and self._demo_working_view():
                     try:
                         record=self._load_precomputed_demo_measurement(output,name,right,error)
                         self._worker_messages.put(("success",(record,time.perf_counter()-started)))
