@@ -5,7 +5,7 @@ a = Analysis(
     ['D:/research/stereo-wave-height/packaging/demo_entry.py'],
     pathex=['D:/research/stereo-wave-height', 'D:/research/stereo-wave-height/src'],
     binaries=[],
-    datas=[('D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/demo_reference_artifact.yaml', 'resources/HomeTank_005')],
+    datas=[('D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/demo_reference_artifact.yaml', 'resources/HomeTank_005'), ('D:/research/stereo-wave-height/packaging/resources/HomeTank_005/single_frame_dense_template.yaml', 'resources/HomeTank_005')],
     hiddenimports=['src.reconstruction.run_single_frame', 'matplotlib.backends.backend_tkagg'],
     hookspath=[],
     hooksconfig={},
