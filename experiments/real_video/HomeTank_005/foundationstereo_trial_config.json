@@ -1,0 +1,18 @@
+{
+  "status": "ISOLATED_DIAGNOSTIC_ONLY",
+  "decode_videos": true,
+  "calibration": "D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/calibrations/HomeTank_005_demo_only_v1/manifest.yaml",
+  "frozen_workdir": "D:/stereo-wave-height-runs/HomeTank_005/final-packaged-acceptance-20260902/reference/reconstruction/wass_workspace/work/000000_wd",
+  "candidate_roi_cam1_px": [[80,720],[1160,720],[1400,1030],[80,1030]],
+  "roi_note": "Broad lower basin polygon chosen before model inference; surface identity not independently confirmed",
+  "fps": 15,
+  "sequences": {
+    "reference": {"left_start_s": 9.0, "right_minus_left_s": -0.0024},
+    "wave": {"left_start_s": 20.0, "right_minus_left_s": -0.0024}
+  },
+  "timing_warning": "Historical demo reference window, NOT a newly verified still-water capture. Existing PTS relation is not frame-level established.",
+  "videos": {
+    "reference": ["D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/videos/wave/HomeTank_005_wave_cam0_LEFT.mp4", "D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/videos/wave/HomeTank_005_wave_cam1_RIGHT.mp4"],
+    "wave": ["D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/videos/wave/HomeTank_005_wave_cam0_LEFT.mp4", "D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/videos/wave/HomeTank_005_wave_cam1_RIGHT.mp4"]
+  }
+}

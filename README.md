@@ -33,6 +33,8 @@ HomeTank_006 已实际完成[固定大 ROI 的十帧 WASS 诊断](experiments/re
 
 ## 当前项目状态
 
+2026-09-05：已实际复现 NVIDIA Fast-FoundationStereo，并对 HomeTank_004/005 和官方海面数据进行隔离对照。005 大候选区域已导出原图像素高度估计，但覆盖率不等于正确率，波浪趋势尚未独立验证；GUI 保持冻结。详见[成熟模型对照与明确结果](docs/reconstruction/fast_foundationstereo_trial.md)。
+
 当前阶段：**面向海面的观测支持与逐像素曲面模型完善（Phase 3），并保留 Phase 4 独立验证要求**。历史 Static/Wave R0 与人工标尺验证结果保持冻结；新模型独立试验，不覆盖旧结果。下面的逐阶段记录保留其原始结论，不代表当前已经达到真实海面测量精度。
 
 HomeTank_005 已完成真实视频 intake 与有限自适应标定。系统修复了 metadata 自动旋转与显式 canonical 旋转叠加的问题，并用独立姿态组五折交叉验证比较两个成熟 OpenCV 畸变模型。几何较 HomeTank_004 明显改善，但最差折与参数稳定性仍未达到可信测量 gate，因此状态为 `HOMETANK005_CALIBRATION_MODEL_LIMIT_REACHED`；系统正确阻止了不可信 WASS/H 输出，并可在离线演示中展示明确 QA 原因。
