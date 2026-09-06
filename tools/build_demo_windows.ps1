@@ -37,7 +37,7 @@ foreach ($target in @($Build, $Dist)) {
 Push-Location $Repo
 try {
     & $PythonExe -m PyInstaller --noconfirm --clean --onedir --windowed `
-        --name StereoWaveHeightDemo `
+        --name StereoWaveHeightLegacyDemo `
         --paths $Repo --paths (Join-Path $Repo "src") `
         --hidden-import src.reconstruction.run_single_frame `
         --hidden-import matplotlib.backends.backend_tkagg `
@@ -45,7 +45,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller build failed with exit code $LASTEXITCODE" }
 } finally { Pop-Location }
 
-$App = Join-Path $Dist "StereoWaveHeightDemo"
+$App = Join-Path $Dist "StereoWaveHeightLegacyDemo"
 $Resource = Join-Path $App "resources\HomeTank_004"
 $Resource005 = Join-Path $App "resources\HomeTank_005"
 $RuntimeWass = Join-Path $App "runtime\wass"
@@ -64,7 +64,8 @@ Copy-Item -LiteralPath $PolicyStereo -Destination (Join-Path $RuntimeWass "wass_
 Copy-Item -LiteralPath (Join-Path $Repo "packaging\runtime_binding.json") -Destination (Join-Path $RuntimeWass "runtime_binding.json")
 Copy-Item -LiteralPath (Join-Path $FfmpegRoot "ffmpeg.exe") -Destination $RuntimeFfmpeg
 Get-ChildItem -LiteralPath $FfmpegRoot -Filter "*.dll" -File | Copy-Item -Destination $RuntimeFfmpeg
-Copy-Item -LiteralPath (Join-Path $Repo "DEMO_RUN.md") -Destination $App
+Copy-Item -LiteralPath (Join-Path $Repo "LEGACY_DEMO_RUN.md") -Destination $App
+Copy-Item -LiteralPath (Join-Path $Repo "LEGACY_DEMO_COMPATIBILITY_NOTES.md") -Destination $App
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\calibration_adaptive\adaptive_calibration.yaml") -Destination $Resource005
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\DEMO_READINESS_REPORT.md") -Destination $Resource005
 Copy-Item -LiteralPath (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_run_template.yaml") -Destination $Resource005
@@ -75,6 +76,6 @@ Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\calibratio
 Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_common_fov") -Destination $Resource005 -Recurse
 Copy-Item -Path (Join-Path $Repo "experiments\real_video\HomeTank_005\demo_full_pixel_result") -Destination $Resource005 -Recurse
 
-$exe = Join-Path $App "StereoWaveHeightDemo.exe"
+$exe = Join-Path $App "StereoWaveHeightLegacyDemo.exe"
 if (-not (Test-Path -LiteralPath $exe)) { throw "Packaged executable missing: $exe" }
 Write-Host "Windows offline demo built: $exe"

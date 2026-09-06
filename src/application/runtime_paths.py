@@ -28,5 +28,5 @@ def resolve_runtime_paths(repository: Path | None = None, *, executable: Path | 
         experiment = root / "experiments" / "real_video" / "HomeTank_005"
         ffmpeg = Path(os.environ.get("STEREO_WAVE_HEIGHT_FFMPEG", "D:/FormatFactory/ffmpeg.exe"))
     local = Path(os.environ.get("LOCALAPPDATA", str(Path.home())))
-    session_root = Path(os.environ.get("STEREO_WAVE_HEIGHT_GUI_SESSIONS", str(local / "StereoWaveHeightDemo" / "gui_sessions")))
+    session_root = Path(os.environ.get("STEREO_WAVE_HEIGHT_LEGACY_GUI_SESSIONS", str(local / "StereoWaveHeightLegacyDemo" / "gui_sessions")))
     return RuntimePaths(root, experiment, ffmpeg.resolve(), session_root.resolve(), is_frozen)

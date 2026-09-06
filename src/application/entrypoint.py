@@ -10,7 +10,7 @@ def main() -> int:
         sys.argv = [sys.argv[0], "--config", sys.argv[2]]
         return backend_main()
     if len(sys.argv) != 1:
-        print("Usage: StereoWaveHeightDemo.exe [--backend-single-frame CONFIG]", file=sys.stderr)
+        print("Usage: StereoWaveHeightLegacyDemo.exe [--backend-single-frame CONFIG]", file=sys.stderr)
         return 2
     from .main_window import StereoWaveHeightApplication
     StereoWaveHeightApplication().run()

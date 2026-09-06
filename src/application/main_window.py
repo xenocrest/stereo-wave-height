@@ -27,7 +27,7 @@ from reconstruction.common_fov import (CommonFov,compute_common_fov,save_common_
 
 
 class StereoWaveHeightApplication:
-    title = "双目水面三维测量 — 离线演示系统"
+    title = "双目水面三维测量 — 经典演示版"
 
     def __init__(self, repository: Path | None = None) -> None:
         paths = resolve_runtime_paths(repository)
