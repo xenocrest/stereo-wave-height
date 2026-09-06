@@ -1,0 +1,36 @@
+schema_version: "1.0"
+dataset: HomeTank_005
+calibration: HomeTank_005_demo_only_v1
+calibration_file: D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/calibrations/HomeTank_005_demo_only_v1/opencv_calibration.yaml
+source_commit_or_run: C:/Users/徐彻/AppData/Local/StereoWaveHeightDemo/gui_sessions/20260903-112457/measurement_44.335s/attempt_+0
+LEFT_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/videos/wave/HomeTank_005_wave_cam0_LEFT.mp4
+RIGHT_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/videos/wave/HomeTank_005_wave_cam1_RIGHT.mp4
+role: measurement
+requested_time_s: 44.334500000000006
+actual_time:
+  left_s: 44.330556
+  right_s: 44.3345
+  pair_time_error_ms: 6.343999999998573
+LEFT_frame_id: pts_3989750
+RIGHT_frame_id: pts_3990105
+point_cloud_source: D:/stereo-wave-height-runs/p0-export/session_20260903-112457/measurement_44.335s/point_cloud.ply
+point_cloud_original_format: ASCII_PLY_XYZ
+converted_from_existing_xyz_artifact: false
+xyz_count: 74164
+finite_xyz_count: 74164
+coordinate_frame: WASS_metric_camera_coordinates_m
+image_pixel_domain: canonical_RIGHT_cam1_1920x1080
+image_source: D:/stereo-wave-height-runs/p0-export/session_20260903-112457/measurement_44.335s/selected_frame.png
+xyz_range_m:
+  x: [-0.701389532, -0.615231592]
+  y: [-0.035925340, 0.084597171]
+  z: [1.109636363, 1.245667652]
+rendering:
+  color: Z_depth
+  deterministic_stride: 4
+  original_point_cloud_preserved: true
+provenance: REAL_WASS_RECONSTRUCTION
+same_frame_image_and_xyz_confirmed: true
+numerical_height_validated: false
+height_note: Historical reference/measurement coordinate-frame inconsistency exists; height values are not used in this presentation asset.
+
