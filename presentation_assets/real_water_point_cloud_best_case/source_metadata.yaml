@@ -1,0 +1,42 @@
+schema_version: "1.0"
+dataset: HomeTank_005
+role: measurement
+calibration: HomeTank_005_demo_only_v1
+source_run: C:/Users/徐彻/AppData/Local/StereoWaveHeightDemo/gui_sessions/20260903-151929/measurement_68.502s/attempt_+0
+source_point_cloud: C:/Users/徐彻/AppData/Local/StereoWaveHeightDemo/gui_sessions/20260903-151929/measurement_68.502s/attempt_+0/reconstruction/pointcloud/000000.ply
+source_frame: C:/Users/徐彻/AppData/Local/StereoWaveHeightDemo/gui_sessions/20260903-151929/measurement_68.502s/attempt_+0/selected_pair/right.png
+source_pixel_xyz: C:/Users/徐彻/AppData/Local/StereoWaveHeightDemo/gui_sessions/20260903-151929/measurement_68.502s/attempt_+0/reconstruction/pixel_xyz/000000_pixel_xyz.npz
+source_mapping: C:/Users/徐彻/AppData/Local/StereoWaveHeightDemo/gui_sessions/20260903-151929/demo_working_view/canonical_cam1_wass_mapping.yaml
+LEFT_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/videos/wave/HomeTank_005_wave_cam0_LEFT.mp4
+RIGHT_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_005/videos/wave/HomeTank_005_wave_cam1_RIGHT.mp4
+requested_time_s: 68.5018
+actual_left_time_s: 68.512567
+actual_right_time_s: 68.5018
+pair_time_error_ms: -8.367000000006897
+LEFT_frame_id: pts_6166131
+RIGHT_frame_id: pts_6165162
+xyz_count: 117450
+finite_xyz_count: 117450
+projected_xyz_count: 117450
+projected_inside_image_count: 117450
+projected_inside_roi_count: 86978
+projected_inside_image_ratio: 1.0
+projected_inside_roi_ratio: 0.7405534269902086
+coordinate_frame: WASS_metric_camera_coordinates_m
+pixel_domain: canonical_RIGHT_cam1
+support_mapping_source: per-point pixel_xyz transformed from WASS rectified computational cam0 to canonical RIGHT/cam1 using the recorded inverse rectification and distortion model
+mapping_roundtrip_max_error_px: 0.31168285835584947
+support_boundary: convex_hull_of_all_projected_inside_image_points
+support_bbox_canonical_px: [101, 463, 354, 545]
+historical_roi_canonical_px: [184, 398, 1030, 671]
+X_range_m: [0.754437174, 1.061919766]
+Y_range_m: [0.016997173, 0.180355651]
+Z_range_m: [-2.258798909, -1.737710211]
+converted_from_existing_xyz_artifact: false
+point_cloud_coordinates_modified: false
+point_cloud_render_color: Z_depth
+provenance: REAL_WASS_RECONSTRUCTION
+same_measurement_frame_confirmed: true
+numerical_height_validated: false
+height_note: Historical reference/measurement coordinate-frame incompatibility exists; this presentation uses raw XYZ only and makes no physical height-accuracy claim.
+
