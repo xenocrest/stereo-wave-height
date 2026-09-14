@@ -1,0 +1,68 @@
+schema_version: "1.0"
+experiment: Vieira/WASS mature-workflow audit and official post-processing smoke
+status: TOOLCHAIN_CLOSURE_PASS_MEASUREMENT_VALIDITY_FAIL
+created_at: 2026-09-14
+git:
+  starting_branch: main
+  starting_head: 2acf2408c94f3dcbe6ca154d9d3b1b864bde10de
+  work_branch: repro/vieira-wass-baseline
+source:
+  dataset: HomeTank_004
+  run: D:/stereo-wave-height-runs/HomeTank_004/wave-reconstruction-pipeline-20260824
+  frame_ids: ["000000", "000001", "000002", "000003", "000004"]
+  left_times_s: [20.0, 20.1, 20.2, 20.3, 20.4]
+  right_times_s: [20.0, 20.1, 20.2, 20.3, 20.4]
+  pairing_note: historical manifest pairing; strict frame-level synchronization was not established
+  calibration: experiments/real_video/HomeTank_004/calibration_result.yaml
+  calibration_status: CALIBRATION_QUALITY_FAIL
+  autocalibrate_run_in_source: false
+reuse:
+  method: directory junctions to frozen WASS work directories
+  frozen_workdirs_modified: false
+  planes_file: copied each existing workdir plane.txt row into isolated output/planes.txt, matching wasscli behavior
+tools:
+  classic_wass: "1.11_heads/master-0-g6b82aeb; OpenCV 4.6.0"
+  wassgridsurface: "0.11.4"
+  wassncplot: "2.5.3"
+  grid_runtime: D:/stereo-wave-height-runs/wassgridsurface-0.11.4-venv
+physical_scale:
+  baseline_m: 0.06868471158474378
+  provenance: experiments/real_video/HomeTank_004/calibration_result.yaml
+grid:
+  method: official wassgridsurface DCT defaults
+  mean_plane: [-0.4313729481344016, -0.09758427674644939, 0.8961568436035139, -5.224790120539363]
+  area_center_x_m: 0.06017697143912488
+  area_center_y_m: -0.006266825931704747
+  area_size_m: 0.11380761069186056
+  N: 256
+  fps: 10
+  area_rule: smallest axis-aligned square covering the full five-frame aligned point extent
+results:
+  WASS_executions: 0
+  point_counts: [142444, 221307, 191312, 201904, 198554]
+  total_points: 955521
+  occupied_grid_cell_percent: [14.6164, 24.3073, 21.1243, 22.1527, 20.7672]
+  netcdf_shape: [5, 256, 256]
+  netcdf_all_cells_finite: true
+  netcdf_elevation_min_mm: -271.2572937011719
+  netcdf_elevation_max_mm: 284.4312438964844
+  netcdf_elevation_mean_mm: -0.04362378641963005
+  official_pixel_xyz_mapping_shape: [1350, 2400, 3]
+  interpretation: >-
+    Official post-processing and official pixel-to-XYZ export completed, but the grid
+    extrapolates far beyond observed support and the overlay does not align with the
+    water region. These outputs prove tool invocation and data compatibility only;
+    they are not accepted water-height measurements.
+artifacts:
+  root: D:/stereo-wave-height-runs/vieira-wass-repro-20260914
+  netcdf: HomeTank_004_wave_20s/gridding/gridded.nc
+  area_plot: HomeTank_004_wave_20s/gridding/area_grid.png
+  overlay: HomeTank_004_wave_20s/wassncplot/00000000_grid.png
+  pixel_xyz: HomeTank_004_wave_20s/wassncplot/00000000.mat
+  commands_log_prefixes: [01_generateconfig, 02_aligned_extent, 03_setup, 04_grid, 07_wassncplot]
+limitations:
+  - strict frame-level synchronization not established
+  - calibration is explicitly not approved for WASS
+  - source sequence did not run WASS autocalibrate
+  - observed grid-cell occupancy is only 14.6 to 24.3 percent
+  - full-grid DCT values include extrapolation and must not be presented as measured height
