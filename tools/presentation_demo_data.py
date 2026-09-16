@@ -17,7 +17,7 @@ class AssetError(Exception):
 def require(path):
     path = Path(path)
     if not path.is_file():
-        raise AssetError(f'Golden Demo asset missing: {path}')
+        raise AssetError(f'黄金演示文件缺失：{path}')
     return path
 
 
@@ -27,7 +27,7 @@ def manifest():
 
 def frame_paths(root, index):
     if index not in range(5):
-        raise AssetError('Frame index must be 0–4')
+        raise AssetError('帧索引必须为 0–4')
     root = Path(root)
     return {'left':root/f'sync/cam0/{index:06d}.png',
             'right':root/f'sync/cam1/{index:06d}.png',
@@ -47,7 +47,7 @@ def point_cloud(path, max_display=25000):
 def height_grid(path, index):
     with netCDF4.Dataset(str(require(path)), 'r') as data:
         if index not in range(len(data['Z'])):
-            raise AssetError('Frame index out of range')
+            raise AssetError('帧索引超出范围')
         return tuple(np.asarray(data[k][index] if k=='Z' else data[k][:]).copy()
                      for k in ('X_grid','Y_grid','Z'))
 
@@ -58,7 +58,7 @@ def pixel_mapping(path):
 
 def query(mapping, u, v):
     if not (0 <= u < mapping.shape[1] and 0 <= v < mapping.shape[0]):
-        raise AssetError(f'Pixel outside image: u=0–{mapping.shape[1]-1}, v=0–{mapping.shape[0]-1}')
+        raise AssetError(f'像素超出图像范围：u=0–{mapping.shape[1]-1}，v=0–{mapping.shape[0]-1}')
     xyz = np.asarray(mapping[v,u], dtype=float)
     valid = np.isfinite(xyz).all() and not np.all(np.isclose(xyz,0)) and not np.all(np.isclose(xyz,1))
     if not valid:
@@ -81,6 +81,6 @@ def verify_frozen(record):
             for block in iter(lambda:stream.read(1024*1024), b''):
                 h.update(block)
         if h.hexdigest()!=expected:
-            raise AssetError(f'Golden Demo checksum mismatch: {path}')
+            raise AssetError(f'黄金演示文件校验不一致：{path}')
         checked += 1
     return checked

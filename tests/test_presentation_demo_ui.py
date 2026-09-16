@@ -17,9 +17,9 @@ def test_query_bounds_sentinels_and_provenance():
     assert result['estimate_method']=='OFFICIAL_RENDERED_DCT_GRID'
     assert data.query(mapping,1,0)['provenance']=='UNSUPPORTED'
     assert data.query(mapping,2,0)['provenance']=='UNSUPPORTED'
-    with pytest.raises(data.AssetError,match='outside image'):
+    with pytest.raises(data.AssetError,match='超出图像范围'):
         data.query(mapping,-1,0)
-    with pytest.raises(data.AssetError,match='asset missing'):
+    with pytest.raises(data.AssetError,match='文件缺失'):
         data.require(TOOLS/'NOT_PRESENT.nc')
 
 
@@ -51,18 +51,18 @@ def test_streamlit_pages_frames_and_graceful_error(monkeypatch):
         pytest.skip('Golden large assets only present on demo computer')
     app = AppTest.from_file(str(TOOLS/'presentation_demo_ui.py'),default_timeout=30).run()
     assert not app.exception and not app.error
-    for page in ['双目输入','流程展示','3D Point Cloud','Height Map','Image Overlay','Pixel Query','Conclusion']:
+    for page in ['双目输入','处理流程','三维点云','水面高度图','原图叠加','像素高度查询','结果与验证边界']:
         app.sidebar.radio[0].set_value(page).run()
         assert not app.exception and not app.error, page
     app.sidebar.radio[0].set_value('双目输入').run()
     for i in range(5):
         app.sidebar.selectbox[0].set_value(i).run()
         assert not app.exception and not app.error
-    app.sidebar.radio[0].set_value('Pixel Query').run()
+    app.sidebar.radio[0].set_value('像素高度查询').run()
     app.number_input[0].set_value(-1).run()
-    assert not app.exception and 'outside image' in app.error[0].value
+    assert not app.exception and '超出图像范围' in app.error[0].value
     monkeypatch.setattr(data,'manifest',lambda:dict(record,outputs={'root':str(TOOLS/'NOT_PRESENT')}))
     broken = AppTest.from_file(str(TOOLS/'presentation_demo_ui.py'),default_timeout=30).run()
     broken.sidebar.radio[0].set_value('双目输入').run()
-    assert not broken.exception and 'Golden Demo asset missing:' in broken.error[0].value
+    assert not broken.exception and '黄金演示文件缺失：' in broken.error[0].value
     assert data.verify_frozen(record)==299

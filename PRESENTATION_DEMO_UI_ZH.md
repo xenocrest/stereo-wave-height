@@ -1,72 +1,70 @@
-# Golden Demo v1 只读汇报程序
+# 双目水面演示：中文界面与鼠标悬停查询
 
-## 一键启动
-
-在 Windows PowerShell 执行：
+## 启动
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File D:\research\stereo-wave-height\scripts\run_vieira_demo_ui.ps1
 ```
 
-程序检查 Python 和依赖，默认加载固定样例，打开浏览器；地址为 `http://localhost:8501`。不需要选文件或改参数。关闭运行它的 PowerShell 可停止服务。若端口已被占用，先关闭之前的演示服务，不要并行启动两份。
+默认加载黄金样例第一版，打开 `http://localhost:8501`。不选文件、不改参数。关闭启动它的 PowerShell 可停止服务。依赖已安装，展示不需要联网；只监听本机，关闭使用统计。依赖清单：[requirements_presentation_ui.txt](scripts/requirements_presentation_ui.txt)。
 
-依赖已安装在 `D:\stereo-wave-height-runs\wassgridsurface-0.11.4-venv`：Python、Streamlit 1.64.0、Plotly 7.1.0、plyfile 1.1.5、SciPy、NetCDF4、NumPy。依赖清单：[requirements_presentation_ui.txt](scripts/requirements_presentation_ui.txt)。安装后展示不需要互联网，服务只监听本机 127.0.0.1，关闭 Streamlit 使用统计。
+## 汇报顺序（3–5 分钟）
 
-只读入口：[run_vieira_demo_ui.ps1](scripts/run_vieira_demo_ui.ps1)。旧 `run_vieira_demo.ps1 -Rebuild` 属于计算工具，不在本 UI 中调用；本 UI 无任何计算或重建按钮。
+项目概览 → 双目输入 → 处理流程 → 三维点云 → 水面高度图 → 原图叠加 → 像素高度查询 → 结果与验证边界。
 
-## 八页内容与推荐顺序（3–5 分钟）
+八页业务界面、标题、提示、状态、图例、错误及启动说明均中文化。WASS、XYZ、NetCDF、PLY、Vieira、文件路径等技术名词保留。所有页面显示“演示版本：尚未完成物理精度验证”。浏览器自身和 Streamlit 原生控件的内部无障碍名称不属于本项目译文；英语图表工具栏已隐藏。
 
-| 顺序 | 页面 | 现场讲解重点 |
-| --- | --- | --- |
-| 1 | 首页 | HomeTank_004 五帧黄金样例，新 XYZ 共 681,678；仅证明工程链路 |
-| 2 | 双目输入 | LEFT/RIGHT 并排，侧栏切换帧 0–4；说明原视频与 TLCC 时间对应 |
-| 3 | 流程展示 | 视频→同步→标定→WASS→XYZ→公共平面→网格→NetCDF→叠加→查询 |
-| 4 | 3D Point Cloud | 旋转、缩放、平移；每帧最多约 25,000 点仅用于显示 |
-| 5 | Height Map | 直接读取官方 NetCDF 的 η(x,y)，单位 mm；同时说明支撑与估算比例 |
-| 6 | Image Overlay | 切换五帧官方已生成叠加图；完整官方图包含非水面，明确指出边界 |
-| 7 | Pixel Query | 输入 u=1000、v=1050，查看 XYZ 与公共平面高度；不支持图像点击，以输入框避免额外依赖 |
-| 8 | Conclusion | 能证明与不能证明分开；最后介绍 GoPro HERO9 严格验证的后续计划 |
+侧栏选择第1–5帧；同一帧索引绑定图像、官方叠加、MAT、NetCDF 和支撑统计，避免跨帧串用。点云每帧最多约 25,000 显示点，明确标注“仅对显示点进行抽样；原始 WASS 重建结果未改变”。
 
-所有页面及侧栏均显示 **DEMO ONLY / NOT PHYSICALLY VALIDATED**。首页包含 END_TO_END_DEMO_PASS 和 source 网格占格率约 18.93%–20.55%，不是水面图像直接测量率。
+## 真正悬停，无需点击
 
-点云读取冻结的官方 PLY 相机坐标，轴单位为 WASS baseline units，不当作公共平面高度。显示抽稀为确定性步长取样，标注 DISPLAY-ONLY DOWNSAMPLING / Original reconstruction unchanged。原点云、颜色和算法结果不写回。
+“像素高度查询”和“原图叠加”两页均支持。图像首次加载完成后，将鼠标移动到像素上即可出现中文浮窗。有效点显示 u/v、XYZ（mm）、相对平均水面高度（mm），高度突出显示。移动到另一个像素，值立即变化；备用输入框位于“精确像素查询（备用）”。
 
-高度图直接读取冻结 NetCDF 的毫米数组，不修正高度。source、凸包内插值和凸包外外推百分比直接读取已有审计统计；没有新生成 support 掩码或新插值。100% finite 网格不能说成 100% 直接测量。
+采用 [Plotly 官方原生 hovertemplate/customdata](https://plotly.com/python/hover-text-and-formatting/)：冻结图像为底图，透明 Heatmap 为逐像素交互层。浏览器直接从已加载数据生成浮窗，不运行每次 mousemove→Streamlit rerun，不使用 streamlit-plotly-events。新层没有新插值、表面补全、坐标校正或高度修正。
 
-Overlay 页展示五份完整官方输出，均不重新计算；第一帧另显示此前冻结的中央水面展示遮罩。全幅叠加延伸到墙、尺子等非水面，不能把这些部分说成真实水面成果。
+数据量为全尺寸查询表，首次加载/换帧需要传输，不能与加载完成后的悬停延迟混为一谈。MAT 缓存最多一帧；显示数据仅将 m 转为 mm，并用 float32 存储，允许微小浮点舍入。无空间下采样，不跳过查询像素。
 
-像素查询使用 **官方渲染图像的 2400×1350 坐标**，不是原视频或左右输入图的像素坐标；原点左上，u 向右、v 向下。读取已有 savexyz MAT，XYZ 单位 m，H=1000×MAT 的 Z（mm）。MAT Z 已使用官方 wassncplot 渲染约定：NetCDF Z/1000 减官方 meta.zmean；UI 不再置零或改偏置。
+## 坐标审计：绝不能把右图或网页坐标混进来
 
-有效值标明 OFFICIAL_RENDERED_DCT_GRID，但逐像素直接观测/插值/外推类别无法可靠区分，provenance 显示 **UNKNOWN**，不猜测 DIRECT。背景或官方 0/1 sentinel 返回 UNSUPPORTED，不返回伪造高度。越界输入或缺文件显示简短错误和具体路径，不显示 Python traceback。
+五份 MAT 均保存变量 `px_2_3D`，形状 **1350×2400×3**，属于图像尺寸 dense XYZ lookup（结构 B），含官方背景 0/1 sentinel。索引是 `MAT[v,u,:]`，不是 `MAT[u,v,:]`。
 
-## 冻结规则与 fallback
+**本轮底图“原尺寸图像”指冻结官方渲染图像/Overlay，2400×1350；不是原视频的 1920×1080 LEFT/RIGHT 原始采集像素。** 其坐标对应官方去畸变计算左图 cam0，官方 setup 使用 stereo_image_idx=0；没有 RIGHT/cam1 查询表，不能把 cam0 值贴到右相机原图。
 
-基线：`demo/vieira2025-end-to-end`，commit `7224ef1366b574fcd8f478d6ecba1c4550822be3`。
+为了严格保持算法/资产冻结，没有重新建立原视频→去畸变渲染图的映射，也不冒充支持原视频原始像素查询。要查询原视频像素，需要下一轮单独验证冻结几何下的映射，不能只按分辨率缩放猜坐标。
 
-Golden Demo v1：`D:\stereo-wave-height-runs\vieira2025-end-to-end-demo-20260916\golden_004_demo`。
-[manifest](presentation_assets/vieira2025_end_to_end_demo/demo_manifest.json) 记录 299 个冻结文件的 SHA256。UI 仅以只读方式加载 PLY/MAT/NetCDF/图片，缓存保存在内存；不会改 K/D、R/T、sync、XYZ、mesh、plane、grid、pixel XYZ 或 height，也不会运行 WASS。
+本轮查询底图与 MAT 原尺寸完全一致。Plotly 坐标轴以原图像素为单位：x=u，y=v，像素中心从 0 开始，y 轴反向，原点左上。网页显示缩小后，浮窗仍显示 0–2399 / 0–1349，不是屏幕坐标。原图与 MAT 尺寸不一致即停止查询。
 
-该样例使用来源明确的历史 K/D/R/T（DEMO FALLBACK / TRACEABLE HISTORICAL K/D/R/T），新执行的 autocalibrate 输出保留但未采用。当前不是完整无 fallback 的 Vieira 科学复现。详情：[端到端报告](DEMO_VIEIRA2025_END_TO_END_ZH.md)。严格科学 Track A 保持原结论。
+XYZ 是官方平均水面坐标，单位 m；UI 显示时乘 1000 转为 mm。冻结 MAT 的 Z 已应用 wassncplot 约定（NetCDF Z/1000 减官方 meta.zmean），因此 H_mm=1000×MAT_Z，Z 与 H 相同是正确的坐标约定，不是相机深度被再次置零。
 
-GitHub 保存 UI、文档、小图和 manifest；大文件依然在本机冻结目录，不宣称大文件已上传。缺少本地文件时程序给出 exact path；小图首页仍可查看。
+## 无数据与来源
 
-## 官方工具核验（2026-09-16）
+NaN、背景 0/1 sentinel：显示“该像素暂无有效三维高度数据”，不显示 0 mm，不取邻近高度，不补洞。越界输入显示中文范围错误。缺文件显示“黄金演示文件缺失：具体路径”，不显示 Python traceback。
 
-- [wass_lowcost 官方仓库](https://github.com/matheusdpv/wass_lowcost) 提供 setup_sync.py、wass_sync.py、同步说明及样例，不提供本次八页式独立汇报 GUI。
-- [WASS 官方项目](https://github.com/fbergama/wass) 是重建计算流程；历史 [WASSjs 官方安装说明](https://www.dsi.unive.it/wass/documentation/install.html) 提供浏览器工作流服务配置，但本次未安装或运行 WASSjs，也没有把它宣称为完整点云/高度/查询汇报界面。
-- [wasscli 官方说明](https://pypi.org/project/wasscli/) 定义为交互式命令行，自动化 Prepare→Match→Autocalibrate→Stereo，不是汇报 GUI。
-- [wassncplot 官方仓库](https://github.com/fbergama/wassncplot) 将 WASS/网格 NetCDF 三维结果渲染叠加到图像，支持保存图像与 savexyz。本 UI 展示它已有的输出，不修改第三方项目或渲染结果。
+有效浮窗显示“数据来源：未知（官方规则网格估计）”：数值产生方法可知，但逐像素直接观测/插值/外推的支撑类别无法可靠区分，不猜成“直接双目观测”。网格来源点占格率约 18.93%–20.55%，不是全幅水面直接测量率。规则网格 100% 有数值不代表 100% 由双目直接观测。
 
-因此本次只新增最薄 Python + Streamlit + Plotly 展示层，没有 Qt、Electron、React 或新算法。
+## 三点逐项核对（第一帧，单位 mm）
 
-## 结论与下一步
+以下数值由原有 MAT/查询函数和新 hover lookup 分别读取；三个点的 u/v 一致，XYZ/H 在显示到小数点后三位时完全一致，完整浮点差小于 0.0001 mm。
 
-可证明：真实输入可生成 WASS XYZ、公共网格、NetCDF、叠加图及像素查询；固定五帧工程演示可运行。
+| 像素 u,v | X | Y | Z | H | MAT vs Hover |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 1000,1050 | −110.563 | 272.334 | −10.598 | −10.598 | 一致 |
+| 1100,1000 | −88.713 | 246.750 | 0.256 | 0.256 | 一致 |
+| 1000,1000 | −108.221 | 252.700 | −5.612 | −5.612 | 一致 |
 
-不可证明：厘米级精度、绝对波高正确、全水面直接观测、严格无 fallback Vieira 复现、人眼趋势已验证。
+浏览器现场实测：仅移动鼠标、不点击，第一帧 (998,1051) 显示 X=−110.979、Y=272.585、Z/H=−10.570 mm；移动至 (1099,1001) 立即变为 X=−88.929、Y=247.144、Z/H=+0.134 mm。实际位置由图轴维护，没有用屏幕像素冒充原图像素。
 
-下一步 GoPro HERO9 严格复现需可靠标定、同步、基线和独立物理误差验证。仅作为最后一页规划，不在本次开发范围。
+五帧现场悬停均已验证，同一原尺寸像素 (998,1051) 的 H 依次为 −10.570、+1.114、−3.077、−6.718、−2.287 mm；每次换帧后读取对应图像和 MAT。第五帧 (10,8) 明确显示“该像素暂无有效三维高度数据”，没有输出 0 或邻近高度。验收过程中使用零位移滚动输入仅移动指针，未点击图像触发查询。
 
-验证包含八页启动/切换、五帧读取、PLY/NetCDF/MAT、有效/越界像素、UNKNOWN/UNSUPPORTED provenance、缺文件友好提示，以及 UI 操作前后 299 个冻结文件哈希一致。没有校准实验或 WASS 执行。
+## 冻结与边界
 
-本次结果：针对性测试 3 passed；全套 479 passed、1 skipped、4 subtests passed。实际 Streamlit 服务启动成功，localhost 健康检查返回 ok；Python compile、Markdown UTF-8/本地链接和 git diff 检查通过。冻结资产及已有算法文件相对基线无 Git 差异。
+原稳定 UI 基线 `2d331fe057247db1083588f7dd2b806e99e25aff`，算法基线 `7224ef1366b574fcd8f478d6ecba1c4550822be3`。Golden 目录：`D:\stereo-wave-height-runs\vieira2025-end-to-end-demo-20260916\golden_004_demo`。
+[manifest](presentation_assets/vieira2025_end_to_end_demo/demo_manifest.json) 的 299 个文件继续保持原哈希。原算法脚本、manifest、已有图片和大文件均不修改。WASS executions=0，标定实验=0。
+
+历史 K/D/R/T 明示为“演示备用内外参（来源可追溯的历史 K/D/R/T）”；新 autocalibrate 输出保留但未采用。详情见[工程报告](DEMO_VIEIRA2025_END_TO_END_ZH.md)。
+
+官方关系保持不变：[wass_lowcost](https://github.com/matheusdpv/wass_lowcost) 提供同步脚本，[WASS](https://github.com/fbergama/wass) / [wasscli](https://pypi.org/project/wasscli/) 提供计算流程，[wassncplot](https://github.com/fbergama/wassncplot) 产生已冻结的叠加和 MAT；历史 WASSjs 是工作流界面。本程序仅补充汇报展示，没有修改第三方。
+
+可证明固定样例工程链路、可视化和已有像素查询表的浏览器悬停能力；不能证明厘米级精度、真实波高绝对正确、全水面直接观测、严格无备用参数 Vieira 复现或人眼趋势正确。最后一页的 GoPro HERO9 只是后续严格验证规划，不在本轮开发。
+
+测试：全套 481 passed、1 skipped、4 subtests passed。新增两项测试覆盖原尺寸图轴、x/y 方向、无数据不补邻值、五帧对应 MAT、15 个逐项数值比较及相机 cam0 约定。原 UI 回归测试覆盖八页、五帧切换、越界、缺文件、中文提示和 299 项冻结哈希。编译、UTF-8、文档本地链接及 git diff 检查通过。
