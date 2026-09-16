@@ -1,0 +1,6 @@
+streamlit==1.64.0
+plotly==7.1.0
+plyfile==1.1.5
+netCDF4
+scipy
+numpy
