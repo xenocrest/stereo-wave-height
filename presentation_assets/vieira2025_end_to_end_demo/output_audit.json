@@ -1,0 +1,123 @@
+{
+  "status": "OFFICIAL_OUTPUTS_AUDITED",
+  "frames": [
+    {
+      "index": 0,
+      "source_points": 133419,
+      "finite_points": 133419,
+      "positive_projective_depth_points": 133419,
+      "source_points_in_water_display_roi": 0,
+      "source_occupied_grid_cells": 12677,
+      "source_supported_grid_percent": 19.34356689453125,
+      "interpolated_inside_hull_percent": 28.96881103515625,
+      "extrapolated_outside_hull_percent": 51.6876220703125,
+      "finite_grid_cells": 65536,
+      "height_min_mm": -102.2681655883789,
+      "height_max_mm": 59.559226989746094,
+      "height_median_mm": -0.03359227627515793
+    },
+    {
+      "index": 1,
+      "source_points": 142129,
+      "finite_points": 142129,
+      "positive_projective_depth_points": 142129,
+      "source_points_in_water_display_roi": 2038,
+      "source_occupied_grid_cells": 13466,
+      "source_supported_grid_percent": 20.5474853515625,
+      "interpolated_inside_hull_percent": 16.8487548828125,
+      "extrapolated_outside_hull_percent": 62.603759765625,
+      "finite_grid_cells": 65536,
+      "height_min_mm": -30.307796478271484,
+      "height_max_mm": 9.863356590270996,
+      "height_median_mm": 0.27339380979537964
+    },
+    {
+      "index": 2,
+      "source_points": 134047,
+      "finite_points": 134047,
+      "positive_projective_depth_points": 134047,
+      "source_points_in_water_display_roi": 463,
+      "source_occupied_grid_cells": 12406,
+      "source_supported_grid_percent": 18.9300537109375,
+      "interpolated_inside_hull_percent": 13.99383544921875,
+      "extrapolated_outside_hull_percent": 67.07611083984375,
+      "finite_grid_cells": 65536,
+      "height_min_mm": -22.25361442565918,
+      "height_max_mm": 13.797860145568848,
+      "height_median_mm": 0.5798070430755615
+    },
+    {
+      "index": 3,
+      "source_points": 136605,
+      "finite_points": 136605,
+      "positive_projective_depth_points": 136605,
+      "source_points_in_water_display_roi": 183,
+      "source_occupied_grid_cells": 13409,
+      "source_supported_grid_percent": 20.46051025390625,
+      "interpolated_inside_hull_percent": 19.1436767578125,
+      "extrapolated_outside_hull_percent": 60.39581298828125,
+      "finite_grid_cells": 65536,
+      "height_min_mm": -87.90644073486328,
+      "height_max_mm": 58.43925476074219,
+      "height_median_mm": 1.7408945560455322
+    },
+    {
+      "index": 4,
+      "source_points": 135478,
+      "finite_points": 135478,
+      "positive_projective_depth_points": 135478,
+      "source_points_in_water_display_roi": 455,
+      "source_occupied_grid_cells": 12803,
+      "source_supported_grid_percent": 19.53582763671875,
+      "interpolated_inside_hull_percent": 19.51446533203125,
+      "extrapolated_outside_hull_percent": 60.94970703125,
+      "finite_grid_cells": 65536,
+      "height_min_mm": -85.25819396972656,
+      "height_max_mm": 29.3428897857666,
+      "height_median_mm": 0.5707492828369141
+    }
+  ],
+  "official_mapping_valid_pixels": 1214460,
+  "mean_plane": [
+    -0.03610987261696949,
+    -0.7336403939013557,
+    0.6772072707301777,
+    -3.1178167893301794
+  ],
+  "water_display_roi_undistorted_computational_cam0": [
+    [
+      650.0,
+      700.0
+    ],
+    [
+      950.0,
+      700.0
+    ],
+    [
+      950.0,
+      950.0
+    ],
+    [
+      650.0,
+      950.0
+    ]
+  ],
+  "query": {
+    "rendered_pixel_xy": [
+      1000,
+      1050
+    ],
+    "sea_plane_xyz_m": [
+      -0.1105625182390213,
+      0.2723340690135956,
+      -0.010597729124128819
+    ],
+    "height_mm_from_official_render": -10.597728729248047,
+    "pixel_center_closure_error_px": 0.001751750234225517,
+    "provenance": "OFFICIAL_GRID_INTERPOLATED_ESTIMATED_NOT_DIRECT_PIXEL_MEASUREMENT",
+    "height_convention": "wassncplot shader: NetCDF Z/1000 minus official meta.zmean"
+  },
+  "physically_validated": false,
+  "under_1cm_verified": false,
+  "full_grid_is_not_full_direct_water_measurement": true
+}

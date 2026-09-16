@@ -1,0 +1,8 @@
+{
+  "output": "D:/stereo-wave-height-runs/vieira2025-end-to-end-demo-20260916/fresh_004/chain",
+  "sync": "D:/stereo-wave-height-runs/vieira2025-end-to-end-demo-20260916/fresh_004/sync",
+  "fallback_calibration": "D:/stereo-wave-height-runs/HomeTank_004/wave-reconstruction-pipeline-20260824/wass_workspace/config",
+  "wass_bin": "D:/wass/dist/bin",
+  "stereo_config": "D:/research/stereo-wave-height/presentation_assets/vieira2025_end_to_end_demo/official_stereo_config.txt",
+  "baseline_m": 0.06868471158474378
+}

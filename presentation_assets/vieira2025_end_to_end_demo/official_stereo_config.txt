@@ -1,0 +1,5 @@
+# Unmodified WASS options. No artificial geometry or numerical height offset.
+USE_CUSTOM_STEREORECTIFY=true
+SAVE_FULL_MESH=true
+SAVE_AS_PLY=true
+RANDOM_SEED=20260916

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "method": "wass_lowcost TLCC: FFmpeg PCM 48 kHz stereo; 101-tap 1000 Hz FIR high-pass; Praat peak cross-correlation/Sinc70 maximum",
+  "praat_cross_correlation_definition": "cross_corr(left,right)(tau)=integral left(t)*right(t+tau)dt; paired right_time=left_time+tau",
+  "left_video": "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam0_iQOO_Neo5S.mp4",
+  "left_sha256": "10a6d2db9279ab3efee8b3e65a1886a1b05f9cb281367c261b54fd2dc4fccaf2",
+  "right_video": "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam1_iQOO_Z10_TurboPlus.mp4",
+  "right_sha256": "0866ee9451be313981fa72c868da24a8db70c0a04e2a80485b2d9c1279b0f8b6",
+  "ffmpeg": "D:\\FormatFactory\\ffmpeg.exe",
+  "praat": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\praat\\Praat.exe",
+  "praat_sha256": "e40259cfa125b34a04580f96167ff2112a6f656d83a98c4ea2ca2dbcb3cb428b",
+  "window_start_s": 0.0,
+  "window_end_s": 30.0,
+  "audio_lag_right_minus_left_s": -0.07507001632731439,
+  "nominal_frame_lag_at_60fps": -4.504200979638863,
+  "output_sampling_fps": 10.0,
+  "output_frame_count": 5,
+  "source_vfr_cfr_note": "Both raw containers retain their original timing; frames are newly sampled by timestamp after TLCC, so no historical frame indices or synchronization are reused.",
+  "frame_mapping": [
+    {
+      "output_index": 0,
+      "left_requested_timestamp_s": 20.0,
+      "right_requested_timestamp_s": 19.924929983672687,
+      "right_minus_left_s": -0.07507001632731439,
+      "left_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam0\\000000.png",
+      "right_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam1\\000000.png"
+    },
+    {
+      "output_index": 1,
+      "left_requested_timestamp_s": 20.1,
+      "right_requested_timestamp_s": 20.02492998367269,
+      "right_minus_left_s": -0.07507001632731439,
+      "left_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam0\\000001.png",
+      "right_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam1\\000001.png"
+    },
+    {
+      "output_index": 2,
+      "left_requested_timestamp_s": 20.2,
+      "right_requested_timestamp_s": 20.124929983672686,
+      "right_minus_left_s": -0.07507001632731439,
+      "left_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam0\\000002.png",
+      "right_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam1\\000002.png"
+    },
+    {
+      "output_index": 3,
+      "left_requested_timestamp_s": 20.3,
+      "right_requested_timestamp_s": 20.224929983672688,
+      "right_minus_left_s": -0.07507001632731439,
+      "left_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam0\\000003.png",
+      "right_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam1\\000003.png"
+    },
+    {
+      "output_index": 4,
+      "left_requested_timestamp_s": 20.4,
+      "right_requested_timestamp_s": 20.324929983672686,
+      "right_minus_left_s": -0.07507001632731439,
+      "left_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam0\\000004.png",
+      "right_file": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\sync\\cam1\\000004.png"
+    }
+  ]
+}

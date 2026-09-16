@@ -1,0 +1,111 @@
+{
+  "stages": {
+    "prepare": [
+      {
+        "return_code": 0,
+        "elapsed_s": 0.15616399999998976,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\prepare_000000.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 0.15005629999996017,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\prepare_000001.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 0.16608399999995527,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\prepare_000002.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 0.1543191000000661,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\prepare_000003.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 0.15091380000012578,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\prepare_000004.log"
+      }
+    ],
+    "match": [
+      {
+        "return_code": 0,
+        "elapsed_s": 11.141466400000127,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\match_000000.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 12.326801400000022,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\match_000001.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 11.40108639999994,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\match_000002.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 9.991032599999926,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\match_000003.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 8.385866400000168,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\match_000004.log"
+      }
+    ],
+    "stereo": [
+      {
+        "return_code": 0,
+        "elapsed_s": 1.5315895999999611,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\stereo_000000.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 1.5587884999999915,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\stereo_000001.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 1.5307668999998896,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\stereo_000002.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 1.3860355000001618,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\stereo_000003.log"
+      },
+      {
+        "return_code": 0,
+        "elapsed_s": 1.4594781000000694,
+        "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\stereo_000004.log"
+      }
+    ],
+    "autocalibrate": {
+      "return_code": 0,
+      "elapsed_s": 0.051580300000068746,
+      "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\autocalibrate.log"
+    },
+    "setup": {
+      "return_code": 0,
+      "elapsed_s": 5.485089199999948,
+      "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\setup.log"
+    },
+    "grid": {
+      "return_code": 0,
+      "elapsed_s": 16.962454999999864,
+      "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\grid.log"
+    },
+    "wassncplot": {
+      "return_code": 4294967295,
+      "elapsed_s": 1.4302121000000625,
+      "log": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\fresh_004\\chain\\logs\\wassncplot.log"
+    }
+  },
+  "successful_stereo_count": 5,
+  "workspace_count": 5,
+  "extrinsics_fallback": true,
+  "intrinsics_fallback": true,
+  "physically_validated": false,
+  "status": "BLOCKED_AT_WASSNCPLOT"
+}

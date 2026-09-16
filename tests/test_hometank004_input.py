@@ -86,6 +86,7 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "rectification_policy_compatibility_report.md",
             "wassfast_trial_config.json", "wassfast_trial_report.md",
             "foundationstereo_height_stability.json",
+            "vieira_wass_repro_config.yaml",
         }
         self.assertEqual({path.name for path in root.iterdir()}, expected)
         self.assertIn("CALIBRATION_QUALITY_FAIL", (root / "manifest.yaml").read_text(encoding="utf-8"))

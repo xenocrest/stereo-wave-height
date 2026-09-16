@@ -1,0 +1,9 @@
+# Same unmodified official pipeline as official_stereo_config.txt.
+# Full-image RANSAC draws three pixels, rather than three valid points.
+# 18086/(4066*600) occupancy: ceil(log(.01)/log(1-p^3)) ~= 11.3e6.
+# One confidence-derived attempt; no threshold/geometry change or grid search.
+USE_CUSTOM_STEREORECTIFY=true
+SAVE_FULL_MESH=true
+SAVE_AS_PLY=true
+RANDOM_SEED=20260916
+PLANE_RANSAC_ROUNDS=11400000
