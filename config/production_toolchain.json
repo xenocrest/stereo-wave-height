@@ -1,0 +1,24 @@
+{
+  "python": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\python.exe",
+  "wass_bin": "D:\\wass\\dist\\bin",
+  "ffmpeg": "D:\\FormatFactory\\ffmpeg.exe",
+  "praat": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\praat\\Praat.exe",
+  "wass_lowcost": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass_lowcost",
+  "wass_source": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master",
+  "project_root": "D:\\stereo-wave-height-runs\\production-workflow-v1-projects",
+  "example": {
+    "calibration_left": "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\calibration\\calibration_cam0_iQOO_Neo5S.mp4",
+    "calibration_right": "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\calibration\\calibration_cam1_iQOO_Z10_TurboPlus.mp4",
+    "measurement_left": "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam0_iQOO_Neo5S.mp4",
+    "measurement_right": "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam1_iQOO_Z10_TurboPlus.mp4",
+    "historical_calibration": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config",
+    "stereo_config": "D:\\stereo-wave-height-runs\\vieira2025-end-to-end-demo-20260916\\official_stereo_config.txt",
+    "source_experiment": "HomeTank_004 wave-reconstruction-pipeline-20260824",
+    "source_commit_report": "9a6bf946b16ec678ce1538f7e948d8ebf3fda6fb / VIEIRA_WASS_REPRO_AUDIT_ZH.md",
+    "baseline_m": 0.07,
+    "image_size_wh": [1920,1080],
+    "known_time_s": 20.0,
+    "pattern": [6, 9],
+    "square_m": 0.02
+  }
+}
