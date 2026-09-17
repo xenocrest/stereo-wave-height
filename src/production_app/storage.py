@@ -32,10 +32,15 @@ class ProjectStore:
             raise ValueError('项目已存在，请使用打开项目')
         root.mkdir(parents=True, exist_ok=True)
         p = Project(name, str(root))
+        p.workspace_directory = str(root / 'workspace')
+        for folder in ('calibration', 'sync', 'reference', 'frames', 'logs'):
+            (root / 'workspace' / folder).mkdir(parents=True, exist_ok=True)
         self.save(p)
         return p
 
     def save(self, project):
+        if not project.workspace_directory:
+            project.workspace_directory = str(Path(project.directory) / 'workspace')
         write_json(Path(project.directory) / 'project.json', project.record())
         write_json(Path(project.directory) / 'TOOLCHAIN_PROVENANCE.json', project.toolchain)
 

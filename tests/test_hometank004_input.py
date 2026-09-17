@@ -88,7 +88,9 @@ class HomeTank004InputInspectionTests(unittest.TestCase):
             "foundationstereo_height_stability.json",
             "vieira_wass_repro_config.yaml",
         }
-        self.assertEqual({path.name for path in root.iterdir()}, expected)
+        # Local desktop project records are not registered experiment inputs.
+        local_project_records = {"project.json", "TOOLCHAIN_PROVENANCE.json"}
+        self.assertEqual({path.name for path in root.iterdir()} - local_project_records, expected)
         self.assertIn("CALIBRATION_QUALITY_FAIL", (root / "manifest.yaml").read_text(encoding="utf-8"))
         self.assertIn("strict_calibration_failed: true", (root / "calibration_result.yaml").read_text(encoding="utf-8"))
         self.assertIn("approved_for_wass: false", (root / "calibration_result.yaml").read_text(encoding="utf-8"))

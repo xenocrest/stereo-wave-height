@@ -206,3 +206,115 @@ def test_worker_uses_writable_project_directory(tmp_path,monkeypatch):
     assert w.process.workingDirectory()==p.directory
     w.process.waitForFinished(100)
     w.close()
+
+
+@pytest.fixture
+def project_ui(tmp_path,monkeypatch):
+    monkeypatch.setenv('QT_QPA_PLATFORM','offscreen')
+    from production_app import presentation as ui
+    from production_app.application import ProjectService
+    monkeypatch.setattr('production_app.application.provenance',lambda tools:{'test_toolchain':'unchanged'})
+    app=ui.QApplication.instance() or ui.QApplication([])
+    window=ui.ProductionWindow({'project_root':str(tmp_path/'projects')},tmp_path)
+    warnings=[]
+    monkeypatch.setattr(ui.QMessageBox,'warning',lambda *a:warnings.append(a[2]))
+    yield window,app,warnings,ui,ProjectService
+    window.close()
+
+
+def dialog_values(monkeypatch,ui,name,directory):
+    def accept(dialog):
+        dialog.name.setText(name);dialog.directory.setText(str(directory))
+        return ui.QDialog.DialogCode.Accepted
+    monkeypatch.setattr(ui.ProjectDialog,'exec',accept)
+
+
+def test_startup_and_save_without_project_feedback(project_ui):
+    w,app,warnings,ui,_=project_ui
+    assert w.project is w.active_project is w.current_project is None
+    assert w.task_status.text()=='尚未创建或打开项目'
+    assert not any(item.text().endswith('.mp4') for item in w.findChildren(ui.QLabel))
+    assert all(not(w.navigation.item(i).flags()&ui.Qt.ItemFlag.ItemIsEnabled) for i in range(1,5))
+    save=next(a for a in w.menuBar().actions()[0].menu().actions() if a.text()=='保存项目')
+    save.trigger()
+    assert warnings and '新建项目' in warnings[-1] and '打开已有项目' in warnings[-1]
+    w.save_project_as();assert len(warnings)==2
+
+
+def test_new_save_open_workflow_and_workspace(project_ui,tmp_path,monkeypatch):
+    w,app,warnings,ui,service=project_ui
+    root=tmp_path/'new'
+    dialog_values(monkeypatch,ui,'新项目',root)
+    w.new_project()
+    assert w.current_project is w.active_project is w.project
+    assert (root/'project.json').exists() and '当前项目：' in w.task_status.text()
+    for name in ('calibration','sync','reference','frames','logs'):
+        assert (root/'workspace'/name).is_dir()
+    w.navigation.setCurrentRow(1)
+    assert any('请先导入左右标定视频' in q.text() for q in w.findChildren(ui.QLabel))
+    w.cols.setValue(8)
+    w.navigation.setCurrentRow(0)
+    button=next(b for b in w.findChildren(ui.QPushButton) if b.text()=='保存项目')
+    button.click()
+    saved=ProjectStore().open(root/'project.json')
+    assert saved.workflow['cols']==8 and '项目已保存：' in w.task_status.text()
+    assert saved.toolchain=={'test_toolchain':'unchanged'}
+    monkeypatch.setattr(ui.QFileDialog,'getOpenFileName',lambda *a:(str(root/'project.json'),''))
+    w.open_project()
+    assert w.project.record()==saved.record()
+    assert '当前项目：' in w.task_status.text() and not warnings
+
+
+def test_save_as_preserves_four_video_metadata_and_science_references(project_ui,tmp_path,monkeypatch):
+    w,app,warnings,ui,service=project_ui
+    original=ProjectStore().create(tmp_path/'original','original')
+    raw=video(tmp_path);v=VideoSourceAdapter(raw);meta=v.metadata();v.close()
+    meta['sha256']=digest(raw)
+    original.videos={k:dict(meta) for k in ['calibration_left','calibration_right','measurement_left','measurement_right']}
+    original.sync={'right_minus_left_s':0,'method':'saved official fixture'}
+    # Keep artifact references unmodified; this test performs no science call.
+    original.reference={'setup':'official/config.mat','baseline_m':.07,'provenance':{'method':'official'}}
+    original.frames={'official_frame':{'files':{'mapping':'official/current.mat'}}}
+    original.toolchain={'official_source_hash':'same'}
+    ProjectStore().save(original)
+    w.set_project(original)
+    w.navigation.setCurrentRow(1);w.cols.setValue(6)
+    w.save_project()
+    dialog_values(monkeypatch,ui,'copied',tmp_path/'copied')
+    w.save_project_as()
+    assert w.project.directory==str((tmp_path/'copied').resolve())
+    assert '项目已另存为' in w.task_status.text()
+    copied=ProjectStore().open(tmp_path/'copied/project.json')
+    for name in ['videos','sync','reference','frames','toolchain']:
+        assert getattr(copied,name)==getattr(original,name)
+    assert copied.workflow['cols']==6
+    assert copied.workflow['saved_from_project']['sha256']==digest(tmp_path/'original/project.json')
+    assert not (tmp_path/'copied/input.avi').exists()
+    assert all(w.navigation.item(i).flags()&ui.Qt.ItemFlag.ItemIsEnabled for i in range(1,5))
+    w.close()
+    reopened=ui.ProductionWindow({},tmp_path);reopened.set_project(copied)
+    assert len(reopened.project.videos)==4 and reopened.cols.value()==6
+    assert reopened.navigation.currentRow()==1
+    reopened.close()
+    assert not warnings
+
+
+def test_example_is_real_project_not_prefill(project_ui,tmp_path,monkeypatch):
+    w,app,warnings,ui,service=project_ui
+    from production_app.application import ProjectService
+    w.tools['example']={k:f'raw/{k}.mp4' for k in ['calibration_left','calibration_right','measurement_left','measurement_right']}
+    def input_fixture(self,p,key,path):
+        p.videos[key]={'path':path,'width':1920,'height':1080,'fps':30,'frame_count':60,
+                       'duration_s':2,'has_audio':True,'codec_fourcc':1}
+        self.store.save(p)
+    monkeypatch.setattr(ProjectService,'input',input_fixture)
+    assert not w.project
+    w.example()
+    path=Path(w.tools['project_root'])/'HomeTank_004_example/project.json'
+    assert path.is_file() and len(ProjectStore().open(path).videos)==4
+    assert w.project is w.active_project and '当前项目：' in w.task_status.text()
+    w.save_project();assert '项目已保存：' in w.task_status.text()
+    w.navigation.setCurrentRow(1)
+    detection=next(b for b in w.findChildren(ui.QPushButton) if b.text()=='抽帧与官方棋盘检测')
+    assert detection.isEnabled()
+    assert not warnings

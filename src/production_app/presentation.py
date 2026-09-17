@@ -4,6 +4,7 @@ import math
 from pathlib import Path
 import sys
 import uuid
+import traceback
 import cv2
 import numpy as np
 from scipy.io import loadmat
@@ -12,7 +13,8 @@ from PySide6.QtCore import Qt,QTimer,QProcess,QProcessEnvironment,QPointF
 from PySide6.QtGui import QImage,QPixmap,QFont,QAction
 from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QLabel,
     QListWidget,QPushButton,QFileDialog,QLineEdit,QSpinBox,QDoubleSpinBox,QSlider,QComboBox,
-    QGraphicsView,QGraphicsScene,QMessageBox,QTableWidget,QTableWidgetItem,QToolTip,QSplitter,QPlainTextEdit,QScrollArea)
+    QGraphicsView,QGraphicsScene,QMessageBox,QTableWidget,QTableWidgetItem,QToolTip,QSplitter,QPlainTextEdit,QScrollArea,
+    QDialog,QDialogButtonBox,QFormLayout)
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 import matplotlib
@@ -105,6 +107,37 @@ def label(text):
     return q
 
 
+class ProjectDialog(QDialog):
+    """Project metadata only; no scientific settings or calculations."""
+    def __init__(self, parent, title, suggested_name=''):
+        super().__init__(parent)
+        self.setWindowTitle(title)
+        self.resize(650,180)
+        form=QFormLayout(self)
+        self.name=QLineEdit(suggested_name)
+        self.directory=QLineEdit()
+        form.addRow('项目名称',self.name)
+        path_row=QWidget();row=QHBoxLayout(path_row);row.setContentsMargins(0,0,0,0)
+        row.addWidget(self.directory)
+        browse=QPushButton('选择目录…');row.addWidget(browse)
+        browse.clicked.connect(self.browse)
+        form.addRow('项目目录（英文路径）',path_row)
+        buttons=QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText('确定')
+        buttons.button(QDialogButtonBox.StandardButton.Cancel).setText('取消')
+        buttons.accepted.connect(self.validate);buttons.rejected.connect(self.reject)
+        form.addRow(buttons)
+
+    def browse(self):
+        path=QFileDialog.getExistingDirectory(self,'选择项目目录')
+        if path:self.directory.setText(path)
+
+    def validate(self):
+        if not self.name.text().strip() or not self.directory.text().strip():
+            QMessageBox.warning(self,'项目信息不完整','请输入项目名称和项目目录。');return
+        self.accept()
+
+
 class ProductionWindow(QMainWindow):
     def __init__(self,tools,source_root):
         super().__init__()
@@ -133,13 +166,13 @@ class ProductionWindow(QMainWindow):
         self.content=QVBoxLayout(self.body)
         scroll=QScrollArea();scroll.setWidgetResizable(True);scroll.setWidget(self.body)
         split.addWidget(scroll)
-        self.task_status=label('请新建或打开项目。')
+        self.task_status=label('尚未创建或打开项目')
         vertical.addWidget(self.task_status)
         self.navigation.currentRowChanged.connect(self.render)
         for name in ['文件','项目','标定','参考面','测量','结果','帮助']:
             self.menuBar().addMenu(name)
         file_menu=self.menuBar().actions()[0].menu()
-        for title,call in [('新建项目',self.new_project),('打开项目',self.open_project),('保存项目',self.save_project),('打开示例项目',self.example)]:
+        for title,call in [('新建项目',self.new_project),('打开项目',self.open_project),('保存项目',self.save_project),('项目另存为…',self.save_project_as),('打开 HomeTank_004 示例项目',self.example)]:
             action=QAction(title,self)
             action.triggered.connect(lambda checked=False,fn=call:self.guard(fn))
             file_menu.addAction(action)
@@ -157,6 +190,11 @@ class ProductionWindow(QMainWindow):
         try:
             return fn()
         except Exception as error:
+            root=Path(self.project.directory)/'workspace/logs' if self.project else Path(self.tools.get('project_root',self.source_root))
+            root.mkdir(parents=True,exist_ok=True)
+            with (root/'application_errors.log').open('a',encoding='utf-8') as log:
+                log.write(traceback.format_exc()+'\n')
+            self.task_status.setText('操作失败：'+str(error)[:160])
             QMessageBox.warning(self,'操作失败',f'{type(error).__name__}: {error}')
 
     def button(self,text,fn,enabled=True):
@@ -169,33 +207,86 @@ class ProductionWindow(QMainWindow):
         return self.process is not None and self.process.state()!=QProcess.ProcessState.NotRunning
 
     def new_project(self):
-        directory=QFileDialog.getExistingDirectory(self,'选择新项目目录')
-        if directory:
-            self.set_project(ProjectService(self.tools).create(directory,Path(directory).name))
+        if self.busy():raise ValueError('后台任务进行中，请等待结束后切换项目。')
+        dialog=ProjectDialog(self,'新建项目')
+        if dialog.exec()==QDialog.DialogCode.Accepted:
+            self.set_project(ProjectService(self.tools).create(dialog.directory.text().strip(),dialog.name.text().strip()))
 
     def open_project(self):
         filename,_=QFileDialog.getOpenFileName(self,'打开项目','','项目 (*.json)')
         if filename:
-            self.set_project(ProjectStore().open(filename))
+            self.set_project(ProjectService(self.tools).open(filename))
 
     def save_project(self):
-        if self.project:
-            ProjectStore().save(self.project)
+        if not self.require_project():return
+        if self.busy():raise ValueError('后台任务进行中，请等待结束后保存项目。')
+        self.capture_workflow()
+        ProjectService(self.tools).save(self.project)
+        self.task_status.setText('项目已保存：'+str(Path(self.project.directory)/'project.json'))
+
+    def require_project(self):
+        if self.project is not None:return True
+        message='当前尚未创建或打开项目。\n请选择：\n1. 新建项目\n2. 打开已有项目\n3. 将当前数据另存为新项目（需先有活动项目数据）'
+        self.task_status.setText('尚未创建或打开项目')
+        QMessageBox.warning(self,'尚未打开项目',message)
+        return False
+
+    @property
+    def current_project(self):
+        return self.project
+
+    @property
+    def active_project(self):
+        return self.project
+
+    def capture_workflow(self, page=None):
+        if not self.project:return
+        state=self.project.workflow
+        state.update(navigation=self.navigation.currentRow(),left_frame=getattr(self,'frame_index',0),
+                     mode=getattr(self,'mode_index',0))
+        fields={1:['cols','rows','square','interval','candidate_limit','ext_time'],
+                2:['ref_time','baseline','center_x','center_y','area_size']}
+        page=self.navigation.currentRow() if page is None else page
+        for field in fields.get(page,[]):
+            widget=getattr(self,field,None)
+            if widget is not None:state[field]=widget.value()
+
+    def save_project_as(self):
+        if not self.require_project():return
+        if self.busy():raise ValueError('后台任务进行中，请等待结束后另存项目。')
+        dialog=ProjectDialog(self,'项目另存为',self.project.name+'_copy')
+        if dialog.exec()!=QDialog.DialogCode.Accepted:return
+        self.capture_workflow()
+        ProjectService(self.tools).save(self.project)
+        copied=ProjectService(self.tools).save_as(self.project,dialog.directory.text().strip(),dialog.name.text().strip())
+        self.set_project(copied)
+        self.task_status.setText('项目已另存为：'+str(Path(copied.directory)/'project.json'))
 
     def set_project(self,project):
+        if self.busy():raise ValueError('后台任务进行中，请等待结束后切换项目。')
         self.timer.stop()
         for v in self.sources.values():
             v.close()
         self.sources={}
         self.current_result=None
         self.project=project
-        self.frame_index=0
+        self.rendered_project=None
+        self.frame_index=project.workflow.get('left_frame',0)
+        self.mode_index=project.workflow.get('mode',0)
+        self.navigation.blockSignals(True)
+        self.navigation.setCurrentRow(project.workflow.get('navigation',0))
+        self.navigation.blockSignals(False)
         self.render()
+        if self.navigation.currentRow()==3 and project.sync and all(k in project.videos for k in ['measurement_left','measurement_right']):
+            mode=self.mode_index
+            self.guard(lambda:self.seek(self.frame_index))
+            if self.current_result and mode in (1,2,3):self.mode.setCurrentIndex(mode)
+        self.task_status.setText('当前项目：'+project.directory)
 
     def example(self):
         path=Path(self.tools['project_root'])/'HomeTank_004_example'
         if (path/'project.json').exists():
-            self.set_project(ProjectStore().open(path/'project.json'))
+            self.set_project(ProjectService(self.tools).open(path/'project.json'))
             return
         p=ProjectService(self.tools).create(path,'HomeTank_004 示例')
         for key in ['calibration_left','calibration_right','measurement_left','measurement_right']:
@@ -209,8 +300,10 @@ class ProductionWindow(QMainWindow):
             self.set_project(self.project)
 
     def job(self,action,args):
-        if not self.project or self.busy():
-            return
+        if not self.require_project():return
+        if self.busy():raise ValueError('已有后台任务正在进行，请等待结束。')
+        self.capture_workflow()
+        ProjectService(self.tools).save(self.project)
         self.timer.stop()
         request=Path(self.project.directory)/'requests'/f'{uuid.uuid4().hex}.json'
         write_json(request,dict(project=str(Path(self.project.directory)/'project.json'),action=action,
@@ -271,13 +364,21 @@ class ProductionWindow(QMainWindow):
                 w.deleteLater()
 
     def render(self,*args):
+        if self.project is not None and getattr(self,'rendered_project',None) is self.project:
+            self.capture_workflow(getattr(self,'rendered_page',None))
         if self.navigation.currentRow()!=3:
             self.timer.stop()
         self.clear()
         p=self.project
+        self.rendered_project=p
+        self.rendered_page=self.navigation.currentRow()
+        for index in range(1,self.navigation.count()):
+            item=self.navigation.item(index)
+            item.setFlags((item.flags()|Qt.ItemFlag.ItemIsEnabled) if p else (item.flags()&~Qt.ItemFlag.ItemIsEnabled))
         self.content.addWidget(label(STAGES[max(0,self.navigation.currentRow())]))
         if not p:
-            for text,fn in [('新建项目',self.new_project),('打开项目',self.open_project),('打开示例项目',self.example)]:
+            self.content.addWidget(label('尚未创建或打开项目。请先新建项目、打开已有项目或明确打开示例项目。'))
+            for text,fn in [('新建项目',self.new_project),('打开项目',self.open_project),('打开 HomeTank_004 示例项目',self.example)]:
                 self.content.addWidget(self.button(text,fn))
             self.content.addStretch()
             return
@@ -298,6 +399,8 @@ class ProductionWindow(QMainWindow):
                     self.content.addWidget(label(f'{v["path"]}\n{v["width"]}×{v["height"]}；{v["fps"]:.3f} FPS；{v["frame_count"]} 帧；{v["duration_s"]:.2f} s；音轨：{v["has_audio"]}；FOURCC：{v["codec_fourcc"]}'))
             self.content.addWidget(self.button('保存项目',self.save_project))
         elif page==1:
+            if not all(k in p.videos for k in ['calibration_left','calibration_right']):
+                self.content.addWidget(label('请先导入左右标定视频。'))
             row=QWidget(); layout=QHBoxLayout(row)
             pattern=self.tools.get('example',{}).get('pattern',[9,6])
             self.cols=QSpinBox();self.cols.setRange(2,30);self.cols.setValue(pattern[0])
@@ -330,6 +433,8 @@ class ProductionWindow(QMainWindow):
             self.content.addWidget(self.button('运行 OpenCV 官方标定',self.calibrate,candidate.exists()))
             self.ext_time=QDoubleSpinBox();self.ext_time.setRange(0,100000);self.ext_time.setDecimals(3)
             self.ext_time.setValue(self.tools.get('example',{}).get('known_time_s',0))
+            for field in ['cols','rows','square','interval','candidate_limit','ext_time']:
+                if field in p.workflow:getattr(self,field).setValue(p.workflow[field])
             self.content.addWidget(label('外参匹配起始 LEFT 时间 s（连续三帧，间隔 0.1 s）'))
             self.content.addWidget(self.ext_time)
             self.content.addWidget(self.button('尝试 WASS 官方双目外参',lambda:self.job('extrinsics',dict(start_s=self.ext_time.value(),count=3)),bool(p.calibration and p.sync)))
@@ -349,6 +454,7 @@ class ProductionWindow(QMainWindow):
                 self.content.addWidget(display)
         elif page==2:
             ready=bool(p.sync and p.calibration.get('extrinsics'))
+            if not ready:self.content.addWidget(label('请先导入测量视频、完成同步并获得有效双目外参。'))
             self.ref_time=QDoubleSpinBox();self.ref_time.setRange(0,100000);self.ref_time.setDecimals(3)
             self.ref_time.setValue(self.tools.get('example',{}).get('known_time_s',0))
             self.baseline=QDoubleSpinBox();self.baseline.setRange(.001,1000);self.baseline.setDecimals(6)
@@ -358,6 +464,8 @@ class ProductionWindow(QMainWindow):
                 w.setRange(-10000,10000);w.setDecimals(6)
             self.center_x.setValue(-.03);self.center_y.setValue(.22)
             self.area_size.setRange(.001,10000);self.area_size.setDecimals(6);self.area_size.setValue(.24)
+            for field in ['ref_time','baseline','center_x','center_y','area_size']:
+                if field in p.workflow:getattr(self,field).setValue(p.workflow[field])
             for title,w in [('参考 LEFT 时间 s',self.ref_time),('实测基线 m（不可凭结果调尺度）',self.baseline),
                             ('官方网格中心 X/m',self.center_x),('中心 Y/m',self.center_y),('面积边长 m',self.area_size)]:
                 self.content.addWidget(label(title));self.content.addWidget(w)
@@ -368,6 +476,10 @@ class ProductionWindow(QMainWindow):
                 display=QPlainTextEdit('参考面：'+json.dumps(p.reference,ensure_ascii=False,indent=2));display.setReadOnly(True)
                 self.content.addWidget(display)
         elif page==3:
+            if not all(k in p.videos for k in ['measurement_left','measurement_right']):
+                self.content.addWidget(label('请先导入左右测量视频。'))
+            elif not p.sync:self.content.addWidget(label('请先运行左右视频同步。'))
+            elif not p.reference:self.content.addWidget(label('请先建立参考水面，再重建当前帧。'))
             self.content.addWidget(self.button('运行 wass_lowcost 官方 TLCC 同步',lambda:self.job('sync',dict(window_end=30,wind_filter=True)),all(k in p.videos for k in ['measurement_left','measurement_right'])))
             if p.sync:
                 self.content.addWidget(label(f'同步 offset：RIGHT−LEFT={p.sync["right_minus_left_s"]:+.3f} s；方法：{p.sync["method"]}；音频同步不等于曝光同步。'))
@@ -402,6 +514,7 @@ class ProductionWindow(QMainWindow):
             self.content.addWidget(self.reconstruct_button)
             self.guard(self.display_current)
         else:
+            if not self.current_result:self.content.addWidget(label('当前帧尚无成功官方结果，请先在视频测量页重建。'))
             self.content.addWidget(self.button('查看当前帧 3D 点云',self.cloud,bool(self.current_result)))
             self.content.addWidget(self.button('导出当前帧官方结果',self.export,bool(self.current_result)))
             self.content.addWidget(self.button('查看详细任务日志',self.logs))
@@ -579,6 +692,11 @@ class ProductionWindow(QMainWindow):
             QMessageBox.information(self,'任务进行中','请等待官方任务结束后关闭，避免留下不完整结果。')
             event.ignore();return
         self.timer.stop()
+        if self.project:
+            self.capture_workflow()
+            try:ProjectService(self.tools).save(self.project)
+            except Exception as error:
+                QMessageBox.warning(self,'项目保存失败',str(error));event.ignore();return
         for v in self.sources.values():
             v.close()
         event.accept()

@@ -78,3 +78,17 @@ EXE：`D:\research\stereo-wave-height\dist\StereoWaveHeightSystem\StereoWaveHeig
 ## 不能据此证明的事项
 
 本机离线部署仍依赖配置中外部工具环境，尚不是任意 Windows 电脑免配置发行版。项目输出路径要求 ASCII；大视频只引用路径，但首导入需读取 SHA256。当前同步入口要求有效前 30 s 音轨。参考数据是否静水由用户负责；外参 return 0 不代表物理正确。不能证明厘米级物理精度、全像素直接观测、任意帧支持、所有网格均为真实水面、波浪趋势与人眼一致，或 GoPro 已完成实际验收。
+
+## 项目管理修复（2026-09-17）
+
+修复基线 `2edbb51db006e923c44e081606c8f890a8e690b9`，分支 `bugfix/project-management-flow`。本轮不改变科学适配器或标定、同步、参考、重建的算法逻辑。
+
+根因：初始状态栏文字只在启动时设置，set_project 没有更新它，因此真实项目已经打开仍显示“请新建或打开项目”。四个视频标签只来自活动 Project.videos；无项目分支不显示视频，既不是硬编码预填，也不是 Golden。用户已有的 HomeTank_004/project.json 确实包含四路视频。不能从陈旧提示推断 current_project 为空。保存按钮信号已连接，原 handler 有项目时实际写磁盘却无反馈，无项目时则静默返回。
+
+修复：单一 self.project 状态（active_project/current_project 为只读同源入口）；中文项目名称/目录对话框；真实 workspace 子目录；统一 ProjectService/ProjectStore 新建、打开、保存和另存；明确当前项目/保存成功提示；无项目保存中文 warning；无项目导航禁用，缺输入阶段明确前置条件；保存/关闭恢复工作页、帧编号、显示模式和界面参数。另存保留视频与科学产物的原始引用，记录 source project 哈希，不修改科学数值。详细操作异常写 application_errors.log。
+
+本轮自动验收：20 项针对性通过；完整 504 passed、1 skipped、4 subtests passed、25 个已有弃用警告，25.19 s。旧实验目录清单测试允许两种本地 GUI 运行记录，其余注册输入约束不变；用户原有两文件保留且不发布入 Git。
+
+最终 EXE 项目管理桌面验收：`PROJECT_MANAGEMENT_GUI_PASS`。实际操作最终 `dist/StereoWaveHeightSystem/StereoWaveHeightSystem.exe`，完成用户 TEST 1–8：空启动不预填视频；中文新建 `HomeTank004_Test` 至 `D:/stereo-wave-height-runs/manual-ui-test`，磁盘创建 project.json、来源记录及 workspace 五类子目录；逐项导入四路 HomeTank_004 原始视频；点击页面保存按钮，状态明确显示“项目已保存”；关闭并重新启动 EXE，经文件菜单打开刚保存的 project.json，四路路径及 metadata 全部恢复；进入相机标定页，棋盘检测按钮已启用；无项目时文件菜单保存实际弹出中文前置条件提示。本轮不点击标定或 WASS 执行按钮。
+
+另外实际验收文件菜单“项目另存为”：新项目 `HomeTank004_Test_copy` 写入 `D:/stereo-wave-height-runs/manual-ui-test-copy`，状态显示“项目已另存为”，原项目未删除。磁盘逐字段核对四路视频及 metadata 与原项目一致；来源项目路径和 SHA256 保留在 workflow.saved_from_project。自动测试另覆盖标定、同步、参考、帧缓存引用和 workflow 参数的保存/打开一致性；这些科学产物维持原始引用，不复制或改写数值。

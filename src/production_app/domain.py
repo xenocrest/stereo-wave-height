@@ -42,6 +42,8 @@ class Project:
     reference: dict = field(default_factory=dict)
     frames: dict = field(default_factory=dict)
     toolchain: dict = field(default_factory=dict)
+    workflow: dict = field(default_factory=dict)
+    workspace_directory: str = ''
     schema: int = 1
     created: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 

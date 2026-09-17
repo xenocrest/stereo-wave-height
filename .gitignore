@@ -80,3 +80,6 @@ external/WASS/diagnostics/*
 
 # Generated read-only demo previews; regenerated from recorded WASS results.
 /resources/wass_observation_review/
+# Local GUI project records; preserve on disk, not experimental source inputs.
+/experiments/real_video/HomeTank_004/project.json
+/experiments/real_video/HomeTank_004/TOOLCHAIN_PROVENANCE.json

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import shutil
 import uuid
+from copy import deepcopy
 import numpy as np
 from .storage import ProjectStore, ResultCache, digest, identity, write_json
 from .adapters import (OfficialRunner, VideoAdapter, OpenCVCalibrationAdapter, WassLowcostAdapter,
@@ -64,6 +65,29 @@ class ProjectService:
             project.calibration = {}
             project.reference = {}
         self.store.save(project)
+
+    def save(self, project):
+        self.store.save(project)
+
+    def open(self, filename):
+        return self.store.open(filename)
+
+    def save_as(self, project, directory, name):
+        # Keep existing scientific artifacts as explicit references, never
+        # recompute, relocate or rewrite calibration/reference/cache values.
+        if not str(Path(directory).resolve()).isascii():
+            raise ValueError('项目输出目录必须使用英文路径。')
+        copied = self.store.create(directory, name)
+        for field in ('videos', 'calibration', 'sync', 'reference', 'frames', 'toolchain', 'workflow'):
+            setattr(copied, field, deepcopy(getattr(project, field)))
+        copied.workflow['saved_from_project'] = dict(
+            path=str(Path(project.directory) / 'project.json'),
+            sha256=digest(Path(project.directory) / 'project.json'))
+        candidate = Path(project.directory) / 'candidate_frames.json'
+        if candidate.exists():
+            shutil.copy2(candidate, Path(copied.directory) / candidate.name)
+        self.store.save(copied)
+        return copied
 
 
 class BaseService:
