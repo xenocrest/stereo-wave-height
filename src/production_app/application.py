@@ -9,6 +9,8 @@ import numpy as np
 from .storage import ProjectStore, ResultCache, digest, identity, write_json
 from .adapters import (OfficialRunner, VideoAdapter, OpenCVCalibrationAdapter, WassLowcostAdapter,
                        WassAdapter, WassGridSurfaceAdapter, WassNcPlotAdapter, load_matrix)
+from .environment import ExternalToolRunner
+from .sources import open_source, sequence_records
 
 
 def source_snapshot(tools):
@@ -29,8 +31,8 @@ def provenance(tools):
         result[package] = importlib.metadata.version(package)
     for name, executable in [('FFmpeg',tools['ffmpeg']),('WASS',str(Path(tools['wass_bin'])/'wass_stereo.exe'))]:
         argv = [executable, '-version'] if name=='FFmpeg' else [executable]
-        p = subprocess.run(argv, capture_output=True, creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
-        result[name] = (p.stdout+p.stderr).decode('utf-8',errors='replace')[:1000]
+        p = ExternalToolRunner.run(argv, timeout=15)
+        result[name] = p.stdout.decode('utf-8',errors='replace')[:1000]
         result[name+'_sha256'] = digest(executable)
     result['wass_lowcost_source_sha256'] = digest(Path(tools['wass_lowcost'])/'wass_sync.py')
     result['core_source_hashes'] = source_snapshot(tools)
@@ -58,15 +60,35 @@ class ProjectService:
             v.close()
         record['sha256'] = digest(filename)
         project.videos[key] = record
+        project.stages['input'] = 'PROVIDED'
         if key.startswith('measurement'):
+            if project.source_type != 'stereo_video':
+                project.videos = {k:v for k,v in project.videos.items() if not k.startswith('measurement_')}
+                project.videos[key] = record
+            project.source_type = 'stereo_video'
+            project.source = dict(type='stereo_video',status='PROVIDED')
             project.sync = {}
+            project.stages['sync'] = 'NOT_READY'
             project.reference = {}
         else:
             project.calibration = {}
+            project.stages.update(intrinsics='NOT_READY',extrinsics='NOT_READY',calibration='NOT_READY')
             project.reference = {}
+        project.stages.update(reference='NOT_READY',reconstruction='NOT_READY',surface='NOT_READY',height='NOT_READY')
         self.store.save(project)
 
     def save(self, project):
+        self.store.save(project)
+
+    def image_sequence(self, project, left, right, fps, provenance_record):
+        project.videos = sequence_records(left,right,fps)
+        project.source_type = 'stereo_image_sequence'
+        project.source = dict(type=project.source_type,status='PROVIDED',provenance=provenance_record)
+        project.sync = dict(status='PROVIDED',method='Author-provided synchronized image sequence',
+                            right_minus_left_s=0.,fps=fps,source=provenance_record)
+        project.reference = {}
+        project.stages.update(reference='NOT_READY',reconstruction='NOT_READY',surface='NOT_READY',height='NOT_READY')
+        project.stages.update(input='PROVIDED',sync='PROVIDED')
         self.store.save(project)
 
     def open(self, filename):
@@ -78,7 +100,7 @@ class ProjectService:
         if not str(Path(directory).resolve()).isascii():
             raise ValueError('项目输出目录必须使用英文路径。')
         copied = self.store.create(directory, name)
-        for field in ('videos', 'calibration', 'sync', 'reference', 'frames', 'toolchain', 'workflow'):
+        for field in ('videos', 'calibration', 'sync', 'reference', 'frames', 'toolchain', 'workflow', 'source_type', 'source', 'stages'):
             setattr(copied, field, deepcopy(getattr(project, field)))
         copied.workflow['saved_from_project'] = dict(
             path=str(Path(project.directory) / 'project.json'),
@@ -102,6 +124,10 @@ class BaseService:
         ProjectStore().save(self.project)
         write_json(self.job/'calls.json',self.runner.calls)
 
+    def invalidate_outputs(self):
+        self.project.reference = {}
+        self.project.stages.update(reference='NOT_READY',reconstruction='NOT_READY',surface='NOT_READY',height='NOT_READY')
+
     def config(self):
         if not self.project.calibration.get('directory'):
             raise ValueError('尚未取得相机内参')
@@ -109,6 +135,33 @@ class BaseService:
 
 
 class CalibrationService(BaseService):
+    def load_provided(self, source, provenance_record):
+        source = Path(source)
+        cfg = self.job/'config'
+        cfg.mkdir()
+        required = ['intrinsics_00.xml','distortion_00.xml','intrinsics_01.xml','distortion_01.xml']
+        if not provenance_record.get('image_size_wh'):
+            raise ValueError('官方标定需要对应图像尺寸记录')
+        for name in required:
+            load_matrix(source/name)
+            shutil.copy2(source/name,cfg/name)
+        self.official_config(cfg)
+        for name in ['matcher_config.txt','stereo_config.txt','prepare_config.txt','ext_R.xml','ext_T.xml']:
+            if (source/name).is_file():
+                shutil.copy2(source/name,cfg/name)
+        with (cfg/'stereo_config.txt').open('a',encoding='ascii') as f:
+            f.write('\nSAVE_AS_PLY=true\n')
+        ext = self.matrices(cfg) if all((cfg/n).is_file() for n in ['ext_R.xml','ext_T.xml']) else None
+        self.project.calibration = dict(status='PROVIDED',directory=str(cfg),identity=calibration_identity(cfg),
+            fallback=False,intrinsics=None,extrinsics=ext,image_size_wh=provenance_record['image_size_wh'],
+            provenance=dict(provenance_record,source=str(source),
+                            source_hashes={p.name:digest(p) for p in source.iterdir() if p.is_file()}))
+        self.project.stages.update(calibration='PROVIDED',intrinsics='PROVIDED',
+                                   extrinsics='PROVIDED' if ext else 'NOT_READY')
+        self.invalidate_outputs()
+        self.save()
+        return self.project.calibration
+
     def detect(self, pattern, interval, max_candidates):
         results = {}
         for camera in ['left','right']:
@@ -132,8 +185,9 @@ class CalibrationService(BaseService):
             raise ValueError('左右标定图像尺寸不同，当前 WASS 工作流不支持')
         self.official_config(cfg)
         self.project.calibration = dict(directory=str(cfg), identity=calibration_identity(cfg),
-                                        intrinsics=results, extrinsics=None, fallback=False)
-        self.project.reference = {}
+                                        status='COMPUTED',intrinsics=results, extrinsics=None, fallback=False)
+        self.project.stages.update(intrinsics='COMPUTED',extrinsics='NOT_READY',calibration='COMPUTED')
+        self.invalidate_outputs()
         self.save()
         return self.project.calibration
 
@@ -168,9 +222,10 @@ class CalibrationService(BaseService):
         self.project.calibration = dict(directory=str(cfg), identity=calibration_identity(cfg), fallback=True,
                                         provenance=dict(provenance_record,source=str(source),validated=False,
                                                         source_hashes={n:digest(source/n) for n in required}),
-                                        extrinsics=self.matrices(cfg), intrinsics=None,
+                                        status='FALLBACK',extrinsics=self.matrices(cfg), intrinsics=None,
                                         image_size_wh=provenance_record['image_size_wh'])
-        self.project.reference = {}
+        self.project.stages.update(calibration='FALLBACK',intrinsics='FALLBACK',extrinsics='FALLBACK')
+        self.invalidate_outputs()
         self.save()
         return self.project.calibration
 
@@ -184,6 +239,8 @@ class CalibrationService(BaseService):
         cfg = self.config()
         adapter = WassAdapter(self.tools,self.runner)
         paths = []
+        if self.project.source_type == 'stereo_image_sequence':
+            step_s = 1 / self.project.videos['measurement_left']['fps']
         for index in range(count):
             left,right,_,_ = extract_pair(self.project,self.tools,self.runner,self.job/f'pair_{index}',start_s+index*step_s)
             wd = self.job/f'{index:06d}_wd'
@@ -200,7 +257,8 @@ class CalibrationService(BaseService):
         self.project.calibration.update(identity=calibration_identity(cfg),extrinsics=ext,
                     extrinsics_provenance=dict(method='WASS autocalibrate',workspaces=list(map(str,paths)),
                                               calls=self.runner.calls,validated=False))
-        self.project.reference = {}
+        self.project.stages['extrinsics'] = 'COMPUTED'
+        self.invalidate_outputs()
         self.save()
         return self.project.calibration
 
@@ -213,11 +271,17 @@ def calibration_identity(cfg):
 
 class SyncService(BaseService):
     def run(self, window_end=30, wind_filter=True):
+        if self.project.source_type == 'stereo_image_sequence':
+            if self.project.sync.get('status') != 'PROVIDED':
+                raise ValueError('图像序列没有官方同步来源')
+            return self.project.sync
         result = WassLowcostAdapter().run(self.project.videos['measurement_left']['path'],
                         self.project.videos['measurement_right']['path'],self.job/'sync',self.tools,self.runner,
                         window_end,wind_filter)
+        result['status'] = 'COMPUTED'
         self.project.sync = result
-        self.project.reference = {}
+        self.project.stages['sync'] = 'COMPUTED'
+        self.invalidate_outputs()
         self.save()
         return result
 
@@ -230,10 +294,11 @@ def extract_pair(project,tools,runner,directory,left_time):
     directory.mkdir(parents=True,exist_ok=False)
     paths = []
     for camera,t in [('left',left_time),('right',right_time)]:
-        video = VideoAdapter(project.videos['measurement_'+camera]['path'])
+        video = open_source(project,camera)
         file = directory/(camera+'.png')
         try:
-            video.extract(t,file,tools['ffmpeg'],runner)
+            extracted = video.extract(t,file,tools['ffmpeg'],runner)
+            if extracted is not None:file = extracted
         finally:
             video.close()
         paths.append(file)
@@ -293,10 +358,11 @@ class ReconstructionService(BaseService):
         renderer.render(nc,plot)
         self.notify('官方 WaveView：固定参考面映射')
         mapped = renderer.reference_mapping(nc,plot)
+        inputs = {camera: next((frame/'inputs').glob(camera+'.*')) for camera in ('left','right')}
         files = dict(mapped, xyz=str(wd/'mesh_cam.xyzC'),ply=str(wd/'mesh.ply'),netcdf=str(nc),
                      official_centered_overlay=str(plot/'00000000_grid.png'),
-                     official_centered_mapping=str(plot/'00000000.mat'),left=str(frame/'inputs/left.png'),
-                     right=str(frame/'inputs/right.png'), logs=str(self.job/'logs'))
+                     official_centered_mapping=str(plot/'00000000.mat'),left=str(inputs['left']),
+                     right=str(inputs['right']), logs=str(self.job/'logs'))
         result = dict(identity=key,directory=str(frame),left_time_s=lt,right_time_s=rt,files=files,
                       calibration_identity=calibration_identity(cfg),reference=ref,
                       provenance=dict(method=mapped['method'],source='OFFICIAL_GRID_ESTIMATE',
@@ -306,6 +372,7 @@ class ReconstructionService(BaseService):
         result['output_hashes'] = {p:digest(p) for p in files.values() if Path(p).is_file()}
         write_json(frame/'manifest.json',result)
         self.project.frames[key] = result
+        self.project.stages.update(reconstruction='COMPUTED',surface='COMPUTED',height='COMPUTED')
         self.save()
         return result
 
@@ -318,14 +385,17 @@ def cv_image_size(path):
 
 def frame_identity(project,left_time,baseline_m):
     cfg=Path(project.calibration['directory'])
-    return identity(dict(videos={k:v['sha256'] for k,v in project.videos.items() if k.startswith('measurement')},
+    return identity(dict(source_type=project.source_type,
+                         videos={k:v['sha256'] for k,v in project.videos.items() if k.startswith('measurement')},
                          sync=project.sync,calibration=calibration_identity(cfg),left_time_s=left_time,
                          reference=project.reference,baseline_m=baseline_m,
                          stereo_config_sha256=digest(cfg/'stereo_config.txt'),toolchain=project.toolchain))
 
 
 class ReferenceService(ReconstructionService):
-    def establish(self,left_time,baseline_m,area):
+    def establish(self,left_time,baseline_m,area,units='m'):
+        if units not in ('m','baseline') or (units=='baseline' and baseline_m!=1):
+            raise ValueError('基线单位归一化要求 B=1；不能伪称实测米制基线')
         root = self.job/'reference'
         root.mkdir()
         wd,lt,rt = self.stereo(left_time,root)
@@ -341,7 +411,7 @@ class ReferenceService(ReconstructionService):
         config.write_text(f'[Area]\narea_center_x={area[0]}\narea_center_y={area[1]}\narea_size={area[2]}\nN={int(area[3])}\n',encoding='ascii')
         WassGridSurfaceAdapter(self.tools,self.runner).setup(wd.parent,grid,config,baseline_m,
                             self.project.videos['measurement_left']['fps'])
-        result = dict(setup=str(grid/'config.mat'),setup_hash=digest(grid/'config.mat'),
+        result = dict(units=units,setup=str(grid/'config.mat'),setup_hash=digest(grid/'config.mat'),
                       calibration_identity=calibration_identity(self.config()), baseline_m=baseline_m,
                       plane=plane.tolist(),left_time_s=lt,right_time_s=rt,
                       height_convention='Official wassgridsurface upward Z; opposite signed distance of raw WASS plane normal',
@@ -350,6 +420,8 @@ class ReferenceService(ReconstructionService):
                                       source_workspace=str(wd),fallback=False,validated=False))
         write_json(root/'reference.json',result)
         self.project.reference = result
+        self.project.stages['reference'] = 'COMPUTED'
+        self.project.stages.update(reconstruction='NOT_READY',surface='NOT_READY',height='NOT_READY')
         self.save()
         return result
 
@@ -359,7 +431,10 @@ class ReferenceService(ReconstructionService):
             raise ValueError('参考面与当前标定几何不同')
         if digest(r['setup']) != r['setup_hash']:
             raise ValueError('参考面文件校验失败')
-        self.project.reference = r
+        self.project.reference = deepcopy(r)
+        self.project.reference['fallback_provenance'] = dict(source_reference=str(Path(path).resolve()),sha256=digest(path))
+        self.project.stages['reference'] = 'FALLBACK'
+        self.project.stages.update(reconstruction='NOT_READY',surface='NOT_READY',height='NOT_READY')
         self.save()
         return r
 

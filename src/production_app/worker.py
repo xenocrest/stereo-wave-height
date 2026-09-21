@@ -8,9 +8,12 @@ from .storage import ProjectStore,write_json
 
 
 def execute(request):
+    if request['action']=='toolcheck':
+        from .environment import check_toolchain
+        return dict(status='PASS',action='toolcheck',result=check_toolchain(request['tools']))
     project = ProjectStore().open(request['project'])
     action,tools,args = request['action'],request['tools'],request.get('args',{})
-    classes = {'detect':CalibrationService,'calibrate':CalibrationService,'load_calibration':CalibrationService,
+    classes = {'detect':CalibrationService,'calibrate':CalibrationService,'load_calibration':CalibrationService,'provided_calibration':CalibrationService,
                'extrinsics':CalibrationService,'sync':SyncService,'reference':ReferenceService,
                'load_reference':ReferenceService,'reconstruct':ReconstructionService}
     service = classes[action](project,tools,lambda s:print(s,flush=True))
@@ -21,6 +24,8 @@ def execute(request):
             result = service.calibrate(**args)
         elif action=='load_calibration':
             result = service.load_existing(**args)
+        elif action=='provided_calibration':
+            result = service.load_provided(**args)
         elif action=='extrinsics':
             result = service.autocalibrate(**args)
         elif action=='sync':
@@ -33,6 +38,12 @@ def execute(request):
             result = service.run(**args)
         return dict(status='PASS',action=action,result=result,job=str(service.job))
     except Exception as error:
+        stage = {'detect':'intrinsics','calibrate':'intrinsics','load_calibration':'calibration',
+                 'provided_calibration':'calibration','extrinsics':'extrinsics','sync':'sync',
+                 'reference':'reference','load_reference':'reference','reconstruct':'reconstruction'}[action]
+        project.stages[stage] = 'FAILED'
+        project.workflow['last_failure'] = dict(stage=stage,error=f'{type(error).__name__}: {error}',job=str(service.job))
+        ProjectStore().save(project)
         write_json(service.job/'calls.json',service.runner.calls)
         (service.job/'error.log').write_text(traceback.format_exc(),encoding='utf-8')
         return dict(status='FAIL',action=action,error=f'{type(error).__name__}: {error}',job=str(service.job))

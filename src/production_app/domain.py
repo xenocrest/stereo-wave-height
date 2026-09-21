@@ -44,6 +44,9 @@ class Project:
     toolchain: dict = field(default_factory=dict)
     workflow: dict = field(default_factory=dict)
     workspace_directory: str = ''
+    source_type: str = 'stereo_video'
+    source: dict = field(default_factory=dict)
+    stages: dict = field(default_factory=dict)
     schema: int = 1
     created: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 

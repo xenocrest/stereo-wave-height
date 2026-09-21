@@ -18,6 +18,14 @@
 
 ## 2. 官方 OpenCV 内参标定
 
+### 作者提供的同步图像序列
+
+“文件 → 打开 Vieira 官方样例”创建真实 `Vieira_Official_GoPro_Sample` 项目。直接引用 wass_lowcost 官方仓库固定提交的左右原始 TIFF；不转成 MP4、不运行 TLCC。左右帧按同名配对，记录并校验逐文件 SHA256。作者 README 给出 12 Hz；以实际图像读取的尺寸为准（本样例 1920×1080，左右各 5 帧）。
+
+界面显示同步 PROVIDED、内参 PROVIDED，原样复制作者 config 中的 K/D。公开 config 没有 R/T，必须在标定页点击“运行 WASS 官方外参”，实际执行 prepare → match → autocalibrate，不能冒充作者已提供外参。之后参考面、当前帧重建、官方网格/NetCDF、叠加、悬停、点云与导出均与视频项目共用服务。
+
+作者公开样例未给出实测基线。本项目明确采用 **B=1 的基线归一化单位**，悬停显示 X/B、Y/B、Z/B、H/B，不把这些结果称为毫米或米制实测高度。官方 NetCDF 的默认单位标签仍由官方工具产生；解释该示例导出时须同时读取 manifest 中 `reference.units=baseline`，不能按标签误称真实毫米。获得可追溯实测基线后才能建立米制参考，不得凭结果调尺度。
+
 在“相机标定”输入内角点列/行、格边长（mm）、抽帧间隔和最多候选数。HomeTank_004 示例棋盘按旋转方向填 **6×9 内角点、20 mm**；它与 9×6 是同一棋盘的两种方向，不是更改物理格子尺寸。
 
 点击“抽帧与官方棋盘检测”。检测调用 `findChessboardCornersSB` 的官方 NORMALIZE/EXHAUSTIVE/ACCURACY 选项。双击候选行预览检测；可取消错误或不完整检测，不能为美化 RMS 挑结果。默认采用全部成功检测。至少 10 个有效完整检测帧才允许本适配器执行标定；仍需用户检查姿态覆盖，数量不等于质量。
@@ -73,5 +81,9 @@ XYZ 是官方**参考面格网坐标**，不是原相机 XYZ。H 读取官方 up
 保存/关闭/重新打开项目保留输入、标定、同步、参考面、工具 provenance、帧缓存及当前工作页/帧编号/显示模式。关闭再启动后用“文件 → 打开项目”选择 project.json，即可继续工作。移动项目目录需先核对引用，不会自动猜测路径。
 
 ## 当前边界
+
+启动时自动执行有超时限制的“工具链检查”；帮助菜单可再次打开路径、版本/检测输出和可用状态。WASS、wasscli、wassgridsurface、wassncplot、FFmpeg、Praat、外部 OpenCV/Python 均在独立干净环境探测。wasscli 是交互菜单，检查其模块/版本而不是假定存在 `--version` 接口。冻结程序启动外部工具时按 PyInstaller 官方指导清理 DLL 搜索目录及 bundle PATH，恢复后继续显示 GUI；不改任何官方算法文件。
+
+各页显示 NOT_READY / COMPUTED / PROVIDED / FALLBACK / FAILED 的中文阶段状态。参考失败保留真实日志、返回码及任务/workspace 根目录，不能跳过失败进入测量。HomeTank 的历史 fallback 是完整可追溯 K/D/R/T，**不是把新 K/D 与旧 R/T 拼接**；原始新标定任务仍保留供审计。
 
 没有 ROI、实时重建、全视频批处理、AI 分割或新插值模型。官方 DCT 网格有限值不意味着 100% 直接测量；并未证明厘米级物理精度、任意帧成功或 GoPro 数据已经通过验收。

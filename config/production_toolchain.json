@@ -6,6 +6,24 @@
   "wass_lowcost": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass_lowcost",
   "wass_source": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master",
   "project_root": "D:\\stereo-wave-height-runs\\production-workflow-v1-projects",
+  "official_sample": {
+    "left": "D:\\stereo-wave-height-runs\\vieira-official-sample-20260918-source\\wass_lowcost-688dfaf1d88f270cf3d7cd3db4b49369ebe52871\\input\\cam0",
+    "right": "D:\\stereo-wave-height-runs\\vieira-official-sample-20260918-source\\wass_lowcost-688dfaf1d88f270cf3d7cd3db4b49369ebe52871\\input\\cam1",
+    "config": "D:\\stereo-wave-height-runs\\vieira-official-sample-20260918-source\\wass_lowcost-688dfaf1d88f270cf3d7cd3db4b49369ebe52871\\config",
+    "fps": 12,
+    "units": "baseline",
+    "baseline_m": 1,
+    "known_time_s": 0,
+    "grid_area": [0, -35, 50],
+    "provenance": {
+      "repository": "https://github.com/matheusdpv/wass_lowcost",
+      "commit": "688dfaf1d88f270cf3d7cd3db4b49369ebe52871",
+      "source": "Vieira official synchronized GoPro TIFF sample and config",
+      "fps_source": "Author README: 12 Hz",
+      "metric_baseline": "Not supplied in sample repository; B=1 is a unit definition, not a physical measurement",
+      "grid_area_source": "Official wassgridsurface generateconfig defaults; coordinates in baseline units, not ROI"
+    }
+  },
   "example": {
     "calibration_left": "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\calibration\\calibration_cam0_iQOO_Neo5S.mp4",
     "calibration_right": "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\calibration\\calibration_cam1_iQOO_Z10_TurboPlus.mp4",

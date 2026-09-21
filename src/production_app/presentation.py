@@ -21,6 +21,8 @@ import matplotlib
 from .application import ProjectService,CalibrationService,ExportService,frame_identity
 from .storage import ProjectStore,write_json,ResultCache
 from .adapters import VideoAdapter,load_matrix
+from .sources import open_source
+from .environment import ProcessEnvironmentAdapter
 
 matplotlib.rcParams['font.sans-serif']=['Microsoft YaHei','SimHei','DejaVu Sans']
 matplotlib.rcParams['axes.unicode_minus']=False
@@ -88,7 +90,11 @@ class ImageView(QGraphicsView):
                 text+='\n请切换本帧官方结果画面查询'
         else:
             x,y,z=r['XYZ_mm']
-            text=f'官方图像像素：({u}, {v})\nX={x:.3f} mm\nY={y:.3f} mm\nZ={z:.3f} mm\nH={r["H_mm"]:+.3f} mm\n数据来源：官方水面网格估计（不是直接双目观测）'
+            if getattr(self,'units','m')=='baseline':
+                text=f'官方图像像素：({u}, {v})\nX/B={x/1000:.6f}\nY/B={y/1000:.6f}\nZ/B={z/1000:.6f}\nH/B={r["H_mm"]/1000:+.6f}\n单位：基线长度 B（非毫米；作者样例未提供实测基线）'
+            else:
+                text=f'官方图像像素：({u}, {v})\nX={x:.3f} mm\nY={y:.3f} mm\nZ={z:.3f} mm\nH={r["H_mm"]:+.3f} mm'
+            text+='\n数据来源：官方水面网格估计（不是直接双目观测）'
         self.status.setText(text)
         if self.mapping is not None:
             QToolTip.showText(event.globalPosition().toPoint(),text,self)
@@ -172,7 +178,7 @@ class ProductionWindow(QMainWindow):
         for name in ['文件','项目','标定','参考面','测量','结果','帮助']:
             self.menuBar().addMenu(name)
         file_menu=self.menuBar().actions()[0].menu()
-        for title,call in [('新建项目',self.new_project),('打开项目',self.open_project),('保存项目',self.save_project),('项目另存为…',self.save_project_as),('打开 HomeTank_004 示例项目',self.example)]:
+        for title,call in [('新建项目',self.new_project),('打开项目',self.open_project),('保存项目',self.save_project),('项目另存为…',self.save_project_as),('打开 HomeTank_004 示例项目',self.example),('打开 Vieira 官方样例',self.official_example)]:
             action=QAction(title,self)
             action.triggered.connect(lambda checked=False,fn=call:self.guard(fn))
             file_menu.addAction(action)
@@ -184,7 +190,48 @@ class ProductionWindow(QMainWindow):
         help_action.triggered.connect(lambda:QMessageBox.information(self,'操作说明',
             '项目与数据 → 标定 → 视频测量页同步 → 标定页外参 → 参考面 → 视频测量重建 → 结果导出。\n详细说明见程序目录 USER_GUIDE_ZH.md。官方算法失败时不会切换算法或伪造结果。'))
         self.menuBar().actions()[6].menu().addAction(help_action)
+        check_action=QAction('工具链检查',self)
+        check_action.triggered.connect(lambda:self.guard(lambda:self.check_tools(show=True)))
+        self.menuBar().actions()[6].menu().addAction(check_action)
         self.navigation.setCurrentRow(0)
+        if tools.get('python') and tools.get('wass_bin'):
+            QTimer.singleShot(0,self.check_tools)
+
+    def check_tools(self,show=False):
+        self.show_toolchain_check=show
+        if getattr(self,'toolcheck',None) and self.toolcheck.state()!=QProcess.ProcessState.NotRunning:return
+        request=Path(self.tools.get('project_root',self.source_root))/'toolchain_check.json'
+        write_json(request,dict(action='toolcheck',tools=self.tools))
+        self.toolcheck_request=request
+        self.toolcheck=QProcess(self)
+        self.toolcheck.setWorkingDirectory(str(request.parent))
+        self.configure_process(self.toolcheck)
+        self.toolcheck.finished.connect(self.toolcheck_completed)
+        self.toolcheck.errorOccurred.connect(lambda error:self.task_status.setText('工具链检查无法启动：'+self.toolcheck.errorString()))
+        with ProcessEnvironmentAdapter.launch_scope():
+            self.toolcheck.start(self.tools['python'],['-m','production_app.worker','--request',str(request)])
+            self.toolcheck.waitForStarted(5000)
+
+    def toolcheck_completed(self,*args):
+        path=self.toolcheck_request.with_suffix('.result.json')
+        if not path.exists():
+            self.task_status.setText('工具链检查失败，请核对 Python 路径。');return
+        self.toolchain_check=json.loads(path.read_text(encoding='utf-8'))['result']
+        missing=[r['name'] for r in self.toolchain_check if r['status']!='AVAILABLE']
+        self.task_status.setText('工具链检查：'+('缺失/失败 '+', '.join(missing) if missing else '全部可用')+
+                                ('；当前项目：'+self.project.directory if self.project else '；尚未创建或打开项目'))
+        w=QWidget(self,Qt.WindowType.Window);w.setWindowTitle('工具链检查');w.resize(1000,700)
+        layout=QVBoxLayout(w);editor=QPlainTextEdit();editor.setReadOnly(True)
+        editor.setPlainText('\n\n'.join(f'{r["name"]}：{"可用" if r["status"]=="AVAILABLE" else "缺失/失败"}\n路径：{r["path"]}\n版本/检测输出：{r["version"]}' for r in self.toolchain_check))
+        layout.addWidget(editor)
+        if missing or self.show_toolchain_check:w.show()
+        self.toolcheck_window=w
+
+    def configure_process(self,process):
+        env=QProcessEnvironment()
+        for key,value in ProcessEnvironmentAdapter.clean().items():env.insert(key,value)
+        env.insert('PYTHONPATH',self.source_root);env.insert('PYTHONUTF8','1')
+        process.setProcessEnvironment(env)
 
     def guard(self,fn):
         try:
@@ -293,6 +340,20 @@ class ProductionWindow(QMainWindow):
             ProjectService(self.tools).input(p,key,self.tools['example'][key])
         self.set_project(p)
 
+    def official_example(self):
+        e=self.tools.get('official_sample')
+        if not e:raise ValueError('尚未配置 Vieira 官方样例路径，请查看工具链配置。')
+        path=Path(self.tools['project_root'])/'Vieira_Official_GoPro_Sample'
+        service=ProjectService(self.tools)
+        if (path/'project.json').exists():
+            self.set_project(service.open(path/'project.json'));return
+        p=service.create(path,'Vieira 官方 GoPro 样例')
+        service.image_sequence(p,e['left'],e['right'],e['fps'],e['provenance'])
+        p.source['units']=e.get('units','m')
+        service.save(p)
+        self.set_project(p)
+        self.job('provided_calibration',dict(source=e['config'],provenance_record=dict(e['provenance'],image_size_wh=[p.videos['measurement_left']['width'],p.videos['measurement_left']['height']])))
+
     def choose_video(self,key):
         path,_=QFileDialog.getOpenFileName(self,'选择视频','','视频 (*.mp4 *.MP4 *.mov *.avi *.mkv)')
         if path:
@@ -313,18 +374,14 @@ class ProductionWindow(QMainWindow):
         # A desktop launcher may inherit a protected WindowsApps directory.
         # Official tools and their temporary files use the writable project.
         self.process.setWorkingDirectory(self.project.directory)
-        env=QProcessEnvironment.systemEnvironment()
-        env.insert('PYTHONPATH',self.source_root)
-        env.insert('PYTHONUTF8','1')
-        # Frozen Qt paths must not leak into external official scientific tools.
-        for key in ['QT_PLUGIN_PATH','QT_QPA_PLATFORM_PLUGIN_PATH','QT_QPA_PLATFORM']:
-            env.remove(key)
-        self.process.setProcessEnvironment(env)
+        self.configure_process(self.process)
         self.process.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
         self.process.readyReadStandardOutput.connect(self.progress)
         self.process.finished.connect(self.completed)
         self.process.errorOccurred.connect(self.process_error)
-        self.process.start(self.tools['python'],['-m','production_app.worker','--request',str(request)])
+        with ProcessEnvironmentAdapter.launch_scope():
+            self.process.start(self.tools['python'],['-m','production_app.worker','--request',str(request)])
+            self.process.waitForStarted(5000)
         self.task_status.setText('任务已启动：'+action)
         self.render()
 
@@ -348,6 +405,9 @@ class ProductionWindow(QMainWindow):
                 if result['action']=='reconstruct':
                     self.current_result=result['result']
                     self.mode_index=1
+                elif result['action'] in ('calibrate','load_calibration','provided_calibration','extrinsics','sync','reference','load_reference'):
+                    self.current_result=None
+                    self.mode_index=0
                 self.task_status.setText('任务完成：'+result['action'])
             else:
                 self.task_status.setText('官方流程失败：'+result['error'][:160])
@@ -378,7 +438,7 @@ class ProductionWindow(QMainWindow):
         self.content.addWidget(label(STAGES[max(0,self.navigation.currentRow())]))
         if not p:
             self.content.addWidget(label('尚未创建或打开项目。请先新建项目、打开已有项目或明确打开示例项目。'))
-            for text,fn in [('新建项目',self.new_project),('打开项目',self.open_project),('打开 HomeTank_004 示例项目',self.example)]:
+            for text,fn in [('新建项目',self.new_project),('打开项目',self.open_project),('打开 HomeTank_004 示例项目',self.example),('打开 Vieira 官方样例',self.official_example)]:
                 self.content.addWidget(self.button(text,fn))
             self.content.addStretch()
             return
@@ -389,6 +449,13 @@ class ProductionWindow(QMainWindow):
             self.notice.setText('未完成物理精度验证。WASS 官方结果可能包含非水面结构；V1 未提供 ROI。')
             self.notice.setStyleSheet('')
         page=self.navigation.currentRow()
+        names={'input':'输入','sync':'同步','intrinsics':'内参','extrinsics':'外参','reference':'参考面','reconstruction':'重建','surface':'格网','height':'高度'}
+        descriptions={'NOT_READY':'未完成','COMPUTED':'已计算','PROVIDED':'官方/输入提供','FALLBACK':'历史 fallback','FAILED':'失败'}
+        states={k:p.stages.get(k,'NOT_READY') for k in names}
+        states['input']='PROVIDED' if len([k for k in p.videos if k.startswith('measurement_')])==2 else 'NOT_READY'
+        for key,record in [('sync',p.sync),('reference',p.reference)]:
+            if record and states[key]=='NOT_READY':states[key]=record.get('status','COMPUTED')
+        self.content.addWidget(label('阶段状态：'+'；'.join(names[k]+' '+descriptions[states[k]] for k in names)))
         if page==0:
             self.content.addWidget(label(f'项目：{p.name}\n目录：{p.directory}'))
             for key,title in [('calibration_left','LEFT 标定视频'),('calibration_right','RIGHT 标定视频'),
@@ -399,6 +466,15 @@ class ProductionWindow(QMainWindow):
                     self.content.addWidget(label(f'{v["path"]}\n{v["width"]}×{v["height"]}；{v["fps"]:.3f} FPS；{v["frame_count"]} 帧；{v["duration_s"]:.2f} s；音轨：{v["has_audio"]}；FOURCC：{v["codec_fourcc"]}'))
             self.content.addWidget(self.button('保存项目',self.save_project))
         elif page==1:
+            if p.calibration.get('status')=='PROVIDED':
+                self.content.addWidget(label('标定来源：作者官方提供。无需重新计算内参；外参缺失时仍须运行官方 WASS autocalibrate。'))
+                self.content.addWidget(label(json.dumps(p.calibration,ensure_ascii=False,indent=2)[:3500]))
+                frame_count=p.videos['measurement_left']['frame_count']
+                self.ext_time=QDoubleSpinBox();self.ext_time.setRange(0,max(0,(frame_count-min(10,frame_count))/p.videos['measurement_left']['fps']))
+                self.ext_time.setDecimals(6);self.ext_time.setValue(0)
+                self.content.addWidget(label('官方外参起始时间 s'));self.content.addWidget(self.ext_time)
+                self.content.addWidget(self.button('运行 WASS 官方外参',lambda:self.job('extrinsics',dict(start_s=self.ext_time.value(),count=min(10,p.videos['measurement_left']['frame_count']))),bool(p.sync)))
+                return
             if not all(k in p.videos for k in ['calibration_left','calibration_right']):
                 self.content.addWidget(label('请先导入左右标定视频。'))
             row=QWidget(); layout=QHBoxLayout(row)
@@ -454,24 +530,38 @@ class ProductionWindow(QMainWindow):
                 self.content.addWidget(display)
         elif page==2:
             ready=bool(p.sync and p.calibration.get('extrinsics'))
+            defaults=self.tools.get('official_sample' if p.source_type=='stereo_image_sequence' else 'example',{})
             if not ready:self.content.addWidget(label('请先导入测量视频、完成同步并获得有效双目外参。'))
             self.ref_time=QDoubleSpinBox();self.ref_time.setRange(0,100000);self.ref_time.setDecimals(3)
-            self.ref_time.setValue(self.tools.get('example',{}).get('known_time_s',0))
+            if p.source_type=='stereo_image_sequence':self.ref_time.setDecimals(6)
+            self.ref_time.setValue(defaults.get('known_time_s',0))
             self.baseline=QDoubleSpinBox();self.baseline.setRange(.001,1000);self.baseline.setDecimals(6)
-            self.baseline.setValue(getattr(self,'baseline_value',self.tools.get('example',{}).get('baseline_m',1)))
+            self.baseline.setValue(defaults.get('baseline_m',1))
             self.center_x=QDoubleSpinBox();self.center_y=QDoubleSpinBox();self.area_size=QDoubleSpinBox()
             for w in [self.center_x,self.center_y]:
                 w.setRange(-10000,10000);w.setDecimals(6)
             self.center_x.setValue(-.03);self.center_y.setValue(.22)
             self.area_size.setRange(.001,10000);self.area_size.setDecimals(6);self.area_size.setValue(.24)
+            if p.source_type=='stereo_image_sequence':
+                self.center_x.setValue(defaults.get('grid_area',[0,-35,50])[0])
+                self.center_y.setValue(defaults.get('grid_area',[0,-35,50])[1])
+                self.area_size.setValue(defaults.get('grid_area',[0,-35,50])[2])
             for field in ['ref_time','baseline','center_x','center_y','area_size']:
                 if field in p.workflow:getattr(self,field).setValue(p.workflow[field])
+            normalized=p.source.get('units')=='baseline'
+            if normalized:
+                self.baseline.setValue(1);self.baseline.setEnabled(False)
+                self.content.addWidget(label('作者样例未提供实测基线：本项目使用 B=1 的基线归一化单位，只显示 H/B，不报告毫米高度。网格范围同样以 B 为单位。'))
             for title,w in [('参考 LEFT 时间 s',self.ref_time),('实测基线 m（不可凭结果调尺度）',self.baseline),
                             ('官方网格中心 X/m',self.center_x),('中心 Y/m',self.center_y),('面积边长 m',self.area_size)]:
-                self.content.addWidget(label(title));self.content.addWidget(w)
+                self.content.addWidget(label(title.replace('/m','/B').replace('面积边长 m','面积边长 /B').replace('实测基线 m（不可凭结果调尺度）','基线归一化 B=1') if normalized else title));self.content.addWidget(w)
             self.content.addWidget(label('参考时刻由用户选择，不自动认定为静水。网格范围为官方配置，不是水面 ROI；示例默认参数不适用于任意新相机。'))
             self.content.addWidget(self.button('官方重建参考帧并建立参考面',self.establish_reference,ready))
             self.content.addWidget(self.button('加载本软件已保存的官方参考面',self.load_reference, bool(p.calibration)))
+            self.content.addWidget(self.button('查看参考任务/官方工具详细日志',self.logs))
+            if p.workflow.get('last_failure',{}).get('stage')=='reference':
+                failure=p.workflow['last_failure']
+                self.content.addWidget(label('上次参考任务失败：'+failure['error'][:300]+'\n任务/workspace 根目录：'+failure['job']))
             if p.reference:
                 display=QPlainTextEdit('参考面：'+json.dumps(p.reference,ensure_ascii=False,indent=2));display.setReadOnly(True)
                 self.content.addWidget(display)
@@ -480,7 +570,10 @@ class ProductionWindow(QMainWindow):
                 self.content.addWidget(label('请先导入左右测量视频。'))
             elif not p.sync:self.content.addWidget(label('请先运行左右视频同步。'))
             elif not p.reference:self.content.addWidget(label('请先建立参考水面，再重建当前帧。'))
-            self.content.addWidget(self.button('运行 wass_lowcost 官方 TLCC 同步',lambda:self.job('sync',dict(window_end=30,wind_filter=True)),all(k in p.videos for k in ['measurement_left','measurement_right'])))
+            if p.source_type=='stereo_image_sequence':
+                self.content.addWidget(label('同步来源：作者官方提供的同步图像序列（PROVIDED）；不运行 TLCC，不重新编码视频。'))
+            else:
+                self.content.addWidget(self.button('运行 wass_lowcost 官方 TLCC 同步',lambda:self.job('sync',dict(window_end=30,wind_filter=True)),all(k in p.videos for k in ['measurement_left','measurement_right'])))
             if p.sync:
                 self.content.addWidget(label(f'同步 offset：RIGHT−LEFT={p.sync["right_minus_left_s"]:+.3f} s；方法：{p.sync["method"]}；音频同步不等于曝光同步。'))
             self.point_info=label('鼠标移入本帧官方画面查询 XYZ/H。')
@@ -553,7 +646,8 @@ class ProductionWindow(QMainWindow):
     def establish_reference(self):
         self.baseline_value=self.baseline.value()
         self.job('reference',dict(left_time=self.ref_time.value(),baseline_m=self.baseline_value,
-                                 area=[self.center_x.value(),self.center_y.value(),self.area_size.value(),256]))
+                                 area=[self.center_x.value(),self.center_y.value(),self.area_size.value(),256],
+                                 units='baseline' if self.project.source.get('units')=='baseline' else 'm'))
 
     def load_reference(self):
         path,_=QFileDialog.getOpenFileName(self,'选择已保存的官方 reference.json','','参考结果 (*.json)')
@@ -617,6 +711,7 @@ class ProductionWindow(QMainWindow):
             if self.mode_index in (1,2):
                 mapping=loadmat(result['files']['mapping'],variable_names=['px_2_3D'])['px_2_3D']
             key={1:'image',2:'overlay',3:'official_centered_overlay'}[self.mode_index]
+            self.image_view.units=result['reference'].get('units','m')
             self.image_view.display(result['files'][key],mapping)
             return
         if self.mode_index:
@@ -627,7 +722,7 @@ class ProductionWindow(QMainWindow):
         frames=[]
         for camera in ['left','right']:
             if camera not in self.sources:
-                self.sources[camera]=VideoAdapter(self.project.videos['measurement_'+camera]['path'])
+                self.sources[camera]=open_source(self.project,camera)
             if camera=='left':
                 frames.append(self.sources[camera].seek(self.frame_index))
                 t=self.current_time();right=t+self.project.sync['right_minus_left_s']

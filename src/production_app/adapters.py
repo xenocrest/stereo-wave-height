@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import cv2
 import numpy as np
+from .environment import ExternalToolRunner
 
 
 class ToolFailure(RuntimeError):
@@ -22,8 +23,7 @@ class OfficialRunner:
         import time
         self.notify(name)
         start = time.perf_counter()
-        result = subprocess.run(list(map(str, argv)), cwd=cwd, stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+        result = ExternalToolRunner.run(argv, cwd=cwd or self.root)
         raw = result.stdout
         text = raw.decode('utf-16-le' if b'\x00' in raw[:100] else 'utf-8', errors='replace')
         log = self.root / (name + '.log')
@@ -54,9 +54,8 @@ class VideoSourceAdapter:
                       frame_count=self.count, duration_s=self.count/self.fps,
                       codec_fourcc=int(self.capture.get(cv2.CAP_PROP_FOURCC)), has_audio=None)
         if ffmpeg:
-            p = subprocess.run([ffmpeg, '-hide_banner', '-i', self.path], capture_output=True,
-                               creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
-            result['ffmpeg_metadata'] = p.stderr.decode('utf-8', errors='replace')
+            p = ExternalToolRunner.run([ffmpeg, '-hide_banner', '-i', self.path])
+            result['ffmpeg_metadata'] = p.stdout.decode('utf-8', errors='replace')
             result['has_audio'] = 'Audio:' in result['ffmpeg_metadata']
         return result
 
