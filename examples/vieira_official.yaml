@@ -1,0 +1,39 @@
+project: vieira_official
+source_type: synchronized_image_sequence
+output_root: D:/stereo-wave-height-runs/pipeline
+pass_status: VIEIRA_OFFICIAL_SAMPLE_PASS
+
+tools:
+  python: D:/stereo-wave-height-runs/wassgridsurface-0.11.4-venv/Scripts/python.exe
+  wass_bin: D:/wass/dist/bin
+  ffmpeg: D:/FormatFactory/ffmpeg.exe
+  praat: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/praat/Praat.exe
+  wass_source: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/wass-src/wass-master
+  wass_lowcost: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/wass_lowcost
+
+calibration:
+  status: provided
+  config_path: D:/stereo-wave-height-runs/vieira-official-sample-20260918-source/wass_lowcost-688dfaf1d88f270cf3d7cd3db4b49369ebe52871/config
+  image_size_wh: [1920, 1080]
+  provenance:
+    repository: https://github.com/matheusdpv/wass_lowcost
+    commit: 688dfaf1d88f270cf3d7cd3db4b49369ebe52871
+
+sync:
+  status: provided
+  left_images: D:/stereo-wave-height-runs/vieira-official-sample-20260918-source/wass_lowcost-688dfaf1d88f270cf3d7cd3db4b49369ebe52871/input/cam0/*.tif
+  right_images: D:/stereo-wave-height-runs/vieira-official-sample-20260918-source/wass_lowcost-688dfaf1d88f270cf3d7cd3db4b49369ebe52871/input/cam1/*.tif
+  fps: 12
+
+wass: {}
+
+surface:
+  # The public sample does not publish a measured metric baseline. B=1 is a
+  # normalized unit definition and must not be reported as metres or mm.
+  baseline_m: 1
+  units: B
+  area_center_x: 0
+  area_center_y: -35
+  area_size: 50
+  N: 256
+  parallel: 1

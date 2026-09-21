@@ -1,0 +1,52 @@
+project: hometank004
+source_type: stereo_video
+output_root: D:/stereo-wave-height-runs/pipeline
+pass_status: HOMETANK_PIPELINE_PASS_WITH_EXTRINSIC_FALLBACK
+
+tools:
+  python: D:/stereo-wave-height-runs/wassgridsurface-0.11.4-venv/Scripts/python.exe
+  wass_bin: D:/wass/dist/bin
+  ffmpeg: D:/FormatFactory/ffmpeg.exe
+  praat: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/praat/Praat.exe
+  wass_source: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/wass-src/wass-master
+  wass_lowcost: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/wass_lowcost
+
+calibration:
+  status: compute
+  left_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/videos/calibration/calibration_cam0_iQOO_Neo5S.mp4
+  right_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/videos/calibration/calibration_cam1_iQOO_Z10_TurboPlus.mp4
+  checkerboard:
+    columns: 6
+    rows: 9
+    square_size_m: 0.020
+  sample_hz: 5
+  target_views: 50
+  minimum_views: 12
+
+sync:
+  method: wass_lowcost_tlcc
+  left_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/videos/wave/wave_cam0_iQOO_Neo5S.mp4
+  right_video: D:/research/stereo-wave-height/experiments/real_video/HomeTank_004/videos/wave/wave_cam1_iQOO_Z10_TurboPlus.mp4
+  window_start_s: 0
+  window_end_s: 30
+  start_s: 20
+  output_fps: 2
+  # Minimal fixed demonstration batch. A retained five-frame trial showed the
+  # first three succeed while frame 4 stopped inside official WASS plane RANSAC;
+  # no WASS parameter was changed to force that failed frame.
+  frame_count: 3
+
+wass:
+  # The fresh official autocalibration attempt is retained. The known vertical
+  # layout is unsupported by official WASS dense stereo, so this YAML explicitly
+  # switches the complete historical K/D/R/T bundle; T is never edited.
+  fallback_calibration:
+    mode: after_autocalibration_attempt
+    path: D:/stereo-wave-height-runs/HomeTank_004/wave-reconstruction-pipeline-20260824/wass_workspace/config
+    stereo_config: D:/stereo-wave-height-runs/vieira2025-end-to-end-demo-20260916/official_stereo_config.txt
+
+surface:
+  baseline_m: 0.070
+  units: m
+  N: 256
+  parallel: 1

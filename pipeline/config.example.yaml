@@ -1,0 +1,46 @@
+project: gopro_experiment_001
+source_type: stereo_video
+output_root: D:/stereo-wave-height-runs/pipeline
+pass_status: PIPELINE_PASS
+
+tools:
+  python: D:/stereo-wave-height-runs/wassgridsurface-0.11.4-venv/Scripts/python.exe
+  wass_bin: D:/wass/dist/bin
+  ffmpeg: D:/FormatFactory/ffmpeg.exe
+  praat: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/praat/Praat.exe
+  wass_source: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/wass-src/wass-master
+  wass_lowcost: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/wass_lowcost
+
+calibration:
+  status: compute
+  left_video: D:/data/gopro/calibration_left.mp4
+  right_video: D:/data/gopro/calibration_right.mp4
+  checkerboard:
+    columns: 9
+    rows: 6
+    square_size_m: 0.020
+  sample_hz: 5
+  target_views: 50
+  minimum_views: 20
+
+sync:
+  method: wass_lowcost_tlcc
+  left_video: D:/data/gopro/measurement_left.mp4
+  right_video: D:/data/gopro/measurement_right.mp4
+  window_start_s: 0
+  window_end_s: 30
+  start_s: 10
+  output_fps: 2
+  frame_count: 20
+
+wass:
+  # Optional, explicit and traceable only. Delete for a new GoPro rig.
+  # fallback_calibration:
+  #   mode: after_autocalibration_attempt
+  #   path: D:/traceable/calibration/config
+
+surface:
+  baseline_m: 0.160
+  units: m
+  N: 256
+  parallel: 1
