@@ -57,6 +57,11 @@ def validate_config(config: dict[str, Any]) -> None:
             raise ValueError("reference.coordinate_system is required")
     if "truth" in config and "reference" not in config:
         raise ValueError("truth validation requires a fixed reference plane")
+    if "truth" in config:
+        gates = config.get("validation", {})
+        for key in ("max_time_difference_ms", "max_spatial_distance_mm", "max_stereo_time_difference_ms"):
+            if not isinstance(gates.get(key), (float, int)) or gates[key] < 0:
+                raise ValueError(f"validation.{key} must be a nonnegative number")
 
 
 def _run_directory(config: dict[str, Any], explicit: str | None) -> Path:
@@ -150,6 +155,9 @@ def run_pipeline(config_path: str | Path, explicit_run_dir: str | None = None) -
             str(path.relative_to(repo_root)): sha256(path)
             for path in sorted((repo_root / "pipeline").rglob("*.py"))
         }
+        for name in ("vieira_intrinsics_from_raw.py", "vieira_tlcc_sync.py"):
+            path = repo_root / "tools" / name
+            report["pipeline_source_hashes"][str(path.relative_to(repo_root))] = sha256(path)
         report["input_hashes"] = {str(path): sha256(path) for path in _input_files(config)}
         report["toolchain"] = _tool_snapshot(config["tools"], recorder)
 

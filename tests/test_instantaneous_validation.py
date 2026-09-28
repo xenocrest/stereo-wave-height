@@ -5,15 +5,19 @@ import unittest
 from pathlib import Path
 from unittest import mock
 import sys
+import subprocess
 
 import numpy as np
 import yaml
 
 from tools.preflight_check import _video, check as preflight_check
+from tools.vieira_tlcc_sync import extract_frame
 from pipeline.instantaneous_validation.compare_instant import compare_frame
 from pipeline.instantaneous_validation.load_ground_truth import load_truth
 from pipeline.instantaneous_validation.load_vision import export_csv, load_frame
+from pipeline.instantaneous_validation.load_vision import frame_times
 from pipeline.instantaneous_validation.schemas import ReferencePlane, reference_from_config, read_yaml
+from pipeline.instantaneous_validation.run_validation import run as run_validation
 from pipeline.visualization.view_results import _height_products
 
 
@@ -53,6 +57,22 @@ class InstantaneousValidationTests(unittest.TestCase):
         self.assertEqual(result["timestamp_s"], 12.5)
         self.assertTrue(np.isnan(result["height"][5, 5]))
         self.assertEqual(result["reference_plane_id"], "physical_1")
+        self.assertEqual(result["timestamp_basis"], "PROVIDED_SEQUENCE_NOMINAL_TIME")
+
+    def test_actual_decoded_timestamp_metadata(self):
+        (self.root / "sync" / "sync.json").write_text(json.dumps({"status": "COMPUTED", "frame_mapping": [
+            {"output_index": 0, "left_requested_timestamp_s": 12.5,
+             "left_actual_timestamp_s": 12.5089, "right_actual_timestamp_s": 12.507,
+             "stereo_pair_residual_ms": -1.9}]}), encoding="utf-8")
+        self.assertAlmostEqual(frame_times(self.root)[0], 12.5089)
+        self.assertEqual(load_frame(self.root, 0, self.reference)["timestamp_basis"], "ACTUAL_DECODED_PTS")
+
+    def test_ffmpeg_extraction_records_selected_frame_pts(self):
+        output = self.root / "selected.png"
+        output.write_bytes(b"png-test")
+        completed = subprocess.CompletedProcess([], 0, "", "[Parsed_showinfo_0] n: 0 pts: 801 pts_time:0.0089 duration: 1500")
+        with mock.patch("tools.vieira_tlcc_sync.run_checked", return_value=completed):
+            self.assertAlmostEqual(extract_frame(self.root / "ffmpeg.exe", self.root / "video.mp4", 20.0, output), 20.0089)
 
     def test_provided_plane_normalization(self):
         plane = reference_from_config({"mode": "provided_physical_plane", "coordinate_system": "official_grid_m",
@@ -127,6 +147,15 @@ class InstantaneousValidationTests(unittest.TestCase):
         template = read_yaml(Path(__file__).resolve().parents[1] / "examples" / "gopro_experiment_template.yaml")
         self.assertEqual(template["sync"]["method"], "wass_lowcost_tlcc")
         self.assertIn("truth", template)
+        self.assertIn("max_stereo_time_difference_ms", template["validation"])
+
+    def test_physical_comparison_rejects_nominal_requested_timestamp(self):
+        config = {"reference": {"mode": "provided_physical_plane", "coordinate_system": "official_grid_m",
+                                "reference_plane_id": "physical_1", "n_x": 0, "n_y": 0, "n_z": 1, "d": -0.01},
+                  "truth": {"data_file": "truth.csv"},
+                  "validation": {"max_stereo_time_difference_ms": 5}}
+        with self.assertRaisesRegex(ValueError, "VISION_TIMESTAMP_UNVERIFIED"):
+            run_validation(config, self.root, self.root / "validation")
 
     def test_preflight_missing_video(self):
         self.assertEqual(_video(str(self.root / "not-recorded.mp4"))["status"], "NOT_READY")
@@ -161,7 +190,8 @@ class InstantaneousValidationTests(unittest.TestCase):
                   "reference": {"mode": "provided_physical_plane", "coordinate_system": "official_grid_m",
                                 "n_x": 0, "n_y": 0, "n_z": 1, "d": 0},
                   "truth": {"data_file": str(truth), "sensor_layout": str(layout), "sync_file": str(clock)},
-                  "validation": {"max_time_difference_ms": 5, "max_spatial_distance_mm": 2}}
+                  "validation": {"max_time_difference_ms": 5, "max_spatial_distance_mm": 2,
+                                 "max_stereo_time_difference_ms": 5}}
         config_path = self.root / "experiment.yaml"
         config_path.write_text(yaml.safe_dump(config), encoding="utf-8")
         original_is_file = Path.is_file

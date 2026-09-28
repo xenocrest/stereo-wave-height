@@ -27,7 +27,7 @@ def plot_frame(run_dir: str | Path, frame_id: int, reference: ReferencePlane,
                         if row.get("DeltaH_mm") is not None else f'{row["sensor_id"]}: {row["status"]}',
                         (row["u"], row["v"]), color="white", fontsize=8,
                         bbox={"facecolor": "black", "alpha": 0.65})
-    ax.set_title(f'H(x,y,t_k) | frame={frame_id} | t={frame["timestamp_s"]:.6f} s'
+    ax.set_title(f'H(x,y,t_k) | frame={frame_id} | t={frame["timestamp_s"]:.6f} s [{frame["timestamp_basis"]}]'
                  + (" | EXTRINSIC_FALLBACK" if fallback else "")
                  + f"\nreference={reference.plane_id} ({reference.mode})")
     ax.set_xlabel("u (pixel)")

@@ -144,7 +144,7 @@ def check(config_path: str | Path) -> dict:
     items["reference"] = {"status": "READY" if ready else "NOT_READY", "mode": mode}
     gates = config.get("validation", {})
     gate_valid = all(isinstance(gates.get(key), (float, int)) and gates[key] >= 0
-                     for key in ("max_time_difference_ms", "max_spatial_distance_mm"))
+                     for key in ("max_time_difference_ms", "max_spatial_distance_mm", "max_stereo_time_difference_ms"))
     items["validation_gates"] = {"status": "READY" if gate_valid else "NOT_READY", "values": gates}
     output_root = Path(config.get("output_root") or config.get("output", {}).get("run_root") or "")
     parent = output_root if output_root.is_dir() else output_root.parent

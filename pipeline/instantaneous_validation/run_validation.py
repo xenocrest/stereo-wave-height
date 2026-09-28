@@ -7,7 +7,7 @@ from pathlib import Path
 from pipeline.instantaneous_validation.compare_instant import compare_frame
 from pipeline.instantaneous_validation.generate_report import write_report
 from pipeline.instantaneous_validation.load_ground_truth import load_layout, load_truth
-from pipeline.instantaneous_validation.load_vision import export_csv, frame_times
+from pipeline.instantaneous_validation.load_vision import export_csv, frame_times, frame_time_metadata
 from pipeline.instantaneous_validation.schemas import read_yaml, reference_from_config
 
 
@@ -18,12 +18,20 @@ def run(config: dict, run_dir: str | Path, output_dir: str | Path, synthetic: bo
     reference = reference_from_config(config["reference"], root)
     (out / "fixed_reference_plane.json").write_text(json.dumps(reference.as_dict(), indent=2), encoding="utf-8")
     frame_ids = [int(i) for i in config.get("frame_ids", frame_times(root).keys())]
+    truth = config.get("truth")
+    if truth and not synthetic:
+        stereo_gate = float(config["validation"]["max_stereo_time_difference_ms"])
+        for frame_id in frame_ids:
+            timing = frame_time_metadata(root, frame_id)
+            if timing["timestamp_basis"] != "ACTUAL_DECODED_PTS":
+                raise ValueError("VISION_TIMESTAMP_UNVERIFIED: actual decoded frame PTS is required for physical truth comparison")
+            if timing["stereo_pair_residual_ms"] is None or abs(timing["stereo_pair_residual_ms"]) > stereo_gate:
+                raise ValueError(f"STEREO_PAIR_NOT_ALIGNED: frame {frame_id} residual={timing['stereo_pair_residual_ms']} ms")
     csv_info = None
     if config.get("export_vision_csv", True):
         csv_info = export_csv(root, frame_ids, reference, out / "instantaneous_height.csv",
                               int(config.get("export_stride", 1)))
         (out / "instantaneous_height_manifest.json").write_text(json.dumps(csv_info, indent=2), encoding="utf-8")
-    truth = config.get("truth")
     if not truth:
         frames = {frame_id: [] for frame_id in frame_ids}
         report = write_report(root, reference, frames, out, synthetic=synthetic,

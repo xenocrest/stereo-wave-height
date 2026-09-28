@@ -13,8 +13,17 @@ def frame_times(run_dir: str | Path) -> dict[int, float]:
     sync = json.loads((Path(run_dir) / "sync" / "sync.json").read_text(encoding="utf-8"))
     if sync.get("status") == "PROVIDED":
         return {int(row["index"]): float(row["time_s"]) for row in sync["frames"]}
-    return {int(row["output_index"]): float(row["left_requested_timestamp_s"])
+    return {int(row["output_index"]): float(row.get("left_actual_timestamp_s", row["left_requested_timestamp_s"]))
             for row in sync["frame_mapping"]}
+
+
+def frame_time_metadata(run_dir: str | Path, frame_id: int) -> dict:
+    sync = json.loads((Path(run_dir) / "sync" / "sync.json").read_text(encoding="utf-8"))
+    if sync.get("status") == "PROVIDED":
+        return {"timestamp_basis": "PROVIDED_SEQUENCE_NOMINAL_TIME", "stereo_pair_residual_ms": None}
+    row = next(item for item in sync["frame_mapping"] if int(item["output_index"]) == frame_id)
+    return {"timestamp_basis": "ACTUAL_DECODED_PTS" if "left_actual_timestamp_s" in row else "REQUESTED_FRAME_TIME",
+            "stereo_pair_residual_ms": row.get("stereo_pair_residual_ms")}
 
 
 def load_frame(run_dir: str | Path, frame_id: int, reference: ReferencePlane) -> dict:
@@ -31,7 +40,7 @@ def load_frame(run_dir: str | Path, frame_id: int, reference: ReferencePlane) ->
     times = frame_times(root)
     if frame_id not in times:
         raise ValueError(f"frame {frame_id} has no recorded timestamp")
-    return {"frame_id": frame_id, "timestamp_s": times[frame_id], "xyz": xyz, "height": height,
+    return {"frame_id": frame_id, "timestamp_s": times[frame_id], **frame_time_metadata(root, frame_id), "xyz": xyz, "height": height,
             "source": source, "units": units, "reference_plane_id": reference.plane_id}
 
 
@@ -44,7 +53,7 @@ def export_csv(run_dir: str | Path, frame_ids: list[int], reference: ReferencePl
     count = 0
     with target.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.writer(stream)
-        writer.writerow(["frame_id", "timestamp", "u", "v", "X", "Y", "Z", "H_mm", "provenance", "reference_plane_id"])
+        writer.writerow(["frame_id", "timestamp", "timestamp_basis", "u", "v", "X", "Y", "Z", "H_mm", "provenance", "reference_plane_id"])
         for frame_id in frame_ids:
             frame = load_frame(run_dir, frame_id, reference)
             if frame["units"] != "m":
@@ -54,7 +63,7 @@ def export_csv(run_dir: str | Path, frame_ids: list[int], reference: ReferencePl
                 for u in range(0, height.shape[1], stride):
                     p = xyz[v, u]
                     h = height[v, u]
-                    writer.writerow([frame_id, f'{frame["timestamp_s"]:.9f}', u, v,
+                    writer.writerow([frame_id, f'{frame["timestamp_s"]:.9f}', frame["timestamp_basis"], u, v,
                                      *[f"{float(x):.9f}" if np.isfinite(x) else "" for x in p],
                                      f"{float(h)*1000:.6f}" if np.isfinite(h) else "",
                                      PROVENANCE[int(source[v, u])], reference.plane_id])

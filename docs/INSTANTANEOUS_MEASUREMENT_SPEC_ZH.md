@@ -10,4 +10,4 @@ WASS 在第 `k` 帧产生三维点 `P_i(t_k)=[X_i,Y_i,Z_i]^T`。固定参考面�
 
 `provenance` 为 `DIRECT_STEREO`、`OFFICIAL_GRID_ESTIMATE`、`NO_DATA`。现有 `wassncplot` pixel↔XYZ 有效网格全部标为 `OFFICIAL_GRID_ESTIMATE`；不能称为逐像素直接双目测量。无数据高度写空值。`instantaneous_height.csv` 的 `export_stride=1` 才覆盖全像素；任何抽样导出都会在 manifest 记录步长。
 
-时间以同步结果 `sync/sync.json` 的相机 LEFT 请求时间为准；实际容器取帧时间误差仍需设备实验核验。视觉与外部传感器采用另一个明确偏移：`t_camera=t_sensor+offset_ms/1000`。外部偏移未知时停止瞬时真实性判断。
+新视频运行以 `sync/sync.json` 中 FFmpeg 实际选中帧的 decoded PTS 为相机时间，并逐帧保存请求时间、实际左右时间和双目时间残差。旧 run 只有请求时间，会标为 `REQUESTED_FRAME_TIME`，真值验证拒绝使用。作者提供的图片序列时间按 FPS 推得，会标为 `PROVIDED_SEQUENCE_NOMINAL_TIME`，不能当作带独立时钟证据的实测时间。视觉与外部传感器采用另一个明确偏移：`t_camera=t_sensor+offset_ms/1000`。外部偏移未知、实际帧 PTS 缺失或双目时间残差超出预设门限时，停止瞬时真实性比较。

@@ -61,6 +61,7 @@ truth:
 validation:
   max_time_difference_ms: TBD_AFTER_HARDWARE_ARRIVAL
   max_spatial_distance_mm: TBD_AFTER_HARDWARE_ARRIVAL
+  max_stereo_time_difference_ms: TBD_AFTER_HARDWARE_ARRIVAL
 
 output:
   run_root: D:/stereo-wave-height-runs/pipeline

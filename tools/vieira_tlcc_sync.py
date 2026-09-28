@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 
 import numpy as np
@@ -76,12 +77,19 @@ def write_official_praat_script(path: Path, window_start_s: float, window_end_s:
     )
 
 
-def extract_frame(ffmpeg: Path, video: Path, timestamp_s: float, output: Path) -> None:
-    run_checked(
-        [str(ffmpeg), "-hide_banner", "-loglevel", "error", "-y", "-i", str(video), "-ss", f"{timestamp_s:.9f}", "-frames:v", "1", "-vsync", "0", str(output)]
+def extract_frame(ffmpeg: Path, video: Path, timestamp_s: float, output: Path) -> float:
+    completed = run_checked(
+        [str(ffmpeg), "-hide_banner", "-loglevel", "info", "-y", "-i", str(video), "-ss", f"{timestamp_s:.9f}",
+         "-vf", "showinfo", "-frames:v", "1", "-vsync", "0", str(output)]
     )
     if not output.is_file() or output.stat().st_size == 0:
         raise RuntimeError(f"FFmpeg did not create frame: {output}")
+    # With -ss after -i, showinfo reports the selected decoded frame's PTS
+    # relative to the requested seek position. The filter is pass-through.
+    match = re.search(r"\bn:\s*0\s+pts:\s*-?\d+\s+pts_time:\s*([-+0-9.eE]+)", completed.stderr)
+    if match is None:
+        raise RuntimeError(f"FFmpeg did not report decoded frame PTS: {video} at {timestamp_s}")
+    return timestamp_s + float(match.group(1))
 
 
 def run(args: argparse.Namespace) -> dict[str, object]:
@@ -119,13 +127,17 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         # Praat defines cross-corr(f,g)(tau) = integral f(t)g(t+tau)dt.
         right_time = left_time + offset_s
         left_name, right_name = cam0 / f"{index:06d}.png", cam1 / f"{index:06d}.png"
-        extract_frame(ffmpeg, left, left_time, left_name)
-        extract_frame(ffmpeg, right, right_time, right_name)
+        left_actual = extract_frame(ffmpeg, left, left_time, left_name)
+        right_actual = extract_frame(ffmpeg, right, right_time, right_name)
         mapping.append(
             {
                 "output_index": index,
                 "left_requested_timestamp_s": left_time,
                 "right_requested_timestamp_s": right_time,
+                "left_actual_timestamp_s": left_actual,
+                "right_actual_timestamp_s": right_actual,
+                "stereo_pair_residual_ms": (right_actual - left_actual - offset_s) * 1000,
+                "timestamp_basis": "FFmpeg decoded frame PTS after post-input seek; relative to each video timeline",
                 "right_minus_left_s": offset_s,
                 "left_file": str(left_name),
                 "right_file": str(right_name),
@@ -148,7 +160,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         "nominal_frame_lag_at_60fps": offset_s * 60.0,
         "output_sampling_fps": args.output_fps,
         "output_frame_count": args.frame_count,
-        "source_vfr_cfr_note": "Both raw containers retain their original timing; frames are newly sampled by timestamp after TLCC, so no historical frame indices or synchronization are reused.",
+        "source_vfr_cfr_note": "Both raw containers retain their original timing; frames are newly sampled by timestamp after TLCC. Actual selected decoded PTS and left/right residual are recorded per output pair.",
         "frame_mapping": mapping,
     }
     (output / "sync_result.json").write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

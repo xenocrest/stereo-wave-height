@@ -12,7 +12,7 @@
 8. **H 跨系统时间事件**：在相机画面和真值记录中制造共同可识别事件，测定相机与传感器时间偏移及来源，填 `truth_sync.yaml`。双 GoPro 的 TLCC 不代替这一步。
 9. **I 波浪拍摄**：同时采集左右视频与独立真值。保存原始时间戳；记录相机是否移动、暂停、换电、变焦或改变设置。
 10. **J 备份**：按 [实验目录](EXPERIMENT_DATA_LAYOUT_ZH.md) 保存原始文件，计算 hash，至少保留一份独立备份。
-11. **K 配置**：复制 `examples/gopro_experiment_template.yaml`，替换所有 `TBD_AFTER_HARDWARE_ARRIVAL`，填写视频、棋盘、baseline、参考面、真值文件、门限。门限在查看真值偏差前确定。
+11. **K 配置**：复制 `examples/gopro_experiment_template.yaml`，替换所有 `TBD_AFTER_HARDWARE_ARRIVAL`，填写视频、棋盘、baseline、参考面、真值文件、外部时间门限、双目实际帧时间残差门限。门限在查看真值偏差前确定。
 12. **L 执行**：先运行 `python tools/preflight_check.py <experiment.yaml>`，确认 `READY_FOR_PIPELINE`；再执行 `python pipeline/run_pipeline.py <experiment.yaml>`。保存 run report、官方命令和日志。
 13. **M 逐点验证**：选择明确的帧 `t_k`，根据独立传感器样本与空间门限计算每个点的 `Hvision、Htrue、DeltaH`，逐时刻读报告。只有对应时空点通过 gate，才报告其单点 `<10 mm` 或未通过。
 

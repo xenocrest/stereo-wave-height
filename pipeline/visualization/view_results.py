@@ -14,7 +14,7 @@ import plotly.graph_objects as go
 from plyfile import PlyData
 import yaml
 
-from pipeline.instantaneous_validation.load_vision import frame_times
+from pipeline.instantaneous_validation.load_vision import frame_times, frame_time_metadata
 from pipeline.instantaneous_validation.schemas import reference_from_config
 
 
@@ -50,6 +50,7 @@ def _height_products(run_dir: Path) -> tuple[str, str]:
         units = str(data["units"])
     frame_id = int(npz_path.stem)
     timestamp_s = frame_times(run_dir)[frame_id]
+    timestamp_basis = frame_time_metadata(run_dir, frame_id)["timestamp_basis"]
     snapshot = yaml.safe_load((run_dir / "config_snapshot.yaml").read_text(encoding="utf-8"))
     if snapshot.get("reference"):
         reference = reference_from_config(snapshot["reference"], run_dir)
@@ -67,7 +68,7 @@ def _height_products(run_dir: Path) -> tuple[str, str]:
     png = output / f"{npz_path.stem}.png"
     figure, axis = plt.subplots(figsize=(12, 7), constrained_layout=True)
     image = axis.imshow(display_height, cmap="turbo")
-    axis.set_title(f"H(x,y,t_k) | frame={frame_id} | t={timestamp_s:.6f} s\n{reference_label}")
+    axis.set_title(f"H(x,y,t_k) | frame={frame_id} | t={timestamp_s:.6f} s [{timestamp_basis}]\n{reference_label}")
     axis.set_xlabel("u (pixel)")
     axis.set_ylabel("v (pixel)")
     figure.colorbar(image, ax=axis, label=f"H ({display_unit})")
@@ -94,7 +95,7 @@ def _height_products(run_dir: Path) -> tuple[str, str]:
                 "pixel=(%{customdata[0]}, %{customdata[1]})<br>"
                 "X=%{customdata[2]:.6g}<br>Y=%{customdata[3]:.6g}<br>"
                 "Z=%{customdata[4]:.6g}<br>H=%{customdata[5]:.6g} " + display_unit + "<br>"
-                "timestamp=%{customdata[7]:.6f} s<br>source=%{customdata[6]}<extra></extra>"
+                "timestamp=%{customdata[7]:.6f} s (" + timestamp_basis + ")<br>source=%{customdata[6]}<extra></extra>"
             ),
         )
     )
@@ -113,7 +114,7 @@ def _height_products(run_dir: Path) -> tuple[str, str]:
                       for row in placed],
                 hovertemplate="%{text}<extra></extra>",
             ))
-    plot.update_layout(title=f"H(x,y,t_k) | frame={frame_id} | t={timestamp_s:.6f} s | {reference_label}",
+    plot.update_layout(title=f"H(x,y,t_k) | frame={frame_id} | t={timestamp_s:.6f} s [{timestamp_basis}] | {reference_label}",
                        xaxis_title="u", yaxis_title="v", yaxis_autorange="reversed")
     html = run_dir / "visualization" / "interactive_height.html"
     plot.write_html(html, include_plotlyjs=True, full_html=True)
