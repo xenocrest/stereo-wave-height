@@ -1,4 +1,4 @@
-source_run: D:/stereo-wave-height-runs/pipeline/hometank004/run_20260928_111739
+source_run: D:/stereo-wave-height-runs/pipeline/hometank004/run_20260928_113734
 output_dir: D:/stereo-wave-height-runs/pre_hardware_dry_run
 frame_id: 0
 export_stride: 64

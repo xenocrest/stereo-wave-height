@@ -28,9 +28,9 @@ python -m pipeline.instantaneous_validation.run_validation experiments/<experime
 
 提交后的同一科学 Pipeline 重新运行：
 
-- Vieira：`D:/stereo-wave-height-runs/pipeline/vieira_official/run_20260928_111355`，`VIEIRA_OFFICIAL_SAMPLE_PASS`，5 帧点数 693,572 / 686,788 / 642,809 / 622,348 / 719,453。
-- HomeTank：`D:/stereo-wave-height-runs/pipeline/hometank004/run_20260928_111739`，`HOMETANK_PIPELINE_PASS_WITH_EXTRINSIC_FALLBACK`，3 帧点数 132,060 / 148,358 / 146,801。
-- 两次 run 均记录科学代码提交 `67faf3e5c1c3b3ee99d85a2617e4373f55545858`、`git_dirty=false`、第三方算法修改 `0`。WASS/wass_lowcost 源码 hash 与此前稳定运行一致。
-- 从上述 run 分别生成的 3 张瞬时图位于 `D:/stereo-wave-height-runs/pre_hardware_instantaneous/vieira_verified/` 和 `.../hometank004_verified/`。HomeTank 图标记 `EXTRINSIC_FALLBACK`；两组图均注明历史内部参考面仅用于形态展示。
+- Vieira：`D:/stereo-wave-height-runs/pipeline/vieira_official/run_20260928_113344`，`VIEIRA_OFFICIAL_SAMPLE_PASS`，5 帧点数 649,657 / 702,869 / 679,470 / 707,275 / 711,415。
+- HomeTank：`D:/stereo-wave-height-runs/pipeline/hometank004/run_20260928_113734`，`HOMETANK_PIPELINE_PASS_WITH_EXTRINSIC_FALLBACK`，3 帧点数 132,850 / 148,612 / 147,337。实际 LEFT 时间为 20.0089、20.5089、21.0089 s；相对音频 TLCC 映射，左右实际取帧时间残差每帧为 −8.9 ms。将来必须按预先设定的门限判断，而不能隐藏此残差。
+- 两次 run 均记录科学代码提交 `85ab569d120ec5472de27371c9e086c82ac21afe`、`git_dirty=false`、第三方算法修改 `0`。WASS/wass_lowcost 源码 hash 与此前稳定运行一致。20 s 单帧的时间戳记录改动前后 PNG SHA256 完全一致。
+- 从上述 run 分别生成的 3 张瞬时图位于 `D:/stereo-wave-height-runs/pre_hardware_instantaneous/vieira_final/` 和 `.../hometank004_final/`。HomeTank 图标记 `EXTRINSIC_FALLBACK`；两组图均注明历史内部参考面仅用于形态展示。
 - 合成干跑：`D:/stereo-wave-height-runs/pre_hardware_dry_run/dry_run_report.json`，状态 `PRE_HARDWARE_DRY_RUN_PASS`；逐点示例 `+4.2 mm → PASS_LT_10MM`、`−12.0 mm → FAIL_GE_10MM`，这两个真值由测试程序构造。
 - 新验证代码与原有全项目测试通过；GoPro 模板的预检显示未到货项目 `NOT_READY`，完整接口的模拟采集预检可返回 `READY_FOR_PIPELINE`。
