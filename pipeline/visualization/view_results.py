@@ -58,6 +58,8 @@ def _height_products(run_dir: Path) -> tuple[str, str]:
         reference_label = reference.plane_id
     else:
         reference_label = "WASS_INTERNAL_MEAN_PLANE_ALIGNMENT; not a measured fixed physical plane"
+    if "EXTRINSIC_FALLBACK" in str(snapshot.get("pass_status", "")):
+        reference_label += " | EXTRINSIC_FALLBACK"
     display_unit = "mm" if units == "m" else "B (normalized)"
     display_height = height * (1000 if units == "m" else 1)
     output = run_dir / "visualization" / "height_map"

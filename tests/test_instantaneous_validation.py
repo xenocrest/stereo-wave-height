@@ -3,10 +3,13 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
+import sys
 
 import numpy as np
+import yaml
 
-from tools.preflight_check import _video
+from tools.preflight_check import _video, check as preflight_check
 from pipeline.instantaneous_validation.compare_instant import compare_frame
 from pipeline.instantaneous_validation.load_ground_truth import load_truth
 from pipeline.instantaneous_validation.load_vision import export_csv, load_frame
@@ -128,8 +131,53 @@ class InstantaneousValidationTests(unittest.TestCase):
     def test_preflight_missing_video(self):
         self.assertEqual(_video(str(self.root / "not-recorded.mp4"))["status"], "NOT_READY")
 
+    def test_preflight_ready_contract_with_complete_mocked_capture(self):
+        tools_dir = self.root / "tools"
+        tools_dir.mkdir()
+        for name in ("ffmpeg.exe", "praat.exe"):
+            (tools_dir / name).touch()
+        for name in ("wass_prepare", "wass_match", "wass_autocalibrate", "wass_stereo"):
+            (tools_dir / f"{name}.exe").touch()
+        (tools_dir / "wass_source").mkdir()
+        (tools_dir / "wass_lowcost").mkdir()
+        truth = self.root / "ground_truth.csv"
+        truth.write_text("timestamp,sensor_id,x,y,H_true_mm,quality_flag,reference_plane_id\n"
+                         "12.5,A,20,30,22,GOOD,physical_1\n", encoding="utf-8")
+        layout = self.root / "sensor_layout.yaml"
+        layout.write_text("coordinate_system: official_grid_m\nsensors:\n  - id: A\n    x_mm: 20\n    y_mm: 30\n", encoding="utf-8")
+        clock = self.root / "truth_sync.yaml"
+        clock.write_text("truth_sync:\n  method: provided_offset\n  offset_ms: 2\n  source: measured event\n", encoding="utf-8")
+        config = {"project": "test", "source_type": "stereo_video", "output_root": str(self.root),
+                  "tools": {"python": sys.executable, "ffmpeg": str(tools_dir / "ffmpeg.exe"),
+                            "praat": str(tools_dir / "praat.exe"), "wass_bin": str(tools_dir),
+                            "wass_source": str(tools_dir / "wass_source"),
+                            "wass_lowcost": str(tools_dir / "wass_lowcost")},
+                  "calibration": {"left_video": "left_cal.mp4", "right_video": "right_cal.mp4",
+                                  "checkerboard": {"rows": 6, "columns": 9, "square_size_m": 0.02}},
+                  "sync": {"left_video": "left_wave.mp4", "right_video": "right_wave.mp4",
+                           "method": "wass_lowcost_tlcc"}, "wass": {},
+                  "surface": {"baseline_m": 0.16, "units": "m"},
+                  "camera": {"nominal_baseline_mm": 160},
+                  "reference": {"mode": "provided_physical_plane", "coordinate_system": "official_grid_m",
+                                "n_x": 0, "n_y": 0, "n_z": 1, "d": 0},
+                  "truth": {"data_file": str(truth), "sensor_layout": str(layout), "sync_file": str(clock)},
+                  "validation": {"max_time_difference_ms": 5, "max_spatial_distance_mm": 2}}
+        config_path = self.root / "experiment.yaml"
+        config_path.write_text(yaml.safe_dump(config), encoding="utf-8")
+        original_is_file = Path.is_file
+        def is_file(path):
+            if path.name in {"wassgridsurface.exe", "wassncplot.exe"}:
+                return True
+            return original_is_file(path)
+        video_record = {"status": "READY", "width": 1920, "height": 1080, "fps": 30.0, "frames": 300}
+        with mock.patch("tools.preflight_check._video", return_value=video_record), \
+             mock.patch("tools.preflight_check._audio", return_value={"status": "READY", "audio_track": True}), \
+             mock.patch.object(Path, "is_file", is_file):
+            self.assertEqual(preflight_check(config_path)["status"], "READY_FOR_PIPELINE")
+
     def test_instantaneous_hover_contains_frame_time_and_reference(self):
         (self.root / "config_snapshot.yaml").write_text(
+            "pass_status: HOMETANK_PIPELINE_PASS_WITH_EXTRINSIC_FALLBACK\n"
             "reference:\n  mode: provided_physical_plane\n  coordinate_system: official_grid_m\n"
             "  reference_plane_id: physical_1\n  n_x: 0\n  n_y: 0\n  n_z: 1\n  d: -0.01\n",
             encoding="utf-8",
@@ -140,6 +188,7 @@ class InstantaneousValidationTests(unittest.TestCase):
         self.assertIn("frame=0", rendered)
         self.assertIn("12.500000", rendered)
         self.assertIn("physical_1", rendered)
+        self.assertIn("EXTRINSIC_FALLBACK", rendered)
 
 
 if __name__ == "__main__":

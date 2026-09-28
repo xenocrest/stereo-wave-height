@@ -21,3 +21,16 @@ python -m pipeline.instantaneous_validation.run_validation experiments/<experime
 ```
 
 模板中的设备参数为待填写值，因此预检结果应为 `NOT_READY`。合成干跑报告写入 `D:/stereo-wave-height-runs/pre_hardware_dry_run/`，其数值真值是程序构造的。正式实验 YAML 填好后，`run_pipeline.py` 会在官方工具链完成后自动执行固定参考面和真值比较；单独的验证命令可用于重新检查已有 run。`export_stride: 1` 导出全像素 CSV，文件可能很大；抽样导出须保留 manifest 的实际步长。
+
+## 本阶段验收记录（2026-09-28）
+
+状态：`PRE_HARDWARE_INSTANTANEOUS_READY_PASS`，表示设备到货前的软件接口、验证逻辑与操作文件已备齐；不表示新硬件采集或真实精度已通过。
+
+提交后的同一科学 Pipeline 重新运行：
+
+- Vieira：`D:/stereo-wave-height-runs/pipeline/vieira_official/run_20260928_111355`，`VIEIRA_OFFICIAL_SAMPLE_PASS`，5 帧点数 693,572 / 686,788 / 642,809 / 622,348 / 719,453。
+- HomeTank：`D:/stereo-wave-height-runs/pipeline/hometank004/run_20260928_111739`，`HOMETANK_PIPELINE_PASS_WITH_EXTRINSIC_FALLBACK`，3 帧点数 132,060 / 148,358 / 146,801。
+- 两次 run 均记录科学代码提交 `67faf3e5c1c3b3ee99d85a2617e4373f55545858`、`git_dirty=false`、第三方算法修改 `0`。WASS/wass_lowcost 源码 hash 与此前稳定运行一致。
+- 从上述 run 分别生成的 3 张瞬时图位于 `D:/stereo-wave-height-runs/pre_hardware_instantaneous/vieira_verified/` 和 `.../hometank004_verified/`。HomeTank 图标记 `EXTRINSIC_FALLBACK`；两组图均注明历史内部参考面仅用于形态展示。
+- 合成干跑：`D:/stereo-wave-height-runs/pre_hardware_dry_run/dry_run_report.json`，状态 `PRE_HARDWARE_DRY_RUN_PASS`；逐点示例 `+4.2 mm → PASS_LT_10MM`、`−12.0 mm → FAIL_GE_10MM`，这两个真值由测试程序构造。
+- 新验证代码与原有全项目测试通过；GoPro 模板的预检显示未到货项目 `NOT_READY`，完整接口的模拟采集预检可返回 `READY_FOR_PIPELINE`。
