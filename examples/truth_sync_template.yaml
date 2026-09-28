@@ -1,0 +1,6 @@
+truth_sync:
+  method: provided_offset
+  # camera_time_s = sensor_time_s + offset_ms / 1000
+  offset_ms: TBD_AFTER_HARDWARE_ARRIVAL
+  source: TBD_AFTER_HARDWARE_ARRIVAL
+  confidence: TBD_AFTER_HARDWARE_ARRIVAL

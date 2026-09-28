@@ -1,0 +1,7 @@
+coordinate_system: official_grid_m
+sensors:
+  - id: Sensor_A
+    x_mm: TBD_AFTER_HARDWARE_ARRIVAL
+    y_mm: TBD_AFTER_HARDWARE_ARRIVAL
+    z_datum_mm: TBD_AFTER_HARDWARE_ARRIVAL
+    measurement_method: TBD_AFTER_HARDWARE_ARRIVAL

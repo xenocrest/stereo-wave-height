@@ -1,5 +1,7 @@
 # stereo-wave-height
 
+> **2026-09 当前入口：** 科学主线为 Vieira/WASS 官方工具链复现及设备到货前的瞬时水面验证准备。GUI/EXE 已保留但暂停开发。请先读 [设备到货前准备状态](PRE_HARDWARE_READINESS_ZH.md)、[Pipeline 使用说明](PIPELINE_USER_GUIDE_ZH.md) 和 [瞬时量定义](docs/INSTANTANEOUS_MEASUREMENT_SPEC_ZH.md)。下文保留历史阶段性路线与成果，不代表当前主线；目前没有独立真值，不能宣称实测瞬时高度误差小于 10 mm。
+
 基于 WASS（Waves Acquisition Stereo System）的双目水面三维形态与高度测量研究项目。最终产品定位为**双目视频输入的按需单帧测量与展示软件**：用户加载左右视频、选择目标时刻，系统提取该时刻的同步帧对并运行一次 WASS 解算。
 
 当前标定主线采用 **independent LEFT/RIGHT mono full-FOV calibration + bilateral overlap fixed-intrinsic stereo extrinsics**；系统以可审计的 scene diagnostics、分层 quality status 和 adaptation manifest 面向真实环境适配，不再要求 bilateral 标定板覆盖两幅完整图像。

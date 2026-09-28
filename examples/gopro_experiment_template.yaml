@@ -1,0 +1,69 @@
+# Copy to experiments/<experiment_id>/metadata/experiment.yaml and fill all TBD values.
+project: TBD_AFTER_HARDWARE_ARRIVAL
+source_type: stereo_video
+output_root: D:/stereo-wave-height-runs/pipeline
+pass_status: PIPELINE_PASS
+
+tools:
+  python: D:/stereo-wave-height-runs/wassgridsurface-0.11.4-venv/Scripts/python.exe
+  wass_bin: D:/wass/dist/bin
+  ffmpeg: D:/FormatFactory/ffmpeg.exe
+  praat: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/praat/Praat.exe
+  wass_source: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/wass-src/wass-master
+  wass_lowcost: D:/stereo-wave-height-runs/vieira2025-full-repro-20260916/sources/wass_lowcost
+
+calibration:
+  status: compute
+  left_video: TBD_AFTER_HARDWARE_ARRIVAL
+  right_video: TBD_AFTER_HARDWARE_ARRIVAL
+  checkerboard:
+    columns: TBD_AFTER_HARDWARE_ARRIVAL
+    rows: TBD_AFTER_HARDWARE_ARRIVAL
+    square_size_m: TBD_AFTER_HARDWARE_ARRIVAL
+  sample_hz: 5
+  target_views: 50
+  minimum_views: 20
+
+sync:
+  method: wass_lowcost_tlcc
+  left_video: TBD_AFTER_HARDWARE_ARRIVAL
+  right_video: TBD_AFTER_HARDWARE_ARRIVAL
+  window_start_s: 0
+  window_end_s: TBD_AFTER_HARDWARE_ARRIVAL
+  start_s: TBD_AFTER_HARDWARE_ARRIVAL
+  output_fps: TBD_AFTER_HARDWARE_ARRIVAL
+  frame_count: TBD_AFTER_HARDWARE_ARRIVAL
+
+camera:
+  nominal_baseline_mm: TBD_AFTER_HARDWARE_ARRIVAL
+
+wass: {}
+
+surface:
+  baseline_m: TBD_AFTER_HARDWARE_ARRIVAL
+  units: m
+  N: 256
+  parallel: 1
+
+# This frame must be independently documented as still water. It establishes
+# one fixed internal reference for all measured frames; it is not ground truth.
+reference:
+  mode: designated_static_water_frame
+  coordinate_system: official_grid_m
+  reference_frame_id: TBD_AFTER_HARDWARE_ARRIVAL
+  reference_plane_id: INTERNAL_STATIC_REFERENCE
+
+truth:
+  data_file: TBD_AFTER_HARDWARE_ARRIVAL
+  sensor_layout: TBD_AFTER_HARDWARE_ARRIVAL
+  sync_file: TBD_AFTER_HARDWARE_ARRIVAL
+
+validation:
+  max_time_difference_ms: TBD_AFTER_HARDWARE_ARRIVAL
+  max_spatial_distance_mm: TBD_AFTER_HARDWARE_ARRIVAL
+
+output:
+  run_root: D:/stereo-wave-height-runs/pipeline
+
+export_vision_csv: true
+export_stride: 1

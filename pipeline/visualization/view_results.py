@@ -12,6 +12,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import plotly.graph_objects as go
 from plyfile import PlyData
+import yaml
+
+from pipeline.instantaneous_validation.load_vision import frame_times
+from pipeline.instantaneous_validation.schemas import reference_from_config
 
 
 def _first_pair(run_dir: Path) -> tuple[Path, Path]:
@@ -39,45 +43,76 @@ def _sync_preview(run_dir: Path) -> str:
 
 def _height_products(run_dir: Path) -> tuple[str, str]:
     npz_path = sorted((run_dir / "pixel" / "pixel_height").glob("*.npz"))[0]
-    data = np.load(npz_path, allow_pickle=False)
-    xyz = data["xyz"]
-    height = data["height"]
-    source = data["source"]
-    units = str(data["units"])
+    with np.load(npz_path, allow_pickle=False) as data:
+        xyz = data["xyz"]
+        height = data["height"] if "height" in data.files else xyz[..., 2]
+        source = data["source"]
+        units = str(data["units"])
+    frame_id = int(npz_path.stem)
+    timestamp_s = frame_times(run_dir)[frame_id]
+    snapshot = yaml.safe_load((run_dir / "config_snapshot.yaml").read_text(encoding="utf-8"))
+    if snapshot.get("reference"):
+        reference = reference_from_config(snapshot["reference"], run_dir)
+        height = reference.height(xyz)
+        height[(source == 0) | ~np.isfinite(xyz).all(axis=2)] = np.nan
+        reference_label = reference.plane_id
+    else:
+        reference_label = "WASS_INTERNAL_MEAN_PLANE_ALIGNMENT; not a measured fixed physical plane"
+    display_unit = "mm" if units == "m" else "B (normalized)"
+    display_height = height * (1000 if units == "m" else 1)
     output = run_dir / "visualization" / "height_map"
     output.mkdir(parents=True, exist_ok=True)
     png = output / f"{npz_path.stem}.png"
     figure, axis = plt.subplots(figsize=(12, 7), constrained_layout=True)
-    image = axis.imshow(height, cmap="turbo")
-    axis.set_title(f"Official gridded surface height ({units})")
+    image = axis.imshow(display_height, cmap="turbo")
+    axis.set_title(f"H(x,y,t_k) | frame={frame_id} | t={timestamp_s:.6f} s\n{reference_label}")
     axis.set_xlabel("u (pixel)")
     axis.set_ylabel("v (pixel)")
-    figure.colorbar(image, ax=axis, label=f"H ({units})")
+    figure.colorbar(image, ax=axis, label=f"H ({display_unit})")
     figure.savefig(png, dpi=160)
     plt.close(figure)
 
     stride = max(1, int(np.ceil(max(height.shape) / 900)))
-    h = height[::stride, ::stride]
+    h = display_height[::stride, ::stride]
     p = xyz[::stride, ::stride]
     s = source[::stride, ::stride]
     vv, uu = np.mgrid[0 : height.shape[0] : stride, 0 : height.shape[1] : stride]
     label = np.where(s == 2, "OFFICIAL_GRID_ESTIMATE", np.where(s == 1, "DIRECT_STEREO", "NO_DATA"))
-    custom = np.stack([uu, vv, p[..., 0], p[..., 1], p[..., 2], h, label], axis=-1)
+    custom = np.empty(h.shape + (8,), dtype=object)
+    for index, values in enumerate((uu, vv, p[..., 0], p[..., 1], p[..., 2], h, label,
+                                    np.full(h.shape, timestamp_s))):
+        custom[..., index] = values
     plot = go.Figure(
         go.Heatmap(
             z=h,
             customdata=custom,
             colorscale="Turbo",
-            colorbar={"title": f"H ({units})"},
+            colorbar={"title": f"H ({display_unit})"},
             hovertemplate=(
                 "pixel=(%{customdata[0]}, %{customdata[1]})<br>"
                 "X=%{customdata[2]:.6g}<br>Y=%{customdata[3]:.6g}<br>"
-                "Z=%{customdata[4]:.6g}<br>H=%{customdata[5]:.6g} " + units + "<br>"
-                "source=%{customdata[6]}<extra></extra>"
+                "Z=%{customdata[4]:.6g}<br>H=%{customdata[5]:.6g} " + display_unit + "<br>"
+                "timestamp=%{customdata[7]:.6f} s<br>source=%{customdata[6]}<extra></extra>"
             ),
         )
     )
-    plot.update_layout(title="Pixel height — official WASS grid mapping", xaxis_title="u", yaxis_title="v", yaxis_autorange="reversed")
+    validation_path = run_dir / "validation" / "instantaneous_validation_report.json"
+    if validation_path.is_file():
+        recorded = json.loads(validation_path.read_text(encoding="utf-8"))
+        rows = recorded.get("frames", {}).get(str(frame_id), [])
+        placed = [row for row in rows if row.get("u") is not None]
+        if placed:
+            plot.add_trace(go.Scatter(
+                x=[row["u"] / stride for row in placed],
+                y=[row["v"] / stride for row in placed],
+                mode="markers", name="Independent sensors",
+                marker={"size": 10, "color": "white", "line": {"color": "black", "width": 2}},
+                text=[f'{row["sensor_id"]}<br>H_true={row.get("H_true_mm")} mm<br>ΔH={row.get("DeltaH_mm")} mm<br>{row["status"]}'
+                      for row in placed],
+                hovertemplate="%{text}<extra></extra>",
+            ))
+    plot.update_layout(title=f"H(x,y,t_k) | frame={frame_id} | t={timestamp_s:.6f} s | {reference_label}",
+                       xaxis_title="u", yaxis_title="v", yaxis_autorange="reversed")
     html = run_dir / "visualization" / "interactive_height.html"
     plot.write_html(html, include_plotlyjs=True, full_html=True)
     return str(png), str(html)

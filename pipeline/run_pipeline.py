@@ -20,6 +20,7 @@ import yaml
 from pipeline.adapters import calibration, surface, sync, wass
 from pipeline.common import CommandRecorder, StageFailure, require_empty, sha256, write_json
 from pipeline.visualization.view_results import build as build_visualization
+from pipeline.instantaneous_validation.run_validation import run as run_instantaneous_validation
 
 
 def load_config(path: str | Path) -> dict[str, Any]:
@@ -49,6 +50,13 @@ def validate_config(config: dict[str, Any]) -> None:
                 raise ValueError(f"sync.{key} is required for synchronized_image_sequence")
     if float(config["surface"].get("baseline_m", 0)) <= 0:
         raise ValueError("surface.baseline_m must be positive; use 1 only for an explicitly baseline-normalized author sample")
+    if "reference" in config:
+        if config["reference"].get("mode") not in {"provided_physical_plane", "designated_static_water_frame"}:
+            raise ValueError("reference.mode must select a fixed reference plane")
+        if not config["reference"].get("coordinate_system"):
+            raise ValueError("reference.coordinate_system is required")
+    if "truth" in config and "reference" not in config:
+        raise ValueError("truth validation requires a fixed reference plane")
 
 
 def _run_directory(config: dict[str, Any], explicit: str | None) -> Path:
@@ -82,6 +90,9 @@ def _input_files(config: dict[str, Any]) -> list[Path]:
         for key in ("matcher_config", "stereo_config"):
             if fallback.get(key):
                 result.append(Path(fallback[key]).resolve())
+    for key in ("data_file", "sensor_layout", "sync_file"):
+        if config.get("truth", {}).get(key):
+            result.append(Path(config["truth"][key]).resolve())
     unique = []
     seen = set()
     for path in result:
@@ -150,6 +161,11 @@ def run_pipeline(config_path: str | Path, explicit_run_dir: str | None = None) -
         report["stages"]["wass"] = wass.run(config["wass"], config["tools"], run_dir, recorder)
         current_stage = "surface"
         report["stages"]["surface"] = surface.run(config["surface"], config["tools"], report["stages"]["sync"], run_dir, recorder)
+        if "reference" in config:
+            current_stage = "instantaneous"
+            report["stages"]["instantaneous"] = run_instantaneous_validation(
+                config, run_dir, run_dir / "validation"
+            )
         current_stage = "visualization"
         report["stages"]["visualization"] = build_visualization(run_dir)
         report["status"] = config.get("pass_status", "PIPELINE_PASS")

@@ -1,0 +1,21 @@
+schema_version: "1.0"
+file: ground_truth.csv
+encoding: UTF-8
+timestamp:
+  unit: seconds
+  definition: seconds on the sensor clock since the documented common synchronization event
+  camera_offset_rule: "camera_time_s = sensor_time_s + truth_sync.offset_ms/1000"
+required_columns:
+  timestamp: finite number
+  sensor_id: nonempty string
+  x: measured X in millimetres in official_grid_m coordinates
+  y: measured Y in millimetres in official_grid_m coordinates
+  quality_flag: GOOD or instrument-specific exclusion flag
+height_columns:
+  one_of:
+    - H_true_mm: signed height relative to reference_plane_id
+    - Z_true_mm: absolute Z in the same coordinate_system as WASS gridded XYZ
+  additional_metadata:
+    reference_plane_id: required when H_true_mm is used
+    coordinate_system: required when Z_true_mm is used
+example_header: timestamp,sensor_id,x,y,H_true_mm,quality_flag,reference_plane_id
