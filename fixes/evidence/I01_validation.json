@@ -1,0 +1,130 @@
+[
+  {
+    "label": "HomeTank21",
+    "before_raw_alignment_px": {
+      "count": 1000,
+      "quantiles_0_2_50_98_100": [
+        0.003852967817993089,
+        0.1794438282445791,
+        4.720020930156114,
+        13.180216690649843,
+        15.13101358233159
+      ]
+    },
+    "after_undistorted_alignment_px_same_1000_sample_population": {
+      "count": 1000,
+      "quantiles_0_2_50_98_100": [
+        4.459103808669007e-05,
+        0.00018892952214878765,
+        0.0013751241464198527,
+        0.008251998430065603,
+        0.05725597626731546
+      ]
+    },
+    "32_saved_sample_reprojection_median_px": 0.0013525083918844974,
+    "measurement_image_is_actual_WASS_cam0": true,
+    "hover_identity_checked_sample_count": 32,
+    "map_raster_wh": [
+      2400,
+      1350
+    ],
+    "raw_hover_enabled": false,
+    "upstream_I12_still_pending_at_this_commit": true
+  },
+  {
+    "label": "HomeTank22",
+    "before_raw_alignment_px": {
+      "count": 1000,
+      "quantiles_0_2_50_98_100": [
+        0.0034413489603943937,
+        0.14694636370400124,
+        4.758433109492695,
+        12.931517397687797,
+        15.211588211687122
+      ]
+    },
+    "after_undistorted_alignment_px_same_1000_sample_population": {
+      "count": 1000,
+      "quantiles_0_2_50_98_100": [
+        7.875268165109768e-05,
+        0.0003113778325614271,
+        0.00220659021500842,
+        0.06927441910843059,
+        0.7228183881762703
+      ]
+    },
+    "32_saved_sample_reprojection_median_px": 0.002596708193125857,
+    "measurement_image_is_actual_WASS_cam0": true,
+    "hover_identity_checked_sample_count": 32,
+    "map_raster_wh": [
+      2400,
+      1350
+    ],
+    "raw_hover_enabled": false,
+    "upstream_I12_still_pending_at_this_commit": true
+  },
+  {
+    "label": "HomeTank23",
+    "before_raw_alignment_px": {
+      "count": 1000,
+      "quantiles_0_2_50_98_100": [
+        0.007617782354634264,
+        0.16928888205052628,
+        4.534514149032289,
+        12.764357361990621,
+        14.940417235137554
+      ]
+    },
+    "after_undistorted_alignment_px_same_1000_sample_population": {
+      "count": 1000,
+      "quantiles_0_2_50_98_100": [
+        4.92815823230695e-05,
+        0.00025838776071169167,
+        0.0017765667128044164,
+        0.019088154368075514,
+        0.21340584604305046
+      ]
+    },
+    "32_saved_sample_reprojection_median_px": 0.002086505706313806,
+    "measurement_image_is_actual_WASS_cam0": true,
+    "hover_identity_checked_sample_count": 32,
+    "map_raster_wh": [
+      2400,
+      1350
+    ],
+    "raw_hover_enabled": false,
+    "upstream_I12_still_pending_at_this_commit": true
+  },
+  {
+    "label": "Vieira0",
+    "before_raw_alignment_px": {
+      "count": 1000,
+      "quantiles_0_2_50_98_100": [
+        0.0034640490610033893,
+        0.021881211563523455,
+        1.1350224858835682,
+        5.2210457602517595,
+        5.556848148423134
+      ]
+    },
+    "after_undistorted_alignment_px_same_1000_sample_population": {
+      "count": 1000,
+      "quantiles_0_2_50_98_100": [
+        0.0001910413631605388,
+        0.0011636706336978114,
+        0.015544553921482122,
+        0.09335235796128669,
+        0.13507791826357018
+      ]
+    },
+    "32_saved_sample_reprojection_median_px": 0.012523316051801707,
+    "measurement_image_is_actual_WASS_cam0": true,
+    "hover_identity_checked_sample_count": 32,
+    "map_raster_wh": [
+      2400,
+      1350
+    ],
+    "raw_hover_enabled": false,
+    "upstream_I12_still_pending_at_this_commit": true
+  }
+]

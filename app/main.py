@@ -211,6 +211,9 @@ class MainWindow(QMainWindow):
         self.reference_run: Path | None = None
         self.result: dict | None = None
         self.raw_rgb: np.ndarray | None = None
+        self.measurement_rgb: np.ndarray | None = None
+        self.measurement_right_rgb: np.ndarray | None = None
+        self.display_mode = "raw"
         self.overlay_rgb: np.ndarray | None = None
         self.preview_left: np.ndarray | None = None
         self.preview_right: np.ndarray | None = None
@@ -389,15 +392,19 @@ class MainWindow(QMainWindow):
             region_row.addWidget(button)
         layout.addLayout(region_row)
         modes = QHBoxLayout()
-        self.raw_button = QPushButton("原始水面")
+        self.raw_button = QPushButton("原始相机画面")
+        self.measurement_button = QPushButton("科学测量图（去畸变）")
         self.cloud_button = QPushButton("三维点云")
         self.overlay_button = QPushButton("叠加显示")
-        for button in (self.raw_button, self.cloud_button, self.overlay_button):
+        for button in (self.raw_button, self.measurement_button, self.cloud_button, self.overlay_button):
             modes.addWidget(button)
         self.raw_button.clicked.connect(lambda: self._display_mode("raw"))
+        self.measurement_button.clicked.connect(lambda: self._display_mode("measurement"))
         self.cloud_button.clicked.connect(lambda: self._display_mode("cloud"))
         self.overlay_button.clicked.connect(lambda: self._display_mode("overlay"))
         layout.addLayout(modes)
+        self.view_label = QLabel("RAW_CAMERA_IMAGE | 原始相机画面；高度查询关闭")
+        layout.addWidget(self.view_label)
         self.point_cloud = PointCloudView()
         self.point_cloud.hide()
         layout.addWidget(self.point_cloud, 1)
@@ -455,6 +462,9 @@ class MainWindow(QMainWindow):
         self.reference_run = None
         self.result = None
         self.raw_rgb = None
+        self.measurement_rgb = None
+        self.measurement_right_rgb = None
+        self.display_mode = "raw"
         self.overlay_rgb = None
         self.preview_left = None
         self.preview_right = None
@@ -728,6 +738,8 @@ class MainWindow(QMainWindow):
             return
         self.result = None
         self.raw_rgb = None
+        self.measurement_rgb = None
+        self.measurement_right_rgb = None
         self.overlay_rgb = None
         self.result_stale = True
         self.image_canvas.set_rgb(None)
@@ -850,10 +862,10 @@ class MainWindow(QMainWindow):
             self._error(str(error))
 
     def _start_region_selection(self) -> None:
-        if self.preview_left is None:
-            self._error("请先加载并预览左水面视频")
+        if self.result is None or self.measurement_rgb is None:
+            self._error("请先解算当前帧，在去畸变科学测量图上设置显示/查询区域")
             return
-        self._display_mode("raw")
+        self._display_mode("measurement")
         self.image_canvas.selecting_region = True
         self.region_button.setText("在左图拖动测量矩形…")
 
@@ -867,7 +879,7 @@ class MainWindow(QMainWindow):
             "非水面结构仍可能存在。")
         if self.result is not None:
             self._build_overlay()
-            self._display_mode("raw")
+            self._display_mode("measurement")
 
     def _check_toolchain(self) -> None:
         config = self.config or core.new_project("empty", "D:/stereo-wave-height-runs/offline_app")
@@ -1004,6 +1016,7 @@ class MainWindow(QMainWindow):
 
     def _receive_reconstruction(self, config: dict) -> None:
         assert self.science_run is not None
+        self._mark_stale()  # A failed image/coordinate load must not leave old H visible.
         run = self.science_run
         core.validate_run_inputs(run, config)
         target_id = int(config["_app_target_frame"])
@@ -1015,7 +1028,10 @@ class MainWindow(QMainWindow):
                 self.reference_identity = active_id
                 self.reference_run = run
         assert self.reference is not None
-        self.result = core.load_result(run, target_id, self.reference, self.reference_identity)
+        result = core.load_result(run, target_id, self.reference, self.reference_identity)
+        measurement = core.measurement_image(result)
+        measurement_right = core.measurement_image(result, 1)
+        self.result = result
         self._result_selection_ms = self.slider.value()
         self.result_stale = False
         if not self._viewing_existing_run:
@@ -1026,6 +1042,8 @@ class MainWindow(QMainWindow):
         if raw_bgr is None:
             raise ValueError(f"Cannot read extracted scientific input: {raw_path}")
         self.raw_rgb = cv2.cvtColor(raw_bgr, cv2.COLOR_BGR2RGB)
+        self.measurement_rgb = measurement
+        self.measurement_right_rgb = measurement_right
         right_path = sorted((run / "sync" / "frames" / "cam1").glob("*"))[target_id]
         right_bgr = cv2.imread(str(right_path))
         self.preview_right = cv2.cvtColor(right_bgr, cv2.COLOR_BGR2RGB) if right_bgr is not None else None
@@ -1058,15 +1076,17 @@ class MainWindow(QMainWindow):
                                          f"d={self.reference.d} | frame={config.get('_app_reference_frame', '—')} "
                                          f"t≈{self.reference_time_s}s | 未经独立物理验证")
         self._set_measurement_region(self.measurement_region)
-        self._display_mode("raw")
+        self._display_mode("measurement")
         self._update_status()
 
     def _build_overlay(self) -> None:
-        assert self.result is not None and self.raw_rgb is not None
+        assert self.result is not None and self.measurement_rgb is not None
         h = self.result["height"]
         valid = np.isfinite(h) & (self.result["source"] != 0)
         region = presentation.rectangle_mask(h.shape, self.measurement_region)
-        raw = cv2.resize(self.raw_rgb, (h.shape[1], h.shape[0]), interpolation=cv2.INTER_LINEAR)
+        if self.measurement_rgb.shape[:2] != h.shape:
+            raise ValueError("Measurement view raster differs from the official pixel map")
+        raw = self.measurement_rgb.copy()
         self.height_available_mask = valid.astype(np.uint8)
         if not valid.any():
             self.overlay_rgb = raw
@@ -1083,13 +1103,21 @@ class MainWindow(QMainWindow):
 
     def _display_mode(self, mode="raw") -> None:
         if isinstance(mode, int):
-            mode = "raw"
+            mode = self.display_mode
         if self.result is None:
             return
         if mode == "overlay" and not self.reference_confirmed:
             self.frame_summary.setText("官方 XYZ 已载入；请先确认并冻结内部参考面，才能显示相对高度叠加")
-            mode = "raw"
-        border = self.height_available_mask if self.show_common.isChecked() else None
+            mode = "measurement"
+        if mode not in {"raw", "measurement", "overlay", "cloud"}:
+            raise ValueError(f"Unknown view mode: {mode}")
+        self.display_mode = mode
+        scientific = mode in {"measurement", "overlay"}
+        self.view_label.setText("UNDISTORTED_MEASUREMENT_VIEW | 去畸变 cam0；与 XYZ/H/hover 同一像素光栅" if scientific
+                                else "RAW_CAMERA_IMAGE | 原始相机画面；高度查询关闭" if mode == "raw"
+                                else "原始 WASS 点云")
+        self.image_canvas.set_region(self.measurement_region if scientific else None)
+        border = self.height_available_mask if scientific and self.show_common.isChecked() else None
         if mode == "cloud":
             self.image_canvas.hide()
             self.right_canvas.hide()
@@ -1098,17 +1126,22 @@ class MainWindow(QMainWindow):
             self.point_cloud.hide()
             self.image_canvas.show()
             self.right_canvas.show()
-            self.image_canvas.set_rgb(self.overlay_rgb if mode == "overlay" else self.raw_rgb, border)
-            self.right_canvas.set_rgb(self.preview_right)
+            image = self.overlay_rgb if mode == "overlay" else self.measurement_rgb if scientific else self.raw_rgb
+            self.image_canvas.set_rgb(image, border)
+            self.right_canvas.set_rgb(self.measurement_right_rgb if scientific else self.preview_right)
 
     def _hover(self, u: int, v: int) -> None:
         if self.result is None:
             self.hover_label.setText(f"Pixel ({u},{v}) | H: N/A | Source: NO_DATA | 当前帧未解算或旧结果 STALE")
             return
+        if self.display_mode not in {"measurement", "overlay"}:
+            self.hover_label.setText(f"Pixel ({u},{v}) | H: N/A | Source: NO_DATA | RAW_CAMERA_IMAGE: 高度查询关闭")
+            return
         grid_h, grid_w = self.result["height"].shape
         image_h, image_w = self.image_canvas.image_shape
-        mu = min(grid_w - 1, int(u * grid_w / image_w))
-        mv = min(grid_h - 1, int(v * grid_h / image_h))
+        if (image_h, image_w) != (grid_h, grid_w):
+            raise ValueError("Measurement hover raster differs from the official pixel map")
+        mu, mv = u, v
         region_in = presentation.point_in_rectangle(mu, mv, (grid_h, grid_w), self.measurement_region)
         region_status = "IN" if region_in else "OUT"
         prefix = (f"Pixel ({u},{v}) | map ({mu},{mv}) | Measurement Region: {region_status} | "

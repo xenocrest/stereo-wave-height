@@ -245,6 +245,23 @@ def hover(result: dict, u: int, v: int) -> dict:
             "provenance": provenance}
 
 
+def measurement_image(result: dict, camera: int = 0) -> np.ndarray:
+    """Read the actual WASS undistorted image, never substitute raw video."""
+    path = (Path(result["run_dir"]) / "wass" / "workspaces" /
+            f"{int(result['frame_id']):06d}_wd" / "undistorted" / f"{camera:08d}.png")
+    image = cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_COLOR) if path.is_file() else None
+    if image is None:
+        raise ValueError(f"UNDISTORTED_MEASUREMENT_VIEW missing official camera image: {path}")
+    if camera == 0:
+        h, w = result["height"].shape
+        if image.shape[1] * h != image.shape[0] * w:
+            raise ValueError("Official measurement image and pixel map have different aspect/crop")
+        # The official renderer may have a larger framebuffer (e.g. 1.25x).
+        # Keep the complete image extent and present exactly the map raster.
+        image = cv2.resize(image, (w, h), interpolation=cv2.INTER_LINEAR)
+    return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+
 def sync_frame_at(sync: dict, time_s: float) -> dict:
     mapping = sync.get("frame_mapping", [])
     if not mapping:

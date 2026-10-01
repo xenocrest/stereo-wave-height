@@ -39,6 +39,9 @@ class OfflineAppTests(unittest.TestCase):
             root = Path(folder) / "run"
             (root / "sync").mkdir(parents=True)
             (root / "wass").mkdir()
+            undistorted = root / "wass/workspaces/000000_wd/undistorted"
+            undistorted.mkdir(parents=True)
+            presentation.save_rgb(undistorted / "00000000.png", np.zeros((1, 2, 3), np.uint8))
             ply = root / "pointcloud.ply"
             verts = np.array([(1., 2., 3.)], dtype=[("x", "f4"), ("y", "f4"), ("z", "f4")])
             PlyData([PlyElement.describe(verts, "vertex")], text=True).write(ply)
@@ -339,6 +342,8 @@ class OfflineAppTests(unittest.TestCase):
             self.assertIn("NO_DATA", window.hover_label.text())
             window.show_common.setChecked(True)
             window._display_mode("raw")
+            self.assertIsNone(window.image_canvas.border)
+            window._display_mode("measurement")
             self.assertIsNotNone(window.image_canvas.border)
             window._reconstruct()  # Same frame must reuse the completed run, without WASS.
             self.assertEqual(window.science_run, root)

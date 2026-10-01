@@ -53,6 +53,7 @@ def export_current_frame(destination: str | Path, result: dict, raw_rgb: np.ndar
     available = (source != 0) & np.isfinite(result["height"]) & np.isfinite(result["xyz"]).all(axis=2)
     selected = available & rectangle_mask(source.shape, region)
     save_rgb(folder / "current_frame.png", raw_rgb)
+    save_rgb(folder / "measurement_frame.png", core.measurement_image(result))
     save_rgb(folder / "overlay.png", overlay_rgb)
     shutil.copy2(ply, folder / "pointcloud.ply")
     with (folder / "instantaneous_height.csv").open("w", newline="", encoding="utf-8") as stream:
@@ -90,6 +91,9 @@ def export_current_frame(destination: str | Path, result: dict, raw_rgb: np.ndar
         "raw_image_size_wh": [raw_rgb.shape[1], raw_rgb.shape[0]],
         "official_mapping_size_wh": [source.shape[1], source.shape[0]],
         "csv_pixel_coordinate_system": "official wassncplot pixel mapping",
+        "overlay_coordinate_system": "UNDISTORTED_MEASUREMENT_VIEW: official WASS undistorted cam0, complete extent at map raster size",
+        "measurement_image_size_wh": [source.shape[1], source.shape[0]],
+        "raw_image_coordinate_system": "RAW_CAMERA_IMAGE; undistorted height hover disabled",
         "pointcloud_coordinate_system": "unchanged official WASS PLY; not the aligned metric grid XYZ in CSV",
         "note": "ROI affects presentation/export only; no WASS input or scientific output was modified.",
     }

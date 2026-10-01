@@ -1,0 +1,9 @@
+test_full_extent_map_raster_and_missing_image_fail_closed (test_p0_measurement_view.MeasurementViewTests.test_full_extent_map_raster_and_missing_image_fail_closed) ... ok
+test_measurement_hover_corners_edges_center_exactly_uses_map_indices (test_p0_measurement_view.MeasurementViewTests.test_measurement_hover_corners_edges_center_exactly_uses_map_indices) ... ok
+test_raw_hover_and_raw_region_boundary_are_disabled (test_p0_measurement_view.MeasurementViewTests.test_raw_hover_and_raw_region_boundary_are_disabled) ... ok
+test_real_official_images_and_overlay_background_both_datasets (test_p0_measurement_view.MeasurementViewTests.test_real_official_images_and_overlay_background_both_datasets) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 2.087s
+
+OK

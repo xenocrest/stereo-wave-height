@@ -1,0 +1,25 @@
+test_cache_depends_on_reference_and_time (test_offline_basic_app.OfflineAppTests.test_cache_depends_on_reference_and_time) ... ok
+test_clean_external_environment (test_offline_basic_app.OfflineAppTests.test_clean_external_environment) ... ok
+test_export_has_only_existing_values_and_provenance (test_offline_basic_app.OfflineAppTests.test_export_has_only_existing_values_and_provenance) ... ok
+test_fallback_requires_explicit_allow_and_path (test_offline_basic_app.OfflineAppTests.test_fallback_requires_explicit_allow_and_path) ... ok
+test_frozen_reference_persists_across_project_reload_if_available (test_offline_basic_app.OfflineAppTests.test_frozen_reference_persists_across_project_reload_if_available) ... ok
+test_gui_play_pause_and_frame_seek (test_offline_basic_app.OfflineAppTests.test_gui_play_pause_and_frame_seek) ... ok
+test_hometank_result_adapter_if_available (test_offline_basic_app.OfflineAppTests.test_hometank_result_adapter_if_available) ... ok
+test_hover_provenance_and_no_data (test_offline_basic_app.OfflineAppTests.test_hover_provenance_and_no_data) ... ok
+test_input_change_clears_reference_and_old_results (test_offline_basic_app.OfflineAppTests.test_input_change_clears_reference_and_old_results) ... ok
+test_measurement_region_display_only (test_offline_basic_app.OfflineAppTests.test_measurement_region_display_only) ... ok
+test_project_creation_and_arbitrary_paths (test_offline_basic_app.OfflineAppTests.test_project_creation_and_arbitrary_paths) ... ok
+test_real_gui_views_with_existing_hometank_run_if_available (test_offline_basic_app.OfflineAppTests.test_real_gui_views_with_existing_hometank_run_if_available) ... ok
+test_real_other_video_properties_input_only_if_available (test_offline_basic_app.OfflineAppTests.test_real_other_video_properties_input_only_if_available) ... ok
+test_reference_freeze_and_import (test_offline_basic_app.OfflineAppTests.test_reference_freeze_and_import) ... ok
+test_scientific_failure_log (test_offline_basic_app.OfflineAppTests.test_scientific_failure_log) ... ok
+test_seek_hides_previous_frame_height (test_offline_basic_app.OfflineAppTests.test_seek_hides_previous_frame_height) ... ok
+test_switch_project_clears_previous_scientific_state (test_offline_basic_app.OfflineAppTests.test_switch_project_clears_previous_scientific_state) ... ok
+test_sync_frame_selection_and_offset (test_offline_basic_app.OfflineAppTests.test_sync_frame_selection_and_offset) ... ok
+test_video_metadata_and_seek (test_offline_basic_app.OfflineAppTests.test_video_metadata_and_seek) ... ok
+test_vieira_result_adapter_if_available (test_offline_basic_app.OfflineAppTests.test_vieira_result_adapter_if_available) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 6.542s
+
+OK
