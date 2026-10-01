@@ -35,6 +35,7 @@ def main() -> None:
     app.processEvents()
     if window.result is None:
         raise RuntimeError("GUI did not load the official result")
+    window._confirm_reference()
     for mode in ("raw", "cloud", "overlay"):
         window._display_mode(mode)
         app.processEvents()

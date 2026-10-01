@@ -1,4 +1,4 @@
-project: hometank004
+project: hometank004_multiframe_acceptance
 source_type: stereo_video
 output_root: D:/stereo-wave-height-runs/pipeline
 pass_status: HOMETANK_PIPELINE_PASS_WITH_EXTRINSIC_FALLBACK
@@ -30,17 +30,11 @@ sync:
   window_start_s: 0
   window_end_s: 30
   start_s: 20
-  output_fps: 2
-  # Minimal fixed demonstration batch. A retained five-frame trial showed the
-  # first three succeed while frame 4 stopped inside official WASS plane RANSAC;
-  # no WASS parameter was changed to force that failed frame.
-  frame_count: 3
+  output_fps: 1
+  frame_count: 4
 
 wass:
   allow_extrinsic_fallback: true
-  # The fresh official autocalibration attempt is retained. The known vertical
-  # layout is unsupported by official WASS dense stereo, so this YAML explicitly
-  # switches the complete historical K/D/R/T bundle; T is never edited.
   fallback_calibration:
     mode: after_autocalibration_attempt
     path: D:/stereo-wave-height-runs/HomeTank_004/wave-reconstruction-pipeline-20260824/wass_workspace/config

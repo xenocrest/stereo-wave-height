@@ -28,6 +28,7 @@ def new_project(name: str, output_root: str) -> dict:
         for key in keys:
             config[block][key] = ""
     config["wass"] = {}
+    config["wass"]["allow_extrinsic_fallback"] = False
     return config
 
 
@@ -122,7 +123,8 @@ def calibration_matrices(run_dir: str | Path) -> dict:
     report = root / "report.json"
     if report.is_file():
         info = json.loads(report.read_text(encoding="utf-8"))
-        result["rms_px"] = info.get("rms_px")
+        result["rms_px"] = info.get("rms_px", {
+            camera: info.get(camera, {}).get("rms_px") for camera in ("left", "right")})
     if "T" in result:
         result["baseline"] = float(np.linalg.norm(result["T"]))
     return result
@@ -161,11 +163,35 @@ def save_reference(reference: ReferencePlane, calibration_id: str, path: str | P
 
 def load_reference(path: str | Path) -> tuple[ReferencePlane, str]:
     data = json.loads(Path(path).read_text(encoding="utf-8"))
+    return reference_from_metadata(data)
+
+
+def reference_from_metadata(data: dict) -> tuple[ReferencePlane, str]:
+    """Deserialize a frozen reference, without fitting or changing coefficients."""
+    if data["mode"] not in {"designated_static_water_frame", "provided_physical_plane"}:
+        raise ValueError("Unknown reference source mode")
     plane = ReferencePlane(data["reference_plane_id"], tuple(data["normal"]),
                            float(data["d"]), data["mode"], data["coordinate_system"])
-    if not np.isclose(np.linalg.norm(plane.normal), 1.0, atol=1e-6):
+    if (len(plane.normal) != 3 or not np.isfinite(plane.normal).all() or not np.isfinite(plane.d)
+            or not np.isclose(np.linalg.norm(plane.normal), 1.0, atol=1e-6)):
         raise ValueError("Reference normal is not unit length")
     return plane, data.get("calibration_identity", "")
+
+
+def project_input_identity(config: dict) -> str:
+    """Identity for GUI state invalidation, not a scientific calibration hash."""
+    import hashlib
+    inputs = {"calibration": config["calibration"],
+              "wave": [config["sync"].get(key, "") for key in ("left_video", "right_video")],
+              "surface": config["surface"], "wass": config.get("wass", {})}
+    return hashlib.sha256(json.dumps(inputs, sort_keys=True).encode()).hexdigest()
+
+
+def validate_run_inputs(run_dir: Path, config: dict) -> None:
+    sync = json.loads((run_dir / "sync" / "sync.json").read_text(encoding="utf-8"))
+    for key in ("left_video", "right_video"):
+        if key in sync and Path(sync[key]).resolve() != Path(config["sync"][key]).resolve():
+            raise ValueError("Scientific run belongs to a different video pair; cannot display it on current inputs")
 
 
 def load_result(run_dir: str | Path, frame_id: int, reference: ReferencePlane,
@@ -191,7 +217,8 @@ def hover(result: dict, u: int, v: int) -> dict:
     if provenance == "NO_DATA" or not np.isfinite(point).all() or not np.isfinite(h):
         return {"u": u, "v": v, "provenance": "NO_DATA", "height_mm": None}
     return {"u": u, "v": v, "X": float(point[0]), "Y": float(point[1]),
-            "Z": float(point[2]), "height_mm": h * 1000 if result["units"] == "m" else None,
+            "Z": float(point[2]), "height_native": h,
+            "height_mm": h * 1000 if result["units"] == "m" else None,
             "provenance": provenance}
 
 
