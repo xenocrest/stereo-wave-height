@@ -14,6 +14,8 @@ import json
 from pathlib import Path
 import re
 import subprocess
+from fractions import Fraction
+import math
 
 import numpy as np
 from scipy import signal
@@ -77,19 +79,50 @@ def write_official_praat_script(path: Path, window_start_s: float, window_end_s:
     )
 
 
-def extract_frame(ffmpeg: Path, video: Path, timestamp_s: float, output: Path) -> float:
+def parse_source_frame(log: str) -> dict:
+    """Join selected output PTS to its decoder index before the select filter."""
+    time_base = re.search(r'\[showinfo@source[^\]]*\].*config in time_base:\s*(\d+/\d+)', log)
+    selected = re.search(r'\[showinfo@selected[^\]]*\].*\bn:\s*0\s+pts:\s*(-?\d+)\s+pts_time:\s*([-+0-9.eE]+)', log)
+    if time_base is None or selected is None:
+        raise RuntimeError("FFmpeg did not identify the selected source frame/time base")
+    ticks = int(selected.group(1))
+    sources = re.findall(r'\[showinfo@source[^\]]*\].*\bn:\s*(\d+)\s+pts:\s*(-?\d+)\s+pts_time:\s*([-+0-9.eE]+)', log)
+    matches = [(int(n), int(pts)) for n, pts, _ in sources if int(pts) == ticks]
+    if len(matches) != 1:
+        raise RuntimeError("Selected source PTS is missing or ambiguous; frame identity unavailable")
+    return {"source_frame_index": matches[0][0], "source_pts_ticks": ticks,
+            "source_time_base": time_base.group(1),
+            "actual_source_pts_s": float(ticks * Fraction(time_base.group(1))),
+            "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS; decoded index before select; selected output joined by integer PTS"}
+
+
+def extract_source_frame(ffmpeg: Path, video: Path, timestamp_s: float, output: Path) -> dict:
+    if not math.isfinite(timestamp_s) or timestamp_s < 0:
+        raise ValueError("Requested source timestamp must be finite and nonnegative")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    # Decode the original timeline, preserve PTS, and select the first source
+    # frame at/after the request. No output seek, timestamp rebasing, or fps filter.
+    filters = f"showinfo@source,select='gte(t,{timestamp_s:.9f})',showinfo@selected"
+    argv = [str(ffmpeg), "-hide_banner", "-loglevel", "info", "-y", "-copyts", "-i", str(video),
+            "-vf", filters, "-frames:v", "1", "-vsync", "0", str(output)]
     completed = run_checked(
-        [str(ffmpeg), "-hide_banner", "-loglevel", "info", "-y", "-i", str(video), "-ss", f"{timestamp_s:.9f}",
-         "-vf", "showinfo", "-frames:v", "1", "-vsync", "0", str(output)]
+        argv
     )
     if not output.is_file() or output.stat().st_size == 0:
         raise RuntimeError(f"FFmpeg did not create frame: {output}")
-    # With -ss after -i, showinfo reports the selected decoded frame's PTS
-    # relative to the requested seek position. The filter is pass-through.
-    match = re.search(r"\bn:\s*0\s+pts:\s*-?\d+\s+pts_time:\s*([-+0-9.eE]+)", completed.stderr)
-    if match is None:
-        raise RuntimeError(f"FFmpeg did not report decoded frame PTS: {video} at {timestamp_s}")
-    return timestamp_s + float(match.group(1))
+    identified = parse_source_frame(completed.stderr)
+    logs = (output.parent.parent if output.parent.name in {"cam0", "cam1"} else output.parent) / "frame_identification"
+    logs.mkdir(parents=True, exist_ok=True)
+    log_path = logs / f"{output.parent.name}_{output.stem}.log"
+    log_path.write_text(completed.stderr, encoding="utf-8")
+    return {**identified, "requested_timestamp_s": timestamp_s,
+            "extraction_argv": argv, "identification_log": str(log_path),
+            "decoded_png_sha256": sha256(output)}
+
+
+def extract_frame(ffmpeg: Path, video: Path, timestamp_s: float, output: Path) -> float:
+    """Compatibility API; actual PTS comes from the identified original frame."""
+    return extract_source_frame(ffmpeg, video, timestamp_s, output)["actual_source_pts_s"]
 
 
 def run(args: argparse.Namespace) -> dict[str, object]:
@@ -127,8 +160,10 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         # Praat defines cross-corr(f,g)(tau) = integral f(t)g(t+tau)dt.
         right_time = left_time + offset_s
         left_name, right_name = cam0 / f"{index:06d}.png", cam1 / f"{index:06d}.png"
-        left_actual = extract_frame(ffmpeg, left, left_time, left_name)
-        right_actual = extract_frame(ffmpeg, right, right_time, right_name)
+        left_source = extract_source_frame(ffmpeg, left, left_time, left_name)
+        right_source = extract_source_frame(ffmpeg, right, right_time, right_name)
+        left_actual = left_source["actual_source_pts_s"]
+        right_actual = right_source["actual_source_pts_s"]
         mapping.append(
             {
                 "output_index": index,
@@ -136,15 +171,26 @@ def run(args: argparse.Namespace) -> dict[str, object]:
                 "right_requested_timestamp_s": right_time,
                 "left_actual_timestamp_s": left_actual,
                 "right_actual_timestamp_s": right_actual,
+                "requested_timestamp": left_time,
+                "actual_left_source_pts": left_actual,
+                "actual_right_source_pts": right_actual,
+                "left_source_frame_index": left_source["source_frame_index"],
+                "right_source_frame_index": right_source["source_frame_index"],
+                "left_source_frame": left_source,
+                "right_source_frame": right_source,
+                "TLCC_offset": offset_s,
+                "pair_residual_s": right_actual - left_actual - offset_s,
                 "stereo_pair_residual_ms": (right_actual - left_actual - offset_s) * 1000,
-                "timestamp_basis": "FFmpeg decoded frame PTS after post-input seek; relative to each video timeline",
+                "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS",
                 "right_minus_left_s": offset_s,
                 "left_file": str(left_name),
                 "right_file": str(right_name),
             }
         )
     result = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
+        "requested_timestamp_definition": "target on original source PTS timeline; select first decoded source frame at/after target",
+        "pair_residual_definition": "right_source_pts - left_source_pts - TLCC_offset; seconds (stereo_pair_residual_ms is x1000)",
         "method": "wass_lowcost TLCC: FFmpeg PCM 48 kHz stereo; 101-tap 1000 Hz FIR high-pass; Praat peak cross-correlation/Sinc70 maximum",
         "praat_cross_correlation_definition": "cross_corr(left,right)(tau)=integral left(t)*right(t+tau)dt; paired right_time=left_time+tau",
         "left_video": str(left),

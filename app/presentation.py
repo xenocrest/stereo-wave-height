@@ -66,6 +66,8 @@ def export_current_frame(destination: str | Path, result: dict, raw_rgb: np.ndar
                              h * 1000 if result["units"] == "m" else "", core.PROVENANCE[int(source[v, u])]))
     metadata_out = {
         "frame_id": frame_id, "timestamp_s": float(result["timestamp_s"]),
+        **{key: row.get(key) for key in ("requested_timestamp", "actual_left_source_pts", "actual_right_source_pts",
+            "left_source_frame_index", "right_source_frame_index", "TLCC_offset", "pair_residual_s", "timestamp_basis")},
         "left_actual_timestamp_s": row.get("left_actual_timestamp_s"),
         "right_actual_timestamp_s": row.get("right_actual_timestamp_s"),
         "stereo_pair_residual_ms": row.get("stereo_pair_residual_ms"),

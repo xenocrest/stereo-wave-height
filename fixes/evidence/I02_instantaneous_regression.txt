@@ -1,0 +1,21 @@
+test_actual_decoded_timestamp_metadata (test_instantaneous_validation.InstantaneousValidationTests.test_actual_decoded_timestamp_metadata) ... ok
+test_csv_schema_and_full_pixel_scope (test_instantaneous_validation.InstantaneousValidationTests.test_csv_schema_and_full_pixel_scope) ... ok
+test_delta_and_strict_ten_mm_gate (test_instantaneous_validation.InstantaneousValidationTests.test_delta_and_strict_ten_mm_gate) ... ok
+test_designated_static_frame_is_one_fixed_plane (test_instantaneous_validation.InstantaneousValidationTests.test_designated_static_frame_is_one_fixed_plane) ... ok
+test_ffmpeg_extraction_records_selected_frame_pts (test_instantaneous_validation.InstantaneousValidationTests.test_ffmpeg_extraction_records_selected_frame_pts) ... ok
+test_fixed_plane_height_and_timestamp (test_instantaneous_validation.InstantaneousValidationTests.test_fixed_plane_height_and_timestamp) ... ok
+test_instantaneous_hover_contains_frame_time_and_reference (test_instantaneous_validation.InstantaneousValidationTests.test_instantaneous_hover_contains_frame_time_and_reference) ... ok
+test_physical_comparison_rejects_nominal_requested_timestamp (test_instantaneous_validation.InstantaneousValidationTests.test_physical_comparison_rejects_nominal_requested_timestamp) ... ok
+test_preflight_missing_video (test_instantaneous_validation.InstantaneousValidationTests.test_preflight_missing_video) ... ok
+test_preflight_ready_contract_with_complete_mocked_capture (test_instantaneous_validation.InstantaneousValidationTests.test_preflight_ready_contract_with_complete_mocked_capture) ... ok
+test_provenance_and_no_data (test_instantaneous_validation.InstantaneousValidationTests.test_provenance_and_no_data) ... ok
+test_provided_plane_normalization (test_instantaneous_validation.InstantaneousValidationTests.test_provided_plane_normalization) ... ok
+test_reference_datum_mismatch (test_instantaneous_validation.InstantaneousValidationTests.test_reference_datum_mismatch) ... ok
+test_space_gate (test_instantaneous_validation.InstantaneousValidationTests.test_space_gate) ... ok
+test_time_gate_preserves_actual_time (test_instantaneous_validation.InstantaneousValidationTests.test_time_gate_preserves_actual_time) ... ok
+test_truth_schema_and_template (test_instantaneous_validation.InstantaneousValidationTests.test_truth_schema_and_template) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 1.026s
+
+OK

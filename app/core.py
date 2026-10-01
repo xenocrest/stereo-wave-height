@@ -295,6 +295,8 @@ def write_frame_manifest(run_dir: Path, selected_s: float, reference_id: str | N
     for camera, key in (("left", "left_file"), ("right", "right_file")):
         shutil.copy2(row[key], inputs / f"{camera}.png")
     metadata = {"frame_id": frame_id, "requested_time_s": selected_s,
+                **{key: row.get(key) for key in ("requested_timestamp", "actual_left_source_pts", "actual_right_source_pts",
+                    "left_source_frame_index", "right_source_frame_index", "TLCC_offset", "pair_residual_s", "timestamp_basis")},
                 "left_timestamp_s": row.get("left_actual_timestamp_s"),
                 "right_timestamp_s": row.get("right_actual_timestamp_s"),
                 "delta_t_ms": row.get("stereo_pair_residual_ms"),

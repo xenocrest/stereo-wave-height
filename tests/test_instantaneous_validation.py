@@ -70,7 +70,11 @@ class InstantaneousValidationTests(unittest.TestCase):
     def test_ffmpeg_extraction_records_selected_frame_pts(self):
         output = self.root / "selected.png"
         output.write_bytes(b"png-test")
-        completed = subprocess.CompletedProcess([], 0, "", "[Parsed_showinfo_0] n: 0 pts: 801 pts_time:0.0089 duration: 1500")
+        completed = subprocess.CompletedProcess([], 0, "", "\n".join([
+            "[showinfo@source @ 0x1] config in time_base: 1/90000, frame_rate: 60/1",
+            "[showinfo@source @ 0x1] n: 0 pts: 801 pts_time:0.0089 duration:1500",
+            "[showinfo@source @ 0x1] n: 1200 pts: 1800801 pts_time:20.0089 duration:1500",
+            "[showinfo@selected @ 0x2] n: 0 pts: 1800801 pts_time:20.0089 duration:1500"]))
         with mock.patch("tools.vieira_tlcc_sync.run_checked", return_value=completed):
             self.assertAlmostEqual(extract_frame(self.root / "ffmpeg.exe", self.root / "video.mp4", 20.0, output), 20.0089)
 

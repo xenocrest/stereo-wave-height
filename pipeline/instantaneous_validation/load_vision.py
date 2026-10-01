@@ -22,7 +22,8 @@ def frame_time_metadata(run_dir: str | Path, frame_id: int) -> dict:
     if sync.get("status") == "PROVIDED":
         return {"timestamp_basis": "PROVIDED_SEQUENCE_NOMINAL_TIME", "stereo_pair_residual_ms": None}
     row = next(item for item in sync["frame_mapping"] if int(item["output_index"]) == frame_id)
-    return {"timestamp_basis": "ACTUAL_DECODED_PTS" if "left_actual_timestamp_s" in row else "REQUESTED_FRAME_TIME",
+    return {"timestamp_basis": row.get("timestamp_basis", "ACTUAL_DECODED_PTS" if "left_actual_timestamp_s" in row else "REQUESTED_FRAME_TIME"),
+            **{key: row.get(key) for key in ("actual_left_source_pts", "actual_right_source_pts", "left_source_frame_index", "right_source_frame_index")},
             "stereo_pair_residual_ms": row.get("stereo_pair_residual_ms")}
 
 

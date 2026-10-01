@@ -1,0 +1,8 @@
+test_join_uses_selected_pts_not_source_n0_or_printed_rounded_time (test_p0_source_pts.SourcePTSTests.test_join_uses_selected_pts_not_source_n0_or_printed_rounded_time) ... ok
+test_missing_or_ambiguous_source_fails (test_p0_source_pts.SourcePTSTests.test_missing_or_ambiguous_source_fails) ... ok
+test_real_ffmpeg_nonzero_start_vfr_and_exact_frame_identity (test_p0_source_pts.SourcePTSTests.test_real_ffmpeg_nonzero_start_vfr_and_exact_frame_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.220s
+
+OK
