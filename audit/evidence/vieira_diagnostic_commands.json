@@ -1,0 +1,13 @@
+[
+  {
+    "argv": [
+      "D:\\wass\\dist\\bin\\wass_stereo.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\Vieira_full_mesh_review\\stereo_config.txt",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\Vieira_full_mesh_review\\000000_wd"
+    ],
+    "cwd": "None",
+    "returncode": 0,
+    "elapsed_s": 5.5954694747924805,
+    "log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\vieira_diagnostic_00_1790845672998194900.log"
+  }
+]

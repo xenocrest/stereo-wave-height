@@ -1,0 +1,314 @@
+{
+  "HomeTank21": {
+    "baseline_unit": "m",
+    "applied_baseline": 0.07,
+    "extrinsic_T": [
+      -0.05885880270281312,
+      0.012587938733396406,
+      -0.03308738049944439
+    ],
+    "extrinsic_norm": 0.06868471158474378,
+    "normalized_camera_center_distance": 0.9999999999999999,
+    "camera_depth_native": {
+      "count": 147349,
+      "quantiles_0_2_50_98_100": [
+        0.21076695420428895,
+        0.2217449053797489,
+        0.2621961370938732,
+        0.319963684996741,
+        0.49117692609419034
+      ]
+    },
+    "true_triangulation_angle_deg": {
+      "count": 147349,
+      "quantiles_0_2_50_98_100": [
+        7.3158884242369755,
+        9.914534471279124,
+        12.1532099123038,
+        14.05352236417835,
+        15.338774184075858
+      ]
+    },
+    "Rpl_orthogonality_frobenius": 0.005643945571993244,
+    "Rpl_determinant": 0.9960091278133958,
+    "Rpl_singular_values": [
+      1.0,
+      0.998002569041481,
+      0.9980025690414809
+    ],
+    "camera_mesh_vs_ply_coordinate_distance_B": {
+      "count": 147349,
+      "quantiles_0_2_50_98_100": [
+        1.4748125984661775e-06,
+        1.5386447573837826e-05,
+        4.860175706905624e-05,
+        7.497845975495835e-05,
+        8.52319471338042e-05
+      ]
+    },
+    "focal_px_for_ideal_parallel_sensitivity": 1540.820849209382,
+    "ideal_parallel_sensitivity_not_real_error": [
+      {
+        "depth_native": 0.2217449053797489,
+        "equivalent_disparity_px": 486.40332574922354,
+        "depth_change_for_disparity_error": {
+          "1": 0.0004558869021674301,
+          "0.5": 0.00022794345108371504,
+          "0.2": 9.117738043348602e-05
+        }
+      },
+      {
+        "depth_native": 0.2621961370938732,
+        "equivalent_disparity_px": 411.3617410238234,
+        "depth_change_for_disparity_error": {
+          "1": 0.0006373858114303548,
+          "0.5": 0.0003186929057151774,
+          "0.2": 0.00012747716228607097
+        }
+      },
+      {
+        "depth_native": 0.319963684996741,
+        "equivalent_disparity_px": 337.0928155354735,
+        "depth_change_for_disparity_error": {
+          "1": 0.0009491857145886578,
+          "0.5": 0.0004745928572943289,
+          "0.2": 0.00018983714291773157
+        }
+      }
+    ]
+  },
+  "HomeTank22": {
+    "baseline_unit": "m",
+    "applied_baseline": 0.07,
+    "extrinsic_T": [
+      -0.05885880270281312,
+      0.012587938733396406,
+      -0.03308738049944439
+    ],
+    "extrinsic_norm": 0.06868471158474378,
+    "normalized_camera_center_distance": 0.9999999999999999,
+    "camera_depth_native": {
+      "count": 107268,
+      "quantiles_0_2_50_98_100": [
+        0.17412041114862103,
+        0.21718601791195657,
+        0.2592433829125966,
+        0.32428811088348336,
+        0.45423496216055453
+      ]
+    },
+    "true_triangulation_angle_deg": {
+      "count": 107268,
+      "quantiles_0_2_50_98_100": [
+        7.106523604746073,
+        9.220013843184061,
+        12.167345016105905,
+        14.266241273520443,
+        15.460507755426102
+      ]
+    },
+    "Rpl_orthogonality_frobenius": 0.005643945571993244,
+    "Rpl_determinant": 0.9960091278133958,
+    "Rpl_singular_values": [
+      1.0,
+      0.998002569041481,
+      0.9980025690414809
+    ],
+    "camera_mesh_vs_ply_coordinate_distance_B": {
+      "count": 107268,
+      "quantiles_0_2_50_98_100": [
+        1.2760015623034575e-06,
+        1.4594649590617864e-05,
+        4.3652751009022855e-05,
+        6.664099472651912e-05,
+        7.690245510894478e-05
+      ]
+    },
+    "focal_px_for_ideal_parallel_sensitivity": 1540.820849209382,
+    "ideal_parallel_sensitivity_not_real_error": [
+      {
+        "depth_native": 0.21718601791195657,
+        "equivalent_disparity_px": 496.6132741030331,
+        "depth_change_for_disparity_error": {
+          "1": 0.0004373342986134049,
+          "0.5": 0.00021866714930670244,
+          "0.2": 8.746685972268098e-05
+        }
+      },
+      {
+        "depth_native": 0.2592433829125966,
+        "equivalent_disparity_px": 416.0471069034796,
+        "depth_change_for_disparity_error": {
+          "1": 0.0006231106492773653,
+          "0.5": 0.00031155532463868267,
+          "0.2": 0.00012462212985547307
+        }
+      },
+      {
+        "depth_native": 0.32428811088348336,
+        "equivalent_disparity_px": 332.5976371776698,
+        "depth_change_for_disparity_error": {
+          "1": 0.0009750162798368061,
+          "0.5": 0.00048750813991840303,
+          "0.2": 0.00019500325596736123
+        }
+      }
+    ]
+  },
+  "HomeTank23": {
+    "baseline_unit": "m",
+    "applied_baseline": 0.07,
+    "extrinsic_T": [
+      -0.05885880270281312,
+      0.012587938733396406,
+      -0.03308738049944439
+    ],
+    "extrinsic_norm": 0.06868471158474378,
+    "normalized_camera_center_distance": 0.9999999999999999,
+    "camera_depth_native": {
+      "count": 127965,
+      "quantiles_0_2_50_98_100": [
+        0.2019676476272781,
+        0.2193914102857051,
+        0.25292581762379907,
+        0.31663549320026557,
+        0.39515121162577266
+      ]
+    },
+    "true_triangulation_angle_deg": {
+      "count": 127965,
+      "quantiles_0_2_50_98_100": [
+        8.295471847304206,
+        10.034970293468431,
+        12.131124116833288,
+        14.495426658457905,
+        16.853259925192237
+      ]
+    },
+    "Rpl_orthogonality_frobenius": 0.005643945571993244,
+    "Rpl_determinant": 0.9960091278133958,
+    "Rpl_singular_values": [
+      1.0,
+      0.998002569041481,
+      0.9980025690414809
+    ],
+    "camera_mesh_vs_ply_coordinate_distance_B": {
+      "count": 127965,
+      "quantiles_0_2_50_98_100": [
+        9.800119404792235e-07,
+        1.2167993891490837e-05,
+        3.575899354778285e-05,
+        5.3460210593007374e-05,
+        6.250813939304957e-05
+      ]
+    },
+    "focal_px_for_ideal_parallel_sensitivity": 1540.820849209382,
+    "ideal_parallel_sensitivity_not_real_error": [
+      {
+        "depth_native": 0.2193914102857051,
+        "equivalent_disparity_px": 491.6211592067259,
+        "depth_change_for_disparity_error": {
+          "1": 0.0004462611223644493,
+          "0.5": 0.00022313056118222465,
+          "0.2": 8.925222447288987e-05
+        }
+      },
+      {
+        "depth_native": 0.25292581762379907,
+        "equivalent_disparity_px": 426.43910557633757,
+        "depth_change_for_disparity_error": {
+          "1": 0.0005931112187330165,
+          "0.5": 0.00029655560936650826,
+          "0.2": 0.00011862224374660331
+        }
+      },
+      {
+        "depth_native": 0.31663549320026557,
+        "equivalent_disparity_px": 340.6360365811519,
+        "depth_change_for_disparity_error": {
+          "1": 0.0009295419720656343,
+          "0.5": 0.0004647709860328172,
+          "0.2": 0.00018590839441312687
+        }
+      }
+    ]
+  },
+  "Vieira0": {
+    "baseline_unit": "B",
+    "applied_baseline": 1.0,
+    "extrinsic_T": [
+      -0.9981519257119088,
+      0.002942285852390674,
+      -0.06069659093862841
+    ],
+    "extrinsic_norm": 1.0,
+    "normalized_camera_center_distance": 1.0,
+    "camera_depth_native": {
+      "count": 649657,
+      "quantiles_0_2_50_98_100": [
+        6.792630104594275,
+        7.958565822022908,
+        19.967211687405065,
+        62.59085959156502,
+        113.85914900194193
+      ]
+    },
+    "true_triangulation_angle_deg": {
+      "count": 649657,
+      "quantiles_0_2_50_98_100": [
+        0.41397944459712666,
+        0.7838841503439067,
+        2.6200662451770595,
+        6.566315239325634,
+        7.987227434352372
+      ]
+    },
+    "Rpl_orthogonality_frobenius": 8.54316942907167e-06,
+    "Rpl_determinant": 0.9999939590669639,
+    "Rpl_singular_values": [
+      0.9999999999999999,
+      0.9999969795289205,
+      0.9999969795289204
+    ],
+    "camera_mesh_vs_ply_coordinate_distance_B": {
+      "count": 649657,
+      "quantiles_0_2_50_98_100": [
+        8.32338399537295e-06,
+        0.00024997137924945506,
+        0.0012431132594130274,
+        0.0020025996167858033,
+        0.002216132808327634
+      ]
+    },
+    "focal_px_for_ideal_parallel_sensitivity": 1433.376572566479,
+    "ideal_parallel_sensitivity_not_real_error": [
+      {
+        "depth_native": 7.958565822022908,
+        "equivalent_disparity_px": 180.10488379703358,
+        "depth_change_for_disparity_error": {
+          "1": 0.04418850646488681,
+          "0.5": 0.022094253232443406,
+          "0.2": 0.008837701292977363
+        }
+      },
+      {
+        "depth_native": 19.967211687405065,
+        "equivalent_disparity_px": 71.78651656558664,
+        "depth_change_for_disparity_error": {
+          "1": 0.2781471039782566,
+          "0.5": 0.1390735519891283,
+          "0.2": 0.05562942079565132
+        }
+      },
+      {
+        "depth_native": 62.59085959156502,
+        "equivalent_disparity_px": 22.900733140908102,
+        "depth_change_for_disparity_error": {
+          "1": 2.733137808577732,
+          "0.5": 1.366568904288866,
+          "0.2": 0.5466275617155464
+        }
+      }
+    ]
+  }
+}

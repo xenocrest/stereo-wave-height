@@ -1,0 +1,12 @@
+{
+  "mask_A": {
+    "preplane_count": 147768,
+    "mesh_full_path": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\workspaces\\000000_wd\\mesh_full.ply",
+    "filtered_present": true
+  },
+  "mask_B": {
+    "preplane_count": 631,
+    "mesh_full_path": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_B\\workspaces\\000000_wd\\mesh_full.ply",
+    "filtered_present": false
+  }
+}

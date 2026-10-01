@@ -1,0 +1,21 @@
+test_audio_sign_independent_reproduction (__main__.EvidenceChecks.test_audio_sign_independent_reproduction) ... ok
+test_calibration_orientation (__main__.EvidenceChecks.test_calibration_orientation) ... ok
+test_frame_pixel_identity_and_nearest_fixed_left (__main__.EvidenceChecks.test_frame_pixel_identity_and_nearest_fixed_left) ... ok
+test_full_bundle_actual_workspaces (__main__.EvidenceChecks.test_full_bundle_actual_workspaces) ... ok
+test_grid_isolation_exact_inputs (__main__.EvidenceChecks.test_grid_isolation_exact_inputs) ... ok
+test_issue_register_count_and_required_fields (__main__.EvidenceChecks.test_issue_register_count_and_required_fields) ... ok
+test_manifest_existing_file_hashes (__main__.EvidenceChecks.test_manifest_existing_file_hashes) ... ok
+test_mask_ab_changes_only_official_masks (__main__.EvidenceChecks.test_mask_ab_changes_only_official_masks) ... ok
+test_mask_condition_and_failure (__main__.EvidenceChecks.test_mask_condition_and_failure) ... ok
+test_no_formal_changes (__main__.EvidenceChecks.test_no_formal_changes) ... ok
+test_nonwater_supported_and_extrapolation (__main__.EvidenceChecks.test_nonwater_supported_and_extrapolation) ... ok
+test_official_mapping_and_raw_image_mismatch (__main__.EvidenceChecks.test_official_mapping_and_raw_image_mismatch) ... ok
+test_real_point_forward_projection_contract_failure (__main__.EvidenceChecks.test_real_point_forward_projection_contract_failure) ... ok
+test_reference_identity_negative (__main__.EvidenceChecks.test_reference_identity_negative) ... ok
+test_third_party_historical_hash_guard (__main__.EvidenceChecks.test_third_party_historical_hash_guard) ... ok
+test_timestamp_bug_is_reproduced (__main__.EvidenceChecks.test_timestamp_bug_is_reproduced) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.505s
+
+OK

@@ -1,0 +1,242 @@
+{
+  "sources": {
+    "WASS_OFFICIAL_DEFAULT": "D:\\research\\stereo-wave-height\\audit\\evidence\\WASS_OFFICIAL_DEFAULT.txt",
+    "CURRENT_HOMETANK_CONFIG": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\config\\stereo_config.txt",
+    "VIEIRA_PUBLIC_CONFIG": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\config\\stereo_config.txt"
+  },
+  "effective_values": {
+    "DENSE_DISP12MAXDIFF": {
+      "default": "-1",
+      "hometank": "-1",
+      "vieira": "-1"
+    },
+    "DENSE_DISPARITY_BIGGEST_COMPONENT_THRESHOLD": {
+      "default": "0",
+      "hometank": "0",
+      "vieira": "0"
+    },
+    "DENSE_P1_MULT": {
+      "default": "2",
+      "hometank": "2",
+      "vieira": "2"
+    },
+    "DENSE_P2_MULT": {
+      "default": "64",
+      "hometank": "64",
+      "vieira": "64"
+    },
+    "DENSE_PREFILTER_CAP": {
+      "default": "60",
+      "hometank": "60",
+      "vieira": "60"
+    },
+    "DENSE_SCALE": {
+      "default": "1",
+      "hometank": "1",
+      "vieira": "1"
+    },
+    "DENSE_SPECKLE_RANGE": {
+      "default": "16",
+      "hometank": "16",
+      "vieira": "16"
+    },
+    "DENSE_SPECKLE_WINDOW_SIZE": {
+      "default": "-70",
+      "hometank": "-70",
+      "vieira": "-70"
+    },
+    "DENSE_UNIQUENESS_RATIO": {
+      "default": "1",
+      "hometank": "1",
+      "vieira": "1"
+    },
+    "DISABLE_AUTO_LEFT_RIGHT": {
+      "default": "false",
+      "hometank": "false",
+      "vieira": "false"
+    },
+    "DISABLE_RECTIFY_ROI": {
+      "default": "false",
+      "hometank": "false",
+      "vieira": "false"
+    },
+    "DISCARD_BURNED_AREAS": {
+      "default": "true",
+      "hometank": "true",
+      "vieira": "true"
+    },
+    "DISPARITY_OFFSET": {
+      "default": "0",
+      "hometank": "0",
+      "vieira": "0"
+    },
+    "DISP_DILATE_STEPS": {
+      "default": "1",
+      "hometank": "1",
+      "vieira": "1"
+    },
+    "DISP_EROSION_STEPS": {
+      "default": "2",
+      "hometank": "2",
+      "vieira": "2"
+    },
+    "LEFT_MASK_IMAGE": {
+      "default": "\"none\"",
+      "hometank": "\"none\"",
+      "vieira": "\"none\""
+    },
+    "MAX_DISPARITY": {
+      "default": "640",
+      "hometank": "640",
+      "vieira": "640"
+    },
+    "MEDIAN_FILTER_WSIZE": {
+      "default": "0",
+      "hometank": "0",
+      "vieira": "0"
+    },
+    "MIN_DISPARITY": {
+      "default": "1",
+      "hometank": "1",
+      "vieira": "1"
+    },
+    "MIN_TRIANGULATED_POINTS": {
+      "default": "100",
+      "hometank": "100",
+      "vieira": "100"
+    },
+    "PLANE_MAX_DISTANCE": {
+      "default": "1.5",
+      "hometank": "1.5",
+      "vieira": "1.5"
+    },
+    "PLANE_RANSAC_ROUNDS": {
+      "default": "400",
+      "hometank": "400",
+      "vieira": "400"
+    },
+    "PLANE_RANSAC_THRESHOLD": {
+      "default": "1",
+      "hometank": "1",
+      "vieira": "1"
+    },
+    "PLANE_REFINEMENT_MAX_DISTANCE": {
+      "default": "70",
+      "hometank": "70",
+      "vieira": "70"
+    },
+    "PLANE_REFINE_XMAX": {
+      "default": "9999",
+      "hometank": "9999",
+      "vieira": "9999"
+    },
+    "PLANE_REFINE_XMIN": {
+      "default": "-9999",
+      "hometank": "-9999",
+      "vieira": "-9999"
+    },
+    "PLANE_REFINE_YMAX": {
+      "default": "9999",
+      "hometank": "9999",
+      "vieira": "9999"
+    },
+    "PLANE_REFINE_YMIN": {
+      "default": "-9999",
+      "hometank": "-9999",
+      "vieira": "-9999"
+    },
+    "PLANE_USE_CENTRAL_THIRD_ONLY": {
+      "default": "false",
+      "hometank": "false",
+      "vieira": "false"
+    },
+    "PLANE_WEIGHT_PROPORTIONAL_TO_DISTANCE": {
+      "default": "true",
+      "hometank": "true",
+      "vieira": "true"
+    },
+    "RANDOM_SEED": {
+      "default": "-1",
+      "hometank": "-1",
+      "vieira": "-1"
+    },
+    "RIGHT_MASK_IMAGE": {
+      "default": "\"none\"",
+      "hometank": "\"none\"",
+      "vieira": "\"none\""
+    },
+    "SAVE_AS_PLY": {
+      "default": "false",
+      "hometank": "true",
+      "vieira": "true"
+    },
+    "SAVE_COMPRESSED": {
+      "default": "true",
+      "hometank": "true",
+      "vieira": "true"
+    },
+    "SAVE_FULL_MESH": {
+      "default": "false",
+      "hometank": "true",
+      "vieira": "false"
+    },
+    "SAVE_INPUT_SCALE": {
+      "default": "0.3",
+      "hometank": "0.3",
+      "vieira": "0.3"
+    },
+    "SWAP_LEFT_RIGHT": {
+      "default": "false",
+      "hometank": "false",
+      "vieira": "false"
+    },
+    "TRIANG_BBOX_BOTTOM": {
+      "default": "-1",
+      "hometank": "-1",
+      "vieira": "-1"
+    },
+    "TRIANG_BBOX_LEFT": {
+      "default": "-1",
+      "hometank": "-1",
+      "vieira": "-1"
+    },
+    "TRIANG_BBOX_RIGHT": {
+      "default": "-1",
+      "hometank": "-1",
+      "vieira": "-1"
+    },
+    "TRIANG_BBOX_TOP": {
+      "default": "-1",
+      "hometank": "-1",
+      "vieira": "-1"
+    },
+    "TRIANG_MIN_ANGLE": {
+      "default": "20",
+      "hometank": "20",
+      "vieira": "20"
+    },
+    "USE_CUSTOM_STEREORECTIFY": {
+      "default": "false",
+      "hometank": "true",
+      "vieira": "false"
+    },
+    "WINSIZE": {
+      "default": "13",
+      "hometank": "13",
+      "vieira": "13"
+    },
+    "ZGAP_PERCENTILE": {
+      "default": "99",
+      "hometank": "99",
+      "vieira": "99"
+    }
+  },
+  "hometank_overrides": {
+    "SAVE_FULL_MESH": "true",
+    "USE_CUSTOM_STEREORECTIFY": "true",
+    "SAVE_AS_PLY": "true"
+  },
+  "vieira_overrides": {
+    "SAVE_AS_PLY": "true"
+  }
+}

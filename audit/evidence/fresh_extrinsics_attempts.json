@@ -1,0 +1,102 @@
+[
+  {
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science",
+    "attempt": {
+      "R": [
+        [
+          0.9391313250024507,
+          0.13574272879282195,
+          -0.31560460386220623
+        ],
+        [
+          -0.1862238461225512,
+          0.9731046428342104,
+          -0.13560248238815004
+        ],
+        [
+          0.2887092543277166,
+          0.186121642144009,
+          0.9391515856298979
+        ]
+      ],
+      "T": [
+        0.23198857972721568,
+        0.6939376702374657,
+        -0.6816390604282796
+      ],
+      "translation_norm": 1.0,
+      "workspaces": [
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\autocalibration_workspaces\\000000_wd",
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\autocalibration_workspaces\\000001_wd",
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\autocalibration_workspaces\\000002_wd",
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\autocalibration_workspaces\\000003_wd"
+      ]
+    }
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\hometank004\\gui\\reconstruct_20260928_161723_995729\\science",
+    "attempt": {
+      "R": [
+        [
+          0.9995783749336085,
+          -0.018865291549229585,
+          0.022071998999837483
+        ],
+        [
+          0.020573945659079697,
+          0.9965876240216062,
+          -0.07993635222467416
+        ],
+        [
+          -0.02048865845055492,
+          0.08035675716287027,
+          0.9965555711816396
+        ]
+      ],
+      "T": [
+        -0.9379634071877704,
+        0.09572112402211992,
+        -0.33325982835116913
+      ],
+      "translation_norm": 0.9999999999999999,
+      "workspaces": [
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004\\gui\\reconstruct_20260928_161723_995729\\science\\wass\\autocalibration_workspaces\\000000_wd",
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004\\gui\\reconstruct_20260928_161723_995729\\science\\wass\\autocalibration_workspaces\\000001_wd",
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004\\gui\\reconstruct_20260928_161723_995729\\science\\wass\\autocalibration_workspaces\\000002_wd"
+      ]
+    }
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\hometank004\\run_20260921_161055",
+    "attempt": {
+      "R": [
+        [
+          0.9508266980294084,
+          0.11729272808044086,
+          -0.2866548556259598
+        ],
+        [
+          -0.1749430762083445,
+          0.9671268556483454,
+          -0.18455504645093215
+        ],
+        [
+          0.25558464429862254,
+          0.22562814767486822,
+          0.9400895853989419
+        ]
+      ],
+      "T": [
+        0.06065855194478756,
+        0.7699729489846207,
+        -0.6351867425473302
+      ],
+      "translation_norm": 1.0,
+      "workspaces": [
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004\\run_20260921_161055\\wass\\autocalibration_workspaces\\000000_wd",
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004\\run_20260921_161055\\wass\\autocalibration_workspaces\\000001_wd",
+        "D:\\stereo-wave-height-runs\\pipeline\\hometank004\\run_20260921_161055\\wass\\autocalibration_workspaces\\000002_wd"
+      ]
+    }
+  }
+]

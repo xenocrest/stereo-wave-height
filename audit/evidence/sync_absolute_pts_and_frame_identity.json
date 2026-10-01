@@ -1,0 +1,363 @@
+{
+  "offset_s": -0.07507001632731439,
+  "records": [
+    {
+      "label": "HomeTank21",
+      "reported": {
+        "output_index": 1,
+        "left_requested_timestamp_s": 21.0,
+        "right_requested_timestamp_s": 20.924929983672687,
+        "left_actual_timestamp_s": 21.0089,
+        "right_actual_timestamp_s": 20.924929983672687,
+        "stereo_pair_residual_ms": -8.899999999999213,
+        "timestamp_basis": "FFmpeg decoded frame PTS after post-input seek; relative to each video timeline",
+        "right_minus_left_s": -0.07507001632731439,
+        "left_file": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\sync\\frames\\cam0\\000001.png",
+        "right_file": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\sync\\frames\\cam1\\000001.png"
+      },
+      "images": {
+        "cam0": [
+          {
+            "source_frame_index": 1247,
+            "absolute_pts_s": 21.001544,
+            "checksum": "29968333",
+            "pixel_identical_to_stored": true
+          },
+          {
+            "source_frame_index": 1246,
+            "absolute_pts_s": 20.984889,
+            "checksum": "413124DE",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1248,
+            "absolute_pts_s": 21.0182,
+            "checksum": "D09BAEBE",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1245,
+            "absolute_pts_s": 20.968233,
+            "checksum": "FBF1F191",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1249,
+            "absolute_pts_s": 21.034856,
+            "checksum": "35BC7D59",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1244,
+            "absolute_pts_s": 20.951578,
+            "checksum": "CE978AD9",
+            "pixel_identical_to_stored": false
+          }
+        ],
+        "cam1": [
+          {
+            "source_frame_index": 1255,
+            "absolute_pts_s": 20.917222,
+            "checksum": "B0290A09",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1256,
+            "absolute_pts_s": 20.933889,
+            "checksum": "9F84EDE9",
+            "pixel_identical_to_stored": true
+          },
+          {
+            "source_frame_index": 1254,
+            "absolute_pts_s": 20.900556,
+            "checksum": "865F3524",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1257,
+            "absolute_pts_s": 20.950556,
+            "checksum": "2B695537",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1253,
+            "absolute_pts_s": 20.883889,
+            "checksum": "B494DDB6",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1258,
+            "absolute_pts_s": 20.967222,
+            "checksum": "DC071A2F",
+            "pixel_identical_to_stored": false
+          }
+        ]
+      },
+      "actual_left_pts_s": 21.001544,
+      "actual_right_pts_s": 20.933889,
+      "actual_residual_ms": 7.415016327315921,
+      "nearest_right_for_fixed_left": {
+        "source_frame_index": 1256,
+        "pts_s": 20.933889,
+        "residual_ms": 7.415016327314561
+      },
+      "source_intervals_near_target": {
+        "cam0": [
+          16.655,
+          16.656,
+          16.655,
+          16.656,
+          16.655,
+          16.656
+        ],
+        "cam1": [
+          16.667,
+          16.666,
+          16.667,
+          16.667,
+          16.666,
+          16.667
+        ]
+      }
+    },
+    {
+      "label": "HomeTank22",
+      "reported": {
+        "output_index": 0,
+        "left_requested_timestamp_s": 22.0,
+        "right_requested_timestamp_s": 21.924929983672687,
+        "left_actual_timestamp_s": 22.0089,
+        "right_actual_timestamp_s": 21.924929983672687,
+        "stereo_pair_residual_ms": -8.899999999999213,
+        "timestamp_basis": "FFmpeg decoded frame PTS after post-input seek; relative to each video timeline",
+        "right_minus_left_s": -0.07507001632731439,
+        "left_file": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\sync\\frames\\cam0\\000000.png",
+        "right_file": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\sync\\frames\\cam1\\000000.png"
+      },
+      "images": {
+        "cam0": [
+          {
+            "source_frame_index": 1307,
+            "absolute_pts_s": 22.001211,
+            "checksum": "D1063ED0",
+            "pixel_identical_to_stored": true
+          },
+          {
+            "source_frame_index": 1306,
+            "absolute_pts_s": 21.984556,
+            "checksum": "1C1985F6",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1308,
+            "absolute_pts_s": 22.017867,
+            "checksum": "EB1EB77E",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1305,
+            "absolute_pts_s": 21.9679,
+            "checksum": "2358D1B9",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1309,
+            "absolute_pts_s": 22.034522,
+            "checksum": "0AAADB56",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1304,
+            "absolute_pts_s": 21.951244,
+            "checksum": "DB709F4A",
+            "pixel_identical_to_stored": false
+          }
+        ],
+        "cam1": [
+          {
+            "source_frame_index": 1315,
+            "absolute_pts_s": 21.917256,
+            "checksum": "01FCBC49",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1316,
+            "absolute_pts_s": 21.933922,
+            "checksum": "8DF46AFF",
+            "pixel_identical_to_stored": true
+          },
+          {
+            "source_frame_index": 1314,
+            "absolute_pts_s": 21.900578,
+            "checksum": "1FFB7E9B",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1317,
+            "absolute_pts_s": 21.950589,
+            "checksum": "ED07ABA2",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1313,
+            "absolute_pts_s": 21.883911,
+            "checksum": "415F0FD5",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1318,
+            "absolute_pts_s": 21.967256,
+            "checksum": "E1E1EACA",
+            "pixel_identical_to_stored": false
+          }
+        ]
+      },
+      "actual_left_pts_s": 22.001211,
+      "actual_right_pts_s": 21.933922,
+      "actual_residual_ms": 7.781016327312012,
+      "nearest_right_for_fixed_left": {
+        "source_frame_index": 1316,
+        "pts_s": 21.933922,
+        "residual_ms": 7.7810163273106525
+      },
+      "source_intervals_near_target": {
+        "cam0": [
+          16.656,
+          16.766,
+          16.656,
+          16.655,
+          16.656,
+          16.656
+        ],
+        "cam1": [
+          16.667,
+          16.678,
+          16.666,
+          16.667,
+          16.667,
+          16.666
+        ]
+      }
+    },
+    {
+      "label": "HomeTank23",
+      "reported": {
+        "output_index": 0,
+        "left_requested_timestamp_s": 23.0,
+        "right_requested_timestamp_s": 22.924929983672687,
+        "left_actual_timestamp_s": 23.0089,
+        "right_actual_timestamp_s": 22.924929983672687,
+        "stereo_pair_residual_ms": -8.899999999999213,
+        "timestamp_basis": "FFmpeg decoded frame PTS after post-input seek; relative to each video timeline",
+        "right_minus_left_s": -0.07507001632731439,
+        "left_file": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\sync\\frames\\cam0\\000000.png",
+        "right_file": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\sync\\frames\\cam1\\000000.png"
+      },
+      "images": {
+        "cam0": [
+          {
+            "source_frame_index": 1367,
+            "absolute_pts_s": 23.000767,
+            "checksum": "8F494F85",
+            "pixel_identical_to_stored": true
+          },
+          {
+            "source_frame_index": 1366,
+            "absolute_pts_s": 22.984111,
+            "checksum": "5471E23E",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1368,
+            "absolute_pts_s": 23.017533,
+            "checksum": "AA651407",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1365,
+            "absolute_pts_s": 22.967456,
+            "checksum": "BAAF5315",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1369,
+            "absolute_pts_s": 23.034189,
+            "checksum": "81D92689",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1364,
+            "absolute_pts_s": 22.9508,
+            "checksum": "06E80647",
+            "pixel_identical_to_stored": false
+          }
+        ],
+        "cam1": [
+          {
+            "source_frame_index": 1375,
+            "absolute_pts_s": 22.917278,
+            "checksum": "65AF8731",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1376,
+            "absolute_pts_s": 22.933944,
+            "checksum": "D3C9F926",
+            "pixel_identical_to_stored": true
+          },
+          {
+            "source_frame_index": 1374,
+            "absolute_pts_s": 22.900611,
+            "checksum": "3B513094",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1377,
+            "absolute_pts_s": 22.950611,
+            "checksum": "65E7E066",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1373,
+            "absolute_pts_s": 22.883944,
+            "checksum": "454A017C",
+            "pixel_identical_to_stored": false
+          },
+          {
+            "source_frame_index": 1378,
+            "absolute_pts_s": 22.967278,
+            "checksum": "9B2B6324",
+            "pixel_identical_to_stored": false
+          }
+        ]
+      },
+      "actual_left_pts_s": 23.000767,
+      "actual_right_pts_s": 22.933944,
+      "actual_residual_ms": 8.247016327314977,
+      "nearest_right_for_fixed_left": {
+        "source_frame_index": 1376,
+        "pts_s": 22.933944,
+        "residual_ms": 8.247016327313617
+      },
+      "source_intervals_near_target": {
+        "cam0": [
+          16.655,
+          16.656,
+          16.655,
+          16.656,
+          16.656,
+          16.655
+        ],
+        "cam1": [
+          16.667,
+          16.667,
+          16.666,
+          16.667,
+          16.667,
+          16.666
+        ]
+      }
+    }
+  ],
+  "method": "full timeline showinfo before output seek; six original frame candidates tested by exact decoded RGB equality; fixed actual left PTS"
+}

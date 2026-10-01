@@ -1,0 +1,43 @@
+{
+  "original_offset_s": -0.07507001632731439,
+  "fresh_raw_audio_tlcc": [
+    {
+      "argv": [
+        "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\praat\\Praat.exe",
+        "--run",
+        "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\independent_audio\\crosscorrelate.praat",
+        "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\independent_audio\\cam0_filtered.wav",
+        "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\independent_audio\\cam1_filtered.wav",
+        "0",
+        "30"
+      ],
+      "returncode": 0,
+      "stdout": "-0.07507001632731439",
+      "lag_s": -0.07507001632731439,
+      "wav_hashes": [
+        "57c51c527a12a2995623d05f1354c8c86698c340abc71794871a00972ab8ec71",
+        "db3c7095e7e235117b874f5fd363994707dcdf72bb60d420292c5341f161db82"
+      ]
+    },
+    {
+      "argv": [
+        "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\praat\\Praat.exe",
+        "--run",
+        "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\independent_audio\\crosscorrelate.praat",
+        "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\independent_audio\\cam1_filtered.wav",
+        "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\independent_audio\\cam0_filtered.wav",
+        "0",
+        "30"
+      ],
+      "returncode": 0,
+      "stdout": "0.07507001632731376",
+      "lag_s": 0.07507001632731376,
+      "wav_hashes": [
+        "db3c7095e7e235117b874f5fd363994707dcdf72bb60d420292c5341f161db82",
+        "57c51c527a12a2995623d05f1354c8c86698c340abc71794871a00972ab8ec71"
+      ]
+    }
+  ],
+  "physical_exposure_sync_proven": false,
+  "scope": "audio TLCC and sign only; no independent audio-video latency or rolling-shutter measurement"
+}

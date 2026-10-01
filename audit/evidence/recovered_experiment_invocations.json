@@ -1,0 +1,273 @@
+[
+  {
+    "case": "repeat1",
+    "stage": "stereo",
+    "argv": [
+      "D:\\wass\\dist\\bin\\wass_stereo.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\stereo_config.txt",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\workspaces\\000000_wd"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": null,
+    "console_log_status": "overwritten by early isolated-grid recorder",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "repeat1",
+    "stage": "grid",
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassgridsurface.exe",
+      "--action",
+      "grid",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\workspaces",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\surface",
+      "--gridsetup",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\surface\\config.mat",
+      "--num_frames",
+      "1",
+      "--parallel",
+      "1",
+      "--stereo_image_idx",
+      "0"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": null,
+    "console_log_status": "overwritten by early isolated-grid recorder",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "repeat1",
+    "stage": "ncplot",
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassncplot.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\surface\\gridded.nc",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\pixel",
+      "-f",
+      "0",
+      "-l",
+      "1",
+      "--savexyz",
+      "--save-img",
+      "--no-textoverlay",
+      "--pxscale",
+      "1"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": null,
+    "console_log_status": "overwritten by early isolated-grid recorder",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat1\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "repeat2",
+    "stage": "stereo",
+    "argv": [
+      "D:\\wass\\dist\\bin\\wass_stereo.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\stereo_config.txt",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\workspaces\\000000_wd"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": null,
+    "console_log_status": "overwritten by early isolated-grid recorder",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "repeat2",
+    "stage": "grid",
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassgridsurface.exe",
+      "--action",
+      "grid",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\workspaces",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\surface",
+      "--gridsetup",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\surface\\config.mat",
+      "--num_frames",
+      "1",
+      "--parallel",
+      "1",
+      "--stereo_image_idx",
+      "0"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_04.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "repeat2",
+    "stage": "ncplot",
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassncplot.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\surface\\gridded.nc",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\pixel",
+      "-f",
+      "0",
+      "-l",
+      "1",
+      "--savexyz",
+      "--save-img",
+      "--no-textoverlay",
+      "--pxscale",
+      "1"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_05.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat2\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "repeat3",
+    "stage": "stereo",
+    "argv": [
+      "D:\\wass\\dist\\bin\\wass_stereo.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\stereo_config.txt",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\workspaces\\000000_wd"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_06.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "repeat3",
+    "stage": "grid",
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassgridsurface.exe",
+      "--action",
+      "grid",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\workspaces",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\surface",
+      "--gridsetup",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\surface\\config.mat",
+      "--num_frames",
+      "1",
+      "--parallel",
+      "1",
+      "--stereo_image_idx",
+      "0"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_07.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "repeat3",
+    "stage": "ncplot",
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassncplot.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\surface\\gridded.nc",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\pixel",
+      "-f",
+      "0",
+      "-l",
+      "1",
+      "--savexyz",
+      "--save-img",
+      "--no-textoverlay",
+      "--pxscale",
+      "1"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_08.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\repeat3\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cdd856ca5889c0a653380094f7b915c2cdd56d1587cd20c624142b3e2b34474c"
+  },
+  {
+    "case": "mask_A",
+    "stage": "stereo",
+    "argv": [
+      "D:\\wass\\dist\\bin\\wass_stereo.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\stereo_config.txt",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\workspaces\\000000_wd"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_09.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cc2afb0775002a2c761f44b5a93ee8c3a6f9b3b954cefd03281e24a7cc5a83eb"
+  },
+  {
+    "case": "mask_A",
+    "stage": "grid",
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassgridsurface.exe",
+      "--action",
+      "grid",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\workspaces",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\surface",
+      "--gridsetup",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\surface\\config.mat",
+      "--num_frames",
+      "1",
+      "--parallel",
+      "1",
+      "--stereo_image_idx",
+      "0"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_10.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cc2afb0775002a2c761f44b5a93ee8c3a6f9b3b954cefd03281e24a7cc5a83eb"
+  },
+  {
+    "case": "mask_A",
+    "stage": "ncplot",
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassncplot.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\surface\\gridded.nc",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\pixel",
+      "-f",
+      "0",
+      "-l",
+      "1",
+      "--savexyz",
+      "--save-img",
+      "--no-textoverlay",
+      "--pxscale",
+      "1"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_11.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_A\\workspaces\\000000_wd",
+    "stereo_config_sha256": "cc2afb0775002a2c761f44b5a93ee8c3a6f9b3b954cefd03281e24a7cc5a83eb"
+  },
+  {
+    "case": "mask_B",
+    "stage": "stereo",
+    "argv": [
+      "D:\\wass\\dist\\bin\\wass_stereo.exe",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_B\\stereo_config.txt",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_B\\workspaces\\000000_wd"
+    ],
+    "origin": "reconstructed from executed official_experiments.py and retained case artifacts; not original command-recorder output",
+    "elapsed_s": null,
+    "original_console_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_12.log",
+    "console_log_status": "retained",
+    "workspace_scientific_outputs_retained": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiments\\mask_B\\workspaces\\000000_wd",
+    "stereo_config_sha256": "83200e32f5c7ad688a5f8dfd0c43e2b4c4fd219906261bb8cfd5f4aac1b3e50e"
+  }
+]

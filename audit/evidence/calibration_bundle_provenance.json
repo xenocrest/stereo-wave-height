@@ -1,0 +1,482 @@
+{
+  "HomeTank21": {
+    "intrinsics_00.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\config\\intrinsics_00.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\intrinsics_00.xml",
+      "active_hash": "003024862b105a364efc39e12750f9919beb8596988911d8eab857c71265515b",
+      "historical_hash": "003024862b105a364efc39e12750f9919beb8596988911d8eab857c71265515b",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          1519.8630475914051,
+          0.0,
+          894.4430979866063
+        ],
+        [
+          0.0,
+          1505.9973301475638,
+          459.12086085995617
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "intrinsics_01.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\config\\intrinsics_01.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\intrinsics_01.xml",
+      "active_hash": "2b60af41ed62e1bc79d55ec3470877fab57d92819082b1351855d56c9f18d0bc",
+      "historical_hash": "2b60af41ed62e1bc79d55ec3470877fab57d92819082b1351855d56c9f18d0bc",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          1540.820849209382,
+          0.0,
+          1045.672210930653
+        ],
+        [
+          0.0,
+          1523.9518756486245,
+          608.5890665247778
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "distortion_00.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\config\\distortion_00.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\distortion_00.xml",
+      "active_hash": "35d3afc7e726630124ea7079baa8bbc41def9a09eabb6ce0b83d5c6f9ee55d99",
+      "historical_hash": "35d3afc7e726630124ea7079baa8bbc41def9a09eabb6ce0b83d5c6f9ee55d99",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.09419674528173762
+        ],
+        [
+          0.4106725017735245
+        ],
+        [
+          -0.024204065177231445
+        ],
+        [
+          -0.02430140388720611
+        ],
+        [
+          -1.068373319093563
+        ]
+      ]
+    },
+    "distortion_01.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\config\\distortion_01.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\distortion_01.xml",
+      "active_hash": "48f28870243209ea87eb28e778b29a0bab339817039293783e4592f72cbf72d1",
+      "historical_hash": "48f28870243209ea87eb28e778b29a0bab339817039293783e4592f72cbf72d1",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.19899213500290663
+        ],
+        [
+          -0.4520725281648086
+        ],
+        [
+          0.025399617020145093
+        ],
+        [
+          0.035831490163472576
+        ],
+        [
+          0.4450934421632416
+        ]
+      ]
+    },
+    "ext_R.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\config\\ext_R.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\ext_R.xml",
+      "active_hash": "abb2b46624f88515744d827f67f4fe977561e5bf867befbfacf56c0cebd47dc5",
+      "historical_hash": "abb2b46624f88515744d827f67f4fe977561e5bf867befbfacf56c0cebd47dc5",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.9930873165486288,
+          -0.020173468835128883,
+          -0.11563136626971747
+        ],
+        [
+          -0.006391109959918555,
+          0.9743653510553748,
+          -0.22488067141534496
+        ],
+        [
+          0.11720382000482622,
+          0.22406515529616422,
+          0.9675009409599465
+        ]
+      ]
+    },
+    "ext_T.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\config\\ext_T.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\ext_T.xml",
+      "active_hash": "725ad7c97a55731c9df1a5f9b7427f1466bf35653836b9707405ed22c1f7d3dc",
+      "historical_hash": "725ad7c97a55731c9df1a5f9b7427f1466bf35653836b9707405ed22c1f7d3dc",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          -0.05885880270281312
+        ],
+        [
+          0.012587938733396406
+        ],
+        [
+          -0.03308738049944439
+        ]
+      ]
+    },
+    "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000000_wd": {
+      "K0": true,
+      "K1": true,
+      "R": true,
+      "T": true
+    },
+    "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd": {
+      "K0": true,
+      "K1": true,
+      "R": true,
+      "T": true
+    }
+  },
+  "HomeTank22": {
+    "intrinsics_00.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\config\\intrinsics_00.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\intrinsics_00.xml",
+      "active_hash": "003024862b105a364efc39e12750f9919beb8596988911d8eab857c71265515b",
+      "historical_hash": "003024862b105a364efc39e12750f9919beb8596988911d8eab857c71265515b",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          1519.8630475914051,
+          0.0,
+          894.4430979866063
+        ],
+        [
+          0.0,
+          1505.9973301475638,
+          459.12086085995617
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "intrinsics_01.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\config\\intrinsics_01.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\intrinsics_01.xml",
+      "active_hash": "2b60af41ed62e1bc79d55ec3470877fab57d92819082b1351855d56c9f18d0bc",
+      "historical_hash": "2b60af41ed62e1bc79d55ec3470877fab57d92819082b1351855d56c9f18d0bc",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          1540.820849209382,
+          0.0,
+          1045.672210930653
+        ],
+        [
+          0.0,
+          1523.9518756486245,
+          608.5890665247778
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "distortion_00.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\config\\distortion_00.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\distortion_00.xml",
+      "active_hash": "35d3afc7e726630124ea7079baa8bbc41def9a09eabb6ce0b83d5c6f9ee55d99",
+      "historical_hash": "35d3afc7e726630124ea7079baa8bbc41def9a09eabb6ce0b83d5c6f9ee55d99",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.09419674528173762
+        ],
+        [
+          0.4106725017735245
+        ],
+        [
+          -0.024204065177231445
+        ],
+        [
+          -0.02430140388720611
+        ],
+        [
+          -1.068373319093563
+        ]
+      ]
+    },
+    "distortion_01.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\config\\distortion_01.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\distortion_01.xml",
+      "active_hash": "48f28870243209ea87eb28e778b29a0bab339817039293783e4592f72cbf72d1",
+      "historical_hash": "48f28870243209ea87eb28e778b29a0bab339817039293783e4592f72cbf72d1",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.19899213500290663
+        ],
+        [
+          -0.4520725281648086
+        ],
+        [
+          0.025399617020145093
+        ],
+        [
+          0.035831490163472576
+        ],
+        [
+          0.4450934421632416
+        ]
+      ]
+    },
+    "ext_R.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\config\\ext_R.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\ext_R.xml",
+      "active_hash": "abb2b46624f88515744d827f67f4fe977561e5bf867befbfacf56c0cebd47dc5",
+      "historical_hash": "abb2b46624f88515744d827f67f4fe977561e5bf867befbfacf56c0cebd47dc5",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.9930873165486288,
+          -0.020173468835128883,
+          -0.11563136626971747
+        ],
+        [
+          -0.006391109959918555,
+          0.9743653510553748,
+          -0.22488067141534496
+        ],
+        [
+          0.11720382000482622,
+          0.22406515529616422,
+          0.9675009409599465
+        ]
+      ]
+    },
+    "ext_T.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\config\\ext_T.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\ext_T.xml",
+      "active_hash": "725ad7c97a55731c9df1a5f9b7427f1466bf35653836b9707405ed22c1f7d3dc",
+      "historical_hash": "725ad7c97a55731c9df1a5f9b7427f1466bf35653836b9707405ed22c1f7d3dc",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          -0.05885880270281312
+        ],
+        [
+          0.012587938733396406
+        ],
+        [
+          -0.03308738049944439
+        ]
+      ]
+    },
+    "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd": {
+      "K0": true,
+      "K1": true,
+      "R": true,
+      "T": true
+    }
+  },
+  "HomeTank23": {
+    "intrinsics_00.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\config\\intrinsics_00.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\intrinsics_00.xml",
+      "active_hash": "003024862b105a364efc39e12750f9919beb8596988911d8eab857c71265515b",
+      "historical_hash": "003024862b105a364efc39e12750f9919beb8596988911d8eab857c71265515b",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          1519.8630475914051,
+          0.0,
+          894.4430979866063
+        ],
+        [
+          0.0,
+          1505.9973301475638,
+          459.12086085995617
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "intrinsics_01.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\config\\intrinsics_01.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\intrinsics_01.xml",
+      "active_hash": "2b60af41ed62e1bc79d55ec3470877fab57d92819082b1351855d56c9f18d0bc",
+      "historical_hash": "2b60af41ed62e1bc79d55ec3470877fab57d92819082b1351855d56c9f18d0bc",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          1540.820849209382,
+          0.0,
+          1045.672210930653
+        ],
+        [
+          0.0,
+          1523.9518756486245,
+          608.5890665247778
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "distortion_00.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\config\\distortion_00.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\distortion_00.xml",
+      "active_hash": "35d3afc7e726630124ea7079baa8bbc41def9a09eabb6ce0b83d5c6f9ee55d99",
+      "historical_hash": "35d3afc7e726630124ea7079baa8bbc41def9a09eabb6ce0b83d5c6f9ee55d99",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.09419674528173762
+        ],
+        [
+          0.4106725017735245
+        ],
+        [
+          -0.024204065177231445
+        ],
+        [
+          -0.02430140388720611
+        ],
+        [
+          -1.068373319093563
+        ]
+      ]
+    },
+    "distortion_01.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\config\\distortion_01.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\distortion_01.xml",
+      "active_hash": "48f28870243209ea87eb28e778b29a0bab339817039293783e4592f72cbf72d1",
+      "historical_hash": "48f28870243209ea87eb28e778b29a0bab339817039293783e4592f72cbf72d1",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.19899213500290663
+        ],
+        [
+          -0.4520725281648086
+        ],
+        [
+          0.025399617020145093
+        ],
+        [
+          0.035831490163472576
+        ],
+        [
+          0.4450934421632416
+        ]
+      ]
+    },
+    "ext_R.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\config\\ext_R.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\ext_R.xml",
+      "active_hash": "abb2b46624f88515744d827f67f4fe977561e5bf867befbfacf56c0cebd47dc5",
+      "historical_hash": "abb2b46624f88515744d827f67f4fe977561e5bf867befbfacf56c0cebd47dc5",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          0.9930873165486288,
+          -0.020173468835128883,
+          -0.11563136626971747
+        ],
+        [
+          -0.006391109959918555,
+          0.9743653510553748,
+          -0.22488067141534496
+        ],
+        [
+          0.11720382000482622,
+          0.22406515529616422,
+          0.9675009409599465
+        ]
+      ]
+    },
+    "ext_T.xml": {
+      "active_path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\config\\ext_T.xml",
+      "historical_path": "D:\\stereo-wave-height-runs\\HomeTank_004\\wave-reconstruction-pipeline-20260824\\wass_workspace\\config\\ext_T.xml",
+      "active_hash": "725ad7c97a55731c9df1a5f9b7427f1466bf35653836b9707405ed22c1f7d3dc",
+      "historical_hash": "725ad7c97a55731c9df1a5f9b7427f1466bf35653836b9707405ed22c1f7d3dc",
+      "hash_equal_to_history": true,
+      "numeric_equal_to_history": true,
+      "numeric_equal_to_calibration_dir": true,
+      "active_matrix": [
+        [
+          -0.05885880270281312
+        ],
+        [
+          0.012587938733396406
+        ],
+        [
+          -0.03308738049944439
+        ]
+      ]
+    },
+    "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd": {
+      "K0": true,
+      "K1": true,
+      "R": true,
+      "T": true
+    }
+  }
+}

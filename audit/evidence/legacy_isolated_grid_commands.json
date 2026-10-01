@@ -1,0 +1,78 @@
+[
+  {
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassgridsurface.exe",
+      "--action",
+      "grid",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_1\\workspaces",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_1\\surface",
+      "--gridsetup",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_1\\surface\\config.mat",
+      "--num_frames",
+      "1",
+      "--parallel",
+      "1",
+      "--stereo_image_idx",
+      "0"
+    ],
+    "cwd": "None",
+    "returncode": 0,
+    "elapsed_s": 8.729871034622192,
+    "log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_00.log"
+  },
+  {
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassgridsurface.exe",
+      "--action",
+      "grid",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_2\\workspaces",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_2\\surface",
+      "--gridsetup",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_2\\surface\\config.mat",
+      "--num_frames",
+      "1",
+      "--parallel",
+      "1",
+      "--stereo_image_idx",
+      "0"
+    ],
+    "cwd": "None",
+    "returncode": 0,
+    "elapsed_s": 8.609976053237915,
+    "log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_01.log"
+  },
+  {
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassgridsurface.exe",
+      "--action",
+      "grid",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_3\\workspaces",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_3\\surface",
+      "--gridsetup",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\grid_only_3\\surface\\config.mat",
+      "--num_frames",
+      "1",
+      "--parallel",
+      "1",
+      "--stereo_image_idx",
+      "0"
+    ],
+    "cwd": "None",
+    "returncode": 0,
+    "elapsed_s": 8.612586736679077,
+    "log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_02.log"
+  },
+  {
+    "argv": [
+      "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\wassgridsurface.exe",
+      "--action",
+      "generategridconfig",
+      "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\official_setup_review"
+    ],
+    "cwd": "None",
+    "returncode": 2,
+    "elapsed_s": 4.842249870300293,
+    "log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\experiment_command_03.log"
+  }
+]

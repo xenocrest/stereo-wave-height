@@ -1,0 +1,44 @@
+{
+  "polygons_in_actual_undistorted_cam_coordinates": {
+    "0": [
+      [
+        420,
+        835
+      ],
+      [
+        1390,
+        835
+      ],
+      [
+        1660,
+        1035
+      ],
+      [
+        440,
+        1035
+      ]
+    ],
+    "1": [
+      [
+        120,
+        700
+      ],
+      [
+        1090,
+        700
+      ],
+      [
+        1360,
+        1030
+      ],
+      [
+        160,
+        1030
+      ]
+    ]
+  },
+  "internal_left": "cam1",
+  "internal_right": "cam0",
+  "scope": "conservative visible water footprint candidate; not segmentation or independent proof of surface correspondences",
+  "A_B_common_official_random_seed": 20261001
+}

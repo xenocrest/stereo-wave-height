@@ -1,0 +1,5 @@
+[Area]
+area_center_x=0.0
+area_center_y=-35.0
+area_size=50
+N=1024

@@ -1,0 +1,5 @@
+{
+  "source_frame_path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\sync\\frames\\cam0\\000000.tif",
+  "workspace": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\Vieira_full_mesh_review\\000000_wd",
+  "config_change": "SAVE_FULL_MESH=true only; fresh official stereo on same prepared inputs; random plane fit may differ from historical filtered mesh"
+}

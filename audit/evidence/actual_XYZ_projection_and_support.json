@@ -1,0 +1,3983 @@
+{
+  "HomeTank21": {
+    "actual_WASS_point_projection_samples": [
+      {
+        "WASS_point_id": 15286,
+        "WASS_XYZ_B": [
+          -0.40484139381027934,
+          -1.1265023790241209,
+          3.26977034124105
+        ],
+        "official_aligned_XYZ": [
+          -0.02735018662375627,
+          0.12463317888626219,
+          0.0001727940854749166
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1246.5677932917881,
+          286.1348717874428
+        ],
+        "projection_from_official_aligned_point": [
+          1247.2074437427368,
+          286.0946289636053
+        ],
+        "queried_mapping_uv": [
+          1558,
+          357
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.02737894095480442,
+          0.12479828298091888,
+          -0.00014117120008450001
+        ],
+        "xyz_difference_native": 0.0003558937680865466
+      },
+      {
+        "WASS_point_id": 39505,
+        "WASS_XYZ_B": [
+          -0.06419666641800352,
+          -0.9771359722309043,
+          3.413319573708744
+        ],
+        "official_aligned_XYZ": [
+          -0.003486150821197544,
+          0.13897967515362716,
+          0.0018217350125644051
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1377.370330723376,
+          354.3641888553534
+        ],
+        "projection_from_official_aligned_point": [
+          1378.4798835575461,
+          354.27599837904023
+        ],
+        "queried_mapping_uv": [
+          1721,
+          442
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.003228687448427081,
+          0.14026877284049988,
+          -0.00023210831568576396
+        ],
+        "xyz_difference_native": 0.0024385103345314443
+      },
+      {
+        "WASS_point_id": 30947,
+        "WASS_XYZ_B": [
+          -0.03792634066425883,
+          -1.0356873858480669,
+          3.3645772359463844
+        ],
+        "official_aligned_XYZ": [
+          -0.0016527744409305883,
+          0.13373955719068478,
+          0.0008792201566223846
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1390.039687447434,
+          326.92241799562134
+        ],
+        "projection_from_official_aligned_point": [
+          1391.1970753588005,
+          326.84364829167345
+        ],
+        "queried_mapping_uv": [
+          1737,
+          408
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.0017879168735817075,
+          0.13391663134098053,
+          0.0005742072244174778
+        ],
+        "xyz_difference_native": 0.00037769249478651043
+      },
+      {
+        "WASS_point_id": 5842,
+        "WASS_XYZ_B": [
+          -0.12289530370404679,
+          -1.1850582727189563,
+          3.1715555906031767
+        ],
+        "official_aligned_XYZ": [
+          -0.007632531574582228,
+          0.11671208286439,
+          0.0015157464279361267
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1366.0480443633244,
+          246.89713192820773
+        ],
+        "projection_from_official_aligned_point": [
+          1367.1197005892536,
+          246.85605126786265
+        ],
+        "queried_mapping_uv": [
+          1707,
+          308
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.00756199611350894,
+          0.11736015230417252,
+          0.00033721825457178056
+        ],
+        "xyz_difference_native": 0.0013468102707740054
+      },
+      {
+        "WASS_point_id": 99108,
+        "WASS_XYZ_B": [
+          -0.11387135772066061,
+          -0.6152204642527035,
+          3.8397774336632686
+        ],
+        "official_aligned_XYZ": [
+          -0.006896590300022328,
+          0.17805970472675398,
+          0.002061996299857607
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1338.7126109198264,
+          520.8748436199965
+        ],
+        "projection_from_official_aligned_point": [
+          1339.6745724867033,
+          520.7303216543785
+        ],
+        "queried_mapping_uv": [
+          1673,
+          651
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.006799007300287485,
+          0.1791156381368637,
+          0.0009275906486436725
+        ],
+        "xyz_difference_native": 0.0015528663786460604
+      },
+      {
+        "WASS_point_id": 112495,
+        "WASS_XYZ_B": [
+          -0.5400064417454621,
+          -0.4189692387665782,
+          4.034310639677795
+        ],
+        "official_aligned_XYZ": [
+          -0.03669914679227178,
+          0.1973335013703357,
+          0.003735389566644054
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1182.8632303350714,
+          600.2442905471179
+        ],
+        "projection_from_official_aligned_point": [
+          1183.2518415228733,
+          600.0842531235236
+        ],
+        "queried_mapping_uv": [
+          1478,
+          750
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.036729153245687485,
+          0.19796311855316162,
+          0.0031430404633283615
+        ],
+        "xyz_difference_native": 0.0008649830312527189
+      },
+      {
+        "WASS_point_id": 84344,
+        "WASS_XYZ_B": [
+          -0.09960460661298691,
+          -0.7241686712405939,
+          3.695763468350709
+        ],
+        "official_aligned_XYZ": [
+          -0.0059220918102617275,
+          0.1654580185363908,
+          0.002690892078017848
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1350.4214609194885,
+          472.3670507379025
+        ],
+        "projection_from_official_aligned_point": [
+          1351.4278688847573,
+          472.2376344598073
+        ],
+        "queried_mapping_uv": [
+          1688,
+          590
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.005297307390719652,
+          0.16799114644527435,
+          -0.0005266136722639203
+        ],
+        "xyz_difference_native": 0.004142394938530549
+      },
+      {
+        "WASS_point_id": 131069,
+        "WASS_XYZ_B": [
+          -0.003915274718372899,
+          -0.21524584911134292,
+          4.295859637828221
+        ],
+        "official_aligned_XYZ": [
+          0.0008700890512949099,
+          0.22041402728986625,
+          0.0030532345738286007
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1358.848327224894,
+          676.2017343146066
+        ],
+        "projection_from_official_aligned_point": [
+          1359.8788992656214,
+          676.0098659064494
+        ],
+        "queried_mapping_uv": [
+          1698,
+          845
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.0008939427207224071,
+          0.22145085036754608,
+          0.002141972305253148
+        ],
+        "xyz_difference_native": 0.0013805687284897863
+      },
+      {
+        "WASS_point_id": 133054,
+        "WASS_XYZ_B": [
+          0.0257197913423165,
+          -0.18723047972230455,
+          4.322798439898952
+        ],
+        "official_aligned_XYZ": [
+          0.002948113611274949,
+          0.22310983792522468,
+          0.003352947115835874
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1367.8489692441663,
+          686.0843841951975
+        ],
+        "projection_from_official_aligned_point": [
+          1368.9126334317948,
+          685.8894051570654
+        ],
+        "queried_mapping_uv": [
+          1709,
+          857
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.002776489360257983,
+          0.22351087629795074,
+          0.0029918192885816097
+        ],
+        "xyz_difference_native": 0.0005663037767429159
+      },
+      {
+        "WASS_point_id": 9970,
+        "WASS_XYZ_B": [
+          -0.40065876861446253,
+          -1.162692009040649,
+          3.2224831550559374
+        ],
+        "official_aligned_XYZ": [
+          -0.02706528929690508,
+          0.12047678328686595,
+          0.0003568650975130661
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1249.6080538783347,
+          266.368810086011
+        ],
+        "projection_from_official_aligned_point": [
+          1250.2596736261728,
+          266.3372695499609
+        ],
+        "queried_mapping_uv": [
+          1562,
+          332
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.027116626501083374,
+          0.12039613723754883,
+          0.0003740921674761921
+        ],
+        "xyz_difference_native": 9.713941395138347e-05
+      },
+      {
+        "WASS_point_id": 44519,
+        "WASS_XYZ_B": [
+          -0.7748610344675849,
+          -1.003940278330221,
+          3.8268116776488412
+        ],
+        "official_aligned_XYZ": [
+          -0.05312136209128672,
+          0.160009089976217,
+          -0.01834666863553058
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1098.445907023929,
+          393.4368804100067
+        ],
+        "projection_from_official_aligned_point": [
+          1098.5522958469655,
+          393.3727020749204
+        ],
+        "queried_mapping_uv": [
+          1373,
+          491
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.05319426208734512,
+          0.1568705439567566,
+          -0.013863411732017994
+        ],
+        "xyz_difference_native": 0.005473150645523041
+      },
+      {
+        "WASS_point_id": 69617,
+        "WASS_XYZ_B": [
+          -0.33902115887247564,
+          -0.7936571034774755,
+          3.651149870059694
+        ],
+        "official_aligned_XYZ": [
+          -0.022684228716284307,
+          0.15998086982794055,
+          0.0009082958678705167
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1261.7558619882427,
+          445.9746277097876
+        ],
+        "projection_from_official_aligned_point": [
+          1262.4407584157746,
+          445.8648596554315
+        ],
+        "queried_mapping_uv": [
+          1577,
+          557
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.022893941029906273,
+          0.15939737856388092,
+          0.0017297988524660468
+        ],
+        "xyz_difference_native": 0.0010292271194532055
+      },
+      {
+        "WASS_point_id": 9580,
+        "WASS_XYZ_B": [
+          -0.22711910556588438,
+          -1.219113688440886,
+          3.3621190076454095
+        ],
+        "official_aligned_XYZ": [
+          -0.014874387460133618,
+          0.12540298528031965,
+          -0.00888331619419943
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1310.694937981661,
+          262.24712044228
+        ],
+        "projection_from_official_aligned_point": [
+          1311.5711842101764,
+          262.20793111816437
+        ],
+        "queried_mapping_uv": [
+          1638,
+          327
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.015763606876134872,
+          0.12298263609409332,
+          -0.004776773042976856
+        ],
+        "xyz_difference_native": 0.004848968756953697
+      },
+      {
+        "WASS_point_id": 72676,
+        "WASS_XYZ_B": [
+          -1.5431794371639316,
+          -0.6833397037159272,
+          3.7461803477456685
+        ],
+        "official_aligned_XYZ": [
+          -0.10696334148908349,
+          0.17016597703839856,
+          0.002240341104359152
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          831.6155038627417,
+          499.4125907428577
+        ],
+        "projection_from_official_aligned_point": [
+          830.7838092643153,
+          499.32248756368705
+        ],
+        "queried_mapping_uv": [
+          1039,
+          624
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.10671956837177277,
+          0.16989266872406006,
+          0.0026795545127242804
+        ],
+        "xyz_difference_native": 0.0005718664052885525
+      },
+      {
+        "WASS_point_id": 26008,
+        "WASS_XYZ_B": [
+          -1.3368871356744934,
+          -1.0307288022356094,
+          3.3786135285674446
+        ],
+        "official_aligned_XYZ": [
+          -0.09257621232846047,
+          0.13487239862785802,
+          0.00017714505647894454
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          888.3006539563096,
+          344.8829871167967
+        ],
+        "projection_from_official_aligned_point": [
+          887.6838721680612,
+          344.8648597349259
+        ],
+        "queried_mapping_uv": [
+          1110,
+          431
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.09397564828395844,
+          0.1421576887369156,
+          -0.011088999919593334
+        ],
+        "xyz_difference_native": 0.013489251112962172
+      },
+      {
+        "WASS_point_id": 99803,
+        "WASS_XYZ_B": [
+          -1.488704750249652,
+          -0.45635646480708636,
+          3.9601528261245855
+        ],
+        "official_aligned_XYZ": [
+          -0.10312219515079028,
+          0.19180070898699247,
+          0.004812696377599109
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          859.866418411053,
+          587.483965860209
+        ],
+        "projection_from_official_aligned_point": [
+          859.1189061569393,
+          587.350096253146
+        ],
+        "queried_mapping_uv": [
+          1074,
+          734
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.1030491515994072,
+          0.19197408854961395,
+          0.004698609001934528
+        ],
+        "xyz_difference_native": 0.00022002673114760395
+      },
+      {
+        "WASS_point_id": 144958,
+        "WASS_XYZ_B": [
+          -0.40744408407888233,
+          0.11156370867424448,
+          4.508435905144807
+        ],
+        "official_aligned_XYZ": [
+          -0.027361295892868214,
+          0.24650788639919397,
+          0.010915333789227672
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1221.6593828202522,
+          785.6993360125051
+        ],
+        "projection_from_official_aligned_point": [
+          1222.1745476123435,
+          785.477279938417
+        ],
+        "queried_mapping_uv": [
+          1527,
+          982
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.02751220017671585,
+          0.24570642411708832,
+          0.011756177991628647
+        ],
+        "xyz_difference_native": 0.0011713807516059377
+      },
+      {
+        "WASS_point_id": 16883,
+        "WASS_XYZ_B": [
+          -0.05169478233363105,
+          -1.1017553669891667,
+          3.2230009411526446
+        ],
+        "official_aligned_XYZ": [
+          -0.002645326854140477,
+          0.12319534414809481,
+          0.0036879665174045376
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1393.8418428434713,
+          284.5340405776381
+        ],
+        "projection_from_official_aligned_point": [
+          1395.0121349878023,
+          284.47208148958794
+        ],
+        "queried_mapping_uv": [
+          1742,
+          355
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.0024673305451869965,
+          0.12403443455696106,
+          0.0022515058517456055
+        ],
+        "xyz_difference_native": 0.0016730734126862727
+      },
+      {
+        "WASS_point_id": 27211,
+        "WASS_XYZ_B": [
+          -0.6021336617375467,
+          -1.042576194025781,
+          3.3628915694485593
+        ],
+        "official_aligned_XYZ": [
+          -0.04114654910537721,
+          0.13340919073813318,
+          0.000439080002938721
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1167.1091096195642,
+          330.7242806632867
+        ],
+        "projection_from_official_aligned_point": [
+          1167.4624348799061,
+          330.67497705651004
+        ],
+        "queried_mapping_uv": [
+          1458,
+          413
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.04127340391278267,
+          0.13336600363254547,
+          0.0005435838247649372
+        ],
+        "xyz_difference_native": 0.000169936214584193
+      },
+      {
+        "WASS_point_id": 11602,
+        "WASS_XYZ_B": [
+          -1.0666363213672323,
+          -1.1573306842557503,
+          3.2769566280840676
+        ],
+        "official_aligned_XYZ": [
+          -0.07366980265358222,
+          0.12371601590447712,
+          -0.001972810797907263
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          986.8316688345643,
+          284.3514123619221
+        ],
+        "projection_from_official_aligned_point": [
+          986.5594054374491,
+          284.3513793333285
+        ],
+        "queried_mapping_uv": [
+          1233,
+          355
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.07378781586885452,
+          0.1254180371761322,
+          -0.004852129612118006
+        ],
+        "xyz_difference_native": 0.00334683139133319
+      },
+      {
+        "WASS_point_id": 102729,
+        "WASS_XYZ_B": [
+          -0.8964182443769778,
+          -0.5000090575356257,
+          4.00601454583802
+        ],
+        "official_aligned_XYZ": [
+          -0.061645224516508466,
+          0.19222637945709659,
+          0.0005717518360983354
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1060.3213794269395,
+          573.0979610096264
+        ],
+        "projection_from_official_aligned_point": [
+          1060.2741824497878,
+          572.958168470194
+        ],
+        "queried_mapping_uv": [
+          1325,
+          716
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.061641495674848557,
+          0.1953018605709076,
+          -0.0028402574826031923
+        ],
+        "xyz_difference_native": 0.004593517777975217
+      },
+      {
+        "WASS_point_id": 103889,
+        "WASS_XYZ_B": [
+          -0.8061890232031869,
+          -0.5009891737967767,
+          4.039440284445721
+        ],
+        "official_aligned_XYZ": [
+          -0.05532041487175536,
+          0.1939615391001342,
+          -0.000956632648526994
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1090.9436910523543,
+          574.110253001511
+        ],
+        "projection_from_official_aligned_point": [
+          1091.0052967699087,
+          573.9687399962128
+        ],
+        "queried_mapping_uv": [
+          1363,
+          717
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.05522140860557556,
+          0.20025278627872467,
+          -0.008073274046182632
+        ],
+        "xyz_difference_native": 0.009499272502970503
+      },
+      {
+        "WASS_point_id": 44546,
+        "WASS_XYZ_B": [
+          -0.5906175180365504,
+          -0.9220549351406904,
+          3.4883643040250227
+        ],
+        "official_aligned_XYZ": [
+          -0.04032249882653038,
+          0.1455338709428408,
+          0.0012684002525994043
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1170.3649770898062,
+          387.5822874275051
+        ],
+        "projection_from_official_aligned_point": [
+          1170.7253033706884,
+          387.50688147382584
+        ],
+        "queried_mapping_uv": [
+          1462,
+          484
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.04047790914773941,
+          0.14536336064338684,
+          0.0015416396781802177
+        ],
+        "xyz_difference_native": 0.0003576114006151122
+      },
+      {
+        "WASS_point_id": 120743,
+        "WASS_XYZ_B": [
+          0.0023544382608280817,
+          -0.38917602152427366,
+          4.176927074891136
+        ],
+        "official_aligned_XYZ": [
+          0.0012992646459938047,
+          0.20624165324887,
+          -0.0009251949328740806
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1364.486188541084,
+          614.723988070346
+        ],
+        "projection_from_official_aligned_point": [
+          1365.541960047113,
+          614.5509284917533
+        ],
+        "queried_mapping_uv": [
+          1705,
+          768
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.0009821696439757943,
+          0.20597250759601593,
+          -0.0005639678565785289
+        ],
+        "xyz_difference_native": 0.0005508844011261169
+      },
+      {
+        "WASS_point_id": 86970,
+        "WASS_XYZ_B": [
+          -1.304351548188272,
+          -0.5942488500849579,
+          3.79390966130721
+        ],
+        "official_aligned_XYZ": [
+          -0.09024399458762151,
+          0.17668937694006304,
+          0.00493284968371353
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          915.9607200277164,
+          531.4162384199903
+        ],
+        "projection_from_official_aligned_point": [
+          915.4142736534372,
+          531.3025355016272
+        ],
+        "queried_mapping_uv": [
+          1144,
+          664
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.0904073417186737,
+          0.17802710831165314,
+          0.0034189943689852953
+        ],
+        "xyz_difference_native": 0.002026811639420456
+      },
+      {
+        "WASS_point_id": 89254,
+        "WASS_XYZ_B": [
+          -0.3505069498527799,
+          -0.6730918249891931,
+          3.7770895706713485
+        ],
+        "official_aligned_XYZ": [
+          -0.02347018407645262,
+          0.1721353434414882,
+          0.0017130414914995741
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1254.3851917488355,
+          497.92648942443185
+        ],
+        "projection_from_official_aligned_point": [
+          1255.0401066096906,
+          497.7977330364851
+        ],
+        "queried_mapping_uv": [
+          1567,
+          622
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.023696526885032654,
+          0.1720256358385086,
+          0.0019080904312431812
+        ],
+        "xyz_difference_native": 0.00031829375432535905
+      },
+      {
+        "WASS_point_id": 62532,
+        "WASS_XYZ_B": [
+          0.45936247893326926,
+          -0.9424005445766082,
+          3.801075119513051
+        ],
+        "official_aligned_XYZ": [
+          0.03325933625568078,
+          0.16124048121605064,
+          -0.013575220737594141
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1544.8341870199395,
+          401.0236624726908
+        ],
+        "projection_from_official_aligned_point": [
+          1546.5803385378963,
+          400.90175246461786
+        ],
+        "queried_mapping_uv": [
+          1931,
+          501
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 7544,
+        "WASS_XYZ_B": [
+          0.056655910668377336,
+          -1.1756401849364613,
+          3.1840863822429957
+        ],
+        "official_aligned_XYZ": [
+          0.004938057054480907,
+          0.11778371819621496,
+          0.001504772137022199
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1440.306786305818,
+          249.6491354538735
+        ],
+        "projection_from_official_aligned_point": [
+          1441.64970421454,
+          249.5948939472523
+        ],
+        "queried_mapping_uv": [
+          1800,
+          312
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.004603957291692495,
+          0.11757304519414902,
+          0.0019994396716356277
+        ],
+        "xyz_difference_native": 0.0006330100592370359
+      },
+      {
+        "WASS_point_id": 96241,
+        "WASS_XYZ_B": [
+          -2.5395340214054216,
+          -0.44211700219701733,
+          4.34101829553455
+        ],
+        "official_aligned_XYZ": [
+          -0.17658225180064327,
+          0.2129654460958847,
+          -0.011782558169179393
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          559.6315266879006,
+          611.2489544495082
+        ],
+        "projection_from_official_aligned_point": [
+          557.8580261233149,
+          611.1340151319675
+        ],
+        "queried_mapping_uv": [
+          699,
+          764
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 80792,
+        "WASS_XYZ_B": [
+          -2.292548077775357,
+          -0.6009634722288344,
+          4.047180237318519
+        ],
+        "official_aligned_XYZ": [
+          -0.1593504392054146,
+          0.19007304829051652,
+          -0.007044820464886996
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          608.1499838713313,
+          548.2551195434603
+        ],
+        "projection_from_official_aligned_point": [
+          606.5538356796271,
+          548.1650215194251
+        ],
+        "queried_mapping_uv": [
+          760,
+          685
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 52180,
+        "WASS_XYZ_B": [
+          -1.9500053875024592,
+          -0.7938671786993605,
+          3.617018188701381
+        ],
+        "official_aligned_XYZ": [
+          -0.13546102451560454,
+          0.15834029375539804,
+          0.002008876710222505
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          683.3403338167057,
+          455.05075468933563
+        ],
+        "projection_from_official_aligned_point": [
+          682.0185175207613,
+          454.9979623074007
+        ],
+        "queried_mapping_uv": [
+          854,
+          568
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.1352853626012802,
+          0.15865270793437958,
+          0.0015329561429098248
+        ],
+        "xyz_difference_native": 0.0005957852916647229
+      },
+      {
+        "WASS_point_id": 144192,
+        "WASS_XYZ_B": [
+          0.12290894845675646,
+          -0.01874170169645284,
+          4.519023749443997
+        ],
+        "official_aligned_XYZ": [
+          0.009781775230115475,
+          0.241164974088452,
+          0.003599771715078193
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1391.6193063419482,
+          744.4788297928817
+        ],
+        "projection_from_official_aligned_point": [
+          1392.7702728479942,
+          744.2693428958232
+        ],
+        "queried_mapping_uv": [
+          1739,
+          930
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.009355875663459301,
+          0.2405322641134262,
+          0.004212846048176289
+        ],
+        "xyz_difference_native": 0.0009785563301510695
+      }
+    ],
+    "official_alignment_forward_projection_error_px": {
+      "count": 147349,
+      "quantiles_0_2_50_98_100": [
+        0.0033115406219604814,
+        0.08520998054268426,
+        0.736812314199845,
+        1.6629399994180083,
+        1.8484004841421262
+      ]
+    },
+    "grid_cells_outside_cloud_XY_convex_hull": 15977,
+    "grid_outside_hull_finite_count": 15977,
+    "points_projected_into_explicit_ruler_and_upper_backwall_polygons": 99912,
+    "nonwater_annotation_scope": "conservative lower bound, two hand-annotated polygons only; no automatic segmentation",
+    "filtered_points_in_conservative_foreground_water_mask_cam0": 11
+  },
+  "HomeTank22": {
+    "actual_WASS_point_projection_samples": [
+      {
+        "WASS_point_id": 11128,
+        "WASS_XYZ_B": [
+          -0.5479363021551348,
+          -1.1209453696758276,
+          3.2494612077759215
+        ],
+        "official_aligned_XYZ": [
+          -0.03737270893856586,
+          0.1238122575985823,
+          0.0013441725625636149
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1190.1693934101531,
+          287.40071395312503
+        ],
+        "projection_from_official_aligned_point": [
+          1190.6075442641377,
+          287.36830574214616
+        ],
+        "queried_mapping_uv": [
+          1487,
+          359
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.03753816708922386,
+          0.12347890436649323,
+          0.001977530075237155
+        ],
+        "xyz_difference_native": 0.0007346036453921354
+      },
+      {
+        "WASS_point_id": 28759,
+        "WASS_XYZ_B": [
+          -1.191356326641015,
+          -0.9576738548171924,
+          3.5683781461831865
+        ],
+        "official_aligned_XYZ": [
+          -0.0823486864791194,
+          0.14829470479693319,
+          -0.004384696026478978
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          948.5027515297324,
+          388.54691929171577
+        ],
+        "projection_from_official_aligned_point": [
+          948.0849834478093,
+          388.4998768928631
+        ],
+        "queried_mapping_uv": [
+          1185,
+          485
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.08149220049381256,
+          0.14232979714870453,
+          0.004323686007410288
+        ],
+        "xyz_difference_native": 0.010590071252975078
+      },
+      {
+        "WASS_point_id": 22529,
+        "WASS_XYZ_B": [
+          0.014385094762430023,
+          -1.0318632670072605,
+          3.332695239697598
+        ],
+        "official_aligned_XYZ": [
+          0.002000231547069509,
+          0.1321972356054611,
+          0.0025277622381168776
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1413.8429765794206,
+          323.8866102439566
+        ],
+        "projection_from_official_aligned_point": [
+          1415.0865717979439,
+          323.805493695695
+        ],
+        "queried_mapping_uv": [
+          1767,
+          404
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.0016719552222639322,
+          0.1318197399377823,
+          0.003043383127078414
+        ],
+        "xyz_difference_native": 0.0007184241265976593
+      },
+      {
+        "WASS_point_id": 4253,
+        "WASS_XYZ_B": [
+          -0.5255942256670582,
+          -1.188786626500778,
+          3.185650133269479
+        ],
+        "official_aligned_XYZ": [
+          -0.03581709396005318,
+          0.11734888029476984,
+          0.0005790447264327093
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1199.9964528429184,
+          253.30648288633736
+        ],
+        "projection_from_official_aligned_point": [
+          1200.4721076560625,
+          253.28902457670796
+        ],
+        "queried_mapping_uv": [
+          1499,
+          316
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.036027878522872925,
+          0.11699105054140091,
+          0.001168038579635322
+        ],
+        "xyz_difference_native": 0.0007206844132001469
+      },
+      {
+        "WASS_point_id": 72144,
+        "WASS_XYZ_B": [
+          -1.2672350737854237,
+          -0.3888387027586011,
+          3.941982587667293
+        ],
+        "official_aligned_XYZ": [
+          -0.0876324256521926,
+          0.19382920176867766,
+          0.009301365264110833
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          933.5564155258877,
+          608.5133603798303
+        ],
+        "projection_from_official_aligned_point": [
+          933.0616677181524,
+          608.3627477140419
+        ],
+        "queried_mapping_uv": [
+          1166,
+          760
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.0875224769115448,
+          0.19320732355117798,
+          0.009987239725887775
+        ],
+        "xyz_difference_native": 0.0009323331058631486
+      },
+      {
+        "WASS_point_id": 81891,
+        "WASS_XYZ_B": [
+          -0.5489385718511148,
+          -0.3656605716469816,
+          4.064575782284191
+        ],
+        "official_aligned_XYZ": [
+          -0.03732302740164852,
+          0.20134676106300897,
+          0.005230464184023736
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1179.7662988929405,
+          619.4407136331283
+        ],
+        "projection_from_official_aligned_point": [
+          1180.141968889614,
+          619.2734355123556
+        ],
+        "queried_mapping_uv": [
+          1474,
+          774
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.037312474101781845,
+          0.20257380604743958,
+          0.004019684623926878
+        ],
+        "xyz_difference_native": 0.0017238729387929715
+      },
+      {
+        "WASS_point_id": 61397,
+        "WASS_XYZ_B": [
+          -0.5230057843936161,
+          -0.6346604554710495,
+          3.8244554897915215
+        ],
+        "official_aligned_XYZ": [
+          -0.0355373695203985,
+          0.17641707632658635,
+          0.0016016983576516398
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1191.0991185145583,
+          515.4145510269346
+        ],
+        "projection_from_official_aligned_point": [
+          1191.5241108977737,
+          515.2852078371922
+        ],
+        "queried_mapping_uv": [
+          1488,
+          644
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.03559906780719757,
+          0.17710544168949127,
+          0.000856140221003443
+        ],
+        "xyz_difference_native": 0.001016617177979745
+      },
+      {
+        "WASS_point_id": 95412,
+        "WASS_XYZ_B": [
+          1.2961398089753249,
+          -0.5265883284038915,
+          4.687541473888978
+        ],
+        "official_aligned_XYZ": [
+          0.09201313050599694,
+          0.22726608710916182,
+          -0.030852321208751168
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1744.918073010973,
+          588.8599419418076
+        ],
+        "projection_from_official_aligned_point": [
+          1747.4631141587843,
+          588.6847700527229
+        ],
+        "queried_mapping_uv": [
+          2181,
+          736
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 96854,
+        "WASS_XYZ_B": [
+          0.04613281725792294,
+          -0.25219734757800927,
+          4.261542128353179
+        ],
+        "official_aligned_XYZ": [
+          0.004369009846685514,
+          0.21691245676980964,
+          0.002626659421254827
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1377.1858691688833,
+          662.9641157170454
+        ],
+        "projection_from_official_aligned_point": [
+          1378.2854866009664,
+          662.7750673142787
+        ],
+        "queried_mapping_uv": [
+          1721,
+          828
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.0041934289038181305,
+          0.21708518266677856,
+          0.0024582776241004467
+        ],
+        "xyz_difference_native": 0.00029835437418422275
+      },
+      {
+        "WASS_point_id": 7257,
+        "WASS_XYZ_B": [
+          -0.0778497131522472,
+          -1.1575051060067605,
+          3.1990083352403595
+        ],
+        "official_aligned_XYZ": [
+          -0.004475589246132954,
+          0.11941280237472046,
+          0.001771661522330428
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1383.4010533768762,
+          260.5597554626282
+        ],
+        "projection_from_official_aligned_point": [
+          1384.53528204414,
+          260.5098512582458
+        ],
+        "queried_mapping_uv": [
+          1729,
+          325
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.004344954155385494,
+          0.12010283023118973,
+          0.0005290649132803082
+        ],
+        "xyz_difference_native": 0.0014273227744490814
+      },
+      {
+        "WASS_point_id": 32408,
+        "WASS_XYZ_B": [
+          0.014357162042978128,
+          -0.9662968504202132,
+          3.5181928731407606
+        ],
+        "official_aligned_XYZ": [
+          0.002038536346669323,
+          0.1450728849882965,
+          -0.0022816080142814424
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1400.6356102311852,
+          368.84630778704866
+        ],
+        "projection_from_official_aligned_point": [
+          1401.833156330131,
+          368.75037314399685
+        ],
+        "queried_mapping_uv": [
+          1750,
+          461
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.002169988350942731,
+          0.14615929126739502,
+          -0.0037531093694269657
+        ],
+        "xyz_difference_native": 0.0018338141865759652
+      },
+      {
+        "WASS_point_id": 50677,
+        "WASS_XYZ_B": [
+          -0.124274570583635,
+          -0.7951086605073598,
+          3.671214534900738
+        ],
+        "official_aligned_XYZ": [
+          -0.007646696484850417,
+          0.1609641051960705,
+          -1.3599975026856726e-05
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1341.1120229952078,
+          445.5049852173412
+        ],
+        "projection_from_official_aligned_point": [
+          1342.0867823857266,
+          445.387191021171
+        ],
+        "queried_mapping_uv": [
+          1676,
+          556
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.007873058319091797,
+          0.1607198864221573,
+          0.0002462918928358704
+        ],
+        "xyz_difference_native": 0.0004224053414837063
+      },
+      {
+        "WASS_point_id": 6974,
+        "WASS_XYZ_B": [
+          -0.061949475076455596,
+          -1.1565113982783803,
+          3.185395660924476
+        ],
+        "official_aligned_XYZ": [
+          -0.0033662456786426325,
+          0.11872639516701208,
+          0.002439639459594445
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1391.122681376835,
+          258.7917531083834
+        ],
+        "projection_from_official_aligned_point": [
+          1392.2846186267207,
+          258.74140713205776
+        ],
+        "queried_mapping_uv": [
+          1738,
+          323
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.0034503117203712463,
+          0.11912408471107483,
+          0.0017527425661683083
+        ],
+        "xyz_difference_native": 0.0007981550068922885
+      },
+      {
+        "WASS_point_id": 52903,
+        "WASS_XYZ_B": [
+          -1.0005888716186007,
+          -0.7235192525907403,
+          3.846209666102193
+        ],
+        "official_aligned_XYZ": [
+          -0.06895138606189202,
+          0.17365450851875644,
+          -0.004257319795810238
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1022.1584376862328,
+          489.5607359395523
+        ],
+        "projection_from_official_aligned_point": [
+          1021.985215754979,
+          489.4599607737274
+        ],
+        "queried_mapping_uv": [
+          1277,
+          611
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.06891267746686935,
+          0.17285996675491333,
+          -0.0033339946530759335
+        ],
+        "xyz_difference_native": 0.001218738810830636
+      },
+      {
+        "WASS_point_id": 18933,
+        "WASS_XYZ_B": [
+          -1.0724282576338366,
+          -0.9833872440723825,
+          3.2012794902289867
+        ],
+        "official_aligned_XYZ": [
+          -0.07411617676994402,
+          0.12746641573586923,
+          0.010736027988655833
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          983.3008207302655,
+          338.9838148779993
+        ],
+        "projection_from_official_aligned_point": [
+          983.0121227658194,
+          338.95403692454965
+        ],
+        "queried_mapping_uv": [
+          1229,
+          423
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.07397685199975967,
+          0.12707802653312683,
+          0.011300928890705109
+        ],
+        "xyz_difference_native": 0.0006995502794866704
+      },
+      {
+        "WASS_point_id": 72651,
+        "WASS_XYZ_B": [
+          -0.48306226824424037,
+          -0.4904528573860887,
+          3.9513506867725194
+        ],
+        "official_aligned_XYZ": [
+          -0.03272594348653874,
+          0.18967697327575891,
+          0.003643153607545804
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1203.8484241073663,
+          571.9015909990454
+        ],
+        "projection_from_official_aligned_point": [
+          1204.3149218073404,
+          571.7498230625978
+        ],
+        "queried_mapping_uv": [
+          1504,
+          714
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.032964736223220825,
+          0.18890918791294098,
+          0.004464991390705109
+        ],
+        "xyz_difference_native": 0.001149753745929009
+      },
+      {
+        "WASS_point_id": 105525,
+        "WASS_XYZ_B": [
+          0.2332180489429445,
+          -0.08561068234412916,
+          2.8157759273693337
+        ],
+        "official_aligned_XYZ": [
+          0.017068299609516804,
+          0.14693284150378708,
+          0.076449542189606
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1609.844335532283,
+          678.351107998148
+        ],
+        "projection_from_official_aligned_point": [
+          1611.7165794421849,
+          678.0629919306247
+        ],
+        "queried_mapping_uv": [
+          2012,
+          847
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 12290,
+        "WASS_XYZ_B": [
+          -0.12327989921073845,
+          -1.117969859497284,
+          3.252256874459377
+        ],
+        "official_aligned_XYZ": [
+          -0.007646648808046814,
+          0.12404357867184942,
+          0.0014886274721491112
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1361.7069814336635,
+          283.29790619965377
+        ],
+        "projection_from_official_aligned_point": [
+          1362.7617178029393,
+          283.2414571001985
+        ],
+        "queried_mapping_uv": [
+          1702,
+          354
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.007668046746402979,
+          0.12438793480396271,
+          0.0010261657880619168
+        ],
+        "xyz_difference_native": 0.0005769833851495889
+      },
+      {
+        "WASS_point_id": 19808,
+        "WASS_XYZ_B": [
+          -0.81168798926198,
+          -0.9902797324048678,
+          3.2215810663599607
+        ],
+        "official_aligned_XYZ": [
+          -0.05585838790406893,
+          0.12821265422978595,
+          0.009524079103723016
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1086.9102877824848,
+          335.7921583343435
+        ],
+        "projection_from_official_aligned_point": [
+          1086.9799222633621,
+          335.75003802579704
+        ],
+        "queried_mapping_uv": [
+          1358,
+          419
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.05585315078496933,
+          0.1294029951095581,
+          0.007600823417305946
+        ],
+        "xyz_difference_native": 0.0022618247661586885
+      },
+      {
+        "WASS_point_id": 8446,
+        "WASS_XYZ_B": [
+          -0.22505387870820698,
+          -1.1973940276359545,
+          3.3585288603117798
+        ],
+        "official_aligned_XYZ": [
+          -0.0147334103658289,
+          0.1261847472065573,
+          -0.007558518684323166
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1312.1736137073576,
+          269.55942323565665
+        ],
+        "projection_from_official_aligned_point": [
+          1313.054207400457,
+          269.5168191122789
+        ],
+        "queried_mapping_uv": [
+          1640,
+          336
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.015059428289532661,
+          0.12546324729919434,
+          -0.006444644182920456
+        ],
+        "xyz_difference_native": 0.0013665892608154182
+      },
+      {
+        "WASS_point_id": 74781,
+        "WASS_XYZ_B": [
+          -0.7850806366094087,
+          -0.4512368513954712,
+          4.231675433369312
+        ],
+        "official_aligned_XYZ": [
+          -0.05379889514520019,
+          0.20648606104318623,
+          -0.00690966556625202
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1097.7071654557626,
+          599.1205863004594
+        ],
+        "projection_from_official_aligned_point": [
+          1097.7909084207479,
+          598.9732098809754
+        ],
+        "queried_mapping_uv": [
+          1372,
+          748
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.05380889028310776,
+          0.20450855791568756,
+          -0.004796767607331276
+        ],
+        "xyz_difference_native": 0.0028939516766629428
+      },
+      {
+        "WASS_point_id": 75628,
+        "WASS_XYZ_B": [
+          0.0014837756952492676,
+          -0.5337433183036178,
+          4.0989031876995945
+        ],
+        "official_aligned_XYZ": [
+          0.0012356763170591279,
+          0.1955781982136224,
+          -0.005167958792244668
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1365.8982695375507,
+          563.1485297446948
+        ],
+        "projection_from_official_aligned_point": [
+          1366.9633634228785,
+          562.9925661319916
+        ],
+        "queried_mapping_uv": [
+          1707,
+          703
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.0007262856815941632,
+          0.19444137811660767,
+          -0.003932698164135218
+        ],
+        "xyz_difference_native": 0.0017543396398170328
+      },
+      {
+        "WASS_point_id": 32428,
+        "WASS_XYZ_B": [
+          -1.3324865104975183,
+          -0.9030446426764631,
+          3.598771040801795
+        ],
+        "official_aligned_XYZ": [
+          -0.0922264804610192,
+          0.15239019232687304,
+          -0.0028590292322717837
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          899.0721135411728,
+          411.40119428194623
+        ],
+        "projection_from_official_aligned_point": [
+          898.4816929811553,
+          411.34852689261714
+        ],
+        "queried_mapping_uv": [
+          1123,
+          514
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.0921604111790657,
+          0.15240468084812164,
+          -0.002792478073388338
+        ],
+        "xyz_difference_native": 9.489006278083471e-05
+      },
+      {
+        "WASS_point_id": 87897,
+        "WASS_XYZ_B": [
+          -0.9208364170567673,
+          -0.22551318620650318,
+          4.136651288460378
+        ],
+        "official_aligned_XYZ": [
+          -0.06335402128136283,
+          0.2115389174608904,
+          0.00940633977854771
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1054.3126027569697,
+          669.4122073448692
+        ],
+        "projection_from_official_aligned_point": [
+          1054.2342976334887,
+          669.2316621915954
+        ],
+        "queried_mapping_uv": [
+          1317,
+          836
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.06380893290042877,
+          0.23998184502124786,
+          -0.019062478095293045
+        ],
+        "xyz_difference_native": 0.04024525641512076
+      },
+      {
+        "WASS_point_id": 63312,
+        "WASS_XYZ_B": [
+          -0.5911480210440745,
+          -0.5966007706367427,
+          3.816235362416177
+        ],
+        "official_aligned_XYZ": [
+          -0.04031407414976576,
+          0.17769242332874025,
+          0.0039910186496957415
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1167.3655028325652,
+          528.3431535232623
+        ],
+        "projection_from_official_aligned_point": [
+          1167.7036968843909,
+          528.2098044896045
+        ],
+        "queried_mapping_uv": [
+          1459,
+          660
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.04035767912864685,
+          0.1775025576353073,
+          0.004278111271560192
+        ],
+        "xyz_difference_native": 0.0003469474733370938
+      },
+      {
+        "WASS_point_id": 64973,
+        "WASS_XYZ_B": [
+          -0.5163874132811813,
+          -0.587490825757943,
+          3.852390383456596
+        ],
+        "official_aligned_XYZ": [
+          -0.03507258068494488,
+          0.18002825618002388,
+          0.002876564986793442
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1193.3785358144576,
+          533.3384140411212
+        ],
+        "projection_from_official_aligned_point": [
+          1193.81013316785,
+          533.2016071115586
+        ],
+        "queried_mapping_uv": [
+          1491,
+          666
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.035276371985673904,
+          0.1793566793203354,
+          0.003674566512927413
+        ],
+        "xyz_difference_native": 0.001062710124367899
+      },
+      {
+        "WASS_point_id": 45522,
+        "WASS_XYZ_B": [
+          -0.8085405459172145,
+          -0.8375710700209562,
+          3.8926554043441763
+        ],
+        "official_aligned_XYZ": [
+          -0.05548209832127797,
+          0.17100242306518398,
+          -0.012398909477505625
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1087.9258725060627,
+          453.88156416897823
+        ],
+        "projection_from_official_aligned_point": [
+          1087.9887620582176,
+          453.79203534592926
+        ],
+        "queried_mapping_uv": [
+          1359,
+          567
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.05559748411178589,
+          0.1695585697889328,
+          -0.010408357717096806
+        ],
+        "xyz_difference_native": 0.0024617722223753895
+      },
+      {
+        "WASS_point_id": 5492,
+        "WASS_XYZ_B": [
+          -0.33661616611326,
+          -1.1752692810713647,
+          3.1899475110893016
+        ],
+        "official_aligned_XYZ": [
+          -0.022589275025395893,
+          0.11816229770333864,
+          0.0011593880347189867
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1276.9391575157942,
+          256.2758239835895
+        ],
+        "projection_from_official_aligned_point": [
+          1277.6888952675401,
+          256.2447038688729
+        ],
+        "queried_mapping_uv": [
+          1596,
+          320
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.022473350167274475,
+          0.11890384554862976,
+          -9.009562199935317e-05
+        ],
+        "xyz_difference_native": 0.0014575805939956164
+      },
+      {
+        "WASS_point_id": 70062,
+        "WASS_XYZ_B": [
+          0.16216283028392692,
+          -0.5994195791175512,
+          3.8587055349374566
+        ],
+        "official_aligned_XYZ": [
+          0.012428634169209793,
+          0.17974848337380203,
+          0.0021310024943335605
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1439.1167820892713,
+          526.1000552242762
+        ],
+        "projection_from_official_aligned_point": [
+          1440.4509397909467,
+          525.9451311938745
+        ],
+        "queried_mapping_uv": [
+          1798,
+          657
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.0116113955155015,
+          0.1783730387687683,
+          0.003788576228544116
+        ],
+        "xyz_difference_native": 0.002303752930106881
+      },
+      {
+        "WASS_point_id": 58811,
+        "WASS_XYZ_B": [
+          -0.0918854905403163,
+          -0.7114904982297368,
+          3.761911056762224
+        ],
+        "official_aligned_XYZ": [
+          -0.005366094263445276,
+          0.16956838389074094,
+          0.0004047213973984221
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1349.4344343920238,
+          481.82357945164205
+        ],
+        "projection_from_official_aligned_point": [
+          1350.4382195715411,
+          481.6919931741293
+        ],
+        "queried_mapping_uv": [
+          1686,
+          602
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.005665648728609085,
+          0.16938793659210205,
+          0.0007248778128996491
+        ],
+        "xyz_difference_native": 0.0004741247046634918
+      },
+      {
+        "WASS_point_id": 37984,
+        "WASS_XYZ_B": [
+          -1.1895406856775945,
+          -0.8213304929280254,
+          3.556686700175874
+        ],
+        "official_aligned_XYZ": [
+          -0.08224129112597926,
+          0.15378434829824644,
+          0.0034422184410198846
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          948.8896079813632,
+          434.8347556993752
+        ],
+        "projection_from_official_aligned_point": [
+          948.4690934091433,
+          434.76301412427017
+        ],
+        "queried_mapping_uv": [
+          1186,
+          543
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.08257089555263519,
+          0.15745055675506592,
+          -0.001574588823132217
+        ],
+        "xyz_difference_native": 0.006222385286413491
+      },
+      {
+        "WASS_point_id": 104966,
+        "WASS_XYZ_B": [
+          -0.12685711480551282,
+          -0.04510981939203029,
+          4.556190358913538
+        ],
+        "official_aligned_XYZ": [
+          -0.007688808309589376,
+          0.24200317417626674,
+          0.00045543165250075293
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1307.9003867923084,
+          736.4730190651213
+        ],
+        "projection_from_official_aligned_point": [
+          1308.7402708136508,
+          736.2703951770144
+        ],
+        "queried_mapping_uv": [
+          1634,
+          920
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.00877790991216898,
+          0.23784466087818146,
+          0.004309384152293205
+        ],
+        "xyz_difference_native": 0.0057734153688912835
+      }
+    ],
+    "official_alignment_forward_projection_error_px": {
+      "count": 107268,
+      "quantiles_0_2_50_98_100": [
+        0.013314036522618946,
+        0.08857372644135114,
+        0.7070556872469229,
+        2.1825486458760124,
+        2.5636017259795003
+      ]
+    },
+    "grid_cells_outside_cloud_XY_convex_hull": 20499,
+    "grid_outside_hull_finite_count": 20499,
+    "points_projected_into_explicit_ruler_and_upper_backwall_polygons": 72793,
+    "nonwater_annotation_scope": "conservative lower bound, two hand-annotated polygons only; no automatic segmentation",
+    "filtered_points_in_conservative_foreground_water_mask_cam0": 0
+  },
+  "HomeTank23": {
+    "actual_WASS_point_projection_samples": [
+      {
+        "WASS_point_id": 13275,
+        "WASS_XYZ_B": [
+          -1.1543854541066763,
+          -1.218069459535115,
+          3.3710388569155185
+        ],
+        "official_aligned_XYZ": [
+          -0.0797802879226939,
+          0.12604081547312032,
+          -0.009468799256982276
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          955.9997025923692,
+          275.85377353612114
+        ],
+        "projection_from_official_aligned_point": [
+          955.620884906696,
+          275.86318829112895
+        ],
+        "queried_mapping_uv": [
+          1194,
+          344
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.07850129157304764,
+          0.11663999408483505,
+          0.006680950988084078
+        ],
+        "xyz_difference_native": 0.01873034189263162
+      },
+      {
+        "WASS_point_id": 34308,
+        "WASS_XYZ_B": [
+          -0.17839236884984527,
+          -1.076694244784079,
+          3.3587635919749403
+        ],
+        "official_aligned_XYZ": [
+          -0.011481816334479577,
+          0.13160589953821883,
+          -0.0010927120627903621
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1333.291958371804,
+          312.8314088649259
+        ],
+        "projection_from_official_aligned_point": [
+          1334.2438728797943,
+          312.76674487249727
+        ],
+        "queried_mapping_uv": [
+          1666,
+          391
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.011961691081523895,
+          0.1307549774646759,
+          0.0004112413735128939
+        ],
+        "xyz_difference_native": 0.001793383418754008
+      },
+      {
+        "WASS_point_id": 26876,
+        "WASS_XYZ_B": [
+          -0.6367590966907007,
+          -1.092207119216165,
+          3.307079759002774
+        ],
+        "official_aligned_XYZ": [
+          -0.04357876918773174,
+          0.12819804965906403,
+          0.0002755784971365838
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1154.088247793393,
+          306.3814768991232
+        ],
+        "projection_from_official_aligned_point": [
+          1154.397422123156,
+          306.34544633160607
+        ],
+        "queried_mapping_uv": [
+          1442,
+          382
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.043552134186029434,
+          0.12899333238601685,
+          -0.00114966812543571
+        ],
+        "xyz_difference_native": 0.0016323332914141382
+      },
+      {
+        "WASS_point_id": 5074,
+        "WASS_XYZ_B": [
+          -1.170142507507931,
+          -1.1973142353047883,
+          3.131740374804491
+        ],
+        "official_aligned_XYZ": [
+          -0.08094807764928195,
+          0.11415790433428828,
+          0.0023728380850575096
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          942.4194879055727,
+          251.71298348832974
+        ],
+        "projection_from_official_aligned_point": [
+          942.0001839107439,
+          251.7375632031117
+        ],
+        "queried_mapping_uv": [
+          1178,
+          314
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.08051755279302597,
+          0.11230647563934326,
+          0.0056554717011749744
+        ],
+        "xyz_difference_native": 0.0037932602497040037
+      },
+      {
+        "WASS_point_id": 86068,
+        "WASS_XYZ_B": [
+          -0.873369191933617,
+          -0.6174555899815763,
+          3.8351097328892583
+        ],
+        "official_aligned_XYZ": [
+          -0.060061929453602246,
+          0.17780224201647882,
+          0.001954035076246252
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1066.9693435261206,
+          523.8676225728606
+        ],
+        "projection_from_official_aligned_point": [
+          1066.950682750581,
+          523.7457346634905
+        ],
+        "queried_mapping_uv": [
+          1333,
+          654
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.060091324150562286,
+          0.17788615822792053,
+          0.0018031622748821974
+        ],
+        "xyz_difference_native": 0.0001751244727145258
+      },
+      {
+        "WASS_point_id": 97694,
+        "WASS_XYZ_B": [
+          -0.9110349873108922,
+          -0.44081970240794766,
+          4.084503810010494
+        ],
+        "official_aligned_XYZ": [
+          -0.0626551942575796,
+          0.1990868156498541,
+          0.00021711190244504854
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1056.0877334148443,
+          596.4201886987319
+        ],
+        "projection_from_official_aligned_point": [
+          1056.0231166757621,
+          596.2722014243759
+        ],
+        "queried_mapping_uv": [
+          1320,
+          745
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.06255568563938141,
+          0.19717612862586975,
+          0.0023608419578522444
+        ],
+        "xyz_difference_native": 0.0028733613450406775
+      },
+      {
+        "WASS_point_id": 73247,
+        "WASS_XYZ_B": [
+          -1.0302576797651186,
+          -0.7594702236102715,
+          3.8583244468260114
+        ],
+        "official_aligned_XYZ": [
+          -0.07102064065798398,
+          0.17269428380598867,
+          -0.006733859897397006
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1011.9483997429329,
+          478.6215548743887
+        ],
+        "projection_from_official_aligned_point": [
+          1011.7403116369327,
+          478.5274137214233
+        ],
+        "queried_mapping_uv": [
+          1264,
+          598
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.07082705199718475,
+          0.1688535213470459,
+          -0.0016918933251872659
+        ],
+        "xyz_difference_native": 0.006341163911372626
+      },
+      {
+        "WASS_point_id": 113825,
+        "WASS_XYZ_B": [
+          -0.6814089782143973,
+          -0.2038535646096049,
+          4.3053890971623865
+        ],
+        "official_aligned_XYZ": [
+          -0.046552980032329896,
+          0.22151817989224307,
+          0.00305960186444501
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1133.135640348954,
+          680.8979723866436
+        ],
+        "projection_from_official_aligned_point": [
+          1133.3385180301882,
+          680.7149447212155
+        ],
+        "queried_mapping_uv": [
+          1416,
+          851
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.04651445150375366,
+          0.22284482419490814,
+          0.001899933209642768
+        ],
+        "xyz_difference_native": 0.0017624701252046218
+      },
+      {
+        "WASS_point_id": 115547,
+        "WASS_XYZ_B": [
+          -0.8257207543105185,
+          -0.14836544572799903,
+          4.425342527114088
+        ],
+        "official_aligned_XYZ": [
+          -0.05663028322731927,
+          0.2304490856460435,
+          0.0006130385691303087
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1086.2969466942477,
+          701.5706588003513
+        ],
+        "projection_from_official_aligned_point": [
+          1086.329655755383,
+          701.3850172110259
+        ],
+        "queried_mapping_uv": [
+          1357,
+          876
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.05675487965345383,
+          0.2265453040599823,
+          0.0043035391718149185
+        ],
+        "xyz_difference_native": 0.005373530463251458
+      },
+      {
+        "WASS_point_id": 8658,
+        "WASS_XYZ_B": [
+          -0.6325248184292545,
+          -1.2098656520103666,
+          3.231887480204325
+        ],
+        "official_aligned_XYZ": [
+          -0.043287565107263885,
+          0.11889267835934852,
+          -0.0026517490260127997
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1155.708137792988,
+          253.47331337786676
+        ],
+        "projection_from_official_aligned_point": [
+          1156.0278697048066,
+          253.46278570550567
+        ],
+        "queried_mapping_uv": [
+          1444,
+          316
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.04336477443575859,
+          0.11883001029491425,
+          -0.0026415702886879444
+        ],
+        "xyz_difference_native": 9.996085934039729e-05
+      },
+      {
+        "WASS_point_id": 38662,
+        "WASS_XYZ_B": [
+          -0.5186545832591563,
+          -1.0371075778374879,
+          3.3632202424722903
+        ],
+        "official_aligned_XYZ": [
+          -0.03530364569794238,
+          0.13366190312446705,
+          0.0007389365849807118
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1199.6945693175344,
+          331.79697865184704
+        ],
+        "projection_from_official_aligned_point": [
+          1200.1636127909792,
+          331.74262340598426
+        ],
+        "queried_mapping_uv": [
+          1499,
+          414
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.03543122485280037,
+          0.13347111642360687,
+          0.0009847169276326895
+        ],
+        "xyz_difference_native": 0.0003362796199794332
+      },
+      {
+        "WASS_point_id": 60457,
+        "WASS_XYZ_B": [
+          -0.3570124224005732,
+          -0.8930586829821066,
+          3.555478708931392
+        ],
+        "official_aligned_XYZ": [
+          -0.023956358670325004,
+          0.1504004071878822,
+          -0.00012842857506492058
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1257.3043794294683,
+          402.33574652112515
+        ],
+        "projection_from_official_aligned_point": [
+          1257.9760349927178,
+          402.2439885979726
+        ],
+        "queried_mapping_uv": [
+          1571,
+          502
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.023999325931072235,
+          0.15082120895385742,
+          -0.0008141951402649283
+        ],
+        "xyz_difference_native": 0.0008057270590530059
+      },
+      {
+        "WASS_point_id": 8320,
+        "WASS_XYZ_B": [
+          -0.0656369937497459,
+          -1.1931648412396636,
+          3.1725471576206257
+        ],
+        "official_aligned_XYZ": [
+          -0.003623235518149512,
+          0.11639455256851515,
+          0.0010520124007018252
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1389.622757230195,
+          243.1366612918694
+        ],
+        "projection_from_official_aligned_point": [
+          1390.7806572395136,
+          243.0934243815032
+        ],
+        "queried_mapping_uv": [
+          1737,
+          303
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.004047922790050507,
+          0.11564917862415314,
+          0.002261808607727289
+        ],
+        "xyz_difference_native": 0.0014830874749594827
+      },
+      {
+        "WASS_point_id": 63113,
+        "WASS_XYZ_B": [
+          -0.20643903607473685,
+          -0.8773221339321695,
+          3.570864379489574
+        ],
+        "official_aligned_XYZ": [
+          -0.013414229794755934,
+          0.15191190823976744,
+          6.338706798951766e-05
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1314.1230066862918,
+          408.05648191846717
+        ],
+        "projection_from_official_aligned_point": [
+          1315.0005303973874,
+          407.9556704985468
+        ],
+        "queried_mapping_uv": [
+          1642,
+          510
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.01378438901156187,
+          0.1513003557920456,
+          0.0010607755975797772
+        ],
+        "xyz_difference_native": 0.0012271096613828717
+      },
+      {
+        "WASS_point_id": 22586,
+        "WASS_XYZ_B": [
+          -0.5805133913603059,
+          -1.115621317323415,
+          3.2721893704979226
+        ],
+        "official_aligned_XYZ": [
+          -0.03964782196656769,
+          0.12527228935347243,
+          0.0006013168453100182
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1176.6967271942876,
+          292.71640257718565
+        ],
+        "projection_from_official_aligned_point": [
+          1177.0869119539736,
+          292.6835240628322
+        ],
+        "queried_mapping_uv": [
+          1470,
+          365
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.03973693773150444,
+          0.1254424750804901,
+          0.00021128136722836643
+        ],
+        "xyz_difference_native": 0.0004347786510434747
+      },
+      {
+        "WASS_point_id": 86672,
+        "WASS_XYZ_B": [
+          0.0946253906958113,
+          -0.7220223901387433,
+          3.851937440352793
+        ],
+        "official_aligned_XYZ": [
+          0.007714269827619972,
+          0.17389461578713272,
+          -0.004149088986873566
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1411.6677324981513,
+          483.6237557636771
+        ],
+        "projection_from_official_aligned_point": [
+          1412.9047732968888,
+          483.487496974869
+        ],
+        "queried_mapping_uv": [
+          1764,
+          604
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.007457923609763384,
+          0.17388789355754852,
+          -0.004112224094569683
+        ],
+        "xyz_difference_native": 0.00025907063142034616
+      },
+      {
+        "WASS_point_id": 125887,
+        "WASS_XYZ_B": [
+          -0.9550638228248713,
+          0.18529338817347263,
+          4.118646048235908
+        ],
+        "official_aligned_XYZ": [
+          -0.06580479000980746,
+          0.22900653546981026,
+          0.032206235143189495
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1044.9132204968582,
+          808.37907408056
+        ],
+        "projection_from_official_aligned_point": [
+          1044.787753976546,
+          808.1301081091498
+        ],
+        "queried_mapping_uv": [
+          1306,
+          1010
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.06657395511865616,
+          0.2666480243206024,
+          0.000774576619733125
+        ],
+        "xyz_difference_native": 0.04904510633492549
+      },
+      {
+        "WASS_point_id": 14662,
+        "WASS_XYZ_B": [
+          0.20436121062829563,
+          -1.2026789865288696,
+          3.3157681705406565
+        ],
+        "official_aligned_XYZ": [
+          0.015314909517616047,
+          0.12360512878924626,
+          -0.005811709133972754
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1487.7097255099068,
+          256.03120261896873
+        ],
+        "projection_from_official_aligned_point": [
+          1489.2342775085742,
+          255.96662516032865
+        ],
+        "queried_mapping_uv": [
+          1859,
+          320
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.014919770881533623,
+          0.12344302237033844,
+          -0.005397183354943991
+        ],
+        "xyz_difference_native": 0.0005951845547858238
+      },
+      {
+        "WASS_point_id": 23630,
+        "WASS_XYZ_B": [
+          -0.7916280127443827,
+          -1.1025871514180023,
+          3.2720107119377833
+        ],
+        "official_aligned_XYZ": [
+          -0.05442735893546734,
+          0.12587319061852212,
+          0.001252452412496976
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1093.6939011359227,
+          300.13343652294833
+        ],
+        "projection_from_official_aligned_point": [
+          1093.7910944394703,
+          300.1091812193023
+        ],
+        "queried_mapping_uv": [
+          1367,
+          375
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.05437978357076645,
+          0.1261937916278839,
+          0.0008263213094323874
+        ],
+        "xyz_difference_native": 0.000535384104666235
+      },
+      {
+        "WASS_point_id": 10076,
+        "WASS_XYZ_B": [
+          0.23823302485743822,
+          -1.2331692990316445,
+          3.3066933844660804
+        ],
+        "official_aligned_XYZ": [
+          0.017687279770946775,
+          0.12174726506950204,
+          -0.00702876714465881
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1501.5199855833769,
+          243.0636161594325
+        ],
+        "projection_from_official_aligned_point": [
+          1503.0971188715587,
+          243.00191379892095
+        ],
+        "queried_mapping_uv": [
+          1876,
+          303
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.017295939847826958,
+          0.12158486247062683,
+          -0.006839319132268429
+        ],
+        "xyz_difference_native": 0.00046412507899004093
+      },
+      {
+        "WASS_point_id": 89213,
+        "WASS_XYZ_B": [
+          -0.24891685407654807,
+          -0.6423777244909645,
+          3.824978303580742
+        ],
+        "official_aligned_XYZ": [
+          -0.0163502282780663,
+          0.1760654157987162,
+          0.0012362637013095103
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1289.7895559087506,
+          511.25374494815924
+        ],
+        "projection_from_official_aligned_point": [
+          1290.5729196951895,
+          511.117242434374
+        ],
+        "queried_mapping_uv": [
+          1612,
+          639
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.016499212011694908,
+          0.17597639560699463,
+          0.0014941665576770902
+        ],
+        "xyz_difference_native": 0.00031086111166021233
+      },
+      {
+        "WASS_point_id": 90222,
+        "WASS_XYZ_B": [
+          -0.8772446488244737,
+          -0.5717511020589034,
+          3.9529917295174934
+        ],
+        "official_aligned_XYZ": [
+          -0.06030811748980034,
+          0.18616618555119874,
+          -0.0008870380295901904
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1066.235376431907,
+          546.3234627135546
+        ],
+        "projection_from_official_aligned_point": [
+          1066.211863071682,
+          546.1942859772763
+        ],
+        "queried_mapping_uv": [
+          1332,
+          682
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.06034732609987259,
+          0.1836259663105011,
+          0.002037203637883067
+        ],
+        "xyz_difference_native": 0.003873685639762352
+      },
+      {
+        "WASS_point_id": 38685,
+        "WASS_XYZ_B": [
+          -0.4585592015016281,
+          -1.0406546599077369,
+          3.367341363161092
+        ],
+        "official_aligned_XYZ": [
+          -0.03109549893282261,
+          0.1337161593390354,
+          0.0003797466691423779
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1223.0011738032713,
+          330.30054532835254
+        ],
+        "projection_from_official_aligned_point": [
+          1223.5536634929413,
+          330.2436850310717
+        ],
+        "queried_mapping_uv": [
+          1528,
+          412
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.03122585639357567,
+          0.1336914300918579,
+          0.00032782350899651647
+        ],
+        "xyz_difference_native": 0.000142480236522417
+      },
+      {
+        "WASS_point_id": 104858,
+        "WASS_XYZ_B": [
+          -0.3992526929192467,
+          -0.39525401579295716,
+          4.081747789596486
+        ],
+        "official_aligned_XYZ": [
+          -0.026837021033096164,
+          0.20092065279718135,
+          0.002914227789614077
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1230.4247308660547,
+          609.8390765187413
+        ],
+        "projection_from_official_aligned_point": [
+          1230.985409022087,
+          609.6733438493077
+        ],
+        "queried_mapping_uv": [
+          1538,
+          762
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.029219936579465866,
+          0.18557773530483246,
+          0.019550945609807968
+        ],
+        "xyz_difference_native": 0.02275662065217314
+      },
+      {
+        "WASS_point_id": 75529,
+        "WASS_XYZ_B": [
+          0.12940469147883712,
+          -0.8170811498911554,
+          3.7248276223712926
+        ],
+        "official_aligned_XYZ": [
+          0.010127336609906388,
+          0.16281878653080809,
+          -0.003529259145134245
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1432.0961746712921,
+          440.36622423738936
+        ],
+        "projection_from_official_aligned_point": [
+          1433.4097317870742,
+          440.2416357796988
+        ],
+        "queried_mapping_uv": [
+          1790,
+          550
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.0099223293364048,
+          0.16279619932174683,
+          -0.0034544020891189575
+        ],
+        "xyz_difference_native": 0.00021941226728924653
+      },
+      {
+        "WASS_point_id": 77511,
+        "WASS_XYZ_B": [
+          -0.7478072787275691,
+          -0.7338755285469456,
+          3.829182114219062
+        ],
+        "official_aligned_XYZ": [
+          -0.05125999032780813,
+          0.1722471450741421,
+          -0.0039823798012767015
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1110.1753866348413,
+          483.30517861861125
+        ],
+        "projection_from_official_aligned_point": [
+          1110.3141706890913,
+          483.19833836518274
+        ],
+        "queried_mapping_uv": [
+          1387,
+          604
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.05131726339459419,
+          0.17245297133922577,
+          -0.00411620968952775
+        ],
+        "xyz_difference_native": 0.00025210135772474833
+      },
+      {
+        "WASS_point_id": 54306,
+        "WASS_XYZ_B": [
+          -0.4679238950413006,
+          -0.94242413944468,
+          3.5038397716121343
+        ],
+        "official_aligned_XYZ": [
+          -0.03172750268286486,
+          0.14543397594240381,
+          -0.00048474552491786674
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1216.293369712797,
+          380.6901061638298
+        ],
+        "projection_from_official_aligned_point": [
+          1216.8188139373838,
+          380.6124011413802
+        ],
+        "queried_mapping_uv": [
+          1520,
+          475
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.032111842185258865,
+          0.14362704753875732,
+          0.0020921630784869194
+        ],
+        "xyz_difference_native": 0.0031706726509222825
+      },
+      {
+        "WASS_point_id": 6552,
+        "WASS_XYZ_B": [
+          -0.217655191014143,
+          -1.271311691025491,
+          3.348898178920436
+        ],
+        "official_aligned_XYZ": [
+          -0.014208982696481015,
+          0.12235230691040531,
+          -0.011083323617566353
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1314.0617125153149,
+          241.5954945555943
+        ],
+        "projection_from_official_aligned_point": [
+          1314.952267636887,
+          241.5647270083324
+        ],
+        "queried_mapping_uv": [
+          1642,
+          301
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.01609831303358078,
+          0.11703193187713623,
+          -0.0017301292391493917
+        ],
+        "xyz_difference_native": 0.01092511806333319
+      },
+      {
+        "WASS_point_id": 83581,
+        "WASS_XYZ_B": [
+          -0.24965465721112634,
+          -0.7023856193920246,
+          3.754563447527433
+        ],
+        "official_aligned_XYZ": [
+          -0.01641286654460755,
+          0.16960257052372404,
+          0.0011808780548823218
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1291.7979929551095,
+          485.4824153393235
+        ],
+        "projection_from_official_aligned_point": [
+          1292.5899723117336,
+          485.3548207594259
+        ],
+        "queried_mapping_uv": [
+          1614,
+          606
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.016555912792682648,
+          0.16976475715637207,
+          0.0009205908281728625
+        ],
+        "xyz_difference_native": 0.00033840238368866294
+      },
+      {
+        "WASS_point_id": 70161,
+        "WASS_XYZ_B": [
+          -0.6061605946442039,
+          -0.784352272999304,
+          3.651232469717036
+        ],
+        "official_aligned_XYZ": [
+          -0.04138494586704567,
+          0.16043531880615852,
+          0.001333405372199459
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1162.910132573028,
+          451.27103167054656
+        ],
+        "projection_from_official_aligned_point": [
+          1163.23892076176,
+          451.16957688833196
+        ],
+        "queried_mapping_uv": [
+          1453,
+          564
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.0414627306163311,
+          0.1605663299560547,
+          0.0012954017147421837
+        ],
+        "xyz_difference_native": 0.00015703078232831468
+      },
+      {
+        "WASS_point_id": 45315,
+        "WASS_XYZ_B": [
+          -0.37706827648592545,
+          -1.0142781179684655,
+          3.436548837632956
+        ],
+        "official_aligned_XYZ": [
+          -0.025376395743786168,
+          0.13859586121746248,
+          -0.0012908546199385418
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1252.4951184262072,
+          346.8383941946488
+        ],
+        "projection_from_official_aligned_point": [
+          1253.1530775000513,
+          346.7705568288238
+        ],
+        "queried_mapping_uv": [
+          1565,
+          433
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.025696489959955215,
+          0.13776594400405884,
+          -1.2576829249155708e-05
+        ],
+        "xyz_difference_native": 0.001557310822699913
+      },
+      {
+        "WASS_point_id": 125221,
+        "WASS_XYZ_B": [
+          -0.14147351158897753,
+          -0.018701756006482828,
+          4.373011805597963
+        ],
+        "official_aligned_XYZ": [
+          -0.008762839890419141,
+          0.23337925263279466,
+          0.01008274694940072
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1312.2104866425468,
+          742.4209232250829
+        ],
+        "projection_from_official_aligned_point": [
+          1313.0617645348636,
+          742.2083141407899
+        ],
+        "queried_mapping_uv": [
+          1640,
+          928
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.0073821209371089935,
+          0.24093575775623322,
+          0.0033757647033780813
+        ],
+        "xyz_difference_native": 0.010197586251512947
+      }
+    ],
+    "official_alignment_forward_projection_error_px": {
+      "count": 127965,
+      "quantiles_0_2_50_98_100": [
+        0.00027836214763745764,
+        0.06997068135838003,
+        0.6563340901918695,
+        1.7173458218796802,
+        1.9619499882534848
+      ]
+    },
+    "grid_cells_outside_cloud_XY_convex_hull": 33176,
+    "grid_outside_hull_finite_count": 33176,
+    "points_projected_into_explicit_ruler_and_upper_backwall_polygons": 84442,
+    "nonwater_annotation_scope": "conservative lower bound, two hand-annotated polygons only; no automatic segmentation",
+    "filtered_points_in_conservative_foreground_water_mask_cam0": 0
+  },
+  "Vieira0": {
+    "actual_WASS_point_projection_samples": [
+      {
+        "WASS_point_id": 67397,
+        "WASS_XYZ_B": [
+          24.073281210430668,
+          -5.784756969639565,
+          43.90961972967866
+        ],
+        "official_aligned_XYZ": [
+          23.594348304533742,
+          -44.191368674285734,
+          -0.628414669597011
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1856.2327205963607,
+          362.0380820501483
+        ],
+        "projection_from_official_aligned_point": [
+          1856.2379408958313,
+          362.03803321090453
+        ],
+        "queried_mapping_uv": [
+          2320,
+          452
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 174181,
+        "WASS_XYZ_B": [
+          13.342843000121743,
+          -1.6346592060298253,
+          25.695876047113913
+        ],
+        "official_aligned_XYZ": [
+          13.046260800484697,
+          -25.418193892663417,
+          0.0116882456180889
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1834.7336143185219,
+          461.377554692472
+        ],
+        "projection_from_official_aligned_point": [
+          1834.7386910901148,
+          461.3775244098417
+        ],
+        "queried_mapping_uv": [
+          2293,
+          576
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 136449,
+        "WASS_XYZ_B": [
+          9.02735837054731,
+          -2.6527249101936796,
+          31.565081507785294
+        ],
+        "official_aligned_XYZ": [
+          8.669932772347039,
+          -31.315416477962028,
+          -0.4099061569204432
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1476.9526754848923,
+          430.077709825688
+        ],
+        "projection_from_official_aligned_point": [
+          1476.9555068876984,
+          430.0776913295586
+        ],
+        "queried_mapping_uv": [
+          1846,
+          537
+        ],
+        "pixel_xyz_grid_estimate": [
+          8.351901054382324,
+          -30.267879486083984,
+          -0.2282492220401764
+        ],
+        "xyz_difference_native": 1.1097194082174926
+      },
+      {
+        "WASS_point_id": 25763,
+        "WASS_XYZ_B": [
+          -19.597086679810527,
+          -10.264603653637028,
+          61.19645426387233
+        ],
+        "official_aligned_XYZ": [
+          -20.23773238837797,
+          -61.639296572509274,
+          -0.06161429579444366
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          587.9446013058594,
+          308.9751202588384
+        ],
+        "projection_from_official_aligned_point": [
+          587.942066027792,
+          308.9751539573533
+        ],
+        "queried_mapping_uv": [
+          734,
+          386
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 437026,
+        "WASS_XYZ_B": [
+          -7.042533799742396,
+          1.4620232647460751,
+          12.159947766232769
+        ],
+        "official_aligned_XYZ": [
+          -7.202265133441891,
+          -11.34715988998605,
+          0.6252255239765514
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          321.24901878169857,
+          707.5123539973403
+        ],
+        "projection_from_official_aligned_point": [
+          321.2449427730801,
+          707.5123513299797
+        ],
+        "queried_mapping_uv": [
+          401,
+          884
+        ],
+        "pixel_xyz_grid_estimate": [
+          -7.457101821899414,
+          -11.814881324768066,
+          0.44526249170303345
+        ],
+        "xyz_difference_native": 0.562220393905827
+      },
+      {
+        "WASS_point_id": 496033,
+        "WASS_XYZ_B": [
+          0.45229291975671326,
+          1.8164110474983501,
+          12.40784825401585
+        ],
+        "official_aligned_XYZ": [
+          0.28537252953763015,
+          -11.569277289631794,
+          0.1298293050223185
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1180.1092635606221,
+          756.4963739130477
+        ],
+        "projection_from_official_aligned_point": [
+          1180.1102595717016,
+          756.4963769779418
+        ],
+        "queried_mapping_uv": [
+          1475,
+          945
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.3084448277950287,
+          -11.75748348236084,
+          0.051822479814291
+        ],
+        "xyz_difference_native": 0.2050340623103317
+      },
+      {
+        "WASS_point_id": 371926,
+        "WASS_XYZ_B": [
+          -4.00900599734307,
+          0.9104901391443097,
+          14.534774360454188
+        ],
+        "official_aligned_XYZ": [
+          -4.192606749054423,
+          -13.812830586654211,
+          0.532113599429521
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          721.3587632407264,
+          632.5584343810979
+        ],
+        "projection_from_official_aligned_point": [
+          721.3570140355116,
+          632.5584402677247
+        ],
+        "queried_mapping_uv": [
+          901,
+          790
+        ],
+        "pixel_xyz_grid_estimate": [
+          -4.210319995880127,
+          -13.883255958557129,
+          0.5111203193664551
+        ],
+        "xyz_difference_native": 0.07559239332485022
+      },
+      {
+        "WASS_point_id": 577925,
+        "WASS_XYZ_B": [
+          0.10851526376033255,
+          2.035437897615976,
+          10.271180885941062
+        ],
+        "official_aligned_XYZ": [
+          -0.034611550043501166,
+          -9.442194761581739,
+          0.4532570864935934
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1166.034817154071,
+          829.405498665756
+        ],
+        "projection_from_official_aligned_point": [
+          1166.0357254790265,
+          829.4055011603697
+        ],
+        "queried_mapping_uv": [
+          1457,
+          1036
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 586724,
+        "WASS_XYZ_B": [
+          4.082925543224578,
+          2.079881629309652,
+          10.494597308622135
+        ],
+        "official_aligned_XYZ": [
+          3.936219906368343,
+          -9.68474418830505,
+          0.3066481570915167
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1716.663787583455,
+          839.029626390908
+        ],
+        "projection_from_official_aligned_point": [
+          1716.6680957320534,
+          839.0296467908063
+        ],
+        "queried_mapping_uv": [
+          2145,
+          1048
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 43965,
+        "WASS_XYZ_B": [
+          -29.612182825929153,
+          -7.786709010150792,
+          49.920470157952295
+        ],
+        "official_aligned_XYZ": [
+          -30.138686636720855,
+          -50.00812911538243,
+          0.4639114038384271
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          217.82539922019353,
+          325.14421380100015
+        ],
+        "projection_from_official_aligned_point": [
+          217.82072091865598,
+          325.14427230918164
+        ],
+        "queried_mapping_uv": [
+          272,
+          406
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 196295,
+        "WASS_XYZ_B": [
+          -7.2565742967439,
+          -1.3851071206181542,
+          26.80839083415469
+        ],
+        "official_aligned_XYZ": [
+          -7.566524024085065,
+          -26.240611261974838,
+          -0.25790836905870584
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          685.3722890023048,
+          472.1507921192311
+        ],
+        "projection_from_official_aligned_point": [
+          685.3703267693928,
+          472.1508093982588
+        ],
+        "queried_mapping_uv": [
+          856,
+          590
+        ],
+        "pixel_xyz_grid_estimate": [
+          -7.591127872467041,
+          -26.324146270751953,
+          -0.2793797254562378
+        ],
+        "xyz_difference_native": 0.0896909482174531
+      },
+      {
+        "WASS_point_id": 306980,
+        "WASS_XYZ_B": [
+          9.588234617781925,
+          0.18045315504616255,
+          21.2581688295287
+        ],
+        "official_aligned_XYZ": [
+          9.328683792512571,
+          -20.633459693710737,
+          -0.5972159508452393
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1742.757455055788,
+          565.545469758683
+        ],
+        "projection_from_official_aligned_point": [
+          1742.7619452289862,
+          565.5454575417542
+        ],
+        "queried_mapping_uv": [
+          2178,
+          706
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 42242,
+        "WASS_XYZ_B": [
+          -20.0647987814245,
+          -8.435313478670983,
+          54.04391844513317
+        ],
+        "official_aligned_XYZ": [
+          -20.636142166939557,
+          -54.25251101785451,
+          -0.048750361874797754
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          519.9986451013084,
+          325.2622847601684
+        ],
+        "projection_from_official_aligned_point": [
+          519.9957122993642,
+          325.26232204710016
+        ],
+        "queried_mapping_uv": [
+          649,
+          406
+        ],
+        "pixel_xyz_grid_estimate": [
+          -20.365184783935547,
+          -53.46134567260742,
+          0.02739679627120495
+        ],
+        "xyz_difference_native": 0.8397373974154283
+      },
+      {
+        "WASS_point_id": 320475,
+        "WASS_XYZ_B": [
+          -4.2386536278334965,
+          0.3893120265649319,
+          19.65984748415748
+        ],
+        "official_aligned_XYZ": [
+          -4.479242417419288,
+          -18.903996301890068,
+          -0.23499167629458473
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          780.9418783725657,
+          573.1872946760403
+        ],
+        "projection_from_official_aligned_point": [
+          780.9404808982009,
+          573.1873030317475
+        ],
+        "queried_mapping_uv": [
+          976,
+          716
+        ],
+        "pixel_xyz_grid_estimate": [
+          -4.575462341308594,
+          -19.448345184326172,
+          -0.38535645604133606
+        ],
+        "xyz_difference_native": 0.5728730632094585
+      },
+      {
+        "WASS_point_id": 114681,
+        "WASS_XYZ_B": [
+          4.064099353261623,
+          -2.6665321222984844,
+          27.5684410670559
+        ],
+        "official_aligned_XYZ": [
+          3.755651322576361,
+          -27.40161212981243,
+          0.6573999631047389
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1280.8658636583264,
+          411.1006781048725
+        ],
+        "projection_from_official_aligned_point": [
+          1280.8674843479068,
+          411.1006689430998
+        ],
+        "queried_mapping_uv": [
+          1601,
+          513
+        ],
+        "pixel_xyz_grid_estimate": [
+          3.9825689792633057,
+          -28.678131103515625,
+          0.46136990189552307
+        ],
+        "xyz_difference_native": 1.311266600672128
+      },
+      {
+        "WASS_point_id": 440080,
+        "WASS_XYZ_B": [
+          -0.43565245022525423,
+          1.5186732930155693,
+          13.062407319268017
+        ],
+        "official_aligned_XYZ": [
+          -0.607585426502581,
+          -12.268984597688156,
+          0.2661191725734362
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1074.6040004771214,
+          712.333172977742
+        ],
+        "projection_from_official_aligned_point": [
+          1074.6043584172435,
+          712.3331750290904
+        ],
+        "queried_mapping_uv": [
+          1343,
+          890
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.606403112411499,
+          -12.27140998840332,
+          0.26499632000923157
+        ],
+        "xyz_difference_native": 0.0029225305151726107
+      },
+      {
+        "WASS_point_id": 639144,
+        "WASS_XYZ_B": [
+          3.1144337773099906,
+          2.0090010657714537,
+          7.927888180604315
+        ],
+        "official_aligned_XYZ": [
+          2.9995040429614304,
+          -7.207449977985495,
+          1.0253504948730239
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1765.85007877007,
+          918.8655410393002
+        ],
+        "projection_from_official_aligned_point": [
+          1765.854686448074,
+          918.8655703838704
+        ],
+        "queried_mapping_uv": [
+          2207,
+          1148
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 74440,
+        "WASS_XYZ_B": [
+          1.4188610557254033,
+          -4.9658497738546945,
+          38.62638263341358
+        ],
+        "official_aligned_XYZ": [
+          0.9987105658110561,
+          -38.658579016246755,
+          0.1660531905970215
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1106.2848531550749,
+          365.0679695429784
+        ],
+        "projection_from_official_aligned_point": [
+          1106.285410297013,
+          365.06796772657333
+        ],
+        "queried_mapping_uv": [
+          1382,
+          456
+        ],
+        "pixel_xyz_grid_estimate": [
+          0.9894502758979797,
+          -38.62608337402344,
+          0.16658088564872742
+        ],
+        "xyz_difference_native": 0.03379346378884014
+      },
+      {
+        "WASS_point_id": 119984,
+        "WASS_XYZ_B": [
+          7.394227862878238,
+          -3.362927323872448,
+          35.910919770156
+        ],
+        "official_aligned_XYZ": [
+          6.991159823214673,
+          -35.685779855627885,
+          -0.7831901559381187
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1354.011236939454,
+          415.75198642924124
+        ],
+        "projection_from_official_aligned_point": [
+          1354.0133082781665,
+          415.7519725944521
+        ],
+        "queried_mapping_uv": [
+          1692,
+          519
+        ],
+        "pixel_xyz_grid_estimate": [
+          5.823537349700928,
+          -30.462047576904297,
+          0.06592050194740295
+        ],
+        "xyz_difference_native": 5.4195673323400895
+      },
+      {
+        "WASS_point_id": 51162,
+        "WASS_XYZ_B": [
+          -20.983771000878868,
+          -7.1681952823881705,
+          47.87583111137587
+        ],
+        "official_aligned_XYZ": [
+          -21.492382806309287,
+          -47.95481879279936,
+          0.2691884279310992
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          430.7191140697517,
+          334.0655669464442
+        ],
+        "projection_from_official_aligned_point": [
+          430.7156619949458,
+          334.0656097220077
+        ],
+        "queried_mapping_uv": [
+          538,
+          417
+        ],
+        "pixel_xyz_grid_estimate": [
+          -22.017690658569336,
+          -49.1933479309082,
+          0.14937779307365417
+        ],
+        "xyz_difference_native": 1.3506507149576636
+      },
+      {
+        "WASS_point_id": 452981,
+        "WASS_XYZ_B": [
+          -0.5949069385244384,
+          1.5955235338285858,
+          12.888205580612706
+        ],
+        "official_aligned_XYZ": [
+          -0.7654373052521413,
+          -12.079656221248309,
+          0.2369381790146745
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1057.663001167678,
+          722.7488645231468
+        ],
+        "projection_from_official_aligned_point": [
+          1057.663256701621,
+          722.7488662614456
+        ],
+        "queried_mapping_uv": [
+          1322,
+          903
+        ],
+        "pixel_xyz_grid_estimate": [
+          -0.7630277276039124,
+          -12.071796417236328,
+          0.24008971452713013
+        ],
+        "xyz_difference_native": 0.008804246681906195
+      },
+      {
+        "WASS_point_id": 458059,
+        "WASS_XYZ_B": [
+          -3.662892431613536,
+          1.7376809369836046,
+          13.458011344445497
+        ],
+        "official_aligned_XYZ": [
+          -3.8412777407005145,
+          -12.567402751275969,
+          -0.005402971260560108
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          733.4307700694524,
+          725.7342536011563
+        ],
+        "projection_from_official_aligned_point": [
+          733.4290910598595,
+          725.7342519406692
+        ],
+        "queried_mapping_uv": [
+          916,
+          907
+        ],
+        "pixel_xyz_grid_estimate": [
+          -3.7518832683563232,
+          -12.160430908203125,
+          0.15331365168094635
+        ],
+        "xyz_difference_native": 0.4458793773407336
+      },
+      {
+        "WASS_point_id": 196414,
+        "WASS_XYZ_B": [
+          -4.94149068130036,
+          -1.4151056317460737,
+          27.399361040678237
+        ],
+        "official_aligned_XYZ": [
+          -5.258567132718915,
+          -26.842116389157713,
+          -0.4037929191441192
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          811.0906890468248,
+          472.90331498426
+        ],
+        "projection_from_official_aligned_point": [
+          811.0894712002458,
+          472.90332708888576
+        ],
+        "queried_mapping_uv": [
+          1013,
+          591
+        ],
+        "pixel_xyz_grid_estimate": [
+          -5.244827747344971,
+          -26.71712875366211,
+          -0.3843419551849365
+        ],
+        "xyz_difference_native": 0.12723607875196824
+      },
+      {
+        "WASS_point_id": 532381,
+        "WASS_XYZ_B": [
+          -6.48328510497893,
+          2.064323414348875,
+          11.717347776728985
+        ],
+        "official_aligned_XYZ": [
+          -6.643378245609165,
+          -10.773873779990538,
+          0.145220960782118
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          360.22165523922104,
+          785.2931385197306
+        ],
+        "projection_from_official_aligned_point": [
+          360.21780249273473,
+          785.29312368102
+        ],
+        "queried_mapping_uv": [
+          450,
+          981
+        ],
+        "pixel_xyz_grid_estimate": [
+          -6.529699802398682,
+          -10.55838394165039,
+          0.2429317682981491
+        ],
+        "xyz_difference_native": 0.2624996395884323
+      },
+      {
+        "WASS_point_id": 383472,
+        "WASS_XYZ_B": [
+          -8.541938327655249,
+          1.1918769744470308,
+          14.929202065392602
+        ],
+        "official_aligned_XYZ": [
+          -8.73240900730233,
+          -14.08235735828413,
+          0.2162389298658134
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          309.83169546495145,
+          651.769248560696
+        ],
+        "projection_from_official_aligned_point": [
+          309.82755111738,
+          651.7692546241526
+        ],
+        "queried_mapping_uv": [
+          387,
+          814
+        ],
+        "pixel_xyz_grid_estimate": [
+          -8.67094898223877,
+          -13.9739408493042,
+          0.25493907928466797
+        ],
+        "xyz_difference_native": 0.130495883709987
+      },
+      {
+        "WASS_point_id": 393545,
+        "WASS_XYZ_B": [
+          2.887714981151534,
+          1.137331178024605,
+          13.883431858036529
+        ],
+        "official_aligned_XYZ": [
+          2.7090501892873413,
+          -13.190164807177625,
+          0.3911176913244727
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1417.8350803973224,
+          667.8645413367728
+        ],
+        "projection_from_official_aligned_point": [
+          1417.8375350176022,
+          667.8645434903841
+        ],
+        "queried_mapping_uv": [
+          1772,
+          834
+        ],
+        "pixel_xyz_grid_estimate": [
+          2.733464479446411,
+          -13.275368690490723,
+          0.3641364574432373
+        ],
+        "xyz_difference_native": 0.09264850930995637
+      },
+      {
+        "WASS_point_id": 275707,
+        "WASS_XYZ_B": [
+          -8.836877321021868,
+          -0.1395295521894706,
+          21.45324029726347
+        ],
+        "official_aligned_XYZ": [
+          -9.093634493503643,
+          -20.729413655940515,
+          -0.11330323302342826
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          501.7673423917463,
+          534.0270929482986
+        ],
+        "projection_from_official_aligned_point": [
+          501.76430482736345,
+          534.0271112572286
+        ],
+        "queried_mapping_uv": [
+          627,
+          667
+        ],
+        "pixel_xyz_grid_estimate": [
+          -9.188098907470703,
+          -20.981584548950195,
+          -0.17491893470287323
+        ],
+        "xyz_difference_native": 0.27624297182170976
+      },
+      {
+        "WASS_point_id": 33268,
+        "WASS_XYZ_B": [
+          24.987327944957414,
+          -6.723397238600597,
+          42.998253138713075
+        ],
+        "official_aligned_XYZ": [
+          24.528087531696517,
+          -43.55082758223306,
+          0.49628262523672984
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1907.1563134659373,
+          326.13788252509886
+        ],
+        "projection_from_official_aligned_point": [
+          1907.161858969053,
+          326.13782454015796
+        ],
+        "queried_mapping_uv": [
+          2383,
+          407
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      },
+      {
+        "WASS_point_id": 424329,
+        "WASS_XYZ_B": [
+          -6.673388116962391,
+          1.4036992220081888,
+          12.605122420666936
+        ],
+        "official_aligned_XYZ": [
+          -6.837992727499075,
+          -11.796281994228247,
+          0.5665361965756688
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          385.0816608296869,
+          696.154238183797
+        ],
+        "projection_from_official_aligned_point": [
+          385.07795135465295,
+          696.1542376134694
+        ],
+        "queried_mapping_uv": [
+          481,
+          870
+        ],
+        "pixel_xyz_grid_estimate": [
+          -6.855726718902588,
+          -11.83367919921875,
+          0.5505757331848145
+        ],
+        "xyz_difference_native": 0.04435968647152932
+      },
+      {
+        "WASS_point_id": 356268,
+        "WASS_XYZ_B": [
+          -8.390596150408276,
+          0.8593958632247745,
+          17.303389098746752
+        ],
+        "official_aligned_XYZ": [
+          -8.60664376451547,
+          -16.465905285567104,
+          -0.05405698925450331
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          416.44314641220876,
+          611.2773876233272
+        ],
+        "projection_from_official_aligned_point": [
+          416.4396147194443,
+          611.2773984720851
+        ],
+        "queried_mapping_uv": [
+          520,
+          764
+        ],
+        "pixel_xyz_grid_estimate": [
+          -8.51755428314209,
+          -16.270185470581055,
+          0.001699375919997692
+        ],
+        "xyz_difference_native": 0.22215299666451338
+      },
+      {
+        "WASS_point_id": 230092,
+        "WASS_XYZ_B": [
+          -2.3917135243256875,
+          -0.8453411555258841,
+          25.49766702527628
+        ],
+        "official_aligned_XYZ": [
+          -2.6914576658895983,
+          -24.882438448367143,
+          -0.5134403455045495
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          937.2720564971437,
+          499.7920289944455
+        ],
+        "projection_from_official_aligned_point": [
+          937.2715917974274,
+          499.79203555101384
+        ],
+        "queried_mapping_uv": [
+          1171,
+          624
+        ],
+        "pixel_xyz_grid_estimate": [
+          -2.633251428604126,
+          -24.007341384887695,
+          -0.3162195682525635
+        ],
+        "xyz_difference_native": 0.8989320728226148
+      },
+      {
+        "WASS_point_id": 635785,
+        "WASS_XYZ_B": [
+          1.2695123425295232,
+          2.03105724751091,
+          8.060281428504636
+        ],
+        "official_aligned_XYZ": [
+          1.1529925600552398,
+          -7.312903015605248,
+          0.9933435859856012
+        ],
+        "undistorted_projection_from_raw_WASS": [
+          1415.9894518029828,
+          909.9274667248359
+        ],
+        "projection_from_official_aligned_point": [
+          1415.9918831071163,
+          909.9274790043552
+        ],
+        "queried_mapping_uv": [
+          1769,
+          1137
+        ],
+        "pixel_xyz_grid_estimate": null,
+        "xyz_difference_native": null
+      }
+    ],
+    "official_alignment_forward_projection_error_px": {
+      "count": 649657,
+      "quantiles_0_2_50_98_100": [
+        5.757590267047147e-08,
+        9.795085821486401e-05,
+        0.0026058395564753038,
+        0.005288046687731165,
+        0.005598498053734825
+      ]
+    },
+    "grid_cells_outside_cloud_XY_convex_hull": 15054,
+    "grid_outside_hull_finite_count": 15054
+  }
+}

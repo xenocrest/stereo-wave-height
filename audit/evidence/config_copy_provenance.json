@@ -1,0 +1,29 @@
+[
+  {
+    "label": "WASS_OFFICIAL_DEFAULT",
+    "source": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\official_defaults\\stereo_config.txt",
+    "exact_source_sha256": "8d44aec0b4bbdac4f1eba0060a961438b157974d905b65aa081895e0ce98d68a",
+    "zip_member": "WASS_OFFICIAL_DEFAULT.txt",
+    "review_text": "D:\\research\\stereo-wave-height\\audit\\evidence\\WASS_OFFICIAL_DEFAULT.txt",
+    "review_text_sha256": "5bc6dbd3274a61d018131f34020a3a7a97f6a651dfbc46a6eb0bb6f7816970a0",
+    "review_text_normalization": "trailing whitespace and final empty lines only; exact original bytes retained in original_config_copies.zip"
+  },
+  {
+    "label": "CURRENT_HOMETANK_CONFIG",
+    "source": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\config\\stereo_config.txt",
+    "exact_source_sha256": "a220a4a3b749cd1fbafe8f58c78dc47089b680ca3ef2dea76981b36c0eef0883",
+    "zip_member": "CURRENT_HOMETANK_CONFIG.txt",
+    "review_text": "D:\\research\\stereo-wave-height\\audit\\evidence\\CURRENT_HOMETANK_CONFIG.txt",
+    "review_text_sha256": "0834ae5af39c2857966a125baf3abad7d90d4e0ba5b42e7a7e01c03f6c046950",
+    "review_text_normalization": "trailing whitespace and final empty lines only; exact original bytes retained in original_config_copies.zip"
+  },
+  {
+    "label": "VIEIRA_PUBLIC_CONFIG",
+    "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\config\\stereo_config.txt",
+    "exact_source_sha256": "c24893b41e912165563a9dfdfceb007871ba98ea653a58eccb4771bfa701078a",
+    "zip_member": "VIEIRA_PUBLIC_CONFIG.txt",
+    "review_text": "D:\\research\\stereo-wave-height\\audit\\evidence\\VIEIRA_PUBLIC_CONFIG.txt",
+    "review_text_sha256": "a20f0649054840178a60fbf85bc853d3ad3a203c197bb90ae1938d91d0343be4",
+    "review_text_normalization": "trailing whitespace and final empty lines only; exact original bytes retained in original_config_copies.zip"
+  }
+]

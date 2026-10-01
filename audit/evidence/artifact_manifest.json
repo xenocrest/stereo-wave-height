@@ -1,0 +1,626 @@
+[
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "raw_cam0",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\sync\\frames\\cam0\\000001.png",
+    "exists": true,
+    "bytes": 2332963,
+    "sha256": "1a7d089ce4d48a87a751614e13276bbf361dbe084d2500657aa881197922498c",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "undistorted_cam0",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\undistorted\\00000000.png",
+    "exists": true,
+    "bytes": 733734,
+    "sha256": "240641bf24443af7ec8dd00ff8f38b0b10304b5f1754df9ed98bc76602944035",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "undistorted_cam1",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\undistorted\\00000001.png",
+    "exists": true,
+    "bytes": 541153,
+    "sha256": "d681407c9f2d37c8e627292a129fcc2f849eee872d1e4aa365a21397c1305fde",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "rectified_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\stereo.jpg",
+    "exists": true,
+    "bytes": 1069402,
+    "sha256": "0ad4fb62d6bb0d578f944227ade32f6e14cbd68feefbb0b76492d58a71982a58",
+    "shape": [
+      1080,
+      3840,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "disparity_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\disparity_stereo_ouput.png",
+    "exists": true,
+    "bytes": 336996,
+    "sha256": "fb5cad667ce9f8f3cd93cfa9a924ed01c169bb31b91b0520d126bbde7a38ef9d",
+    "shape": [
+      600,
+      2331,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "disparity_filtered_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\disparity_final_scaled.png",
+    "exists": true,
+    "bytes": 182226,
+    "sha256": "e8df6c0263d50d7859f270823086b4ccd7c46ed588cb85679e5c11c760936fb5",
+    "shape": [
+      600,
+      2331,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "cloud_after_zgap_before_plane",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\mesh_full.ply",
+    "exists": true,
+    "bytes": 2216710,
+    "sha256": "1af79be70b01af3a7ff2abbe1ca52838194e731930d00a2f09bb7d37a20c5884",
+    "points": 147768
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "filtered_cloud",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\mesh_cam.xyzC",
+    "exists": true,
+    "bytes": 884242,
+    "sha256": "0442e56ec8c503a771dd34d45923032423e864017e516f5b12c246e87334ddbd"
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "filtered_ply",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\mesh.ply",
+    "exists": true,
+    "bytes": 2210425,
+    "sha256": "5f7f07094628d72bbf84e45dd410dd5e2494654cc0ee8d1c7d8a1f2c4b6273ee",
+    "points": 147349
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "plane",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\wass\\workspaces\\000001_wd\\plane.txt",
+    "exists": true,
+    "bytes": 98,
+    "sha256": "7d2759d703f35a04d65cfd0b34ce34ca0ec2d8ebb55829c841f395bffd28a292"
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "setup",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\surface\\config.mat",
+    "exists": true,
+    "bytes": 2101024,
+    "sha256": "5b68efa26b0b9228e031c5bf07e18a932023faf54af79a0d3270d62340782c07"
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "grid",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\surface\\gridded.nc",
+    "exists": true,
+    "bytes": 3370791,
+    "sha256": "9606c64b5130643e882b2fd78adfa4915da1a2a20e04567e2d0ecbbc0f42fc6a"
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "pixel_xyz",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\pixel\\pixel_xyz\\00000001.mat",
+    "exists": true,
+    "bytes": 10039431,
+    "sha256": "c5ae17551abe6e8c9573f519ebee5bf23d3d9d286aa6f0d8c293ad648996f37d"
+  },
+  {
+    "dataset": "HomeTank21",
+    "frame_id": 1,
+    "stage": "pixel_npz",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_A\\science\\pixel\\pixel_height\\00000001.npz",
+    "exists": true,
+    "bytes": 15115715,
+    "sha256": "01938143cd2b061af22e1a7d94e92c3a0fac0d657ed9ab1d69f8c43d791d2e34"
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "raw_cam0",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\sync\\frames\\cam0\\000000.png",
+    "exists": true,
+    "bytes": 2368883,
+    "sha256": "3d47ea01c6d80bfa3c02f1a5a5a533348d1a0c91117c65ba00a6ac0a933f4d8b",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "undistorted_cam0",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\undistorted\\00000000.png",
+    "exists": true,
+    "bytes": 756790,
+    "sha256": "de25502a6b6358c14fb83b16f402a50960b5e224ae6bf26403d891d2c150186e",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "undistorted_cam1",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\undistorted\\00000001.png",
+    "exists": true,
+    "bytes": 491929,
+    "sha256": "fdb37eb3bf17af59e7369446a490feb710aa022eddf11c74d9b2b1d3523d79e2",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "rectified_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\stereo.jpg",
+    "exists": true,
+    "bytes": 1072366,
+    "sha256": "850517b0ffc4308115db1b242620314b98671fb7ee372dda59a93b758439b387",
+    "shape": [
+      1080,
+      3840,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "disparity_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\disparity_stereo_ouput.png",
+    "exists": true,
+    "bytes": 342504,
+    "sha256": "bf90065d46837f2af5d8e4aadb65959ba22ff11974cb46a1080fed8ceab3d0c8",
+    "shape": [
+      600,
+      2331,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "disparity_filtered_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\disparity_final_scaled.png",
+    "exists": true,
+    "bytes": 177983,
+    "sha256": "cb9b4e823691c20690f9e81a2ba8b3d881ec129049f39dd1887e161ce87bb425",
+    "shape": [
+      600,
+      2331,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "cloud_after_zgap_before_plane",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\mesh_full.ply",
+    "exists": true,
+    "bytes": 1610350,
+    "sha256": "48c2a519869bd067fb47abdf5f04bdb5d3bb863171347f363e763a3217687095",
+    "points": 107344
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "filtered_cloud",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\mesh_cam.xyzC",
+    "exists": true,
+    "bytes": 643756,
+    "sha256": "dbba98fda84875d8b5b699912b097a27e16614cabf326bea108a35bdc9c4b6d2"
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "filtered_ply",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\mesh.ply",
+    "exists": true,
+    "bytes": 1609210,
+    "sha256": "6e8a5a2a3e298dae3fce223f57a2a8c24f8b089e90761ad4286e82c1db7520c7",
+    "points": 107268
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "plane",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\wass\\workspaces\\000000_wd\\plane.txt",
+    "exists": true,
+    "bytes": 98,
+    "sha256": "9584704d74273671ae15172ac01415db3fcd15db7b62d8294c6ca439b2fbfb91"
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "setup",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\surface\\config.mat",
+    "exists": true,
+    "bytes": 2101024,
+    "sha256": "5b68efa26b0b9228e031c5bf07e18a932023faf54af79a0d3270d62340782c07"
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "grid",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\surface\\gridded.nc",
+    "exists": true,
+    "bytes": 2769495,
+    "sha256": "1577f9d4c6c2232e080fedee7cb0297057e1de00e11167697b894a5dcc218879"
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "pixel_xyz",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\pixel\\pixel_xyz\\00000000.mat",
+    "exists": true,
+    "bytes": 9543677,
+    "sha256": "7316fbceffb074a6d940a8a85863ce3e01dd86913ac1cc673af203a8f572ce8b"
+  },
+  {
+    "dataset": "HomeTank22",
+    "frame_id": 0,
+    "stage": "pixel_npz",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_B\\science\\pixel\\pixel_height\\00000000.npz",
+    "exists": true,
+    "bytes": 14525924,
+    "sha256": "fa81d1f6389760ef3fa13947c01346bd6756a55238aa7417798d1417c185b62a"
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "raw_cam0",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\sync\\frames\\cam0\\000000.png",
+    "exists": true,
+    "bytes": 2328620,
+    "sha256": "78e87d91d42eed808c7b80ba15367b575494a6edf0e7fb397fbb3b6b3ebde7bb",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "undistorted_cam0",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\undistorted\\00000000.png",
+    "exists": true,
+    "bytes": 728926,
+    "sha256": "0407573da3f497be86c1964a92712e5b289dc6e61189ed2d8c501bb71b7d2e4e",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "undistorted_cam1",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\undistorted\\00000001.png",
+    "exists": true,
+    "bytes": 501110,
+    "sha256": "e7c44dc239c275ec8cff3294dd676ffea520db40f9ae846dd788ce2532f63d5c",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "rectified_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\stereo.jpg",
+    "exists": true,
+    "bytes": 1061606,
+    "sha256": "83a7b1010aeefd9140824082828a561f93dc389fc0236e4fce7e88dd149fa9a1",
+    "shape": [
+      1080,
+      3840,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "disparity_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\disparity_stereo_ouput.png",
+    "exists": true,
+    "bytes": 343582,
+    "sha256": "1285b3d14a9547d8bfdeee7ac76b3b685c727988a68909de9bb5ba94b50b0db9",
+    "shape": [
+      600,
+      2331,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "disparity_filtered_preview",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\disparity_final_scaled.png",
+    "exists": true,
+    "bytes": 179380,
+    "sha256": "3145334d16c5ae945951c2f1c289956b14ceefaf4f639e5afea3afe68f6f10c0",
+    "shape": [
+      600,
+      2331,
+      3
+    ]
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "cloud_after_zgap_before_plane",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\mesh_full.ply",
+    "exists": true,
+    "bytes": 1919710,
+    "sha256": "8157a7759e4638a8b41dd6870e3e6ce76288cb9a058a241c54ee4c7d0989d0d9",
+    "points": 127968
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "filtered_cloud",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\mesh_cam.xyzC",
+    "exists": true,
+    "bytes": 767938,
+    "sha256": "2a3093ba2c65d2734825acd8628f4ed16fdd68fa96d611a0deae5d1f1e876d6c"
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "filtered_ply",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\mesh.ply",
+    "exists": true,
+    "bytes": 1919665,
+    "sha256": "7d19104b375b0b1ed092644614f27779e9c643099e0c0e52b268d6757385f461",
+    "points": 127965
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "plane",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\wass\\workspaces\\000000_wd\\plane.txt",
+    "exists": true,
+    "bytes": 98,
+    "sha256": "611be7b6f7a1e2ea0400d566423f2fd8433ba2d41175d284d398b8afc30a67ff"
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "setup",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\surface\\config.mat",
+    "exists": true,
+    "bytes": 2101024,
+    "sha256": "5b68efa26b0b9228e031c5bf07e18a932023faf54af79a0d3270d62340782c07"
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "grid",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\surface\\gridded.nc",
+    "exists": true,
+    "bytes": 2749735,
+    "sha256": "84bf05387596bda63d726a4186dcd3d7e124cdac1b0ff7ea7fdcd265ff99deff"
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "pixel_xyz",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\pixel\\pixel_xyz\\00000000.mat",
+    "exists": true,
+    "bytes": 9940868,
+    "sha256": "384a574cb0bcdb5414c36a084c1e6b7fd1a0a54a26f237328fbea0403fd2284f"
+  },
+  {
+    "dataset": "HomeTank23",
+    "frame_id": 0,
+    "stage": "pixel_npz",
+    "path": "D:\\stereo-wave-height-runs\\fixed-coordinate-acceptance-20261001-final\\Run_C\\science\\pixel\\pixel_height\\00000000.npz",
+    "exists": true,
+    "bytes": 15159323,
+    "sha256": "34cd72ed4dd335a4babc15e536ba9cb41f19e434658f441bde0f593cdd7478a5"
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "raw_cam0",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\sync\\frames\\cam0\\000000.tif",
+    "exists": true,
+    "bytes": 3096306,
+    "sha256": "dbdd8f56ffd3403efe8f1e3eb879a000be411e55c7bb3d564c3ad2a535c93e2a"
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "undistorted_cam0",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\undistorted\\00000000.png",
+    "exists": true,
+    "bytes": 1161196,
+    "sha256": "9a9eac46a2c7ef5e1d39103bb621345e5d6dbb931867d7f29e9e9c1da75e479d",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "undistorted_cam1",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\undistorted\\00000001.png",
+    "exists": true,
+    "bytes": 1155073,
+    "sha256": "dc2f401a559c6142c60191ac1a67a2107ab9b58909b6a61368c0d05d7ee8932f",
+    "shape": [
+      1080,
+      1920,
+      3
+    ]
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "rectified_preview",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\stereo.jpg",
+    "exists": true,
+    "bytes": 1882150,
+    "sha256": "9bbf1efd273c07f302d7b1adb2650d0ad2d50583c4c482a11c51b7ddb1c26eb4",
+    "shape": [
+      1080,
+      3840,
+      3
+    ]
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "disparity_preview",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\disparity_stereo_ouput.png",
+    "exists": true,
+    "bytes": 137217,
+    "sha256": "235604ca64441b61b3fcc7177fa7143e276cd5fa084029bc71fc464d5f53fbba",
+    "shape": [
+      600,
+      1101,
+      3
+    ]
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "disparity_filtered_preview",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\disparity_final_scaled.png",
+    "exists": true,
+    "bytes": 119854,
+    "sha256": "a759307fc885bf3918ffb31c33408f71aa1bf8bf05cbdd4151621a8484af80a7",
+    "shape": [
+      600,
+      1101,
+      3
+    ]
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "cloud_after_zgap_before_plane",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\mesh_full.ply",
+    "exists": false
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "filtered_cloud",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\mesh_cam.xyzC",
+    "exists": true,
+    "bytes": 3898090,
+    "sha256": "a3021d21560b2cb4304b9145115d8329f9dd973e1565b4f9e78a74db7abda981"
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "filtered_ply",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\mesh.ply",
+    "exists": true,
+    "bytes": 9745045,
+    "sha256": "ee45c106380f3576bb84419905e4dc485b95d37f8b6317b5147f114667ff2231",
+    "points": 649657
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "plane",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\plane.txt",
+    "exists": true,
+    "bytes": 97,
+    "sha256": "b367770ebc152bb41d6ed43f6a012b0b0ddf414dbb2d5151cf2fb33b785ba7d8"
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "setup",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\surface\\config.mat",
+    "exists": true,
+    "bytes": 2101024,
+    "sha256": "edbe3d93fa3b82b7392f4dd45b467b1532a692339b00f3b7d70eba03712f21f2"
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "grid",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\surface\\gridded.nc",
+    "exists": true,
+    "bytes": 7185695,
+    "sha256": "3a941862c398dadaa42bb7ec6c869cdc2b0245ff23a6fd2dd38babbedbf71dd2"
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "pixel_xyz",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\pixel\\pixel_xyz\\00000000.mat",
+    "exists": true,
+    "bytes": 13071631,
+    "sha256": "f8d5055ad6496148ce3d388ba99cdc5438f7ca31320d8879d2702b61a577c15d"
+  },
+  {
+    "dataset": "Vieira0",
+    "frame_id": 0,
+    "stage": "pixel_npz",
+    "path": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\pixel\\pixel_height\\00000000.npz",
+    "exists": true,
+    "bytes": 19799626,
+    "sha256": "a933df735b6ff4f09eee87200696bb9df9ae04c420b27070dbff819983249032"
+  }
+]

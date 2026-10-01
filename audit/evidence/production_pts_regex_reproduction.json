@@ -1,0 +1,52 @@
+{
+  "cam0": {
+    "argv": [
+      "D:\\FormatFactory\\ffmpeg.exe",
+      "-hide_banner",
+      "-loglevel",
+      "info",
+      "-y",
+      "-i",
+      "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam0_iQOO_Neo5S.mp4",
+      "-ss",
+      "21.000000000",
+      "-vf",
+      "showinfo",
+      "-frames:v",
+      "1",
+      "-vsync",
+      "0",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\cam0_production_extract_probe.png"
+    ],
+    "returncode": 0,
+    "n0_pts_s": 0.0089,
+    "production_regex_return_value_s": 21.0089,
+    "image_identical_to_original_run": true,
+    "showinfo_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\cam0_production_extract_showinfo.log"
+  },
+  "cam1": {
+    "argv": [
+      "D:\\FormatFactory\\ffmpeg.exe",
+      "-hide_banner",
+      "-loglevel",
+      "info",
+      "-y",
+      "-i",
+      "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam1_iQOO_Z10_TurboPlus.mp4",
+      "-ss",
+      "20.924929984",
+      "-vf",
+      "showinfo",
+      "-frames:v",
+      "1",
+      "-vsync",
+      "0",
+      "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\cam1_production_extract_probe.png"
+    ],
+    "returncode": 0,
+    "n0_pts_s": 0.0,
+    "production_regex_return_value_s": 20.924929983672687,
+    "image_identical_to_original_run": true,
+    "showinfo_log": "D:\\stereo-wave-height-runs\\independent-quality-audit-20261001\\cam1_production_extract_showinfo.log"
+  }
+}
