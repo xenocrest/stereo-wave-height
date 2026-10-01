@@ -16,7 +16,11 @@ from app.core import ROOT, read_project
 def run(action: str, config_path: Path, run_dir: Path) -> dict:
     config = read_project(config_path)
     if action == "reconstruct":
-        report = run_pipeline(config_path, str(run_dir / "science"))
+        if config.get("presentation", {}).get("frozen_reference"):
+            from app.fixed_run import run as run_fixed
+            report = run_fixed(config, run_dir / "science")
+        else:
+            report = run_pipeline(config_path, str(run_dir / "science"))
         return {"status": report["status"], "science_run": report["run_directory"]}
     recorder = CommandRecorder(run_dir / "logs" / "scientific_tools")
     if action == "calibrate":

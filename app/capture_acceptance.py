@@ -27,15 +27,17 @@ def main() -> None:
     window._populate()
     window.resize(1408, 864)
     window.show()
-    window.slider.setValue(int(args.reference_time * 1000))
-    window._set_static_reference()
+    if not window.reference_confirmed:
+        window.slider.setValue(int(args.reference_time * 1000))
+        window._set_static_reference()
     window.slider.setValue(int(args.target_time * 1000))
     window.tabs.setCurrentIndex(1)
     window._open_run_path(args.run_report)
     app.processEvents()
     if window.result is None:
         raise RuntimeError("GUI did not load the official result")
-    window._confirm_reference()
+    if not window.reference_confirmed:
+        window._confirm_reference()
     for mode in ("raw", "cloud", "overlay"):
         window._display_mode(mode)
         app.processEvents()

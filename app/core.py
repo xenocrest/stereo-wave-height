@@ -141,13 +141,15 @@ def calibration_identity(run_dir: str | Path) -> str:
 
 
 def reference_from_run(run_dir: str | Path, frame_id: int = 0) -> ReferencePlane:
+    from app.coordinates import bind, identity
     with np.load(Path(run_dir) / "pixel" / "pixel_height" / f"{frame_id:08d}.npz", allow_pickle=False) as data:
         units = str(data["units"])
     if units not in {"m", "B"}:
         raise ValueError(f"Unknown scientific coordinate unit: {units}")
-    return reference_from_config({"mode": "designated_static_water_frame",
+    plane = reference_from_config({"mode": "designated_static_water_frame",
                                   "coordinate_system": f"official_wass_grid_{units}",
                                   "reference_frame_id": frame_id}, run_dir)
+    return bind(plane, identity(run_dir))
 
 
 def save_reference(reference: ReferencePlane, calibration_id: str, path: str | Path,
@@ -158,6 +160,10 @@ def save_reference(reference: ReferencePlane, calibration_id: str, path: str | P
         data["scientific_run"] = str(Path(scientific_run).resolve())
     if source_frame_id is not None:
         data["source_frame_id"] = source_frame_id
+        data["frame_id"] = source_frame_id
+        if scientific_run is not None:
+            from pipeline.instantaneous_validation.load_vision import frame_times
+            data["timestamp"] = frame_times(scientific_run)[source_frame_id]
     Path(path).write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
@@ -175,7 +181,20 @@ def reference_from_metadata(data: dict) -> tuple[ReferencePlane, str]:
     if (len(plane.normal) != 3 or not np.isfinite(plane.normal).all() or not np.isfinite(plane.d)
             or not np.isclose(np.linalg.norm(plane.normal), 1.0, atol=1e-6)):
         raise ValueError("Reference normal is not unit length")
-    return plane, data.get("calibration_identity", "")
+    from app.coordinates import bind, identity, require_match
+    ids = {key: data.get(key, "") for key in ("calibration_id", "extrinsics_id", "coordinate_frame_id")}
+    ids["coordinate_system"] = plane.coordinate_system
+    if all(ids[key] for key in ("calibration_id", "extrinsics_id", "coordinate_frame_id")):
+        plane = bind(plane, ids)
+        if data.get("scientific_run"):
+            require_match(plane, identity(data["scientific_run"]))
+    elif data.get("scientific_run"):
+        # Legacy metadata can be migrated only from its actual source artifacts.
+        actual = identity(data["scientific_run"])
+        if data.get("calibration_identity") != actual["calibration_id"]:
+            raise ValueError("REFERENCE_FRAME_MISMATCH: legacy reference calibration differs")
+        plane = bind(plane, actual)
+    return plane, data.get("calibration_identity", ids["calibration_id"])
 
 
 def project_input_identity(config: dict) -> str:
@@ -196,13 +215,17 @@ def validate_run_inputs(run_dir: Path, config: dict) -> None:
 
 def load_result(run_dir: str | Path, frame_id: int, reference: ReferencePlane,
                 expected_calibration_id: str = "") -> dict:
+    from app.coordinates import identity, require_match
     actual_id = calibration_identity(run_dir)
     if expected_calibration_id and actual_id != expected_calibration_id:
-        raise ValueError("Reference and reconstruction have different active K/D/R/T; fixed height unavailable")
+        raise ValueError("REFERENCE_FRAME_MISMATCH: different active K/D/R/T; fixed height unavailable")
+    ids = identity(run_dir)
+    require_match(reference, ids)  # Reject BEFORE load_frame calls n^T P+d.
     result = load_frame(run_dir, frame_id, reference)
     if reference.coordinate_system != f"official_wass_grid_{result['units']}":
         raise ValueError("Reference coordinate system/units differ from this official grid")
     result["calibration_identity"] = actual_id
+    result.update(ids, reference_status="MATCHED", common_stereo_region="COMMON_REGION_NOT_AVAILABLE")
     result["run_dir"] = str(run_dir)
     return result
 
@@ -239,7 +262,9 @@ def cache_key(config: dict, time_s: float) -> str:
               "calibration": config["calibration"], "fallback": config["wass"].get("fallback_calibration"),
               "time_s": round(time_s, 6),
               "reference_time_s": config.get("_app_reference_time_s"),
-              "reference_plane_id": config.get("_app_reference_plane_id")}
+              "reference_plane_id": config.get("_app_reference_plane_id"),
+              "frozen_reference": {key: config.get("presentation", {}).get("frozen_reference", {}).get(key)
+                  for key in ("reference_plane_id", "calibration_id", "extrinsics_id", "coordinate_frame_id")}}
     return hashlib.sha256(json.dumps(inputs, sort_keys=True).encode()).hexdigest()[:20]
 
 
@@ -260,5 +285,7 @@ def write_frame_manifest(run_dir: Path, selected_s: float, reference_id: str | N
                 "reference_plane_id": reference_id,
                 "scientific_backend_version": json.loads((run_dir / "run_report.json").read_text(encoding="utf-8")).get("git_commit"),
                 "scientific_run": str(run_dir)}
+    from app.coordinates import identity
+    metadata.update(identity(run_dir))
     (target / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     return target

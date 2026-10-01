@@ -70,6 +70,9 @@ def export_current_frame(destination: str | Path, result: dict, raw_rgb: np.ndar
         "stereo_pair_residual_ms": row.get("stereo_pair_residual_ms"),
         "sync_offset_right_minus_left_s": json.loads((run / "sync" / "sync.json").read_text(encoding="utf-8")).get("audio_lag_right_minus_left_s"),
         "calibration_id": result["calibration_identity"],
+        "extrinsics_id": result.get("extrinsics_id"),
+        "coordinate_frame_id": result.get("coordinate_frame_id"),
+        "reference_status": result.get("reference_status", "UNBOUND"),
         "calibration_source": "EXTRINSICS_FALLBACK" if wass["active_calibration"]["fallback"] else "EXTRINSICS_COMPUTED",
         "reference_plane_id": reference.plane_id,
         "reference_source": ("INTERNAL_STATIC_REFERENCE" if reference.mode == "designated_static_water_frame"
@@ -81,7 +84,7 @@ def export_current_frame(destination: str | Path, result: dict, raw_rgb: np.ndar
         "exported_pixel_count": int(np.count_nonzero(selected)),
         "measurement_region_source": "USER_RECTANGLE" if region is not None else "NONE",
         "measurement_region_normalized": region,
-        "common_stereo_region": "NOT_EXPOSED_BY_FROZEN_PIPELINE",
+        "common_stereo_region": "COMMON_REGION_NOT_AVAILABLE",
         "height_available_region": "finite official pixel XYZ/H and nonzero provenance",
         "science_run": str(run), "units": result["units"],
         "raw_image_size_wh": [raw_rgb.shape[1], raw_rgb.shape[0]],

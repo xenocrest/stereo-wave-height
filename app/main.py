@@ -25,7 +25,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QDoubleSpinBox, QFileDia
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
-from app import core, presentation
+from app import core, presentation, coordinates
 
 
 class WorkThread(QThread):
@@ -403,7 +403,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.point_cloud, 1)
         self.frame_summary = QLabel("尚未解算")
         self.frame_summary.setWordWrap(True)
-        self.scope_notice = QLabel("COMMON_STEREO_REGION：冻结输出未提供独立几何掩码；MEASUREMENT_REGION：NONE；"
+        self.scope_notice = QLabel("COMMON_STEREO_REGION：NOT_AVAILABLE（COMMON_REGION_NOT_AVAILABLE）；MEASUREMENT_REGION：NONE；"
                                    "HEIGHT_AVAILABLE_REGION：官方有限 XYZ/H 像素（青色边界）。彩色叠加含 OFFICIAL_GRID_ESTIMATE，"
                                    "不是全部直接三角测量；非水面结构可能包含在官方结果内。")
         self.scope_notice.setWordWrap(True)
@@ -472,7 +472,7 @@ class MainWindow(QMainWindow):
         self.reference_label.setText("未设置参考面")
         self.frame_summary.setText("尚未解算当前帧")
         self.hover_label.setText("像素高度：N/A | 来源：NO_DATA")
-        self.scope_notice.setText("COMMON_STEREO_REGION：冻结输出未提供独立几何掩码；MEASUREMENT_REGION：NONE；"
+        self.scope_notice.setText("COMMON_STEREO_REGION：NOT_AVAILABLE（COMMON_REGION_NOT_AVAILABLE）；MEASUREMENT_REGION：NONE；"
                                   "HEIGHT_AVAILABLE_REGION：当前无结果。")
         self.point_cloud.hide()
         self.image_canvas.show()
@@ -563,7 +563,7 @@ class MainWindow(QMainWindow):
         self.slider.setValue(0)
         self.slider.blockSignals(False)
         self.time_label.setText("Frame ≈0 | t=0.000s")
-        self.scope_notice.setText("COMMON_STEREO_REGION：UNKNOWN；MEASUREMENT_REGION：NONE；"
+        self.scope_notice.setText("COMMON_STEREO_REGION：NOT_AVAILABLE（COMMON_REGION_NOT_AVAILABLE）；MEASUREMENT_REGION：NONE；"
                                   "HEIGHT_AVAILABLE_REGION：输入已改变，当前无结果。")
         self.reference_label.setText("输入已改变：请重新同步并选择参考面")
         self.calibration_status.setText("INTRINSICS_NOT_READY | EXTRINSICS_NOT_READY")
@@ -601,9 +601,14 @@ class MainWindow(QMainWindow):
             mapping = json.loads((self.reference_run / "sync" / "sync.json").read_text(encoding="utf-8"))["frame_mapping"]
             row = min(mapping, key=lambda item: abs(float(item["left_actual_timestamp_s"]) - self.reference_time_s))
             binding.update(source_frame_id=int(row["output_index"]),
-                           source_timestamp_s=float(row["left_actual_timestamp_s"]))
+                           source_timestamp_s=float(row["left_actual_timestamp_s"]),
+                           frame_id=int(row["output_index"]), timestamp=float(row["left_actual_timestamp_s"]))
+        else:
+            binding.update(frame_id=None, timestamp=None)
         config["presentation"]["frozen_reference"] = binding
         if self.project_path is not None:
+            (self.project_path.parent / "reference_plane.json").write_text(
+                json.dumps(binding, ensure_ascii=False, indent=2), encoding="utf-8")
             core.save_project(config, self.project_path)
         self.config = config
 
@@ -727,7 +732,7 @@ class MainWindow(QMainWindow):
         self.result_stale = True
         self.image_canvas.set_rgb(None)
         self.right_canvas.set_rgb(None)
-        self.scope_notice.setText("COMMON_STEREO_REGION：UNKNOWN；MEASUREMENT_REGION："
+        self.scope_notice.setText("COMMON_STEREO_REGION：NOT_AVAILABLE（COMMON_REGION_NOT_AVAILABLE）；MEASUREMENT_REGION："
             f"{'USER_RECTANGLE' if self.measurement_region else 'NONE'}；HEIGHT_AVAILABLE_REGION：STALE，旧结果已隐藏。")
         self.frame_summary.setText("STALE：已切换帧或参考面；上一帧 XYZ/H 已隐藏，请解算当前暂停帧")
         self.hover_label.setText("像素高度：N/A | NO_DATA（当前帧尚未解算）")
@@ -856,7 +861,7 @@ class MainWindow(QMainWindow):
         self.measurement_region = tuple(region) if region is not None else None
         self.image_canvas.set_region(self.measurement_region)
         self.region_button.setText("设置测量区域（拖动矩形）")
-        self.scope_notice.setText("COMMON_STEREO_REGION：冻结输出未提供独立几何掩码；"
+        self.scope_notice.setText("COMMON_STEREO_REGION：NOT_AVAILABLE（COMMON_REGION_NOT_AVAILABLE）；"
             f"MEASUREMENT_REGION：{'USER_RECTANGLE（紫色）' if region is not None else 'NONE'}，仅限制显示/查询/导出；"
             "HEIGHT_AVAILABLE_REGION：当前帧官方有限 XYZ/H（青色边界）；彩色叠加含 OFFICIAL_GRID_ESTIMATE，"
             "非水面结构仍可能存在。")
@@ -907,9 +912,17 @@ class MainWindow(QMainWindow):
                 nearest = min(mapping, key=lambda row: abs(float(row["left_actual_timestamp_s"]) - target_s))
                 tolerance = 1.5 / max(self.frame_rate, 1)
                 if abs(float(nearest["left_actual_timestamp_s"]) - target_s) > tolerance:
-                    raise ValueError("固定参考面只在同一次官方 gridding 运行的坐标系内有效；当前帧不在该运行中。"
-                                     "如需扩大待测时段，请新建项目，在首次解算前选择更宽的参考到待测时段及批次帧数；"
-                                     "不能跨运行直接套用旧平面。")
+                    config["_app_target_s"] = target_s
+                    config["_app_target_frame"] = 0
+                    config["sync"].update(start_s=target_s, frame_count=1)
+                    self._pending_key = core.cache_key(config, target_s)
+                    cached = self.cache.get(self._pending_key)
+                    if cached is not None and (cached / "run_report.json").is_file():
+                        self.science_run = cached
+                        self._receive_reconstruction(config)
+                    else:
+                        self._start_work("reconstruct", config)
+                    return
                 config["_app_target_s"] = target_s
                 config["_app_target_frame"] = int(nearest["output_index"])
                 if self.reference_time_s is not None:
@@ -955,8 +968,8 @@ class MainWindow(QMainWindow):
         try:
             root = Path(path).parent
             core.validate_run_inputs(root, self._gather())
-            if self.reference_run is not None and root.resolve() != self.reference_run.resolve():
-                raise ValueError("固定参考面只适用于其来源科学运行；不能跨独立 gridding 坐标系套用")
+            if self.reference is not None:
+                coordinates.require_match(self.reference, coordinates.identity(root))
             report = json.loads(Path(path).read_text(encoding="utf-8"))
             if report["status"].startswith("FAILED_AT_"):
                 raise ValueError("该科学运行失败，不能作为结果显示")
@@ -993,15 +1006,11 @@ class MainWindow(QMainWindow):
         assert self.science_run is not None
         run = self.science_run
         core.validate_run_inputs(run, config)
-        if self.reference_run is not None and run.resolve() != self.reference_run.resolve():
-            raise ValueError("固定参考面所在运行与当前运行不同；禁止跨独立 gridding 坐标系套用")
         target_id = int(config["_app_target_frame"])
         active_id = core.calibration_identity(run)
         if self.reference_time_s is not None:
-            ref_id = int(config["_app_reference_frame"])
-            if self.reference_run is not None and self.reference_run != run:
-                raise ValueError("固定参考面所在运行与当前运行不同；禁止跨独立 gridding 坐标系套用")
             if self.reference is None:
+                ref_id = int(config["_app_reference_frame"])
                 self.reference = core.reference_from_run(run, ref_id)
                 self.reference_identity = active_id
                 self.reference_run = run
@@ -1038,6 +1047,10 @@ class MainWindow(QMainWindow):
         self._ready_summary = (f"Frame {target_id} | actual t={self.result['timestamp_s']:.6f}s | "
             f"WASS XYZ={count:,} | official valid map={mapped:,} | reference={self.reference.plane_id} | "
             f"calibration={'EXTRINSICS_FALLBACK' if fallback else 'EXTRINSICS_COMPUTED'} | PASS")
+        self._ready_summary += (f"\nCalibration ID: {self.result['calibration_id']} | "
+            f"Extrinsics ID: {self.result['extrinsics_id']}\n"
+            f"Coordinate Frame ID: {self.result['coordinate_frame_id']} | "
+            f"Reference Plane ID: {self.reference.plane_id} | Reference status: MATCHED")
         self.frame_summary.setText(self._ready_summary if self.reference_confirmed else
                                    self._ready_summary + " | REFERENCE_UNCONFIRMED: height hidden")
         if not self.reference_confirmed:
@@ -1099,7 +1112,7 @@ class MainWindow(QMainWindow):
         region_in = presentation.point_in_rectangle(mu, mv, (grid_h, grid_w), self.measurement_region)
         region_status = "IN" if region_in else "OUT"
         prefix = (f"Pixel ({u},{v}) | map ({mu},{mv}) | Measurement Region: {region_status} | "
-                  "Stereo Common Region: UNKNOWN (frozen output has no independent mask) | ")
+                  "Stereo Common Region: NOT_AVAILABLE (COMMON_REGION_NOT_AVAILABLE) | ")
         if not region_in or not self.reference_confirmed:
             reason = "OUTSIDE_MEASUREMENT_REGION" if not region_in else "REFERENCE_NOT_CONFIRMED"
             self.hover_label.setText(prefix + f"H: N/A | Source: NO_DATA | {reason}")
@@ -1115,6 +1128,9 @@ class MainWindow(QMainWindow):
                 f"H={height_text} | t={self.result['timestamp_s']:.6f}s | Source: {item['provenance']}")
 
     def _error(self, message: str) -> None:
+        if "REFERENCE_FRAME_MISMATCH" in message:
+            self._mark_stale()
+            self.frame_summary.setText("REFERENCE_FRAME_MISMATCH | Reference status: FRAME_MISMATCH | H: N/A")
         self._update_status()
         QMessageBox.critical(self, "当前阶段失败", message)
 
