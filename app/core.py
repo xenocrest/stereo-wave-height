@@ -11,6 +11,7 @@ import subprocess
 import cv2
 import numpy as np
 import yaml
+from tools.camera_image import open_canonical_video, orientation_metadata
 
 from pipeline.adapters.wass import load_matrix
 from pipeline.instantaneous_validation.load_vision import load_frame
@@ -44,13 +45,13 @@ def read_project(path: str | Path) -> dict:
 
 
 def video_metadata(path: str | Path) -> dict:
-    capture = cv2.VideoCapture(str(path))
+    capture = open_canonical_video(path)
     try:
         if not capture.isOpened():
             raise ValueError(f"Cannot read video: {path}")
         fps = float(capture.get(cv2.CAP_PROP_FPS))
         count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
-        return {"width": int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
+        return {**orientation_metadata(capture), "width": int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
                 "height": int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT)),
                 "fps": fps, "frame_count": count,
                 "duration_s": count / fps if fps > 0 else 0.0}
@@ -59,7 +60,7 @@ def video_metadata(path: str | Path) -> dict:
 
 
 def read_preview(path: str, time_s: float) -> np.ndarray:
-    capture = cv2.VideoCapture(path)
+    capture = open_canonical_video(path)
     try:
         if not capture.isOpened():
             raise ValueError(f"Cannot read video: {path}")

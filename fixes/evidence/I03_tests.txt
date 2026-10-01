@@ -1,0 +1,7 @@
+test_orientation_is_explicit_not_backend_default (test_p0_camera_orientation.CanonicalOrientationTests.test_orientation_is_explicit_not_backend_default) ... ok
+test_real_calibration_preview_wave_and_ffmpeg_same_orientation (test_p0_camera_orientation.CanonicalOrientationTests.test_real_calibration_preview_wave_and_ffmpeg_same_orientation) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.148s
+
+OK

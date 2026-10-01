@@ -8,16 +8,18 @@ from typing import Any
 
 import cv2
 import numpy as np
+from tools.camera_image import open_canonical_video, orientation_metadata, CANONICAL_CAMERA_IMAGE_ORIENTATION
 
 from pipeline.common import CommandRecorder, sha256, write_json
 
 
 def _video_metadata(path: str | Path) -> dict[str, Any]:
     source = Path(path).resolve()
-    capture = cv2.VideoCapture(str(source))
+    capture = open_canonical_video(source)
     if not capture.isOpened():
         raise ValueError(f"cannot open measurement video: {source}")
     record = {
+        **orientation_metadata(capture),
         "path": str(source),
         "sha256": sha256(source),
         "width": int(capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
@@ -64,6 +66,8 @@ def _provided_sequence(config: dict[str, Any], output: Path) -> dict[str, Any]:
         raise ValueError(f"cannot read provided image: {left[0]}")
     return {
         "status": "PROVIDED",
+        "canonical_camera_image_orientation": CANONICAL_CAMERA_IMAGE_ORIENTATION,
+        "orientation_source": "author-provided synchronized images preserved exactly; no additional image rotation",
         "method": "author-provided synchronized image sequence; copied losslessly without video encoding",
         "fps": float(config["fps"]),
         "frame_count": len(mapping),

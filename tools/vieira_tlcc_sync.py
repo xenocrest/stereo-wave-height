@@ -16,6 +16,10 @@ import re
 import subprocess
 from fractions import Fraction
 import math
+import sys
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tools.camera_image import CANONICAL_CAMERA_IMAGE_ORIENTATION, ffmpeg_orientation_args
 
 import numpy as np
 from scipy import signal
@@ -103,7 +107,7 @@ def extract_source_frame(ffmpeg: Path, video: Path, timestamp_s: float, output: 
     # Decode the original timeline, preserve PTS, and select the first source
     # frame at/after the request. No output seek, timestamp rebasing, or fps filter.
     filters = f"showinfo@source,select='gte(t,{timestamp_s:.9f})',showinfo@selected"
-    argv = [str(ffmpeg), "-hide_banner", "-loglevel", "info", "-y", "-copyts", "-i", str(video),
+    argv = [str(ffmpeg), "-hide_banner", "-loglevel", "info", "-y", "-copyts", *ffmpeg_orientation_args(), "-i", str(video),
             "-vf", filters, "-frames:v", "1", "-vsync", "0", str(output)]
     completed = run_checked(
         argv
@@ -116,6 +120,7 @@ def extract_source_frame(ffmpeg: Path, video: Path, timestamp_s: float, output: 
     log_path = logs / f"{output.parent.name}_{output.stem}.log"
     log_path.write_text(completed.stderr, encoding="utf-8")
     return {**identified, "requested_timestamp_s": timestamp_s,
+            "canonical_camera_image_orientation": CANONICAL_CAMERA_IMAGE_ORIENTATION,
             "extraction_argv": argv, "identification_log": str(log_path),
             "decoded_png_sha256": sha256(output)}
 
@@ -189,6 +194,7 @@ def run(args: argparse.Namespace) -> dict[str, object]:
         )
     result = {
         "schema_version": "2.0",
+        "canonical_camera_image_orientation": CANONICAL_CAMERA_IMAGE_ORIENTATION,
         "requested_timestamp_definition": "target on original source PTS timeline; select first decoded source frame at/after target",
         "pair_residual_definition": "right_source_pts - left_source_pts - TLCC_offset; seconds (stereo_pair_residual_ms is x1000)",
         "method": "wass_lowcost TLCC: FFmpeg PCM 48 kHz stereo; 101-tap 1000 Hz FIR high-pass; Praat peak cross-correlation/Sinc70 maximum",

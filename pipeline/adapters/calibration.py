@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import shutil
 from typing import Any
+from tools.camera_image import CANONICAL_CAMERA_IMAGE_ORIENTATION
 
 from pipeline.common import CommandRecorder, copy_file, sha256, write_json
 
@@ -101,6 +102,7 @@ def run(
         raise ValueError(f"unsupported calibration.status: {status}")
 
     report["active_intrinsics_hashes"] = {name: sha256(output / name) for name in REQUIRED_INTRINSICS}
+    report["canonical_camera_image_orientation"] = CANONICAL_CAMERA_IMAGE_ORIENTATION
     write_json(output / "report.json", report)
     return report
 

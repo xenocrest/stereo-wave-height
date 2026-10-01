@@ -15,6 +15,11 @@ import json
 import math
 from pathlib import Path
 from typing import Any
+import sys
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tools.camera_image import open_canonical_video, orientation_metadata
 
 import cv2
 import numpy as np
@@ -105,11 +110,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     (output / "corner_overlays").mkdir(exist_ok=True)
     pattern = (args.pattern_cols, args.pattern_rows)
 
-    capture = cv2.VideoCapture(str(source))
-    if not capture.isOpened():
-        raise ValueError(f"cannot open raw calibration video: {source}")
-    if hasattr(cv2, "CAP_PROP_ORIENTATION_AUTO"):
-        capture.set(cv2.CAP_PROP_ORIENTATION_AUTO, 0)
+    capture = open_canonical_video(source)
+    orientation = orientation_metadata(capture)
     fps = float(capture.get(cv2.CAP_PROP_FPS))
     width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -164,9 +166,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if distortion.size != 5:
         raise RuntimeError(f"WASS expects OpenCV's five-parameter distortion model, got {distortion.size}")
 
-    capture = cv2.VideoCapture(str(source))
-    if hasattr(cv2, "CAP_PROP_ORIENTATION_AUTO"):
-        capture.set(cv2.CAP_PROP_ORIENTATION_AUTO, 0)
+    capture = open_canonical_video(source)
     for order, record in enumerate(selected):
         capture.set(cv2.CAP_PROP_POS_FRAMES, int(record["frame_index"]))
         ok, frame = capture.read()
@@ -185,6 +185,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     save_matrix(output / "distortion.xml", distortion.reshape(5, 1))
     result = {
         "schema_version": "1.0",
+        **orientation,
         "method": "OpenCV findChessboardCornersSB + cornerSubPix + calibrateCamera",
         "selection_rule": "complete detections sampled uniformly in time; deterministic farthest-point diversity in board center/scale/orientation/perspective; reprojection error not used for selection",
         "source_video": str(source),
