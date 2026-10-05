@@ -84,4 +84,21 @@ class PlaneContractTests(unittest.TestCase):
         ids['coordinate_contract']='LEGACY'
         with self.assertRaisesRegex(ValueError,'legacy reference/cache'):coordinates.require_match(ref,ids)
 
+    def test_standalone_validation_reference_cannot_bypass_contract(self):
+        from pipeline.instantaneous_validation.schemas import reference_from_config
+        old=json.loads((core.ROOT/'audit/evidence/HomeTank21.json').read_text('utf-8'))
+        config={'mode':'designated_static_water_frame','reference_frame_id':0,
+                'coordinate_system':'official_wass_grid_m'}
+        with self.assertRaisesRegex(ValueError,'REFERENCE_FRAME_MISMATCH'):
+            reference_from_config(config,old['root'])
+        root=ROOT/'HomeTank';ids=coordinates.identity(root)
+        ref=reference_from_config(config,root)
+        self.assertEqual(ref,core.reference_from_run(root))
+        physical={'mode':'provided_physical_plane','coordinate_system':'official_wass_grid_m',
+                  'n_x':0,'n_y':0,'n_z':1,'d':0}
+        with self.assertRaisesRegex(ValueError,'must be registered'):
+            reference_from_config(physical,root)
+        physical.update(coordinate_frame_id=ids['coordinate_frame_id'],coordinate_contract=COORDINATE_CONTRACT)
+        coordinates.require_match(reference_from_config(physical,root),ids)
+
 if __name__=='__main__':unittest.main()

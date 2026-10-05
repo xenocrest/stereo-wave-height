@@ -1,0 +1,13 @@
+test_actual_official_setup_real_points_both_datasets (tests.test_p0_plane_contract.PlaneContractTests.test_actual_official_setup_real_points_both_datasets) ... <frozen importlib._bootstrap>:488: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 16 from C header, got 96 from PyObject
+ok
+test_entire_plane_scaling_preserves_equation_and_distance (tests.test_p0_plane_contract.PlaneContractTests.test_entire_plane_scaling_preserves_equation_and_distance) ... ok
+test_legacy_reference_and_run_rejected_before_height (tests.test_p0_plane_contract.PlaneContractTests.test_legacy_reference_and_run_rejected_before_height) ... ok
+test_mean_not_individual_normalization_and_single_row_cli_shape (tests.test_p0_plane_contract.PlaneContractTests.test_mean_not_individual_normalization_and_single_row_cli_shape) ... ok
+test_missing_or_changed_certificate_rejected (tests.test_p0_plane_contract.PlaneContractTests.test_missing_or_changed_certificate_rejected) ... ok
+test_reference_and_cache_identifiers_are_versioned (tests.test_p0_plane_contract.PlaneContractTests.test_reference_and_cache_identifiers_are_versioned) ... ok
+test_standalone_validation_reference_cannot_bypass_contract (tests.test_p0_plane_contract.PlaneContractTests.test_standalone_validation_reference_cannot_bypass_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 5.361s
+
+OK

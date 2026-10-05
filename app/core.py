@@ -143,7 +143,7 @@ def calibration_identity(run_dir: str | Path) -> str:
 
 
 def reference_from_run(run_dir: str | Path, frame_id: int = 0) -> ReferencePlane:
-    from app.coordinates import bind, identity
+    from app.coordinates import identity, require_match
     ids = identity(run_dir)  # Refuse legacy setup before fitting any candidate.
     with np.load(Path(run_dir) / "pixel" / "pixel_height" / f"{frame_id:08d}.npz", allow_pickle=False) as data:
         units = str(data["units"])
@@ -152,7 +152,8 @@ def reference_from_run(run_dir: str | Path, frame_id: int = 0) -> ReferencePlane
     plane = reference_from_config({"mode": "designated_static_water_frame",
                                   "coordinate_system": f"official_wass_grid_{units}",
                                   "reference_frame_id": frame_id}, run_dir)
-    return bind(plane, ids, regenerate_id=True)
+    require_match(plane, ids)
+    return plane
 
 
 def save_reference(reference: ReferencePlane, calibration_id: str, path: str | Path,

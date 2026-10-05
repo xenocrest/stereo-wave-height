@@ -48,6 +48,18 @@ def reference_from_config(config: dict, run_dir: str | Path) -> ReferencePlane:
     coordinate_system = config.get("coordinate_system")
     if not coordinate_system:
         raise ValueError("reference.coordinate_system is required; physical plane must be registered to official gridded XYZ")
+    official_ids = None
+    if (root / "surface" / "config.mat").is_file():
+        # Real official artifacts must obey the same contract as GUI consumers.
+        # Pure synthetic/unit fixtures without an official setup remain generic.
+        from app.coordinates import identity
+        official_ids = identity(root)  # Refuse old setup BEFORE fitting/calculating H.
+        if coordinate_system != official_ids["coordinate_system"]:
+            raise ValueError("REFERENCE_FRAME_MISMATCH: reference coordinate units/convention differ")
+        if mode == "provided_physical_plane":
+            if (config.get("coordinate_frame_id") != official_ids["coordinate_frame_id"] or
+                config.get("coordinate_contract") != official_ids["coordinate_contract"]):
+                raise ValueError("REFERENCE_FRAME_MISMATCH: provided physical plane must be registered to this certified frame")
     if mode == "provided_physical_plane":
         n, d = _normalize([config[key] for key in ("n_x", "n_y", "n_z")], float(config["d"]))
     elif mode == "designated_static_water_frame":
@@ -74,7 +86,11 @@ def reference_from_config(config: dict, run_dir: str | Path) -> ReferencePlane:
     identity = hashlib.sha256(json.dumps({"mode": mode, "n": n, "d": d, "coordinate_system": coordinate_system,
                                         "reference_frame_id": config.get("reference_frame_id")}, sort_keys=True).encode()).hexdigest()[:16]
     default_id = f"INTERNAL_STATIC_REFERENCE_{identity}" if mode == "designated_static_water_frame" else f"physical_ref_{identity}"
-    return ReferencePlane(config.get("reference_plane_id", default_id), n, d, mode, coordinate_system)
+    plane = ReferencePlane(config.get("reference_plane_id", default_id), n, d, mode, coordinate_system)
+    if official_ids is not None:
+        from app.coordinates import bind
+        return bind(plane, official_ids, regenerate_id=True)
+    return plane
 
 
 def read_yaml(path: str | Path) -> dict:
