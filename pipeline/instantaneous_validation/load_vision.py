@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+from fractions import Fraction
 from pathlib import Path
 
 import numpy as np
@@ -20,9 +21,22 @@ def frame_times(run_dir: str | Path) -> dict[int, float]:
 def frame_time_metadata(run_dir: str | Path, frame_id: int) -> dict:
     sync = json.loads((Path(run_dir) / "sync" / "sync.json").read_text(encoding="utf-8"))
     if sync.get("status") == "PROVIDED":
-        return {"timestamp_basis": "PROVIDED_SEQUENCE_NOMINAL_TIME", "stereo_pair_residual_ms": None}
+        return {"timestamp_basis": "PROVIDED_SEQUENCE_NOMINAL_TIME", "stereo_pair_residual_ms": None,
+                "source_time_verified": False}
     row = next(item for item in sync["frame_mapping"] if int(item["output_index"]) == frame_id)
+    verified = row.get("timestamp_basis") == "ABSOLUTE_SOURCE_PTS_COPYTS"
+    try:
+        for side in ("left", "right"):
+            source = row[f"{side}_source_frame"]
+            seconds = float(int(source["source_pts_ticks"]) * Fraction(source["source_time_base"]))
+            index = int(row[f"{side}_source_frame_index"])
+            verified &= index >= 0 and index == int(source["source_frame_index"])
+            verified &= np.isfinite(seconds) and abs(seconds - float(row[f"actual_{side}_source_pts"])) < 1e-12
+            verified &= abs(seconds - float(row[f"{side}_actual_timestamp_s"])) < 1e-12
+    except (KeyError, ValueError, TypeError, ZeroDivisionError):
+        verified = False
     return {"timestamp_basis": row.get("timestamp_basis", "ACTUAL_DECODED_PTS" if "left_actual_timestamp_s" in row else "REQUESTED_FRAME_TIME"),
+            "source_time_verified": bool(verified),
             **{key: row.get(key) for key in ("actual_left_source_pts", "actual_right_source_pts", "left_source_frame_index", "right_source_frame_index")},
             "stereo_pair_residual_ms": row.get("stereo_pair_residual_ms")}
 

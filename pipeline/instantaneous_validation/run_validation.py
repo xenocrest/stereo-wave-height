@@ -23,7 +23,7 @@ def run(config: dict, run_dir: str | Path, output_dir: str | Path, synthetic: bo
         stereo_gate = float(config["validation"]["max_stereo_time_difference_ms"])
         for frame_id in frame_ids:
             timing = frame_time_metadata(root, frame_id)
-            if timing["timestamp_basis"] != "ACTUAL_DECODED_PTS":
+            if not timing["source_time_verified"]:
                 raise ValueError("VISION_TIMESTAMP_UNVERIFIED: actual decoded frame PTS is required for physical truth comparison")
             if timing["stereo_pair_residual_ms"] is None or abs(timing["stereo_pair_residual_ms"]) > stereo_gate:
                 raise ValueError(f"STEREO_PAIR_NOT_ALIGNED: frame {frame_id} residual={timing['stereo_pair_residual_ms']} ms")

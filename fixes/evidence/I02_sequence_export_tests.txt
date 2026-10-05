@@ -1,0 +1,7 @@
+test_provided_source_identity_nominal_time_and_B_units_preserved (tests.test_p0_sequence_export.SequenceExportTests.test_provided_source_identity_nominal_time_and_B_units_preserved) ... ok
+test_verified_integer_source_pts_accepted_legacy_and_tampered_rejected (tests.test_p0_validation_time_gate.TimeGateTests.test_verified_integer_source_pts_accepted_legacy_and_tampered_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.036s
+
+OK
