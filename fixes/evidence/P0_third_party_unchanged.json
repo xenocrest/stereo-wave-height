@@ -1,0 +1,386 @@
+[
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\cli\\wasscli\\__init__.py",
+    "expected": "c329c347a121e79e8535b45848b66efcaee4d8b1d287ed83500c50795c2153ec",
+    "current": "c329c347a121e79e8535b45848b66efcaee4d8b1d287ed83500c50795c2153ec",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\cli\\wasscli\\__main__.py",
+    "expected": "2555387b1e17a5f014f2e99d8ba74f9f2272a635b70a37fa125026dd5e313c74",
+    "current": "2555387b1e17a5f014f2e99d8ba74f9f2272a635b70a37fa125026dd5e313c74",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\cli\\wasscli\\wasscli.py",
+    "expected": "06bf1dedadcb22c5c640b0c4704113b7f147f2b04baca268780b6b144480e521",
+    "current": "06bf1dedadcb22c5c640b0c4704113b7f147f2b04baca268780b6b144480e521",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\gridding\\wassgridsurface\\__init__.py",
+    "expected": "4f6872da39b30a6a62dd3678b0907a8e46dbba942d4a8c72b48f6a399ff205bb",
+    "current": "4f6872da39b30a6a62dd3678b0907a8e46dbba942d4a8c72b48f6a399ff205bb",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\gridding\\wassgridsurface\\__main__.py",
+    "expected": "c0848b7a06b4d527faafe6f7b96f48cc9895c57414fde6fa110a7c4de9f6b5d3",
+    "current": "c0848b7a06b4d527faafe6f7b96f48cc9895c57414fde6fa110a7c4de9f6b5d3",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\gridding\\wassgridsurface\\DCTInterpolator.py",
+    "expected": "ec3bd32e7712e84bc4250787b19147343628ded2a0c278686fd54be6f2d50bce",
+    "current": "ec3bd32e7712e84bc4250787b19147343628ded2a0c278686fd54be6f2d50bce",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\gridding\\wassgridsurface\\IDWInterpolator.py",
+    "expected": "f5968ce7ec583c1a8ac0e6f0b74d50942f64c8bb925f5ac86e277efa2f1f668e",
+    "current": "f5968ce7ec583c1a8ac0e6f0b74d50942f64c8bb925f5ac86e277efa2f1f668e",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\gridding\\wassgridsurface\\netcdfoutput.py",
+    "expected": "1dd6a1b0ff08bbe2234d3f6e373016a9ab8e3e9d33431292da86a194628894bc",
+    "current": "1dd6a1b0ff08bbe2234d3f6e373016a9ab8e3e9d33431292da86a194628894bc",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\gridding\\wassgridsurface\\TFVariationalRefinement.py",
+    "expected": "070050bd3c08bf49f8a32b67107ed348125a1c7b0918fb4537569a90a9e4c16f",
+    "current": "070050bd3c08bf49f8a32b67107ed348125a1c7b0918fb4537569a90a9e4c16f",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\gridding\\wassgridsurface\\wass_utils.py",
+    "expected": "599da9204be68bdf128aff86ede660226f8b9c500953d1b338c9b1164b4f5913",
+    "current": "599da9204be68bdf128aff86ede660226f8b9c500953d1b338c9b1164b4f5913",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\gridding\\wassgridsurface\\wassgridsurface.py",
+    "expected": "3e2d56a6b18a789d5e94a455e842a8cfd5b3e6fcc481736ac59f4c97fbd2c70b",
+    "current": "3e2d56a6b18a789d5e94a455e842a8cfd5b3e6fcc481736ac59f4c97fbd2c70b",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\postproc\\wasspost\\__init__.py",
+    "expected": "bcd3b6fd1d8d54d75bfbc1fab4b989a13f650b299f2a98dc278492c527b1d6f5",
+    "current": "bcd3b6fd1d8d54d75bfbc1fab4b989a13f650b299f2a98dc278492c527b1d6f5",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\postproc\\wasspost\\__main__.py",
+    "expected": "b673b7f53f505f28882d739db0c129144b57315a750ae88c25bbf4f8ff72d538",
+    "current": "b673b7f53f505f28882d739db0c129144b57315a750ae88c25bbf4f8ff72d538",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\postproc\\wasspost\\geometry.py",
+    "expected": "5644a9b532043f8c749de7ad2076ec54857fd632cff71e1cfeab8054967d4487",
+    "current": "5644a9b532043f8c749de7ad2076ec54857fd632cff71e1cfeab8054967d4487",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\postproc\\wasspost\\plotting.py",
+    "expected": "9ba2974551a66522ebd82a989ab1c1a4566dde78bad2f21b3af810ae4e5c8e51",
+    "current": "9ba2974551a66522ebd82a989ab1c1a4566dde78bad2f21b3af810ae4e5c8e51",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\postproc\\wasspost\\spectra.py",
+    "expected": "09b235c2995f7363a60a3a65763eaaccdb02d2e609def2ed79cf4233553b7708",
+    "current": "09b235c2995f7363a60a3a65763eaaccdb02d2e609def2ed79cf4233553b7708",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\postproc\\wasspost\\wasspost.py",
+    "expected": "18ce33002c4479093e2d098cbc7aced45c9b5b942162e3a38a2f8ef158b909c0",
+    "current": "18ce33002c4479093e2d098cbc7aced45c9b5b942162e3a38a2f8ef158b909c0",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\include\\log.hpp",
+    "expected": "5576f582dec8993561b24e7311f3b439e4d420c9dec8c846868f2dcd3f696b7b",
+    "current": "5576f582dec8993561b24e7311f3b439e4d420c9dec8c846868f2dcd3f696b7b",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\include\\utils.hpp",
+    "expected": "681f93b32f04a0bb159edd82780887b2bbdcfec1394137adafc3e557e50f96a5",
+    "current": "681f93b32f04a0bb159edd82780887b2bbdcfec1394137adafc3e557e50f96a5",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_autocalibrate\\sba_driver.cpp",
+    "expected": "a75d199d05aaa3500bfde0a9bbef4afa259844b8b9d3107a229a0a4a7e623b12",
+    "current": "a75d199d05aaa3500bfde0a9bbef4afa259844b8b9d3107a229a0a4a7e623b12",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_autocalibrate\\sba_driver.h",
+    "expected": "d331b51103a1a55791b84f05098784bb029136f42b5384c2cbac2ee318170dec",
+    "current": "d331b51103a1a55791b84f05098784bb029136f42b5384c2cbac2ee318170dec",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_autocalibrate\\wass_autocalibrate.cpp",
+    "expected": "36b96369d6cbafa0eccb36b6d71e18890a9f064f56e1cddd415a91f896da80f7",
+    "current": "36b96369d6cbafa0eccb36b6d71e18890a9f064f56e1cddd415a91f896da80f7",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_lib\\epipolar.cpp",
+    "expected": "37fcd9e8489f40a7c893a2aed84512a41250fd8e4106d03f93ae1c7077fa20d5",
+    "current": "37fcd9e8489f40a7c893a2aed84512a41250fd8e4106d03f93ae1c7077fa20d5",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_lib\\epipolar.h",
+    "expected": "067a15002e7376c01d6e64285a79775c30202f373d02a1c51ca035bbeb3d6a13",
+    "current": "067a15002e7376c01d6e64285a79775c30202f373d02a1c51ca035bbeb3d6a13",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_lib\\hires_timer.cpp",
+    "expected": "8b10447637311c5bba0cdbb609e7b15d24ce7a5b74ed808dec452d1596aad95a",
+    "current": "8b10447637311c5bba0cdbb609e7b15d24ce7a5b74ed808dec452d1596aad95a",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_lib\\hires_timer.h",
+    "expected": "357e9748f2a72e48207ec4bb6ebb629c5aca25faa0603a25219b82090cde5edf",
+    "current": "357e9748f2a72e48207ec4bb6ebb629c5aca25faa0603a25219b82090cde5edf",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_lib\\triangulate.hpp",
+    "expected": "2250dca43448474ec76908f0cb14e54c1a3a32462e4f4b9b0f9a0d5e9b44bf69",
+    "current": "2250dca43448474ec76908f0cb14e54c1a3a32462e4f4b9b0f9a0d5e9b44bf69",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_match\\FeatureSet.cpp",
+    "expected": "10bb250814fbed1f333f804718cbf471f95349460aeca65bbec2a882391b2174",
+    "current": "10bb250814fbed1f333f804718cbf471f95349460aeca65bbec2a882391b2174",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_match\\FeatureSet.h",
+    "expected": "89c0a05b4fc6b388b1f8fb01d8709b4e4d07d88a46004a3601e2bbd64cd05dc8",
+    "current": "89c0a05b4fc6b388b1f8fb01d8709b4e4d07d88a46004a3601e2bbd64cd05dc8",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_match\\gt.h",
+    "expected": "d0cb2d1d53e1a30f59aad0119ef16d51c9dbeb25e14817f404329090fab54dfa",
+    "current": "d0cb2d1d53e1a30f59aad0119ef16d51c9dbeb25e14817f404329090fab54dfa",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_match\\GTMatcher.cpp",
+    "expected": "aa12775cb61fdf8745fcb87b21ded7d15a4ccc1dabc9be26243c03f16ff2bd0f",
+    "current": "aa12775cb61fdf8745fcb87b21ded7d15a4ccc1dabc9be26243c03f16ff2bd0f",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_match\\GTMatcher.h",
+    "expected": "bcf9f73170b0571f279dd415299e18d2fa5a85d6ffd54a51a1026b7ab92e405d",
+    "current": "bcf9f73170b0571f279dd415299e18d2fa5a85d6ffd54a51a1026b7ab92e405d",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_match\\iidyn.cpp",
+    "expected": "f108eb7a6a5ad4f33c3d1e09899e2cd0a586a8df6b8006ed1ecdcde5f49ba744",
+    "current": "f108eb7a6a5ad4f33c3d1e09899e2cd0a586a8df6b8006ed1ecdcde5f49ba744",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_match\\ImageFeature.hpp",
+    "expected": "615764f899805a7a802e54015b2215a4b81016fcbcf22b4212bc0d3271e5bf64",
+    "current": "615764f899805a7a802e54015b2215a4b81016fcbcf22b4212bc0d3271e5bf64",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_match\\wass_match.cpp",
+    "expected": "e6f287eaa49a9ad5e57261d0b80c2ad77eb85fa7e3904dc9c606ad6795e6d662",
+    "current": "e6f287eaa49a9ad5e57261d0b80c2ad77eb85fa7e3904dc9c606ad6795e6d662",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_prepare\\wass_prepare.cpp",
+    "expected": "c7390f7343a94dccdbf53f032836b542e4bead56bdbcdaf2ba4eaaa6a414ccea",
+    "current": "c7390f7343a94dccdbf53f032836b542e4bead56bdbcdaf2ba4eaaa6a414ccea",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_stereo\\nanoflann.hpp",
+    "expected": "64be8936e817c59154947425b86de1656ee322c0d502726638651c3fc3bc4ed0",
+    "current": "64be8936e817c59154947425b86de1656ee322c0d502726638651c3fc3bc4ed0",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_stereo\\PointPicker.hpp",
+    "expected": "fea5facb509e60d2f96ee7bf4d68acb41ef64d353f54ab8391112ad48df4ee6a",
+    "current": "fea5facb509e60d2f96ee7bf4d68acb41ef64d353f54ab8391112ad48df4ee6a",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_stereo\\PovMesh.cpp",
+    "expected": "d725038a6eca0c8e32f0ac47d815de02899159ed34017bdde53c59ea56a40055",
+    "current": "d725038a6eca0c8e32f0ac47d815de02899159ed34017bdde53c59ea56a40055",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_stereo\\PovMesh.h",
+    "expected": "5a6ad79d40911f4c0d1fd91f80f1b9087a15c928ed1af1cca6fb91894ab0be09",
+    "current": "5a6ad79d40911f4c0d1fd91f80f1b9087a15c928ed1af1cca6fb91894ab0be09",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_stereo\\render.hpp",
+    "expected": "802d33c9d433c8ba2df5f1a6581653286075eda6c8b64227a6b227b651f6479c",
+    "current": "802d33c9d433c8ba2df5f1a6581653286075eda6c8b64227a6b227b651f6479c",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_stereo\\stereorectify.cpp",
+    "expected": "cd31e76168b73db600aed49aa1e379f5a5ed3ec40890c6f74c32531994294791",
+    "current": "cd31e76168b73db600aed49aa1e379f5a5ed3ec40890c6f74c32531994294791",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_stereo\\stereorectify.h",
+    "expected": "478bdeba9a317936b3123b6ebfbb6882915797a450abae0d5ab60a4f6898ea2c",
+    "current": "478bdeba9a317936b3123b6ebfbb6882915797a450abae0d5ab60a4f6898ea2c",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass-src\\wass-master\\src\\wass_stereo\\wass_stereo.cpp",
+    "expected": "3bc154a0dab21e790e65d508f4f39bc439ce9223912cfa6185f0d1c027316b85",
+    "current": "3bc154a0dab21e790e65d508f4f39bc439ce9223912cfa6185f0d1c027316b85",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass_lowcost\\setup_sync.py",
+    "expected": "5b1bad61b948d8ed591ca5c6050d334a41966012b040ded8c1e8329658e03a5d",
+    "current": "5b1bad61b948d8ed591ca5c6050d334a41966012b040ded8c1e8329658e03a5d",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\wass_lowcost\\wass_sync.py",
+    "expected": "2751491e406b6cd26815469316ef9a4f861f9c1dfc684dc2e5d8f8a3f789c286",
+    "current": "2751491e406b6cd26815469316ef9a4f861f9c1dfc684dc2e5d8f8a3f789c286",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Scripts\\python.exe",
+    "expected": "18e806e2bfb8ffedf61274d6517694e2a52e130b22e870d38671a9c37391dd52",
+    "current": "18e806e2bfb8ffedf61274d6517694e2a52e130b22e870d38671a9c37391dd52",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\FormatFactory\\ffmpeg.exe",
+    "expected": "71b0ac1dfa5dc7e6c833158b97e7f4288a61a06fa475e2decb0f5e7f1c745ff3",
+    "current": "71b0ac1dfa5dc7e6c833158b97e7f4288a61a06fa475e2decb0f5e7f1c745ff3",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\vieira2025-full-repro-20260916\\sources\\praat\\Praat.exe",
+    "expected": "e40259cfa125b34a04580f96167ff2112a6f656d83a98c4ea2ca2dbcb3cb428b",
+    "current": "e40259cfa125b34a04580f96167ff2112a6f656d83a98c4ea2ca2dbcb3cb428b",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\wass\\dist\\bin\\wass_stereo.exe",
+    "expected": "bde66000c54940104a3978c68c9c3fea3bae00b43410f0b6b032407a690b57b9",
+    "current": "bde66000c54940104a3978c68c9c3fea3bae00b43410f0b6b032407a690b57b9",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassgridsurface\\DCTInterpolator.py",
+    "expected": "36fb10d2dd6226ad04fe0ab2295a671002ac4c3e12bd6228b9c3a45fee3647cd",
+    "current": "36fb10d2dd6226ad04fe0ab2295a671002ac4c3e12bd6228b9c3a45fee3647cd",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassgridsurface\\IDWInterpolator.py",
+    "expected": "f5968ce7ec583c1a8ac0e6f0b74d50942f64c8bb925f5ac86e277efa2f1f668e",
+    "current": "f5968ce7ec583c1a8ac0e6f0b74d50942f64c8bb925f5ac86e277efa2f1f668e",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassgridsurface\\netcdfoutput.py",
+    "expected": "ccab47d595fa49b7f0f14d0eab854cdd4455ec15bde4fe59b6225a7da8736c93",
+    "current": "ccab47d595fa49b7f0f14d0eab854cdd4455ec15bde4fe59b6225a7da8736c93",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassgridsurface\\TFVariationalRefinement.py",
+    "expected": "070050bd3c08bf49f8a32b67107ed348125a1c7b0918fb4537569a90a9e4c16f",
+    "current": "070050bd3c08bf49f8a32b67107ed348125a1c7b0918fb4537569a90a9e4c16f",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassgridsurface\\wassgridsurface.py",
+    "expected": "fc1b0d422773038c0516418e0417514ad7af52a92df08d7983417243f6148ae6",
+    "current": "fc1b0d422773038c0516418e0417514ad7af52a92df08d7983417243f6148ae6",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassgridsurface\\wass_utils.py",
+    "expected": "599da9204be68bdf128aff86ede660226f8b9c500953d1b338c9b1164b4f5913",
+    "current": "599da9204be68bdf128aff86ede660226f8b9c500953d1b338c9b1164b4f5913",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassgridsurface\\__init__.py",
+    "expected": "4f6872da39b30a6a62dd3678b0907a8e46dbba942d4a8c72b48f6a399ff205bb",
+    "current": "4f6872da39b30a6a62dd3678b0907a8e46dbba942d4a8c72b48f6a399ff205bb",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassgridsurface\\__main__.py",
+    "expected": "c0848b7a06b4d527faafe6f7b96f48cc9895c57414fde6fa110a7c4de9f6b5d3",
+    "current": "c0848b7a06b4d527faafe6f7b96f48cc9895c57414fde6fa110a7c4de9f6b5d3",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassncplot\\wassncplot.py",
+    "expected": "edc465acf9ea0556ee2a2afc41611a4408dcd8d15013c2af42fdf32b4a6dc28e",
+    "current": "edc465acf9ea0556ee2a2afc41611a4408dcd8d15013c2af42fdf32b4a6dc28e",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassncplot\\wassncplot2.py",
+    "expected": "7458070ed28ebefdcf62cf5dca07641d654b3769cc0ec249cdf64668e3b59d3e",
+    "current": "7458070ed28ebefdcf62cf5dca07641d654b3769cc0ec249cdf64668e3b59d3e",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassncplot\\__init.py",
+    "expected": "de10606033be603cc2ace9ee1f61128fae13a1bce524c70fb175fba8224177c6",
+    "current": "de10606033be603cc2ace9ee1f61128fae13a1bce524c70fb175fba8224177c6",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassncplot\\__main__.py",
+    "expected": "10c05c0581943a237bfe12f89174cdb8e6205637c805ababec0e5d1068aecb57",
+    "current": "10c05c0581943a237bfe12f89174cdb8e6205637c805ababec0e5d1068aecb57",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassncplot\\WaveFieldVisualize\\waveview2.py",
+    "expected": "ae25d4f292512ed0aaa08ca011401a7cc8b1b7a46e0210f2be82fd56a47d597b",
+    "current": "ae25d4f292512ed0aaa08ca011401a7cc8b1b7a46e0210f2be82fd56a47d597b",
+    "unchanged": true
+  },
+  {
+    "path": "D:\\stereo-wave-height-runs\\wassgridsurface-0.11.4-venv\\Lib\\site-packages\\wassncplot\\WaveFieldVisualize\\__init__.py",
+    "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "current": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unchanged": true
+  }
+]

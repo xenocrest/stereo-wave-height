@@ -1,0 +1,61 @@
+........................................................................ [ 12%]
+........................................................................ [ 25%]
+........................................................................ [ 37%]
+.............................................s....................... [ 49%]
+........................................................................ [ 62%]
+........................................................................ [ 75%]
+.................................................................... [ 86%]
+........................................................................ [ 99%]
+...                                                                      [100%]
+============================== warnings summary ===============================
+tests/test_wassfast_output.py::test_physical_grid_not_dimension_names_and_support_unknown
+tests/test_wassfast_output.py::test_physical_grid_not_dimension_names_and_support_unknown
+tests/test_wassfast_output.py::test_unknown_units_fail
+tests/test_wassfast_output.py::test_unknown_units_fail
+tests/test_wassfast_output.py::test_transposed_physical_axes_fail
+tests/test_wassfast_output.py::test_transposed_physical_axes_fail
+  D:\research\stereo-wave-height\tests\test_wassfast_output.py:21: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    meta.createVariable(key, "f8", ("V4", "V4"))[:] = np.eye(4)
+
+tests/test_wassfast_output.py::test_physical_grid_not_dimension_names_and_support_unknown
+tests/test_wassfast_output.py::test_physical_grid_not_dimension_names_and_support_unknown
+tests/test_wassfast_output.py::test_physical_grid_not_dimension_names_and_support_unknown
+tests/test_wassfast_output.py::test_unknown_units_fail
+tests/test_wassfast_output.py::test_unknown_units_fail
+tests/test_wassfast_output.py::test_unknown_units_fail
+tests/test_wassfast_output.py::test_transposed_physical_axes_fail
+tests/test_wassfast_output.py::test_transposed_physical_axes_fail
+tests/test_wassfast_output.py::test_transposed_physical_axes_fail
+  D:\research\stereo-wave-height\tests\test_wassfast_output.py:31: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    v[:] = data
+
+tests/test_wassfast_output.py::test_transposed_physical_axes_fail
+  D:\research\stereo-wave-height\tests\test_wassfast_output.py:57: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    ds["X_grid"][:] = [[1000]*3, [2000]*3]
+
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_baseline_mismatch_fails
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_confirmed_schema_maps_to_time_y_x_metres
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_unconfirmed_units_fail
+  D:\research\stereo-wave-height\tests\test_wassgridsurface_netcdf.py:39: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    x_grid[:] = np.array([[-5.0, 5.0], [-5.0, 5.0]], dtype=np.float64)
+
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_baseline_mismatch_fails
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_confirmed_schema_maps_to_time_y_x_metres
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_unconfirmed_units_fail
+  D:\research\stereo-wave-height\tests\test_wassgridsurface_netcdf.py:42: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    y_grid[:] = np.array([[-5.0, -5.0], [5.0, 5.0]], dtype=np.float64)
+
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_baseline_mismatch_fails
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_confirmed_schema_maps_to_time_y_x_metres
+tests/test_wassgridsurface_netcdf.py::WassGridSurface0114Tests::test_unconfirmed_units_fail
+  D:\research\stereo-wave-height\tests\test_wassgridsurface_netcdf.py:45: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    z[:] = np.array(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+571 passed, 1 skipped, 25 warnings, 7 subtests passed in 42.09s

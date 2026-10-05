@@ -1,0 +1,4399 @@
+[
+  {
+    "label": "HomeTank21",
+    "root": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank21",
+    "status": "FIXED_COORDINATE_FRAME_PASS",
+    "identities": {
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "coordinate_system": "official_wass_grid_m",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2"
+    },
+    "reference": {
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_d1bda89d641b01e1",
+      "normal": [
+        0.039674925870819756,
+        -0.010125118707312277,
+        0.9991613394383851
+      ],
+      "d": 0.003360616869698453,
+      "mode": "designated_static_water_frame",
+      "coordinate_system": "official_wass_grid_m",
+      "equation": "H = n^T P + d; n has unit length",
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2",
+      "n": [
+        0.039674925870819756,
+        -0.010125118707312277,
+        0.9991613394383851
+      ],
+      "source": "INTERNAL_STATIC_REFERENCE"
+    },
+    "map_size_wh": [
+      2400,
+      1350
+    ],
+    "measurement_logical_wh": [
+      1920,
+      1080
+    ],
+    "source_time_verified": true,
+    "new_map_measurement_reprojection_logical_px": {
+      "count": 1000,
+      "median": 0.0013912451163281343,
+      "max": 0.04337087460341032,
+      "min": 2.4993452944252664e-05
+    },
+    "hypothetical_raw_alignment_logical_px": {
+      "count": 1000,
+      "median": 4.585929931692208,
+      "max": 15.148181960840141,
+      "min": 0.00562152061293602
+    },
+    "actual_wass_transform_checks": {
+      "orthogonality_frobenius": 1.5769983777539744e-16,
+      "determinant": 0.9999999999999999,
+      "actual_wass_point_count": 1000,
+      "camera_grid_camera_error_B": {
+        "median": 4.965068306494546e-16,
+        "max": 1.0877919644084146e-15
+      },
+      "cameras": {
+        "0": {
+          "reprojection_px": {
+            "median": 2.3437142008433856e-13,
+            "max": 7.190186943645084e-13
+          },
+          "official_forward_matrix_vs_alignment_native": {
+            "median": 5.3561816288947044e-17,
+            "max": 1.389512421408389e-16
+          },
+          "projection_matrix_formula_max": 0.0
+        },
+        "1": {
+          "reprojection_px": {
+            "median": 1.2710574864626038e-13,
+            "max": 4.547473508864641e-13
+          },
+          "official_forward_matrix_vs_alignment_native": {
+            "median": 7.189841368390821e-17,
+            "max": 1.389512421408389e-16
+          },
+          "projection_matrix_formula_max": 0.0
+        }
+      }
+    },
+    "mapped_official_grid_estimates": 954468,
+    "no_data": 2285532,
+    "direct_stereo_pixels": 0,
+    "filtered_wass_points": 146818,
+    "H_native": {
+      "count": 954468,
+      "median": 0.0008668894884644647,
+      "max": 0.020219961975892233,
+      "min": -0.05871556646868346
+    },
+    "units": "m",
+    "same_complete_historical_bundle": {
+      "intrinsics_00.xml": true,
+      "distortion_00.xml": true,
+      "intrinsics_01.xml": true,
+      "distortion_01.xml": true,
+      "ext_R.xml": true,
+      "ext_T.xml": true
+    },
+    "raw_hover_disabled": true,
+    "boundaries": [
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          0
+        ],
+        "hover": {
+          "u": 0,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          0
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          1349
+        ],
+        "hover": {
+          "u": 0,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          1349
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          0
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          675
+        ],
+        "hover": {
+          "u": 0,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          675
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          1349
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          675
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 675,
+          "X": -0.0815517008304596,
+          "Y": 0.1805756688117981,
+          "Z": 0.0037797109689563513,
+          "height_native": 0.0020732501766713204,
+          "height_mm": 2.0732501766713205,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          0
+        ],
+        "hover": {
+          "u": 0,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          0
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          1349
+        ],
+        "hover": {
+          "u": 0,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          1349
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          0
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          675
+        ],
+        "hover": {
+          "u": 0,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          675
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          1349
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          675
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 675,
+          "X": -0.0815517008304596,
+          "Y": 0.1805756688117981,
+          "Z": 0.0037797109689563513,
+          "height_native": 0.0020732501766713204,
+          "height_mm": 2.0732501766713205,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      }
+    ],
+    "samples": [
+      {
+        "map_uv": [
+          1007,
+          1035
+        ],
+        "projection_logical_uv": [
+          805.9980122595405,
+          828.3983298408505
+        ],
+        "hover": {
+          "u": 1007,
+          "v": 1035,
+          "X": -0.12572816014289856,
+          "Y": 0.27857476472854614,
+          "Z": -0.002122472506016493,
+          "height_native": -0.006568933597616306,
+          "height_mm": -6.568933597616306,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1415,
+          379
+        ],
+        "projection_logical_uv": [
+          1132.3906202333249,
+          303.5856061559917
+        ],
+        "hover": {
+          "u": 1415,
+          "v": 379,
+          "X": -0.0469970628619194,
+          "Y": 0.1330910176038742,
+          "Z": -0.008563322015106678,
+          "height_native": -0.00840769076226687,
+          "height_mm": -8.40769076226687,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1781,
+          1044
+        ],
+        "projection_logical_uv": [
+          1425.1997174530086,
+          835.6008230683202
+        ],
+        "hover": {
+          "u": 1781,
+          "v": 1044,
+          "X": 0.02021598629653454,
+          "Y": 0.2710450291633606,
+          "Z": 0.0049556163139641285,
+          "height_native": 0.0063697817661161355,
+          "height_mm": 6.369781766116136,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1043,
+          365
+        ],
+        "projection_logical_uv": [
+          834.8003107000266,
+          292.40037386995766
+        ],
+        "hover": {
+          "u": 1043,
+          "v": 365,
+          "X": -0.10181429982185364,
+          "Y": 0.12469076365232468,
+          "Z": -0.0021437916439026594,
+          "height_native": -0.004083360442406812,
+          "height_mm": -4.083360442406812,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1746,
+          901
+        ],
+        "projection_logical_uv": [
+          1397.2019266303173,
+          721.200561767384
+        ],
+        "hover": {
+          "u": 1746,
+          "v": 901,
+          "X": 0.009516160003840923,
+          "Y": 0.2319222241640091,
+          "Z": 0.005741904489696026,
+          "height_native": 0.00712701874275318,
+          "height_mm": 7.1270187427531795,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1664,
+          953
+        ],
+        "projection_logical_uv": [
+          1331.6000482133832,
+          762.8000671981405
+        ],
+        "hover": {
+          "u": 1664,
+          "v": 953,
+          "X": -0.0029539361130446196,
+          "Y": 0.2458459436893463,
+          "Z": 0.005230743903666735,
+          "height_native": 0.005980557394867251,
+          "height_mm": 5.980557394867251,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1468,
+          965
+        ],
+        "projection_logical_uv": [
+          1174.8014109797336,
+          772.4007855322214
+        ],
+        "hover": {
+          "u": 1468,
+          "v": 965,
+          "X": -0.03777860850095749,
+          "Y": 0.24137365818023682,
+          "Z": 0.012042000889778137,
+          "height_native": 0.011449718174576077,
+          "height_mm": 11.449718174576077,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1557,
+          973
+        ],
+        "projection_logical_uv": [
+          1246.0000324844887,
+          778.8004540266244
+        ],
+        "hover": {
+          "u": 1557,
+          "v": 973,
+          "X": -0.02164427377283573,
+          "Y": 0.24861125648021698,
+          "Z": 0.007526255678385496,
+          "height_native": 0.007504607132968615,
+          "height_mm": 7.504607132968615,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1541,
+          852
+        ],
+        "projection_logical_uv": [
+          1233.1976390882828,
+          681.9819763553122
+        ],
+        "hover": {
+          "u": 1541,
+          "v": 852,
+          "X": -0.024323254823684692,
+          "Y": 0.22892695665359497,
+          "Z": -0.003321260679513216,
+          "height_native": -0.003240794342956144,
+          "height_mm": -3.240794342956144,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1393,
+          411
+        ],
+        "projection_logical_uv": [
+          1114.8029229310553,
+          329.2000717717994
+        ],
+        "hover": {
+          "u": 1393,
+          "v": 411,
+          "X": -0.05032886192202568,
+          "Y": 0.13743188977241516,
+          "Z": -0.006578507833182812,
+          "height_native": -0.006600681892445446,
+          "height_mm": -6.600681892445446,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1804,
+          1091
+        ],
+        "projection_logical_uv": [
+          1443.6002098966812,
+          873.197176152748
+        ],
+        "hover": {
+          "u": 1804,
+          "v": 1091,
+          "X": 0.02555452100932598,
+          "Y": 0.2829856872558594,
+          "Z": 0.006303364876657724,
+          "height_native": 0.007807305413602047,
+          "height_mm": 7.807305413602047,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          747,
+          375
+        ],
+        "projection_logical_uv": [
+          598.0008389098296,
+          300.4000970720656
+        ],
+        "hover": {
+          "u": 747,
+          "v": 375,
+          "X": -0.14094065129756927,
+          "Y": 0.11496768146753311,
+          "Z": 0.014369132928550243,
+          "height_native": 0.010961827658377565,
+          "height_mm": 10.961827658377565,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1513,
+          874
+        ],
+        "projection_logical_uv": [
+          1210.800553708682,
+          699.6000788125858
+        ],
+        "hover": {
+          "u": 1513,
+          "v": 874,
+          "X": -0.029755210503935814,
+          "Y": 0.22812192142009735,
+          "Z": 0.002809338504448533,
+          "height_native": 0.0026773019876061388,
+          "height_mm": 2.6773019876061386,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1734,
+          871
+        ],
+        "projection_logical_uv": [
+          1387.599217173478,
+          697.1987501082097
+        ],
+        "hover": {
+          "u": 1734,
+          "v": 871,
+          "X": 0.006911895237863064,
+          "Y": 0.22519449889659882,
+          "Z": 0.005080244969576597,
+          "height_native": 0.0064307091358030465,
+          "height_mm": 6.430709135803046,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1480,
+          813
+        ],
+        "projection_logical_uv": [
+          1184.4013325809574,
+          650.8015548052828
+        ],
+        "hover": {
+          "u": 1480,
+          "v": 813,
+          "X": -0.03613153100013733,
+          "Y": 0.210614413022995,
+          "Z": 0.005457630846649408,
+          "height_native": 0.005247658869238528,
+          "height_mm": 5.247658869238528,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1644,
+          1052
+        ],
+        "projection_logical_uv": [
+          1315.5994075973001,
+          841.9988560012451
+        ],
+        "hover": {
+          "u": 1644,
+          "v": 1052,
+          "X": -0.004155871458351612,
+          "Y": 0.2736583948135376,
+          "Z": 0.004925581626594067,
+          "height_native": 0.005346359980460926,
+          "height_mm": 5.346359980460926,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1496,
+          490
+        ],
+        "projection_logical_uv": [
+          1197.2008697966467,
+          392.40192022782264
+        ],
+        "hover": {
+          "u": 1496,
+          "v": 490,
+          "X": -0.035366784781217575,
+          "Y": 0.14690014719963074,
+          "Z": 0.001538489363156259,
+          "height_native": 0.002007259969499417,
+          "height_mm": 2.007259969499417,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1192,
+          333
+        ],
+        "projection_logical_uv": [
+          954.0015859079466,
+          266.80150468994873
+        ],
+        "hover": {
+          "u": 1192,
+          "v": 333,
+          "X": -0.07950853556394577,
+          "Y": 0.1205654963850975,
+          "Z": -0.0029132114723324776,
+          "height_native": -0.003925386624566662,
+          "height_mm": -3.9253866245666615,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1510,
+          536
+        ],
+        "projection_logical_uv": [
+          1208.3990390043232,
+          429.2009791909629
+        ],
+        "hover": {
+          "u": 1510,
+          "v": 536,
+          "X": -0.03282741457223892,
+          "Y": 0.15647372603416443,
+          "Z": 0.00026199474814347923,
+          "height_native": 0.0007356516028236919,
+          "height_mm": 0.7356516028236919,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1753,
+          1135
+        ],
+        "projection_logical_uv": [
+          1402.7987876476534,
+          908.3963383692246
+        ],
+        "hover": {
+          "u": 1753,
+          "v": 1135,
+          "X": 0.017257872968912125,
+          "Y": 0.2941892147064209,
+          "Z": 0.00803619995713234,
+          "height_native": 0.009096081292277618,
+          "height_mm": 9.096081292277617,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1001,
+          798
+        ],
+        "projection_logical_uv": [
+          801.2032297212953,
+          638.8010663439595
+        ],
+        "hover": {
+          "u": 1001,
+          "v": 798,
+          "X": -0.11625595390796661,
+          "Y": 0.2028510421514511,
+          "Z": 0.009007781744003296,
+          "height_native": 0.005694506907379956,
+          "height_mm": 5.694506907379956,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1508,
+          382
+        ],
+        "projection_logical_uv": [
+          1206.7983395697254,
+          305.9997713937239
+        ],
+        "hover": {
+          "u": 1508,
+          "v": 382,
+          "X": -0.034250643104314804,
+          "Y": 0.12837453186511993,
+          "Z": 0.0008519363473169506,
+          "height_native": 0.0015531396312783272,
+          "height_mm": 1.5531396312783272,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1494,
+          317
+        ],
+        "projection_logical_uv": [
+          1195.6019468754778,
+          254.00095916861326
+        ],
+        "hover": {
+          "u": 1494,
+          "v": 317,
+          "X": -0.03667931631207466,
+          "Y": 0.11708343774080276,
+          "Z": 0.0016539215575903654,
+          "height_native": 0.0023724184870467166,
+          "height_mm": 2.3724184870467164,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1892,
+          496
+        ],
+        "projection_logical_uv": [
+          1513.9985346880542,
+          397.2013178965299
+        ],
+        "hover": {
+          "u": 1892,
+          "v": 496,
+          "X": 0.02819998376071453,
+          "Y": 0.16231279075145721,
+          "Z": -0.016231751069426537,
+          "height_native": -0.01338212527906918,
+          "height_mm": -13.382125279069179,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          919,
+          796
+        ],
+        "projection_logical_uv": [
+          735.6007143465819,
+          637.201273446052
+        ],
+        "hover": {
+          "u": 919,
+          "v": 796,
+          "X": -0.1309257447719574,
+          "Y": 0.2043362259864807,
+          "Z": 0.0068054781295359135,
+          "height_native": 0.0028969897503976104,
+          "height_mm": 2.8969897503976103,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1249,
+          414
+        ],
+        "projection_logical_uv": [
+          999.6004478853725,
+          331.59884149048264
+        ],
+        "hover": {
+          "u": 1249,
+          "v": 414,
+          "X": -0.07205075770616531,
+          "Y": 0.13779887557029724,
+          "Z": -0.007543762680143118,
+          "height_native": -0.008430657598010564,
+          "height_mm": -8.430657598010564,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1021,
+          665
+        ],
+        "projection_logical_uv": [
+          817.2001424786791,
+          532.3993615082021
+        ],
+        "hover": {
+          "u": 1021,
+          "v": 665,
+          "X": -0.1105206236243248,
+          "Y": 0.17768707871437073,
+          "Z": 0.0039880839176476,
+          "height_native": 0.0011613558244175102,
+          "height_mm": 1.1613558244175102,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1567,
+          359
+        ],
+        "projection_logical_uv": [
+          1254.0014587411895,
+          287.60105546987074
+        ],
+        "hover": {
+          "u": 1567,
+          "v": 359,
+          "X": -0.025839651003479958,
+          "Y": 0.1260322779417038,
+          "Z": -0.0011543775908648968,
+          "height_native": -9.40706034114197e-05,
+          "height_mm": -0.0940706034114197,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1239,
+          358
+        ],
+        "projection_logical_uv": [
+          991.6011981799032,
+          286.7985611915199
+        ],
+        "hover": {
+          "u": 1239,
+          "v": 358,
+          "X": -0.07299482077360153,
+          "Y": 0.12642651796340942,
+          "Z": -0.00521711353212595,
+          "height_native": -0.00602826888034072,
+          "height_mm": -6.02826888034072,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1170,
+          358
+        ],
+        "projection_logical_uv": [
+          936.4001609450063,
+          286.80092643979236
+        ],
+        "hover": {
+          "u": 1170,
+          "v": 358,
+          "X": -0.08325228095054626,
+          "Y": 0.12622645497322083,
+          "Z": -0.00555511424317956,
+          "height_native": -0.006770924434146739,
+          "height_mm": -6.770924434146739,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1633,
+          859
+        ],
+        "projection_logical_uv": [
+          1306.801859121365,
+          687.5997337255646
+        ],
+        "hover": {
+          "u": 1633,
+          "v": 859,
+          "X": -0.010274674743413925,
+          "Y": 0.2213549166917801,
+          "Z": 0.005886195693165064,
+          "height_native": 0.006592984275934487,
+          "height_mm": 6.592984275934486,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          944,
+          535
+        ],
+        "projection_logical_uv": [
+          755.5993267721685,
+          428.39916361007874
+        ],
+        "hover": {
+          "u": 944,
+          "v": 535,
+          "X": -0.11961063742637634,
+          "Y": 0.15139888226985931,
+          "Z": 0.0035529560409486294,
+          "height_native": 0.0006321183581486848,
+          "height_mm": 0.6321183581486849,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      }
+    ],
+    "export": {
+      "frame_id": 0,
+      "timestamp_s": 21.001544444444445,
+      "source_image_pair": {
+        "left_file": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank21\\sync\\frames\\cam0\\000000.png",
+        "right_file": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank21\\sync\\frames\\cam1\\000000.png",
+        "left_source_frame": {
+          "source_frame_index": 1247,
+          "source_pts_ticks": 1890139,
+          "source_time_base": "1/90000",
+          "actual_source_pts_s": 21.001544444444445,
+          "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS; decoded index before select; selected output joined by integer PTS",
+          "requested_timestamp_s": 21.0,
+          "canonical_camera_image_orientation": "CONTAINER_DISPLAY_ORIENTATION_APPLIED_ONCE_V1",
+          "extraction_argv": [
+            "D:\\FormatFactory\\ffmpeg.exe",
+            "-hide_banner",
+            "-loglevel",
+            "info",
+            "-y",
+            "-copyts",
+            "-autorotate",
+            "-i",
+            "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam0_iQOO_Neo5S.mp4",
+            "-vf",
+            "showinfo@source,select='gte(t,21.000000000)',showinfo@selected",
+            "-frames:v",
+            "1",
+            "-vsync",
+            "0",
+            "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank21\\sync\\frames\\cam0\\000000.png"
+          ],
+          "identification_log": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank21\\sync\\frames\\frame_identification\\cam0_000000.log",
+          "decoded_png_sha256": "1a7d089ce4d48a87a751614e13276bbf361dbe084d2500657aa881197922498c"
+        },
+        "right_source_frame": {
+          "source_frame_index": 1256,
+          "source_pts_ticks": 1884050,
+          "source_time_base": "1/90000",
+          "actual_source_pts_s": 20.933888888888887,
+          "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS; decoded index before select; selected output joined by integer PTS",
+          "requested_timestamp_s": 20.924929983672687,
+          "canonical_camera_image_orientation": "CONTAINER_DISPLAY_ORIENTATION_APPLIED_ONCE_V1",
+          "extraction_argv": [
+            "D:\\FormatFactory\\ffmpeg.exe",
+            "-hide_banner",
+            "-loglevel",
+            "info",
+            "-y",
+            "-copyts",
+            "-autorotate",
+            "-i",
+            "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam1_iQOO_Z10_TurboPlus.mp4",
+            "-vf",
+            "showinfo@source,select='gte(t,20.924929984)',showinfo@selected",
+            "-frames:v",
+            "1",
+            "-vsync",
+            "0",
+            "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank21\\sync\\frames\\cam1\\000000.png"
+          ],
+          "identification_log": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank21\\sync\\frames\\frame_identification\\cam1_000000.log",
+          "decoded_png_sha256": "b1c8cb001546f8efcc24c2052cafa0c911840c59e834b790f3887ccb157f28f7"
+        }
+      },
+      "requested_timestamp": 21.0,
+      "actual_left_source_pts": 21.001544444444445,
+      "actual_right_source_pts": 20.933888888888887,
+      "left_source_frame_index": 1247,
+      "right_source_frame_index": 1256,
+      "TLCC_offset": -0.07507001632731439,
+      "pair_residual_s": 0.007414460771757031,
+      "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS",
+      "left_actual_timestamp_s": 21.001544444444445,
+      "right_actual_timestamp_s": 20.933888888888887,
+      "stereo_pair_residual_ms": 7.414460771757031,
+      "sync_offset_right_minus_left_s": -0.07507001632731439,
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "reference_status": "MATCHED",
+      "calibration_source": "EXTRINSICS_FALLBACK",
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_d1bda89d641b01e1",
+      "reference_source": "INTERNAL_STATIC_REFERENCE",
+      "reference_mode": "designated_static_water_frame",
+      "reference_coordinate_system": "official_wass_grid_m",
+      "wass_point_count": 146818,
+      "mapped_pixel_count": 954468,
+      "exported_pixel_count": 49,
+      "measurement_region_source": "USER_RECTANGLE",
+      "measurement_region_normalized": [
+        0.41833333333333333,
+        0.7644444444444445,
+        0.42125,
+        0.7696296296296297
+      ],
+      "common_stereo_region": "COMMON_REGION_NOT_AVAILABLE",
+      "height_available_region": "finite official pixel XYZ/H and nonzero provenance",
+      "science_run": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank21",
+      "units": "m",
+      "raw_image_size_wh": [
+        1920,
+        1080
+      ],
+      "official_mapping_size_wh": [
+        2400,
+        1350
+      ],
+      "csv_pixel_coordinate_system": "official wassncplot pixel mapping",
+      "overlay_coordinate_system": "UNDISTORTED_MEASUREMENT_VIEW: official WASS undistorted cam0, complete extent at map raster size",
+      "measurement_image_size_wh": [
+        2400,
+        1350
+      ],
+      "raw_image_coordinate_system": "RAW_CAMERA_IMAGE; undistorted height hover disabled",
+      "pointcloud_coordinate_system": "unchanged official WASS PLY; not the aligned metric grid XYZ in CSV",
+      "note": "ROI affects presentation/export only; no WASS input or scientific output was modified."
+    }
+  },
+  {
+    "label": "HomeTank22",
+    "root": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank22",
+    "status": "FIXED_COORDINATE_FRAME_PASS",
+    "identities": {
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "coordinate_system": "official_wass_grid_m",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2"
+    },
+    "reference": {
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_d1bda89d641b01e1",
+      "normal": [
+        0.039674925870819756,
+        -0.010125118707312277,
+        0.9991613394383851
+      ],
+      "d": 0.003360616869698453,
+      "mode": "designated_static_water_frame",
+      "coordinate_system": "official_wass_grid_m",
+      "equation": "H = n^T P + d; n has unit length",
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2",
+      "n": [
+        0.039674925870819756,
+        -0.010125118707312277,
+        0.9991613394383851
+      ],
+      "source": "INTERNAL_STATIC_REFERENCE"
+    },
+    "map_size_wh": [
+      2400,
+      1350
+    ],
+    "measurement_logical_wh": [
+      1920,
+      1080
+    ],
+    "source_time_verified": true,
+    "new_map_measurement_reprojection_logical_px": {
+      "count": 1000,
+      "median": 0.0020368758338270353,
+      "max": 0.3329438765992479,
+      "min": 6.245621391234393e-05
+    },
+    "hypothetical_raw_alignment_logical_px": {
+      "count": 1000,
+      "median": 4.672655661320929,
+      "max": 15.40624764256893,
+      "min": 0.016616321672816254
+    },
+    "actual_wass_transform_checks": {
+      "orthogonality_frobenius": 1.5769983777539744e-16,
+      "determinant": 0.9999999999999999,
+      "actual_wass_point_count": 1000,
+      "camera_grid_camera_error_B": {
+        "median": 4.965068306494546e-16,
+        "max": 1.790180836524724e-15
+      },
+      "cameras": {
+        "0": {
+          "reprojection_px": {
+            "median": 2.3437142008433856e-13,
+            "max": 7.190186943645084e-13
+          },
+          "official_forward_matrix_vs_alignment_native": {
+            "median": 5.352752885678288e-17,
+            "max": 1.1781302201408528e-16
+          },
+          "projection_matrix_formula_max": 0.0
+        },
+        "1": {
+          "reprojection_px": {
+            "median": 1.2710574864626038e-13,
+            "max": 4.856703836433968e-13
+          },
+          "official_forward_matrix_vs_alignment_native": {
+            "median": 7.102512805740313e-17,
+            "max": 1.2738115944464653e-16
+          },
+          "projection_matrix_formula_max": 0.0
+        }
+      }
+    },
+    "mapped_official_grid_estimates": 933469,
+    "no_data": 2306531,
+    "direct_stereo_pixels": 0,
+    "filtered_wass_points": 107272,
+    "H_native": {
+      "count": 933469,
+      "median": 2.0939035940360264e-05,
+      "max": 0.06946494347122163,
+      "min": -0.035192769220240054
+    },
+    "units": "m",
+    "same_complete_historical_bundle": {
+      "intrinsics_00.xml": true,
+      "distortion_00.xml": true,
+      "intrinsics_01.xml": true,
+      "distortion_01.xml": true,
+      "ext_R.xml": true,
+      "ext_T.xml": true
+    },
+    "raw_hover_disabled": true,
+    "boundaries": [
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          0
+        ],
+        "hover": {
+          "u": 0,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          0
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          1349
+        ],
+        "hover": {
+          "u": 0,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          1349
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          0
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          675
+        ],
+        "hover": {
+          "u": 0,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          675
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          1349
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          675
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 675,
+          "X": -0.08164210617542267,
+          "Y": 0.18141116201877594,
+          "Z": 0.002786183962598443,
+          "height_native": 0.0010685101089710036,
+          "height_mm": 1.0685101089710036,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          0
+        ],
+        "hover": {
+          "u": 0,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          0
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          1349
+        ],
+        "hover": {
+          "u": 0,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          1349
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          0
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          675
+        ],
+        "hover": {
+          "u": 0,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          675
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          1349
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          675
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 675,
+          "X": -0.08164210617542267,
+          "Y": 0.18141116201877594,
+          "Z": 0.002786183962598443,
+          "height_native": 0.0010685101089710036,
+          "height_mm": 1.0685101089710036,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      }
+    ],
+    "samples": [
+      {
+        "map_uv": [
+          1455,
+          1032
+        ],
+        "projection_logical_uv": [
+          1164.395399621429,
+          825.9909630514516
+        ],
+        "hover": {
+          "u": 1455,
+          "v": 1032,
+          "X": -0.0389690175652504,
+          "Y": 0.2684387266635895,
+          "Z": 0.004748593550175428,
+          "height_native": 0.0038411611054716315,
+          "height_mm": 3.8411611054716315,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1085,
+          377
+        ],
+        "projection_logical_uv": [
+          868.397772584261,
+          301.9944726352033
+        ],
+        "hover": {
+          "u": 1085,
+          "v": 377,
+          "X": -0.09647976607084274,
+          "Y": 0.12988796830177307,
+          "Z": -0.006956824567168951,
+          "height_native": -0.008733331947673725,
+          "height_mm": -8.733331947673724,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1016,
+          1042
+        ],
+        "projection_logical_uv": [
+          813.1990251753451,
+          833.9938582103704
+        ],
+        "hover": {
+          "u": 1016,
+          "v": 1042,
+          "X": -0.1203710213303566,
+          "Y": 0.26298943161964417,
+          "Z": 0.012203062884509563,
+          "height_native": 0.008114934964441628,
+          "height_mm": 8.114934964441629,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1760,
+          362
+        ],
+        "projection_logical_uv": [
+          1408.3987857229727,
+          290.0002265300271
+        ],
+        "hover": {
+          "u": 1760,
+          "v": 362,
+          "X": 0.0004254785890225321,
+          "Y": 0.1257736086845398,
+          "Z": 0.0018418728141114116,
+          "height_native": 0.00394435309102224,
+          "height_mm": 3.9443530910222404,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1497,
+          898
+        ],
+        "projection_logical_uv": [
+          1197.9984611940986,
+          718.7970588621856
+        ],
+        "hover": {
+          "u": 1497,
+          "v": 898,
+          "X": -0.030126700177788734,
+          "Y": 0.25372570753097534,
+          "Z": -0.015520154498517513,
+          "height_native": -0.015910798991465087,
+          "height_mm": -15.910798991465088,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1391,
+          951
+        ],
+        "projection_logical_uv": [
+          1113.194501914584,
+          761.1890054714984
+        ],
+        "hover": {
+          "u": 1391,
+          "v": 951,
+          "X": -0.051118992269039154,
+          "Y": 0.23806844651699066,
+          "Z": 0.011757737025618553,
+          "height_native": 0.010669879634664689,
+          "height_mm": 10.669879634664689,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1433,
+          963
+        ],
+        "projection_logical_uv": [
+          1146.800692247625,
+          770.8014004459523
+        ],
+        "hover": {
+          "u": 1433,
+          "v": 963,
+          "X": -0.043669894337654114,
+          "Y": 0.2435111701488495,
+          "Z": 0.009721020236611366,
+          "height_native": 0.008875305145072137,
+          "height_mm": 8.875305145072137,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1596,
+          971
+        ],
+        "projection_logical_uv": [
+          1277.1998280489443,
+          777.1991260177639
+        ],
+        "hover": {
+          "u": 1596,
+          "v": 971,
+          "X": -0.012860133312642574,
+          "Y": 0.2599002420902252,
+          "Z": -0.002801653230562806,
+          "height_native": -0.0025804323638832422,
+          "height_mm": -2.5804323638832423,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1782,
+          847
+        ],
+        "projection_logical_uv": [
+          1426.0014838036252,
+          678.0009360644423
+        ],
+        "hover": {
+          "u": 1782,
+          "v": 847,
+          "X": 0.015611335635185242,
+          "Y": 0.2241845726966858,
+          "Z": 0.0004018194158561528,
+          "height_native": 0.0021115824686260744,
+          "height_mm": 2.1115824686260742,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1280,
+          409
+        ],
+        "projection_logical_uv": [
+          1024.4019744254592,
+          327.60118586905145
+        ],
+        "hover": {
+          "u": 1280,
+          "v": 409,
+          "X": -0.06681198626756668,
+          "Y": 0.12631723284721375,
+          "Z": 0.00959588959813118,
+          "height_native": 0.00901872119386489,
+          "height_mm": 9.01872119386489,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1563,
+          1087
+        ],
+        "projection_logical_uv": [
+          1250.8021625505573,
+          869.9982060458948
+        ],
+        "hover": {
+          "u": 1563,
+          "v": 1087,
+          "X": -0.019397716969251633,
+          "Y": 0.2767123281955719,
+          "Z": 0.010756660252809525,
+          "height_native": 0.010536907782204136,
+          "height_mm": 10.536907782204137,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1568,
+          372
+        ],
+        "projection_logical_uv": [
+          1254.80185608711,
+          297.9990417148258
+        ],
+        "hover": {
+          "u": 1568,
+          "v": 372,
+          "X": -0.025537921115756035,
+          "Y": 0.12838314473628998,
+          "Z": -0.0014108710456639528,
+          "height_native": -0.00036218064169743014,
+          "height_mm": -0.36218064169743014,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1703,
+          870
+        ],
+        "projection_logical_uv": [
+          1362.7987526994293,
+          696.3987625255088
+        ],
+        "hover": {
+          "u": 1703,
+          "v": 870,
+          "X": 0.0031625062692910433,
+          "Y": 0.2304411381483078,
+          "Z": -0.0002411325986031443,
+          "height_native": 0.0009119148224962376,
+          "height_mm": 0.9119148224962376,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1797,
+          867
+        ],
+        "projection_logical_uv": [
+          1438.0000696283319,
+          694.000174080518
+        ],
+        "hover": {
+          "u": 1797,
+          "v": 867,
+          "X": 0.019558416679501534,
+          "Y": 0.23174749314785004,
+          "Z": -0.0021505015902221203,
+          "height_native": -0.00035857332598645056,
+          "height_mm": -0.35857332598645053,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1205,
+          807
+        ],
+        "projection_logical_uv": [
+          964.3993976137073,
+          645.9977530611897
+        ],
+        "hover": {
+          "u": 1205,
+          "v": 807,
+          "X": -0.08141268789768219,
+          "Y": 0.19999700784683228,
+          "Z": 0.01449023187160492,
+          "height_native": 0.012583660552462834,
+          "height_mm": 12.583660552462835,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1712,
+          1049
+        ],
+        "projection_logical_uv": [
+          1369.999061481374,
+          839.5994713364938
+        ],
+        "hover": {
+          "u": 1712,
+          "v": 1049,
+          "X": 0.011322922073304653,
+          "Y": 0.2865886986255646,
+          "Z": -0.006315488833934069,
+          "height_native": -0.00540208391268183,
+          "height_mm": -5.40208391268183,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1792,
+          487
+        ],
+        "projection_logical_uv": [
+          1433.9875879715898,
+          389.9832429184385
+        ],
+        "hover": {
+          "u": 1792,
+          "v": 487,
+          "X": 0.005124006420373917,
+          "Y": 0.14176636934280396,
+          "Z": 0.010077330283820629,
+          "height_native": 0.012197388950633048,
+          "height_mm": 12.197388950633048,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1769,
+          330
+        ],
+        "projection_logical_uv": [
+          1415.5991290253498,
+          264.39937299086654
+        ],
+        "hover": {
+          "u": 1769,
+          "v": 330,
+          "X": 0.0013103462988510728,
+          "Y": 0.12120208144187927,
+          "Z": 0.0008206060156226158,
+          "height_native": 0.0030053371055188036,
+          "height_mm": 3.0053371055188034,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1110,
+          533
+        ],
+        "projection_logical_uv": [
+          888.3996835801006,
+          426.8011105883157
+        ],
+        "hover": {
+          "u": 1110,
+          "v": 533,
+          "X": -0.09425275772809982,
+          "Y": 0.1543874442577362,
+          "Z": -9.894966206047684e-05,
+          "height_native": -0.002040912183193699,
+          "height_mm": -2.040912183193699,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1555,
+          1132
+        ],
+        "projection_logical_uv": [
+          1244.3998997062151,
+          906.0002139233776
+        ],
+        "hover": {
+          "u": 1555,
+          "v": 1132,
+          "X": -0.02088623121380806,
+          "Y": 0.28456729650497437,
+          "Z": 0.015016523189842701,
+          "height_native": 0.014654608961308825,
+          "height_mm": 14.654608961308826,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1170,
+          791
+        ],
+        "projection_logical_uv": [
+          936.3990266810083,
+          633.198345610138
+        ],
+        "hover": {
+          "u": 1170,
+          "v": 791,
+          "X": -0.08704472333192825,
+          "Y": 0.19743399322032928,
+          "Z": 0.013312187045812607,
+          "height_native": 0.011209103945392106,
+          "height_mm": 11.209103945392107,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1189,
+          380
+        ],
+        "projection_logical_uv": [
+          951.5967221089263,
+          304.39466203525024
+        ],
+        "hover": {
+          "u": 1189,
+          "v": 380,
+          "X": -0.07995638251304626,
+          "Y": 0.12508435547351837,
+          "Z": 0.0028633770998567343,
+          "height_native": 0.0017828350714074667,
+          "height_mm": 1.7828350714074668,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1237,
+          316
+        ],
+        "projection_logical_uv": [
+          989.9891417696742,
+          253.15120103812976
+        ],
+        "hover": {
+          "u": 1237,
+          "v": 316,
+          "X": -0.07257653027772903,
+          "Y": 0.11517715454101562,
+          "Z": 0.0021041780710220337,
+          "height_native": 0.001417379428729266,
+          "height_mm": 1.417379428729266,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1039,
+          494
+        ],
+        "projection_logical_uv": [
+          831.600344654789,
+          395.60071559114726
+        ],
+        "hover": {
+          "u": 1039,
+          "v": 494,
+          "X": -0.10607369244098663,
+          "Y": 0.15205639600753784,
+          "Z": -0.008046119473874569,
+          "height_native": -0.01042680958532202,
+          "height_mm": -10.42680958532202,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1027,
+          789
+        ],
+        "projection_logical_uv": [
+          822.0062112209766,
+          631.5897635094668
+        ],
+        "hover": {
+          "u": 1027,
+          "v": 789,
+          "X": -0.11702586710453033,
+          "Y": 0.22389447689056396,
+          "Z": -0.015319876372814178,
+          "height_native": -0.018856362085762222,
+          "height_mm": -18.85636208576222,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1137,
+          412
+        ],
+        "projection_logical_uv": [
+          909.9966177109197,
+          329.99385692372016
+        ],
+        "hover": {
+          "u": 1137,
+          "v": 412,
+          "X": -0.08825605362653732,
+          "Y": 0.13204003870487213,
+          "Z": 8.808087295619771e-05,
+          "height_native": -0.0013898495785886291,
+          "height_mm": -1.3898495785886291,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1622,
+          658
+        ],
+        "projection_logical_uv": [
+          1298.0003537699274,
+          526.8003905724457
+        ],
+        "hover": {
+          "u": 1622,
+          "v": 658,
+          "X": -0.015013276599347591,
+          "Y": 0.17811715602874756,
+          "Z": 0.004066461231559515,
+          "height_native": 0.005024559735840563,
+          "height_mm": 5.024559735840563,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1025,
+          357
+        ],
+        "projection_logical_uv": [
+          820.4009294528164,
+          286.00072073530083
+        ],
+        "hover": {
+          "u": 1025,
+          "v": 357,
+          "X": -0.1062682494521141,
+          "Y": 0.1293509155511856,
+          "Z": -0.012659979052841663,
+          "height_native": -0.01481462305229041,
+          "height_mm": -14.814623052290411,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1844,
+          355
+        ],
+        "projection_logical_uv": [
+          1475.5972836137273,
+          284.39396912079553
+        ],
+        "hover": {
+          "u": 1844,
+          "v": 355,
+          "X": 0.01046973280608654,
+          "Y": 0.12257762253284454,
+          "Z": 0.005985811818391085,
+          "height_native": 0.00851568151775181,
+          "height_mm": 8.51568151775181,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1777,
+          355
+        ],
+        "projection_logical_uv": [
+          1421.9998409253567,
+          284.40085232273213
+        ],
+        "hover": {
+          "u": 1777,
+          "v": 355,
+          "X": 0.002638941165059805,
+          "Y": 0.12476872652769089,
+          "Z": 0.0017498787492513657,
+          "height_native": 0.0039504296927033635,
+          "height_mm": 3.9504296927033633,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1174,
+          855
+        ],
+        "projection_logical_uv": [
+          939.5988050241941,
+          684.3989385594346
+        ],
+        "hover": {
+          "u": 1174,
+          "v": 855,
+          "X": -0.08978933095932007,
+          "Y": 0.23267091810703278,
+          "Z": -0.006640814710408449,
+          "height_native": -0.00919283416668995,
+          "height_mm": -9.19283416668995,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1698,
+          531
+        ],
+        "projection_logical_uv": [
+          1358.801761869788,
+          425.20002492162035
+        ],
+        "hover": {
+          "u": 1698,
+          "v": 531,
+          "X": -0.004646528512239456,
+          "Y": 0.15704238414764404,
+          "Z": -0.0007107103010639548,
+          "height_native": 0.0008760791574807512,
+          "height_mm": 0.8760791574807512,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      }
+    ],
+    "export": {
+      "frame_id": 0,
+      "timestamp_s": 22.00121111111111,
+      "source_image_pair": {
+        "left_file": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank22\\sync\\frames\\cam0\\000000.png",
+        "right_file": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank22\\sync\\frames\\cam1\\000000.png",
+        "left_source_frame": {
+          "source_frame_index": 1307,
+          "source_pts_ticks": 1980109,
+          "source_time_base": "1/90000",
+          "actual_source_pts_s": 22.00121111111111,
+          "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS; decoded index before select; selected output joined by integer PTS",
+          "requested_timestamp_s": 22.0,
+          "canonical_camera_image_orientation": "CONTAINER_DISPLAY_ORIENTATION_APPLIED_ONCE_V1",
+          "extraction_argv": [
+            "D:\\FormatFactory\\ffmpeg.exe",
+            "-hide_banner",
+            "-loglevel",
+            "info",
+            "-y",
+            "-copyts",
+            "-autorotate",
+            "-i",
+            "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam0_iQOO_Neo5S.mp4",
+            "-vf",
+            "showinfo@source,select='gte(t,22.000000000)',showinfo@selected",
+            "-frames:v",
+            "1",
+            "-vsync",
+            "0",
+            "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank22\\sync\\frames\\cam0\\000000.png"
+          ],
+          "identification_log": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank22\\sync\\frames\\frame_identification\\cam0_000000.log",
+          "decoded_png_sha256": "3d47ea01c6d80bfa3c02f1a5a5a533348d1a0c91117c65ba00a6ac0a933f4d8b"
+        },
+        "right_source_frame": {
+          "source_frame_index": 1316,
+          "source_pts_ticks": 1974053,
+          "source_time_base": "1/90000",
+          "actual_source_pts_s": 21.933922222222222,
+          "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS; decoded index before select; selected output joined by integer PTS",
+          "requested_timestamp_s": 21.924929983672687,
+          "canonical_camera_image_orientation": "CONTAINER_DISPLAY_ORIENTATION_APPLIED_ONCE_V1",
+          "extraction_argv": [
+            "D:\\FormatFactory\\ffmpeg.exe",
+            "-hide_banner",
+            "-loglevel",
+            "info",
+            "-y",
+            "-copyts",
+            "-autorotate",
+            "-i",
+            "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam1_iQOO_Z10_TurboPlus.mp4",
+            "-vf",
+            "showinfo@source,select='gte(t,21.924929984)',showinfo@selected",
+            "-frames:v",
+            "1",
+            "-vsync",
+            "0",
+            "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank22\\sync\\frames\\cam1\\000000.png"
+          ],
+          "identification_log": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank22\\sync\\frames\\frame_identification\\cam1_000000.log",
+          "decoded_png_sha256": "926b5c5a79cd7815633676116bdba82c462c18ce2d7ab01536ce2c5a60d8493d"
+        }
+      },
+      "requested_timestamp": 22.0,
+      "actual_left_source_pts": 22.00121111111111,
+      "actual_right_source_pts": 21.933922222222222,
+      "left_source_frame_index": 1307,
+      "right_source_frame_index": 1316,
+      "TLCC_offset": -0.07507001632731439,
+      "pair_residual_s": 0.007781127438425212,
+      "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS",
+      "left_actual_timestamp_s": 22.00121111111111,
+      "right_actual_timestamp_s": 21.933922222222222,
+      "stereo_pair_residual_ms": 7.781127438425211,
+      "sync_offset_right_minus_left_s": -0.07507001632731439,
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "reference_status": "MATCHED",
+      "calibration_source": "EXTRINSICS_FALLBACK",
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_d1bda89d641b01e1",
+      "reference_source": "INTERNAL_STATIC_REFERENCE",
+      "reference_mode": "designated_static_water_frame",
+      "reference_coordinate_system": "official_wass_grid_m",
+      "wass_point_count": 107272,
+      "mapped_pixel_count": 933469,
+      "exported_pixel_count": 49,
+      "measurement_region_source": "USER_RECTANGLE",
+      "measurement_region_normalized": [
+        0.605,
+        0.7622222222222222,
+        0.6079166666666667,
+        0.7674074074074074
+      ],
+      "common_stereo_region": "COMMON_REGION_NOT_AVAILABLE",
+      "height_available_region": "finite official pixel XYZ/H and nonzero provenance",
+      "science_run": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank22",
+      "units": "m",
+      "raw_image_size_wh": [
+        1920,
+        1080
+      ],
+      "official_mapping_size_wh": [
+        2400,
+        1350
+      ],
+      "csv_pixel_coordinate_system": "official wassncplot pixel mapping",
+      "overlay_coordinate_system": "UNDISTORTED_MEASUREMENT_VIEW: official WASS undistorted cam0, complete extent at map raster size",
+      "measurement_image_size_wh": [
+        2400,
+        1350
+      ],
+      "raw_image_coordinate_system": "RAW_CAMERA_IMAGE; undistorted height hover disabled",
+      "pointcloud_coordinate_system": "unchanged official WASS PLY; not the aligned metric grid XYZ in CSV",
+      "note": "ROI affects presentation/export only; no WASS input or scientific output was modified."
+    }
+  },
+  {
+    "label": "HomeTank23",
+    "root": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank23",
+    "status": "FIXED_COORDINATE_FRAME_PASS",
+    "identities": {
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "coordinate_system": "official_wass_grid_m",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2"
+    },
+    "reference": {
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_d1bda89d641b01e1",
+      "normal": [
+        0.039674925870819756,
+        -0.010125118707312277,
+        0.9991613394383851
+      ],
+      "d": 0.003360616869698453,
+      "mode": "designated_static_water_frame",
+      "coordinate_system": "official_wass_grid_m",
+      "equation": "H = n^T P + d; n has unit length",
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2",
+      "n": [
+        0.039674925870819756,
+        -0.010125118707312277,
+        0.9991613394383851
+      ],
+      "source": "INTERNAL_STATIC_REFERENCE"
+    },
+    "map_size_wh": [
+      2400,
+      1350
+    ],
+    "measurement_logical_wh": [
+      1920,
+      1080
+    ],
+    "source_time_verified": true,
+    "new_map_measurement_reprojection_logical_px": {
+      "count": 1000,
+      "median": 0.0017950881673162438,
+      "max": 0.269001686696435,
+      "min": 3.675193386229349e-05
+    },
+    "hypothetical_raw_alignment_logical_px": {
+      "count": 1000,
+      "median": 4.380808167913828,
+      "max": 14.323865070926256,
+      "min": 0.0010490407101225307
+    },
+    "actual_wass_transform_checks": {
+      "orthogonality_frobenius": 1.5769983777539744e-16,
+      "determinant": 0.9999999999999999,
+      "actual_wass_point_count": 1000,
+      "camera_grid_camera_error_B": {
+        "median": 4.965068306494546e-16,
+        "max": 1.0175362097255202e-15
+      },
+      "cameras": {
+        "0": {
+          "reprojection_px": {
+            "median": 2.2737367544323206e-13,
+            "max": 6.915300366811402e-13
+          },
+          "official_forward_matrix_vs_alignment_native": {
+            "median": 5.622578805380086e-17,
+            "max": 1.1103183117426188e-16
+          },
+          "projection_matrix_formula_max": 0.0
+        },
+        "1": {
+          "reprojection_px": {
+            "median": 1.2710574864626038e-13,
+            "max": 4.552466771099645e-13
+          },
+          "official_forward_matrix_vs_alignment_native": {
+            "median": 6.989009371836677e-17,
+            "max": 1.2510471639264603e-16
+          },
+          "projection_matrix_formula_max": 0.0
+        }
+      }
+    },
+    "mapped_official_grid_estimates": 948940,
+    "no_data": 2291060,
+    "direct_stereo_pixels": 0,
+    "filtered_wass_points": 127965,
+    "H_native": {
+      "count": 948940,
+      "median": 0.00014459834229938037,
+      "max": 0.039804752441093695,
+      "min": -0.01899800072109082
+    },
+    "units": "m",
+    "same_complete_historical_bundle": {
+      "intrinsics_00.xml": true,
+      "distortion_00.xml": true,
+      "intrinsics_01.xml": true,
+      "distortion_01.xml": true,
+      "ext_R.xml": true,
+      "ext_T.xml": true
+    },
+    "raw_hover_disabled": true,
+    "boundaries": [
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          0
+        ],
+        "hover": {
+          "u": 0,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          0
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          1349
+        ],
+        "hover": {
+          "u": 0,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          1349
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          0
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          675
+        ],
+        "hover": {
+          "u": 0,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          675
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          1349
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          675
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 675,
+          "X": -0.08170586824417114,
+          "Y": 0.18200194835662842,
+          "Z": 0.0020864030811935663,
+          "height_native": 0.0003608045690407535,
+          "height_mm": 0.3608045690407535,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          0
+        ],
+        "hover": {
+          "u": 0,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          0
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          1349
+        ],
+        "hover": {
+          "u": 0,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          1349
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          0
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          675
+        ],
+        "hover": {
+          "u": 0,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          675
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          1349
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          675
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 675,
+          "X": -0.08170586824417114,
+          "Y": 0.18200194835662842,
+          "Z": 0.0020864030811935663,
+          "height_native": 0.0003608045690407535,
+          "height_mm": 0.3608045690407535,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      }
+    ],
+    "samples": [
+      {
+        "map_uv": [
+          1653,
+          1030
+        ],
+        "projection_logical_uv": [
+          1322.7990364179598,
+          824.3968788686195
+        ],
+        "hover": {
+          "u": 1653,
+          "v": 1030,
+          "X": -0.0004116271738894284,
+          "Y": 0.2804487347602844,
+          "Z": -0.005865945015102625,
+          "height_native": -0.005356316617037298,
+          "height_mm": -5.356316617037298,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          977,
+          377
+        ],
+        "projection_logical_uv": [
+          782.005351846339,
+          301.9994241920311
+        ],
+        "hover": {
+          "u": 977,
+          "v": 377,
+          "X": -0.11135013401508331,
+          "Y": 0.12473808974027634,
+          "Z": 0.0006229126011021435,
+          "height_native": -0.0016977892201292268,
+          "height_mm": -1.6977892201292268,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1087,
+          1040
+        ],
+        "projection_logical_uv": [
+          870.0023131608002,
+          832.3974836517147
+        ],
+        "hover": {
+          "u": 1087,
+          "v": 1040,
+          "X": -0.11037237197160721,
+          "Y": 0.28273656964302063,
+          "Z": -0.004381460603326559,
+          "height_native": -0.008258926182111737,
+          "height_mm": -8.258926182111736,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1581,
+          362
+        ],
+        "projection_logical_uv": [
+          1265.2028099129693,
+          289.99963670198036
+        ],
+        "hover": {
+          "u": 1581,
+          "v": 362,
+          "X": -0.023755937814712524,
+          "Y": 0.1269315928220749,
+          "Z": -0.00168640969786793,
+          "height_native": -0.0005520910196874086,
+          "height_mm": -0.5520910196874086,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1007,
+          899
+        ],
+        "projection_logical_uv": [
+          805.9990642243491,
+          719.5988301824816
+        ],
+        "hover": {
+          "u": 1007,
+          "v": 899,
+          "X": -0.11995041370391846,
+          "Y": 0.23495681583881378,
+          "Z": 0.002126365667209029,
+          "height_native": -0.0016527901854544035,
+          "height_mm": -1.6527901854544034,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1610,
+          950
+        ],
+        "projection_logical_uv": [
+          1288.4028501711302,
+          760.3997106226784
+        ],
+        "hover": {
+          "u": 1610,
+          "v": 950,
+          "X": -0.011256055906414986,
+          "Y": 0.2511582672595978,
+          "Z": -0.00018613418797031045,
+          "height_native": 0.000185048331119654,
+          "height_mm": 0.185048331119654,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1438,
+          962
+        ],
+        "projection_logical_uv": [
+          1150.801099097911,
+          770.0010301469936
+        ],
+        "hover": {
+          "u": 1438,
+          "v": 962,
+          "X": -0.04237467050552368,
+          "Y": 0.249647319316864,
+          "Z": 0.004091224167495966,
+          "height_native": 0.0032394892346838083,
+          "height_mm": 3.2394892346838082,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1478,
+          970
+        ],
+        "projection_logical_uv": [
+          1182.7975927083862,
+          776.3972156340527
+        ],
+        "hover": {
+          "u": 1478,
+          "v": 970,
+          "X": -0.03482431545853615,
+          "Y": 0.25555405020713806,
+          "Z": 0.0008147004409693182,
+          "height_native": 0.0002054668247372213,
+          "height_mm": 0.2054668247372213,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1420,
+          849
+        ],
+        "projection_logical_uv": [
+          1136.3991130546121,
+          679.6017246644865
+        ],
+        "hover": {
+          "u": 1420,
+          "v": 849,
+          "X": -0.045835964381694794,
+          "Y": 0.22191695868968964,
+          "Z": 0.00272036693058908,
+          "height_native": 0.002013228296869628,
+          "height_mm": 2.013228296869628,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1260,
+          409
+        ],
+        "projection_logical_uv": [
+          1008.3983674042192,
+          327.5998449829957
+        ],
+        "hover": {
+          "u": 1260,
+          "v": 409,
+          "X": -0.07004331797361374,
+          "Y": 0.13242125511169434,
+          "Z": -0.00030882703140378,
+          "height_native": -0.0010676955363802987,
+          "height_mm": -1.0676955363802987,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1199,
+          1085
+        ],
+        "projection_logical_uv": [
+          959.6006177712367,
+          868.3967670652372
+        ],
+        "hover": {
+          "u": 1199,
+          "v": 1085,
+          "X": -0.08796609193086624,
+          "Y": 0.2869698107242584,
+          "Z": 0.003122517140582204,
+          "height_native": 8.486370280099808e-05,
+          "height_mm": 0.08486370280099809,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1411,
+          372
+        ],
+        "projection_logical_uv": [
+          1129.1980953722327,
+          297.9984913600702
+        ],
+        "hover": {
+          "u": 1411,
+          "v": 372,
+          "X": -0.04804254695773125,
+          "Y": 0.12656332552433014,
+          "Z": 0.00018221262143924832,
+          "height_native": 0.00035512349247885863,
+          "height_mm": 0.35512349247885866,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1773,
+          871
+        ],
+        "projection_logical_uv": [
+          1418.8003000703861,
+          697.2002888370027
+        ],
+        "hover": {
+          "u": 1773,
+          "v": 871,
+          "X": 0.014714052900671959,
+          "Y": 0.22974707186222076,
+          "Z": 0.0007240765844471753,
+          "height_native": 0.0023416487825017544,
+          "height_mm": 2.3416487825017542,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          886,
+          869
+        ],
+        "projection_logical_uv": [
+          709.1995606903723,
+          695.5997355363572
+        ],
+        "hover": {
+          "u": 886,
+          "v": 869,
+          "X": -0.14098483324050903,
+          "Y": 0.22654996812343597,
+          "Z": 0.0025859451852738857,
+          "height_native": -0.0019430148033837305,
+          "height_mm": -1.9430148033837304,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          880,
+          810
+        ],
+        "projection_logical_uv": [
+          704.399242893469,
+          648.4012151374135
+        ],
+        "hover": {
+          "u": 880,
+          "v": 810,
+          "X": -0.1419030874967575,
+          "Y": 0.21809731423854828,
+          "Z": -0.004010572098195553,
+          "height_native": -0.008484847393534424,
+          "height_mm": -8.484847393534425,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1689,
+          1047
+        ],
+        "projection_logical_uv": [
+          1351.5967052087312,
+          837.9928246624772
+        ],
+        "hover": {
+          "u": 1689,
+          "v": 1047,
+          "X": 0.0037959334440529346,
+          "Y": 0.2718570828437805,
+          "Z": 0.005136251449584961,
+          "height_native": 0.00589057889054457,
+          "height_mm": 5.89057889054457,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          891,
+          488
+        ],
+        "projection_logical_uv": [
+          713.2028642749215,
+          390.7999616436774
+        ],
+        "hover": {
+          "u": 891,
+          "v": 488,
+          "X": -0.12662766873836517,
+          "Y": 0.14246408641338348,
+          "Z": 0.0032563304994255304,
+          "height_native": 0.00014780725630487122,
+          "height_mm": 0.14780725630487124,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1907,
+          330
+        ],
+        "projection_logical_uv": [
+          1526.0005804768568,
+          264.401452256144
+        ],
+        "hover": {
+          "u": 1907,
+          "v": 330,
+          "X": 0.024862006306648254,
+          "Y": 0.13051551580429077,
+          "Z": -0.013790823519229889,
+          "height_native": -0.01075372766318208,
+          "height_mm": -10.75372766318208,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1503,
+          533
+        ],
+        "projection_logical_uv": [
+          1202.799527384481,
+          426.7995129074587
+        ],
+        "hover": {
+          "u": 1503,
+          "v": 533,
+          "X": -0.03401833027601242,
+          "Y": 0.15510553121566772,
+          "Z": 0.0013159001246094704,
+          "height_native": 0.0017552767531011672,
+          "height_mm": 1.7552767531011673,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1758,
+          1126
+        ],
+        "projection_logical_uv": [
+          1406.8006692820231,
+          901.1988068898362
+        ],
+        "hover": {
+          "u": 1758,
+          "v": 1126,
+          "X": 0.019701698794960976,
+          "Y": 0.29868873953819275,
+          "Z": 0.0025909936521202326,
+          "height_native": 0.0037068420524848738,
+          "height_mm": 3.7068420524848738,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1256,
+          794
+        ],
+        "projection_logical_uv": [
+          1005.2012224186863,
+          635.5977609871309
+        ],
+        "hover": {
+          "u": 1256,
+          "v": 794,
+          "X": -0.07300147414207458,
+          "Y": 0.19760973751544952,
+          "Z": 0.01399990264326334,
+          "height_native": 0.012451628221636318,
+          "height_mm": 12.451628221636318,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1116,
+          380
+        ],
+        "projection_logical_uv": [
+          893.2035583295144,
+          304.3991131620973
+        ],
+        "hover": {
+          "u": 1116,
+          "v": 380,
+          "X": -0.09094412624835968,
+          "Y": 0.12651123106479645,
+          "Z": -0.00017008119903039187,
+          "height_native": -0.0016984643885674601,
+          "height_mm": -1.6984643885674602,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1149,
+          316
+        ],
+        "projection_logical_uv": [
+          919.6044322198904,
+          253.2003384839791
+        ],
+        "hover": {
+          "u": 1149,
+          "v": 316,
+          "X": -0.08440588414669037,
+          "Y": 0.11129489541053772,
+          "Z": 0.008156382478773594,
+          "height_native": 0.007034487688031114,
+          "height_mm": 7.034487688031113,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1226,
+          494
+        ],
+        "projection_logical_uv": [
+          981.1993675843377,
+          395.6000957803574
+        ],
+        "hover": {
+          "u": 1226,
+          "v": 494,
+          "X": -0.07608114182949066,
+          "Y": 0.15032245218753815,
+          "Z": -0.004186128731817007,
+          "height_native": -0.005362547456070801,
+          "height_mm": -5.362547456070802,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1151,
+          792
+        ],
+        "projection_logical_uv": [
+          921.2058915503901,
+          633.989084816263
+        ],
+        "hover": {
+          "u": 1151,
+          "v": 792,
+          "X": -0.09325747936964035,
+          "Y": 0.2196757197380066,
+          "Z": -0.009818051941692829,
+          "height_native": -0.012373427379390557,
+          "height_mm": -12.373427379390556,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1111,
+          412
+        ],
+        "projection_logical_uv": [
+          889.2006534589583,
+          329.9999166366652
+        ],
+        "hover": {
+          "u": 1111,
+          "v": 412,
+          "X": -0.09167371690273285,
+          "Y": 0.12976346909999847,
+          "Z": 0.0035064516123384237,
+          "height_native": 0.0019131093084298221,
+          "height_mm": 1.913109308429822,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1367,
+          661
+        ],
+        "projection_logical_uv": [
+          1094.001356232563,
+          529.196282732568
+        ],
+        "hover": {
+          "u": 1367,
+          "v": 661,
+          "X": -0.05472695827484131,
+          "Y": 0.17819635570049286,
+          "Z": 0.0037300551775842905,
+          "height_native": 0.003111996529744948,
+          "height_mm": 3.111996529744948,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          887,
+          357
+        ],
+        "projection_logical_uv": [
+          710.0043989667056,
+          285.99912472785434
+        ],
+        "hover": {
+          "u": 887,
+          "v": 357,
+          "X": -0.12389177829027176,
+          "Y": 0.1200164258480072,
+          "Z": 0.001972096972167492,
+          "height_native": -0.0007995177562972748,
+          "height_mm": -0.7995177562972748,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1753,
+          355
+        ],
+        "projection_logical_uv": [
+          1402.7997407336534,
+          284.4024403284643
+        ],
+        "hover": {
+          "u": 1753,
+          "v": 355,
+          "X": -0.0004939424688927829,
+          "Y": 0.12498853355646133,
+          "Z": 0.0011691136751323938,
+          "height_native": 0.0032436291851496426,
+          "height_mm": 3.2436291851496426,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1684,
+          355
+        ],
+        "projection_logical_uv": [
+          1347.5980387347092,
+          284.39609531956825
+        ],
+        "hover": {
+          "u": 1684,
+          "v": 355,
+          "X": -0.009147221222519875,
+          "Y": 0.12698428332805634,
+          "Z": -0.002794669009745121,
+          "height_native": -0.0010803546279524391,
+          "height_mm": -1.0803546279524392,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1597,
+          856
+        ],
+        "projection_logical_uv": [
+          1277.9982329410623,
+          685.1949263809822
+        ],
+        "hover": {
+          "u": 1597,
+          "v": 856,
+          "X": -0.017247525975108147,
+          "Y": 0.21545302867889404,
+          "Z": 0.010916166007518768,
+          "height_native": 0.01140184611356146,
+          "height_mm": 11.401846113561461,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          955,
+          532
+        ],
+        "projection_logical_uv": [
+          764.3989774741434,
+          425.9998196976949
+        ],
+        "hover": {
+          "u": 955,
+          "v": 532,
+          "X": -0.11903325468301773,
+          "Y": 0.15445686876773834,
+          "Z": -0.001458343118429184,
+          "height_native": -0.004383032881016243,
+          "height_mm": -4.383032881016243,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      }
+    ],
+    "export": {
+      "frame_id": 0,
+      "timestamp_s": 23.000766666666667,
+      "source_image_pair": {
+        "left_file": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank23\\sync\\frames\\cam0\\000000.png",
+        "right_file": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank23\\sync\\frames\\cam1\\000000.png",
+        "left_source_frame": {
+          "source_frame_index": 1367,
+          "source_pts_ticks": 2070069,
+          "source_time_base": "1/90000",
+          "actual_source_pts_s": 23.000766666666667,
+          "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS; decoded index before select; selected output joined by integer PTS",
+          "requested_timestamp_s": 23.0,
+          "canonical_camera_image_orientation": "CONTAINER_DISPLAY_ORIENTATION_APPLIED_ONCE_V1",
+          "extraction_argv": [
+            "D:\\FormatFactory\\ffmpeg.exe",
+            "-hide_banner",
+            "-loglevel",
+            "info",
+            "-y",
+            "-copyts",
+            "-autorotate",
+            "-i",
+            "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam0_iQOO_Neo5S.mp4",
+            "-vf",
+            "showinfo@source,select='gte(t,23.000000000)',showinfo@selected",
+            "-frames:v",
+            "1",
+            "-vsync",
+            "0",
+            "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank23\\sync\\frames\\cam0\\000000.png"
+          ],
+          "identification_log": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank23\\sync\\frames\\frame_identification\\cam0_000000.log",
+          "decoded_png_sha256": "78e87d91d42eed808c7b80ba15367b575494a6edf0e7fb397fbb3b6b3ebde7bb"
+        },
+        "right_source_frame": {
+          "source_frame_index": 1376,
+          "source_pts_ticks": 2064055,
+          "source_time_base": "1/90000",
+          "actual_source_pts_s": 22.933944444444446,
+          "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS; decoded index before select; selected output joined by integer PTS",
+          "requested_timestamp_s": 22.924929983672687,
+          "canonical_camera_image_orientation": "CONTAINER_DISPLAY_ORIENTATION_APPLIED_ONCE_V1",
+          "extraction_argv": [
+            "D:\\FormatFactory\\ffmpeg.exe",
+            "-hide_banner",
+            "-loglevel",
+            "info",
+            "-y",
+            "-copyts",
+            "-autorotate",
+            "-i",
+            "D:\\research\\stereo-wave-height\\experiments\\real_video\\HomeTank_004\\videos\\wave\\wave_cam1_iQOO_Z10_TurboPlus.mp4",
+            "-vf",
+            "showinfo@source,select='gte(t,22.924929984)',showinfo@selected",
+            "-frames:v",
+            "1",
+            "-vsync",
+            "0",
+            "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank23\\sync\\frames\\cam1\\000000.png"
+          ],
+          "identification_log": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank23\\sync\\frames\\frame_identification\\cam1_000000.log",
+          "decoded_png_sha256": "13119b5a754736f293c4ad4cb1cc02ee36f91a07b4597793c96b020c044d3e6f"
+        }
+      },
+      "requested_timestamp": 23.0,
+      "actual_left_source_pts": 23.000766666666667,
+      "actual_right_source_pts": 22.933944444444446,
+      "left_source_frame_index": 1367,
+      "right_source_frame_index": 1376,
+      "TLCC_offset": -0.07507001632731439,
+      "pair_residual_s": 0.00824779410509316,
+      "timestamp_basis": "ABSOLUTE_SOURCE_PTS_COPYTS",
+      "left_actual_timestamp_s": 23.000766666666667,
+      "right_actual_timestamp_s": 22.933944444444446,
+      "stereo_pair_residual_ms": 8.24779410509316,
+      "sync_offset_right_minus_left_s": -0.07507001632731439,
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "reference_status": "MATCHED",
+      "calibration_source": "EXTRINSICS_FALLBACK",
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_d1bda89d641b01e1",
+      "reference_source": "INTERNAL_STATIC_REFERENCE",
+      "reference_mode": "designated_static_water_frame",
+      "reference_coordinate_system": "official_wass_grid_m",
+      "wass_point_count": 127965,
+      "mapped_pixel_count": 948940,
+      "exported_pixel_count": 49,
+      "measurement_region_source": "USER_RECTANGLE",
+      "measurement_region_normalized": [
+        0.6875,
+        0.7607407407407407,
+        0.6904166666666667,
+        0.7659259259259259
+      ],
+      "common_stereo_region": "COMMON_REGION_NOT_AVAILABLE",
+      "height_available_region": "finite official pixel XYZ/H and nonzero provenance",
+      "science_run": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\HomeTank23",
+      "units": "m",
+      "raw_image_size_wh": [
+        1920,
+        1080
+      ],
+      "official_mapping_size_wh": [
+        2400,
+        1350
+      ],
+      "csv_pixel_coordinate_system": "official wassncplot pixel mapping",
+      "overlay_coordinate_system": "UNDISTORTED_MEASUREMENT_VIEW: official WASS undistorted cam0, complete extent at map raster size",
+      "measurement_image_size_wh": [
+        2400,
+        1350
+      ],
+      "raw_image_coordinate_system": "RAW_CAMERA_IMAGE; undistorted height hover disabled",
+      "pointcloud_coordinate_system": "unchanged official WASS PLY; not the aligned metric grid XYZ in CSV",
+      "note": "ROI affects presentation/export only; no WASS input or scientific output was modified."
+    }
+  },
+  {
+    "label": "Vieira0",
+    "root": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\Vieira",
+    "status": "VIEIRA_OFFICIAL_SAMPLE_PASS",
+    "identities": {
+      "calibration_id": "08ae7434a64ac1a5816e0df90cdf4c362b16c1a878e6125fa87dfd8a45628b69",
+      "extrinsics_id": "ea1960e387ecc4bf86a1a60825e00a108498d1b8de7602f8b524e29850f528ad",
+      "coordinate_frame_id": "ee63ed3ac52d4db28307d060c9acf7c68701032b86f4ce5bd189ea7152d971e8",
+      "coordinate_system": "official_wass_grid_B",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2"
+    },
+    "reference": {
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_68886aa0ac6f674e",
+      "normal": [
+        0.001428226391639101,
+        -0.0017476726648426376,
+        0.9999974529015716
+      ],
+      "d": -0.05477079355627866,
+      "mode": "designated_static_water_frame",
+      "coordinate_system": "official_wass_grid_B",
+      "equation": "H = n^T P + d; n has unit length",
+      "calibration_id": "08ae7434a64ac1a5816e0df90cdf4c362b16c1a878e6125fa87dfd8a45628b69",
+      "extrinsics_id": "ea1960e387ecc4bf86a1a60825e00a108498d1b8de7602f8b524e29850f528ad",
+      "coordinate_frame_id": "ee63ed3ac52d4db28307d060c9acf7c68701032b86f4ce5bd189ea7152d971e8",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2",
+      "n": [
+        0.001428226391639101,
+        -0.0017476726648426376,
+        0.9999974529015716
+      ],
+      "source": "INTERNAL_STATIC_REFERENCE"
+    },
+    "map_size_wh": [
+      2400,
+      1350
+    ],
+    "measurement_logical_wh": [
+      1920,
+      1080
+    ],
+    "source_time_verified": false,
+    "new_map_measurement_reprojection_logical_px": {
+      "count": 1000,
+      "median": 0.014036608404856484,
+      "max": 0.2905989947240672,
+      "min": 0.00015830667727086744
+    },
+    "hypothetical_raw_alignment_logical_px": {
+      "count": 1000,
+      "median": 1.0611304056091866,
+      "max": 5.553147091604796,
+      "min": 0.005700092643316182
+    },
+    "actual_wass_transform_checks": {
+      "orthogonality_frobenius": 6.354304245337293e-16,
+      "determinant": 1.0000000000000004,
+      "actual_wass_point_count": 1000,
+      "camera_grid_camera_error_B": {
+        "median": 7.53644380168212e-15,
+        "max": 4.2927602711964753e-14
+      },
+      "cameras": {
+        "0": {
+          "reprojection_px": {
+            "median": 2.5421149729252077e-13,
+            "max": 9.165725883006586e-13
+          },
+          "official_forward_matrix_vs_alignment_native": {
+            "median": 1.1546319456101628e-14,
+            "max": 4.431111365216517e-14
+          },
+          "projection_matrix_formula_max": 0.0
+        },
+        "1": {
+          "reprojection_px": {
+            "median": 2.0495186137532011e-13,
+            "max": 9.165725883006586e-13
+          },
+          "official_forward_matrix_vs_alignment_native": {
+            "median": 8.379058453350832e-15,
+            "max": 4.5531598466568455e-14
+          },
+          "projection_matrix_formula_max": 0.0
+        }
+      }
+    },
+    "mapped_official_grid_estimates": 1220371,
+    "no_data": 2019629,
+    "direct_stereo_pixels": 0,
+    "filtered_wass_points": 653518,
+    "H_native": {
+      "count": 1220371,
+      "median": 0.017435735889393622,
+      "max": 1.6759634103649461,
+      "min": -0.9213371834570342
+    },
+    "units": "B",
+    "same_complete_historical_bundle": null,
+    "raw_hover_disabled": true,
+    "boundaries": [
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          0
+        ],
+        "hover": {
+          "u": 0,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          0
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          1349
+        ],
+        "hover": {
+          "u": 0,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          1349
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          0
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          0,
+          675
+        ],
+        "hover": {
+          "u": 0,
+          "v": 675,
+          "X": -15.410499572753906,
+          "Y": -18.577285766601562,
+          "Z": 0.3007549047470093,
+          "height_native": 0.2564406774614949,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          2399,
+          675
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          1349
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "measurement",
+        "uv": [
+          1200,
+          675
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 675,
+          "X": -2.1012587547302246,
+          "Y": -21.844402313232422,
+          "Z": -0.5298240184783936,
+          "height_native": -0.5494176709272542,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          0
+        ],
+        "hover": {
+          "u": 0,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          0
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          1349
+        ],
+        "hover": {
+          "u": 0,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          1349
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          0
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 0,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          0,
+          675
+        ],
+        "hover": {
+          "u": 0,
+          "v": 675,
+          "X": -15.410499572753906,
+          "Y": -18.577285766601562,
+          "Z": 0.3007549047470093,
+          "height_native": 0.2564406774614949,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          2399,
+          675
+        ],
+        "hover": {
+          "u": 2399,
+          "v": 675,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          1349
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 1349,
+          "provenance": "NO_DATA",
+          "height_mm": null
+        }
+      },
+      {
+        "mode": "overlay",
+        "uv": [
+          1200,
+          675
+        ],
+        "hover": {
+          "u": 1200,
+          "v": 675,
+          "X": -2.1012587547302246,
+          "Y": -21.844402313232422,
+          "Z": -0.5298240184783936,
+          "height_native": -0.5494176709272542,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      }
+    ],
+    "samples": [
+      {
+        "map_uv": [
+          1246,
+          947
+        ],
+        "projection_logical_uv": [
+          997.1941643129077,
+          757.9508635374111
+        ],
+        "hover": {
+          "u": 1246,
+          "v": 947,
+          "X": -1.2805211544036865,
+          "Y": -11.456159591674805,
+          "Z": 0.13112717866897583,
+          "height_native": 0.09454879397353981,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          365,
+          472
+        ],
+        "projection_logical_uv": [
+          292.4002887812715,
+          377.99530788688315
+        ],
+        "hover": {
+          "u": 365,
+          "v": 472,
+          "X": -21.039798736572266,
+          "Y": -37.6880989074707,
+          "Z": 0.07260841131210327,
+          "height_native": 0.05365429723517898,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          282,
+          954
+        ],
+        "projection_logical_uv": [
+          226.03009501053253,
+          763.5598541237649
+        ],
+        "hover": {
+          "u": 282,
+          "v": 954,
+          "X": -7.7432966232299805,
+          "Y": -10.735822677612305,
+          "Z": 0.32581374049186707,
+          "height_native": 0.2787456402885958,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1331,
+          459
+        ],
+        "projection_logical_uv": [
+          1065.1977982372239,
+          367.5927972840277
+        ],
+        "hover": {
+          "u": 1331,
+          "v": 459,
+          "X": -0.035788681358098984,
+          "Y": -39.660362243652344,
+          "Z": -0.051279015839099884,
+          "height_native": -0.036787462150927264,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          700,
+          857
+        ],
+        "projection_logical_uv": [
+          560.389663971644,
+          685.94599813682
+        ],
+        "hover": {
+          "u": 700,
+          "v": 857,
+          "X": -5.631311416625977,
+          "Y": -13.017491340637207,
+          "Z": 0.20350335538387299,
+          "height_native": 0.16343956968061124,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          43,
+          893
+        ],
+        "projection_logical_uv": [
+          34.81238720196114,
+          714.8039148857698
+        ],
+        "hover": {
+          "u": 43,
+          "v": 893,
+          "X": -10.42799186706543,
+          "Y": -12.149798393249512,
+          "Z": 0.19951124489307404,
+          "height_native": 0.1510802805009075,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          228,
+          901
+        ],
+        "projection_logical_uv": [
+          182.80677113755166,
+          721.1596163390112
+        ],
+        "hover": {
+          "u": 228,
+          "v": 901,
+          "X": -8.495232582092285,
+          "Y": -11.4014892578125,
+          "Z": 0.4421704113483429,
+          "height_native": 0.3951914472780237,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1214,
+          906
+        ],
+        "projection_logical_uv": [
+          971.5457787920875,
+          725.2051416875468
+        ],
+        "hover": {
+          "u": 1214,
+          "v": 906,
+          "X": -1.5500181913375854,
+          "Y": -12.599331855773926,
+          "Z": -0.017697788774967194,
+          "height_native": -0.052662806262007776,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1596,
+          822
+        ],
+        "projection_logical_uv": [
+          1277.1950783281814,
+          657.9896064607481
+        ],
+        "hover": {
+          "u": 1596,
+          "v": 822,
+          "X": 1.6641905307769775,
+          "Y": -14.724410057067871,
+          "Z": -0.054095033556222916,
+          "height_native": -0.08075539952768351,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1458,
+          498
+        ],
+        "projection_logical_uv": [
+          1166.8011376652123,
+          398.7989285490495
+        ],
+        "hover": {
+          "u": 1458,
+          "v": 498,
+          "X": 2.214709758758545,
+          "Y": -33.698246002197266,
+          "Z": -0.05283685401082039,
+          "height_native": -0.04555090266796877,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1055,
+          985
+        ],
+        "projection_logical_uv": [
+          844.3830271387567,
+          788.3972641773923
+        ],
+        "hover": {
+          "u": 1055,
+          "v": 985,
+          "X": -2.525649309158325,
+          "Y": -10.771931648254395,
+          "Z": 0.13668133318424225,
+          "height_native": 0.09712880297699715,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          491,
+          468
+        ],
+        "projection_logical_uv": [
+          393.2004929242062,
+          374.7946218287124
+        ],
+        "hover": {
+          "u": 491,
+          "v": 468,
+          "X": -18.710081100463867,
+          "Y": -38.757362365722656,
+          "Z": 0.002390031237155199,
+          "height_native": -0.011367817256184444,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          945,
+          838
+        ],
+        "projection_logical_uv": [
+          756.4107504034353,
+          670.7938933969135
+        ],
+        "hover": {
+          "u": 945,
+          "v": 838,
+          "X": -3.8356988430023193,
+          "Y": -13.84261703491211,
+          "Z": 0.08146060258150101,
+          "height_native": 0.045403718620895,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          915,
+          836
+        ],
+        "projection_logical_uv": [
+          732.3833810111261,
+          669.1535088368486
+        ],
+        "hover": {
+          "u": 915,
+          "v": 836,
+          "X": -3.8511860370635986,
+          "Y": -12.78017520904541,
+          "Z": 0.47216328978538513,
+          "height_native": 0.4342264909102351,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          220,
+          795
+        ],
+        "projection_logical_uv": [
+          176.39900059937926,
+          636.3574683250866
+        ],
+        "hover": {
+          "u": 220,
+          "v": 795,
+          "X": -10.65552806854248,
+          "Y": -14.836309432983398,
+          "Z": 0.11215800046920776,
+          "height_native": 0.06809742727429084,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          412,
+          959
+        ],
+        "projection_logical_uv": [
+          330.0069957076894,
+          767.5329380016439
+        ],
+        "hover": {
+          "u": 412,
+          "v": 959,
+          "X": -6.935116767883301,
+          "Y": -10.895179748535156,
+          "Z": 0.2288065105676651,
+          "height_native": 0.18317142524675517,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1106,
+          559
+        ],
+        "projection_logical_uv": [
+          885.1887030938251,
+          447.6236242581714
+        ],
+        "hover": {
+          "u": 1106,
+          "v": 559,
+          "X": -4.125872611999512,
+          "Y": -30.230154037475586,
+          "Z": -0.5632636547088623,
+          "height_native": -0.5710932798648916,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          760,
+          429
+        ],
+        "projection_logical_uv": [
+          608.4001401585504,
+          343.6000735974512
+        ],
+        "hover": {
+          "u": 760,
+          "v": 429,
+          "X": -15.106025695800781,
+          "Y": -47.293701171875,
+          "Z": -0.09719754755496979,
+          "height_native": -0.09088900935372676,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          217,
+          594
+        ],
+        "projection_logical_uv": [
+          173.99961764814242,
+          475.59349157659545
+        ],
+        "hover": {
+          "u": 217,
+          "v": 594,
+          "X": -17.20708656311035,
+          "Y": -25.650272369384766,
+          "Z": -0.20569145679473877,
+          "height_native": -0.24020906172154172,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1860,
+          1015
+        ],
+        "projection_logical_uv": [
+          1488.3835180671408,
+          812.3928822958676
+        ],
+        "hover": {
+          "u": 1860,
+          "v": 1015,
+          "X": 2.4983181953430176,
+          "Y": -10.190789222717285,
+          "Z": 0.24890810251235962,
+          "height_native": 0.21551500270166124,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          363,
+          784
+        ],
+        "projection_logical_uv": [
+          290.7987766938498,
+          627.5997062244952
+        ],
+        "hover": {
+          "u": 363,
+          "v": 784,
+          "X": -9.235466003417969,
+          "Y": -14.708237648010254,
+          "Z": 0.26219642162323,
+          "height_native": 0.2199398088271275,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1482,
+          474
+        ],
+        "projection_logical_uv": [
+          1185.9937091453332,
+          379.59393501393873
+        ],
+        "hover": {
+          "u": 1482,
+          "v": 474,
+          "X": 2.7934961318969727,
+          "Y": -35.01860046386719,
+          "Z": 0.22129151225090027,
+          "height_native": 0.23171095073562192,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1748,
+          414
+        ],
+        "projection_logical_uv": [
+          1398.793701507138,
+          331.6044779952305
+        ],
+        "hover": {
+          "u": 1748,
+          "v": 414,
+          "X": 11.02491569519043,
+          "Y": -47.7260856628418,
+          "Z": 0.026432005688548088,
+          "height_native": 0.07081679568170311,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          761,
+          564
+        ],
+        "projection_logical_uv": [
+          609.1982231186321,
+          451.5924779719477
+        ],
+        "hover": {
+          "u": 761,
+          "v": 564,
+          "X": -8.954821586608887,
+          "Y": -26.180429458618164,
+          "Z": 0.12568500638008118,
+          "height_native": 0.10387920108797387,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1285,
+          782
+        ],
+        "projection_logical_uv": [
+          1028.3809750400899,
+          625.9639537573748
+        ],
+        "hover": {
+          "u": 1285,
+          "v": 782,
+          "X": -1.0164740085601807,
+          "Y": -15.161832809448242,
+          "Z": 0.16326169669628143,
+          "height_native": 0.1335366530409378,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          219,
+          501
+        ],
+        "projection_logical_uv": [
+          175.60125973145094,
+          401.1973553813025
+        ],
+        "hover": {
+          "u": 219,
+          "v": 501,
+          "X": -21.380964279174805,
+          "Y": -32.786922454833984,
+          "Z": 0.17377451062202454,
+          "height_native": 0.14576722512138124,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1230,
+          688
+        ],
+        "projection_logical_uv": [
+          984.3914102136347,
+          550.7954166335315
+        ],
+        "hover": {
+          "u": 1230,
+          "v": 688,
+          "X": -1.6962984800338745,
+          "Y": -21.059648513793945,
+          "Z": -0.49736282229423523,
+          "height_native": -0.517749675236981,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1241,
+          454
+        ],
+        "projection_logical_uv": [
+          993.2005634217028,
+          363.5973389286067
+        ],
+        "hover": {
+          "u": 1241,
+          "v": 454,
+          "X": -2.0978987216949463,
+          "Y": -42.288978576660156,
+          "Z": -0.25006961822509766,
+          "height_native": -0.23392875726821055,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          936,
+          453
+        ],
+        "projection_logical_uv": [
+          749.198060298608,
+          362.79338468527015
+        ],
+        "hover": {
+          "u": 936,
+          "v": 453,
+          "X": -7.837703227996826,
+          "Y": -34.46340560913086,
+          "Z": 0.7843776345252991,
+          "height_native": 0.7786415804023826,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          826,
+          453
+        ],
+        "projection_logical_uv": [
+          661.1995711481683,
+          362.79809600708967
+        ],
+        "hover": {
+          "u": 826,
+          "v": 453,
+          "X": -11.638343811035156,
+          "Y": -40.70624923706055,
+          "Z": 0.04292494058609009,
+          "height_native": 0.04267304698975491,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1709,
+          827
+        ],
+        "projection_logical_uv": [
+          1367.577169652903,
+          661.983578210342
+        ],
+        "hover": {
+          "u": 1709,
+          "v": 827,
+          "X": 2.1951966285705566,
+          "Y": -12.961165428161621,
+          "Z": 0.5111925005912781,
+          "height_native": 0.48220751726044764,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      },
+      {
+        "map_uv": [
+          1875,
+          592
+        ],
+        "projection_logical_uv": [
+          1500.3772440904443,
+          473.9887009078632
+        ],
+        "hover": {
+          "u": 1875,
+          "v": 592,
+          "X": 6.89840030670166,
+          "Y": -24.00677490234375,
+          "Z": 0.0802537351846695,
+          "height_native": 0.07729119886020712,
+          "height_mm": null,
+          "provenance": "OFFICIAL_GRID_ESTIMATE"
+        }
+      }
+    ],
+    "export": {
+      "frame_id": 0,
+      "timestamp_s": 0.0,
+      "source_image_pair": {
+        "index": 0,
+        "left_source": "D:\\stereo-wave-height-runs\\vieira-official-sample-20260918-source\\wass_lowcost-688dfaf1d88f270cf3d7cd3db4b49369ebe52871\\input\\cam0\\000001.tif",
+        "right_source": "D:\\stereo-wave-height-runs\\vieira-official-sample-20260918-source\\wass_lowcost-688dfaf1d88f270cf3d7cd3db4b49369ebe52871\\input\\cam1\\000001.tif",
+        "left_sha256": "dbdd8f56ffd3403efe8f1e3eb879a000be411e55c7bb3d564c3ad2a535c93e2a",
+        "right_sha256": "b4c39e60b0f7eeea86ff33c7918cf5a7d44a1e84809fc54e463a634faad78168",
+        "left_file": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\Vieira\\sync\\frames\\cam0\\000000.tif",
+        "right_file": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\Vieira\\sync\\frames\\cam1\\000000.tif",
+        "time_s": 0.0
+      },
+      "requested_timestamp": null,
+      "actual_left_source_pts": null,
+      "actual_right_source_pts": null,
+      "left_source_frame_index": null,
+      "right_source_frame_index": null,
+      "TLCC_offset": null,
+      "pair_residual_s": null,
+      "timestamp_basis": "PROVIDED_SEQUENCE_NOMINAL_TIME",
+      "left_actual_timestamp_s": null,
+      "right_actual_timestamp_s": null,
+      "stereo_pair_residual_ms": null,
+      "sync_offset_right_minus_left_s": null,
+      "calibration_id": "08ae7434a64ac1a5816e0df90cdf4c362b16c1a878e6125fa87dfd8a45628b69",
+      "extrinsics_id": "ea1960e387ecc4bf86a1a60825e00a108498d1b8de7602f8b524e29850f528ad",
+      "coordinate_frame_id": "ee63ed3ac52d4db28307d060c9acf7c68701032b86f4ce5bd189ea7152d971e8",
+      "reference_status": "MATCHED",
+      "calibration_source": "EXTRINSICS_COMPUTED",
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_68886aa0ac6f674e",
+      "reference_source": "INTERNAL_STATIC_REFERENCE",
+      "reference_mode": "designated_static_water_frame",
+      "reference_coordinate_system": "official_wass_grid_B",
+      "wass_point_count": 653518,
+      "mapped_pixel_count": 1220371,
+      "exported_pixel_count": 49,
+      "measurement_region_source": "USER_RECTANGLE",
+      "measurement_region_normalized": [
+        0.5179166666666667,
+        0.6992592592592592,
+        0.5208333333333334,
+        0.7044444444444444
+      ],
+      "common_stereo_region": "COMMON_REGION_NOT_AVAILABLE",
+      "height_available_region": "finite official pixel XYZ/H and nonzero provenance",
+      "science_run": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\final\\Vieira",
+      "units": "B",
+      "raw_image_size_wh": [
+        1920,
+        1080
+      ],
+      "official_mapping_size_wh": [
+        2400,
+        1350
+      ],
+      "csv_pixel_coordinate_system": "official wassncplot pixel mapping",
+      "overlay_coordinate_system": "UNDISTORTED_MEASUREMENT_VIEW: official WASS undistorted cam0, complete extent at map raster size",
+      "measurement_image_size_wh": [
+        2400,
+        1350
+      ],
+      "raw_image_coordinate_system": "RAW_CAMERA_IMAGE; undistorted height hover disabled",
+      "pointcloud_coordinate_system": "unchanged official WASS PLY; not the aligned metric grid XYZ in CSV",
+      "note": "ROI affects presentation/export only; no WASS input or scientific output was modified."
+    }
+  }
+]

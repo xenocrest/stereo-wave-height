@@ -1,0 +1,14 @@
+HomeTank21 {'count': 1000, 'median': 0.0013912451163281343, 'max': 0.04337087460341032, 'min': 2.4993452944252664e-05} points 146818
+HomeTank22 {'count': 1000, 'median': 0.0020368758338270353, 'max': 0.3329438765992479, 'min': 6.245621391234393e-05} points 107272
+HomeTank23 {'count': 1000, 'median': 0.0017950881673162438, 'max': 0.269001686696435, 'min': 3.675193386229349e-05} points 127965
+Traceback (most recent call last):
+  File "D:\research\stereo-wave-height\fixes\scripts\inspect_p0.py", line 130, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "D:\research\stereo-wave-height\fixes\scripts\inspect_p0.py", line 95, in main
+    export=presentation.export_current_frame(ROOT/'final/exports'/label,result,window.raw_rgb,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\research\stereo-wave-height\app\presentation.py", line 50, in export_current_frame
+    row = json.loads((run / "sync" / "sync.json").read_text(encoding="utf-8"))["frame_mapping"][frame_id]
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+KeyError: 'frame_mapping'
