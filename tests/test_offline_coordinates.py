@@ -10,7 +10,7 @@ import numpy as np
 from app import core, coordinates
 
 
-SOURCE = Path("D:/stereo-wave-height-runs/pipeline/hometank004_multiframe_acceptance/run_20260928/science")
+SOURCE = Path("D:/stereo-wave-height-runs/reconstruction-quality-p0-20261001/I12_contract_fixture/HomeTank")
 
 
 class CoordinateTests(unittest.TestCase):
@@ -66,43 +66,14 @@ class CoordinateTests(unittest.TestCase):
         finally:
             window.close()
 
-    def test_real_independent_runs_gui_hover_export_if_available(self):
-        from PySide6.QtWidgets import QApplication
-        from app.main import MainWindow
-        from app import presentation
-        from pipeline.common import sha256
-        app = QApplication.instance() or QApplication([])
-        directory = Path("D:/stereo-wave-height-runs/fixed-coordinate-acceptance-20261001-final")
-        if not (directory / "gui_project.yaml").is_file():
-            self.skipTest("Independent official acceptance runs not installed")
-        window = MainWindow()
-        try:
-            window.config = core.read_project(directory / "gui_project.yaml")
-            window._populate()
-            frozen = window.reference
-            for letter, target in zip("ABC", (21., 22., 23.)):
-                root = directory / f"Run_{letter}" / "science"
-                window.slider.setValue(int(target * 1000))
-                with patch.object(window, "_error", side_effect=AssertionError):
-                    window._open_run_path(str(root / "run_report.json"))
-                self.assertEqual(window.reference, frozen)
-                self.assertEqual(window.result["coordinate_frame_id"], frozen.coordinate_frame_id)
-                self.assertIn("MATCHED", window.frame_summary.text())
-                for mode in ("raw", "cloud", "overlay"):
-                    window._display_mode(mode)
-                window._hover(1, 1)
-                self.assertIn("NO_DATA", window.hover_label.text())
-                valid = np.argwhere(np.isfinite(window.result["height"]))[0]
-                self.assertIsNotNone(core.hover(window.result, int(valid[1]), int(valid[0]))["height_mm"])
-                with tempfile.TemporaryDirectory() as folder:
-                    ply = root / "reconstruction/ply" / f"{window.result['frame_id']:06d}.ply"
-                    metadata = presentation.export_current_frame(folder, window.result, window.raw_rgb,
-                        window.overlay_rgb, ply, frozen, (0.4, 0.4, 0.5, 0.5))
-                    self.assertEqual(metadata["coordinate_frame_id"], frozen.coordinate_frame_id)
-                    self.assertEqual(metadata["extrinsics_id"], frozen.extrinsics_id)
-                    self.assertEqual(sha256(ply), sha256(Path(folder) / "pointcloud.ply"))
-        finally:
-            window.close()
+    def test_legacy_independent_runs_rejected_before_height(self):
+        directory = Path('D:/stereo-wave-height-runs/fixed-coordinate-acceptance-20261001-final')
+        for letter in 'ABC':
+            root = directory / f'Run_{letter}' / 'science'
+            with patch('app.core.load_frame') as height:
+                with self.assertRaisesRegex(ValueError, 'REFERENCE_FRAME_MISMATCH'):
+                    core.load_result(root, 0, self.reference)
+                height.assert_not_called()
 
     def test_empty_new_input_interfaces_no_hidden_fallback(self):
         from PySide6.QtWidgets import QApplication

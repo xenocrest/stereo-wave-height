@@ -51,6 +51,7 @@ def run(config: dict, directory: Path) -> dict:
         if (origin / "calibration" / "report.json").is_file():
             shutil.copy2(origin / "calibration" / "report.json", root / "calibration" / "report.json")
         shutil.copy2(origin_setup, root / "surface" / "config.mat")
+        shutil.copy2(origin / "surface" / "coordinate_contract.json", root / "surface" / "coordinate_contract.json")
         write_json(root / "reference_plane.json", binding)
         core.save_project(config, root / "config_snapshot.yaml")
         stage = "sync"

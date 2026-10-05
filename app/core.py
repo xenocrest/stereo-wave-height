@@ -16,6 +16,7 @@ from tools.camera_image import open_canonical_video, orientation_metadata
 from pipeline.adapters.wass import load_matrix
 from pipeline.instantaneous_validation.load_vision import load_frame
 from pipeline.instantaneous_validation.schemas import PROVENANCE, ReferencePlane, reference_from_config
+from pipeline.adapters.plane_contract import COORDINATE_CONTRACT
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "pipeline" / "config.example.yaml"
@@ -143,6 +144,7 @@ def calibration_identity(run_dir: str | Path) -> str:
 
 def reference_from_run(run_dir: str | Path, frame_id: int = 0) -> ReferencePlane:
     from app.coordinates import bind, identity
+    ids = identity(run_dir)  # Refuse legacy setup before fitting any candidate.
     with np.load(Path(run_dir) / "pixel" / "pixel_height" / f"{frame_id:08d}.npz", allow_pickle=False) as data:
         units = str(data["units"])
     if units not in {"m", "B"}:
@@ -150,7 +152,7 @@ def reference_from_run(run_dir: str | Path, frame_id: int = 0) -> ReferencePlane
     plane = reference_from_config({"mode": "designated_static_water_frame",
                                   "coordinate_system": f"official_wass_grid_{units}",
                                   "reference_frame_id": frame_id}, run_dir)
-    return bind(plane, identity(run_dir))
+    return bind(plane, ids, regenerate_id=True)
 
 
 def save_reference(reference: ReferencePlane, calibration_id: str, path: str | Path,
@@ -185,23 +187,23 @@ def reference_from_metadata(data: dict) -> tuple[ReferencePlane, str]:
     from app.coordinates import bind, identity, require_match
     ids = {key: data.get(key, "") for key in ("calibration_id", "extrinsics_id", "coordinate_frame_id")}
     ids["coordinate_system"] = plane.coordinate_system
+    ids["coordinate_contract"] = data.get("coordinate_contract", "")
+    if data.get("scientific_run") or any(ids[key] for key in ("calibration_id", "extrinsics_id", "coordinate_frame_id")):
+        if ids["coordinate_contract"] != COORDINATE_CONTRACT:
+            raise ValueError("REFERENCE_FRAME_MISMATCH: legacy reference; regenerate in certified coordinate frame")
     if all(ids[key] for key in ("calibration_id", "extrinsics_id", "coordinate_frame_id")):
         plane = bind(plane, ids)
         if data.get("scientific_run"):
             require_match(plane, identity(data["scientific_run"]))
     elif data.get("scientific_run"):
-        # Legacy metadata can be migrated only from its actual source artifacts.
-        actual = identity(data["scientific_run"])
-        if data.get("calibration_identity") != actual["calibration_id"]:
-            raise ValueError("REFERENCE_FRAME_MISMATCH: legacy reference calibration differs")
-        plane = bind(plane, actual)
+        raise ValueError("REFERENCE_FRAME_MISMATCH: incomplete reference binding; regenerate")
     return plane, data.get("calibration_identity", ids["calibration_id"])
 
 
 def project_input_identity(config: dict) -> str:
     """Identity for GUI state invalidation, not a scientific calibration hash."""
     import hashlib
-    inputs = {"calibration": config["calibration"],
+    inputs = {"coordinate_contract": COORDINATE_CONTRACT, "calibration": config["calibration"],
               "wave": [config["sync"].get(key, "") for key in ("left_video", "right_video")],
               "surface": config["surface"], "wass": config.get("wass", {})}
     return hashlib.sha256(json.dumps(inputs, sort_keys=True).encode()).hexdigest()
@@ -276,7 +278,7 @@ def aligned_preview_times(time_s: float, right_minus_left_s: float) -> tuple[flo
 
 def cache_key(config: dict, time_s: float) -> str:
     import hashlib
-    inputs = {"left": config["sync"]["left_video"], "right": config["sync"]["right_video"],
+    inputs = {"coordinate_contract": COORDINATE_CONTRACT, "left": config["sync"]["left_video"], "right": config["sync"]["right_video"],
               "calibration": config["calibration"], "fallback": config["wass"].get("fallback_calibration"),
               "time_s": round(time_s, 6),
               "reference_time_s": config.get("_app_reference_time_s"),

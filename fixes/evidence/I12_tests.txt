@@ -1,0 +1,39 @@
+test_actual_official_setup_real_points_both_datasets (tests.test_p0_plane_contract.PlaneContractTests.test_actual_official_setup_real_points_both_datasets) ... <frozen importlib._bootstrap>:488: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 16 from C header, got 96 from PyObject
+ok
+test_entire_plane_scaling_preserves_equation_and_distance (tests.test_p0_plane_contract.PlaneContractTests.test_entire_plane_scaling_preserves_equation_and_distance) ... ok
+test_legacy_reference_and_run_rejected_before_height (tests.test_p0_plane_contract.PlaneContractTests.test_legacy_reference_and_run_rejected_before_height) ... ok
+test_mean_not_individual_normalization_and_single_row_cli_shape (tests.test_p0_plane_contract.PlaneContractTests.test_mean_not_individual_normalization_and_single_row_cli_shape) ... ok
+test_missing_or_changed_certificate_rejected (tests.test_p0_plane_contract.PlaneContractTests.test_missing_or_changed_certificate_rejected) ... ok
+test_reference_and_cache_identifiers_are_versioned (tests.test_p0_plane_contract.PlaneContractTests.test_reference_and_cache_identifiers_are_versioned) ... ok
+test_common_region_not_invented_and_three_frames_still_load (tests.test_offline_coordinates.CoordinateTests.test_common_region_not_invented_and_three_frames_still_load) ... ok
+test_empty_new_input_interfaces_no_hidden_fallback (tests.test_offline_coordinates.CoordinateTests.test_empty_new_input_interfaces_no_hidden_fallback) ... ok
+test_gui_mismatch_hides_old_height (tests.test_offline_coordinates.CoordinateTests.test_gui_mismatch_hides_old_height) ... ok
+test_identity_uses_actual_grid_transform_not_run_path (tests.test_offline_coordinates.CoordinateTests.test_identity_uses_actual_grid_transform_not_run_path) ... ok
+test_legacy_independent_runs_rejected_before_height (tests.test_offline_coordinates.CoordinateTests.test_legacy_independent_runs_rejected_before_height) ... ok
+test_mismatch_rejected_before_height_calculation (tests.test_offline_coordinates.CoordinateTests.test_mismatch_rejected_before_height_calculation) ... ok
+test_reference_json_contains_complete_binding (tests.test_offline_coordinates.CoordinateTests.test_reference_json_contains_complete_binding) ... ok
+test_cache_depends_on_reference_and_time (tests.test_offline_basic_app.OfflineAppTests.test_cache_depends_on_reference_and_time) ... ok
+test_clean_external_environment (tests.test_offline_basic_app.OfflineAppTests.test_clean_external_environment) ... ok
+test_export_has_only_existing_values_and_provenance (tests.test_offline_basic_app.OfflineAppTests.test_export_has_only_existing_values_and_provenance) ... ok
+test_fallback_requires_explicit_allow_and_path (tests.test_offline_basic_app.OfflineAppTests.test_fallback_requires_explicit_allow_and_path) ... ok
+test_frozen_reference_persists_across_project_reload_if_available (tests.test_offline_basic_app.OfflineAppTests.test_frozen_reference_persists_across_project_reload_if_available) ... ok
+test_gui_play_pause_and_frame_seek (tests.test_offline_basic_app.OfflineAppTests.test_gui_play_pause_and_frame_seek) ... ok
+test_hometank_result_adapter_if_available (tests.test_offline_basic_app.OfflineAppTests.test_hometank_result_adapter_if_available) ... ok
+test_hover_provenance_and_no_data (tests.test_offline_basic_app.OfflineAppTests.test_hover_provenance_and_no_data) ... ok
+test_input_change_clears_reference_and_old_results (tests.test_offline_basic_app.OfflineAppTests.test_input_change_clears_reference_and_old_results) ... ok
+test_measurement_region_display_only (tests.test_offline_basic_app.OfflineAppTests.test_measurement_region_display_only) ... ok
+test_project_creation_and_arbitrary_paths (tests.test_offline_basic_app.OfflineAppTests.test_project_creation_and_arbitrary_paths) ... ok
+test_real_gui_views_with_existing_hometank_run_if_available (tests.test_offline_basic_app.OfflineAppTests.test_real_gui_views_with_existing_hometank_run_if_available) ... ok
+test_real_other_video_properties_input_only_if_available (tests.test_offline_basic_app.OfflineAppTests.test_real_other_video_properties_input_only_if_available) ... ok
+test_reference_freeze_and_import (tests.test_offline_basic_app.OfflineAppTests.test_reference_freeze_and_import) ... ok
+test_scientific_failure_log (tests.test_offline_basic_app.OfflineAppTests.test_scientific_failure_log) ... ok
+test_seek_hides_previous_frame_height (tests.test_offline_basic_app.OfflineAppTests.test_seek_hides_previous_frame_height) ... ok
+test_switch_project_clears_previous_scientific_state (tests.test_offline_basic_app.OfflineAppTests.test_switch_project_clears_previous_scientific_state) ... ok
+test_sync_frame_selection_and_offset (tests.test_offline_basic_app.OfflineAppTests.test_sync_frame_selection_and_offset) ... ok
+test_video_metadata_and_seek (tests.test_offline_basic_app.OfflineAppTests.test_video_metadata_and_seek) ... ok
+test_vieira_result_adapter_if_available (tests.test_offline_basic_app.OfflineAppTests.test_vieira_result_adapter_if_available) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 13.461s
+
+OK

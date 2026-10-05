@@ -8,6 +8,7 @@ import numpy as np
 import scipy.io as sio
 
 from pipeline.common import CommandRecorder, StageFailure, copy_file, write_json
+from pipeline.adapters.plane_contract import unit_plane, setup_input, certify_setup
 
 
 def _grid_domain(workspaces: list[Path], baseline: float, config: dict[str, Any]) -> tuple[float, float, float, str]:
@@ -18,7 +19,7 @@ def _grid_domain(workspaces: list[Path], baseline: float, config: dict[str, Any]
     from wassgridsurface.wass_utils import align_on_sea_plane, load_camera_mesh
 
     planes = np.vstack([np.loadtxt(path / "plane.txt") for path in workspaces])
-    extent_plane = np.median(planes, axis=0)
+    extent_plane = unit_plane(np.median(planes, axis=0))
     points = align_on_sea_plane(load_camera_mesh(workspaces[0] / "mesh_cam.xyzC"), extent_plane) * baseline
     lo, hi = points[:2].min(axis=1), points[:2].max(axis=1)
     center = (lo + hi) / 2
@@ -58,8 +59,10 @@ def run(
     output = run_dir / "surface"
     output.mkdir(parents=True, exist_ok=True)
     planes = np.vstack([np.loadtxt(workspace / "plane.txt") for workspace in workspaces])
-    np.savetxt(run_dir / "wass" / "workspaces" / "planes.txt", planes)
-    np.savetxt(output / "planes.txt", planes)
+    rows, contract = setup_input(planes)
+    np.savetxt(output / "planes_raw.txt", planes)
+    np.savetxt(run_dir / "wass" / "workspaces" / "planes.txt", rows)
+    np.savetxt(output / "planes.txt", rows)
     baseline = float(config["baseline_m"])
     center_x, center_y, side, domain_source = _grid_domain(workspaces, baseline, config)
     grid_n = int(config.get("N", 256))
@@ -79,6 +82,7 @@ def run(
             "--fps", str(fps), "--stereo_image_idx", "0",
         ],
     )
+    contract = certify_setup(output / "config.mat", workspaces, contract)
     recorder.run(
         "wassgridsurface_grid",
         [
@@ -150,6 +154,7 @@ def run(
     plane_record = {
         "method": "official WASS plane.txt inputs and official wassgridsurface setup mean-plane alignment",
         "raw_wass_planes": planes.tolist(),
+        "coordinate_contract": contract,
         "grid_setup": str(output / "config.mat"),
         "height_equation": "H = n^T P + d; after official alignment n=(0,0,1), d=0, so H=Z",
         "baseline_m": baseline,

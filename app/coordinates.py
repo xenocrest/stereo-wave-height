@@ -9,6 +9,7 @@ from scipy.io import loadmat
 
 from pipeline.adapters.wass import load_matrix
 from pipeline.instantaneous_validation.schemas import ReferencePlane
+from pipeline.adapters.plane_contract import COORDINATE_CONTRACT, require_certified
 
 
 def numeric_hash(values: dict) -> str:
@@ -29,6 +30,7 @@ def identity(run: str | Path) -> dict:
     config = root / "wass" / "config"
     extrinsics = numeric_hash({key: load_matrix(config / name) for key, name in
                                (("R", "ext_R.xml"), ("T", "ext_T.xml"))})
+    require_certified(root / "surface" / "config.mat")
     setup = loadmat(root / "surface" / "config.mat")
     # Include the actual official alignment/scale and both camera conventions.
     keys = ("Rpl", "Tpl", "CAM_BASELINE", "Cam0toGrid", "Cam1toGrid",
@@ -39,9 +41,10 @@ def identity(run: str | Path) -> dict:
     cal = calibration_identity(root)
     frame = hashlib.sha256(json.dumps({"calibration_id": cal, "extrinsics_id": extrinsics,
         "official_grid_transform": transform_hash, "units": units,
-        "convention": "wassgridsurface_0.11_camera_mesh_to_official_grid"}, sort_keys=True).encode()).hexdigest()
+        "convention": COORDINATE_CONTRACT}, sort_keys=True).encode()).hexdigest()
     return {"calibration_id": cal, "extrinsics_id": extrinsics,
-            "coordinate_frame_id": frame, "coordinate_system": f"official_wass_grid_{units}"}
+            "coordinate_frame_id": frame, "coordinate_system": f"official_wass_grid_{units}",
+            "coordinate_contract": COORDINATE_CONTRACT}
 
 
 @dataclass(frozen=True)
@@ -49,22 +52,32 @@ class BoundReference(ReferencePlane):
     calibration_id: str = ""
     extrinsics_id: str = ""
     coordinate_frame_id: str = ""
+    coordinate_contract: str = ""
 
     def as_dict(self) -> dict:
         data = super().as_dict()
         data.update(calibration_id=self.calibration_id, extrinsics_id=self.extrinsics_id,
-                    coordinate_frame_id=self.coordinate_frame_id, n=list(self.normal),
+                    coordinate_frame_id=self.coordinate_frame_id, coordinate_contract=self.coordinate_contract,
+                    n=list(self.normal),
                     source=("INTERNAL_STATIC_REFERENCE" if self.mode == "designated_static_water_frame"
                             else "PROVIDED_PHYSICAL_REFERENCE"))
         return data
 
 
-def bind(plane: ReferencePlane, ids: dict) -> BoundReference:
-    return BoundReference(plane.plane_id, plane.normal, plane.d, plane.mode, plane.coordinate_system,
-                          ids["calibration_id"], ids["extrinsics_id"], ids["coordinate_frame_id"])
+def bind(plane: ReferencePlane, ids: dict, regenerate_id: bool = False) -> BoundReference:
+    plane_id = plane.plane_id
+    if regenerate_id:
+        suffix = hashlib.sha256(json.dumps({"source_plane": plane_id,
+            "frame": ids["coordinate_frame_id"], "contract": COORDINATE_CONTRACT}, sort_keys=True).encode()).hexdigest()[:16]
+        plane_id = f"{plane.mode}_{COORDINATE_CONTRACT}_{suffix}"
+    return BoundReference(plane_id, plane.normal, plane.d, plane.mode, plane.coordinate_system,
+                          ids["calibration_id"], ids["extrinsics_id"], ids["coordinate_frame_id"],
+                          ids.get("coordinate_contract", ""))
 
 
 def require_match(reference: ReferencePlane, ids: dict) -> None:
+    if getattr(reference, "coordinate_contract", "") != COORDINATE_CONTRACT or ids.get("coordinate_contract") != COORDINATE_CONTRACT:
+        raise ValueError("REFERENCE_FRAME_MISMATCH: legacy reference/cache contract")
     for key in ("calibration_id", "extrinsics_id", "coordinate_frame_id"):
         if not getattr(reference, key, "") or getattr(reference, key) != ids[key]:
             raise ValueError(f"REFERENCE_FRAME_MISMATCH: {key} differs or is unbound")

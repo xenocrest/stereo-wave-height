@@ -1,0 +1,2008 @@
+[
+  {
+    "label": "HomeTank",
+    "origin": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science",
+    "new_fixture": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank",
+    "same_real_wass_input_hashes": [
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\Cam0_poseR.txt",
+        "source_sha256": "33ef442dc108a4fae5a0fb972c03318dfb956e82863868f67b3dbebf150aaacf",
+        "copy_sha256": "33ef442dc108a4fae5a0fb972c03318dfb956e82863868f67b3dbebf150aaacf"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\Cam0_poseT.txt",
+        "source_sha256": "cfa890f0b472b81664fa270c5d53c43a0b338c08d0230c37e01f1c6d5122be9d",
+        "copy_sha256": "cfa890f0b472b81664fa270c5d53c43a0b338c08d0230c37e01f1c6d5122be9d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\ext_R.xml",
+        "source_sha256": "a4ee467108e12406b92ffce05a8a3852796095136117c56cad8ce1eeea2309ce",
+        "copy_sha256": "a4ee467108e12406b92ffce05a8a3852796095136117c56cad8ce1eeea2309ce"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\ext_T.xml",
+        "source_sha256": "b9ab3d6db3f06e26b949bd25f0bb145338313d4356dc9345115e2f3711af4af0",
+        "copy_sha256": "b9ab3d6db3f06e26b949bd25f0bb145338313d4356dc9345115e2f3711af4af0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\H0_rect.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\H0_rect.txt",
+        "source_sha256": "e4993f2d403e20f26deec3e33cd41057441f173ef7460f3631579e278503e660",
+        "copy_sha256": "e4993f2d403e20f26deec3e33cd41057441f173ef7460f3631579e278503e660"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\H1_rect.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\H1_rect.txt",
+        "source_sha256": "3a5a1b465dbdfd936215701be92d6930a24069c1fc4a15a55f643c3b949dae9a",
+        "copy_sha256": "3a5a1b465dbdfd936215701be92d6930a24069c1fc4a15a55f643c3b949dae9a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\intrinsics_00000000.xml",
+        "source_sha256": "b57cf6d5f8e94dd5b66ae7b58f8c4f53d8627deda3f63f5aba702f657565913b",
+        "copy_sha256": "b57cf6d5f8e94dd5b66ae7b58f8c4f53d8627deda3f63f5aba702f657565913b"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\intrinsics_00000001.xml",
+        "source_sha256": "a7cb5ffc9aa1717b709e01c7915f243ca7fceabc8ba574202a082c4797af798a",
+        "copy_sha256": "a7cb5ffc9aa1717b709e01c7915f243ca7fceabc8ba574202a082c4797af798a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\K0_small.txt",
+        "source_sha256": "7c28e91a373173ba14ac9fd31fccd39cff39e3fa9452c1403ec2589451c8adfc",
+        "copy_sha256": "7c28e91a373173ba14ac9fd31fccd39cff39e3fa9452c1403ec2589451c8adfc"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\K1_small.txt",
+        "source_sha256": "886fae35bab6bfcef57b94770773990dfedbebdd9ed0138ab0e47dd559c1bcee",
+        "copy_sha256": "886fae35bab6bfcef57b94770773990dfedbebdd9ed0138ab0e47dd559c1bcee"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\mesh_cam.xyzC",
+        "source_sha256": "4fd9d20ed042fc862b5f0704b71bbe75e17c0fb61ec22027213dce9f54fa65f3",
+        "copy_sha256": "4fd9d20ed042fc862b5f0704b71bbe75e17c0fb61ec22027213dce9f54fa65f3"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\P0cam.txt",
+        "source_sha256": "1b2ab64637ff1151b52fd6df295dad81d1148598f077e1ecba858fdef10575ba",
+        "copy_sha256": "1b2ab64637ff1151b52fd6df295dad81d1148598f077e1ecba858fdef10575ba"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\P1cam.txt",
+        "source_sha256": "95673c5c4798aad4b1f6bee0c52eaf6034b569d0461016331c68acdc19a5e213",
+        "copy_sha256": "95673c5c4798aad4b1f6bee0c52eaf6034b569d0461016331c68acdc19a5e213"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\plane.txt",
+        "source_sha256": "fa7454f1d6d41a3c961de1d8db336f08c7606c08d07768cb286ba2fd34c32da9",
+        "copy_sha256": "fa7454f1d6d41a3c961de1d8db336f08c7606c08d07768cb286ba2fd34c32da9"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\stereo_config.txt",
+        "source_sha256": "3b582a958b29a93dd5af999a3f3f5d4fafad9ce5eb53c2dcd3e15d0074f6bd5e",
+        "copy_sha256": "3b582a958b29a93dd5af999a3f3f5d4fafad9ce5eb53c2dcd3e15d0074f6bd5e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000000_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000000_wd\\wass_stereo_log.txt",
+        "source_sha256": "0e5e1390f904006583e129f1e8ed1e3fdc0470ee284f5e16e7c661cb4d9f6baf",
+        "copy_sha256": "0e5e1390f904006583e129f1e8ed1e3fdc0470ee284f5e16e7c661cb4d9f6baf"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\Cam0_poseR.txt",
+        "source_sha256": "33ef442dc108a4fae5a0fb972c03318dfb956e82863868f67b3dbebf150aaacf",
+        "copy_sha256": "33ef442dc108a4fae5a0fb972c03318dfb956e82863868f67b3dbebf150aaacf"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\Cam0_poseT.txt",
+        "source_sha256": "cfa890f0b472b81664fa270c5d53c43a0b338c08d0230c37e01f1c6d5122be9d",
+        "copy_sha256": "cfa890f0b472b81664fa270c5d53c43a0b338c08d0230c37e01f1c6d5122be9d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\ext_R.xml",
+        "source_sha256": "a4ee467108e12406b92ffce05a8a3852796095136117c56cad8ce1eeea2309ce",
+        "copy_sha256": "a4ee467108e12406b92ffce05a8a3852796095136117c56cad8ce1eeea2309ce"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\ext_T.xml",
+        "source_sha256": "b9ab3d6db3f06e26b949bd25f0bb145338313d4356dc9345115e2f3711af4af0",
+        "copy_sha256": "b9ab3d6db3f06e26b949bd25f0bb145338313d4356dc9345115e2f3711af4af0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\H0_rect.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\H0_rect.txt",
+        "source_sha256": "e4993f2d403e20f26deec3e33cd41057441f173ef7460f3631579e278503e660",
+        "copy_sha256": "e4993f2d403e20f26deec3e33cd41057441f173ef7460f3631579e278503e660"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\H1_rect.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\H1_rect.txt",
+        "source_sha256": "3a5a1b465dbdfd936215701be92d6930a24069c1fc4a15a55f643c3b949dae9a",
+        "copy_sha256": "3a5a1b465dbdfd936215701be92d6930a24069c1fc4a15a55f643c3b949dae9a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\intrinsics_00000000.xml",
+        "source_sha256": "b57cf6d5f8e94dd5b66ae7b58f8c4f53d8627deda3f63f5aba702f657565913b",
+        "copy_sha256": "b57cf6d5f8e94dd5b66ae7b58f8c4f53d8627deda3f63f5aba702f657565913b"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\intrinsics_00000001.xml",
+        "source_sha256": "a7cb5ffc9aa1717b709e01c7915f243ca7fceabc8ba574202a082c4797af798a",
+        "copy_sha256": "a7cb5ffc9aa1717b709e01c7915f243ca7fceabc8ba574202a082c4797af798a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\K0_small.txt",
+        "source_sha256": "7c28e91a373173ba14ac9fd31fccd39cff39e3fa9452c1403ec2589451c8adfc",
+        "copy_sha256": "7c28e91a373173ba14ac9fd31fccd39cff39e3fa9452c1403ec2589451c8adfc"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\K1_small.txt",
+        "source_sha256": "886fae35bab6bfcef57b94770773990dfedbebdd9ed0138ab0e47dd559c1bcee",
+        "copy_sha256": "886fae35bab6bfcef57b94770773990dfedbebdd9ed0138ab0e47dd559c1bcee"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\mesh_cam.xyzC",
+        "source_sha256": "c52247fa0cd4179f7dbdda1044a4caaafbaef7f8b190de553dc55c8ea5ed6ee4",
+        "copy_sha256": "c52247fa0cd4179f7dbdda1044a4caaafbaef7f8b190de553dc55c8ea5ed6ee4"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\P0cam.txt",
+        "source_sha256": "1b2ab64637ff1151b52fd6df295dad81d1148598f077e1ecba858fdef10575ba",
+        "copy_sha256": "1b2ab64637ff1151b52fd6df295dad81d1148598f077e1ecba858fdef10575ba"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\P1cam.txt",
+        "source_sha256": "95673c5c4798aad4b1f6bee0c52eaf6034b569d0461016331c68acdc19a5e213",
+        "copy_sha256": "95673c5c4798aad4b1f6bee0c52eaf6034b569d0461016331c68acdc19a5e213"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\plane.txt",
+        "source_sha256": "bc378a78c50a7037e0fdcd133de1d5f345fb643d5c41412aead159f6fb254a94",
+        "copy_sha256": "bc378a78c50a7037e0fdcd133de1d5f345fb643d5c41412aead159f6fb254a94"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\stereo_config.txt",
+        "source_sha256": "3b582a958b29a93dd5af999a3f3f5d4fafad9ce5eb53c2dcd3e15d0074f6bd5e",
+        "copy_sha256": "3b582a958b29a93dd5af999a3f3f5d4fafad9ce5eb53c2dcd3e15d0074f6bd5e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000001_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000001_wd\\wass_stereo_log.txt",
+        "source_sha256": "4db2f4889b2633041261e3eba798001decc9fe3fde934fd9184482200bf44870",
+        "copy_sha256": "4db2f4889b2633041261e3eba798001decc9fe3fde934fd9184482200bf44870"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\Cam0_poseR.txt",
+        "source_sha256": "33ef442dc108a4fae5a0fb972c03318dfb956e82863868f67b3dbebf150aaacf",
+        "copy_sha256": "33ef442dc108a4fae5a0fb972c03318dfb956e82863868f67b3dbebf150aaacf"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\Cam0_poseT.txt",
+        "source_sha256": "cfa890f0b472b81664fa270c5d53c43a0b338c08d0230c37e01f1c6d5122be9d",
+        "copy_sha256": "cfa890f0b472b81664fa270c5d53c43a0b338c08d0230c37e01f1c6d5122be9d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\ext_R.xml",
+        "source_sha256": "a4ee467108e12406b92ffce05a8a3852796095136117c56cad8ce1eeea2309ce",
+        "copy_sha256": "a4ee467108e12406b92ffce05a8a3852796095136117c56cad8ce1eeea2309ce"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\ext_T.xml",
+        "source_sha256": "b9ab3d6db3f06e26b949bd25f0bb145338313d4356dc9345115e2f3711af4af0",
+        "copy_sha256": "b9ab3d6db3f06e26b949bd25f0bb145338313d4356dc9345115e2f3711af4af0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\H0_rect.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\H0_rect.txt",
+        "source_sha256": "e4993f2d403e20f26deec3e33cd41057441f173ef7460f3631579e278503e660",
+        "copy_sha256": "e4993f2d403e20f26deec3e33cd41057441f173ef7460f3631579e278503e660"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\H1_rect.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\H1_rect.txt",
+        "source_sha256": "3a5a1b465dbdfd936215701be92d6930a24069c1fc4a15a55f643c3b949dae9a",
+        "copy_sha256": "3a5a1b465dbdfd936215701be92d6930a24069c1fc4a15a55f643c3b949dae9a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\intrinsics_00000000.xml",
+        "source_sha256": "b57cf6d5f8e94dd5b66ae7b58f8c4f53d8627deda3f63f5aba702f657565913b",
+        "copy_sha256": "b57cf6d5f8e94dd5b66ae7b58f8c4f53d8627deda3f63f5aba702f657565913b"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\intrinsics_00000001.xml",
+        "source_sha256": "a7cb5ffc9aa1717b709e01c7915f243ca7fceabc8ba574202a082c4797af798a",
+        "copy_sha256": "a7cb5ffc9aa1717b709e01c7915f243ca7fceabc8ba574202a082c4797af798a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\K0_small.txt",
+        "source_sha256": "7c28e91a373173ba14ac9fd31fccd39cff39e3fa9452c1403ec2589451c8adfc",
+        "copy_sha256": "7c28e91a373173ba14ac9fd31fccd39cff39e3fa9452c1403ec2589451c8adfc"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\K1_small.txt",
+        "source_sha256": "886fae35bab6bfcef57b94770773990dfedbebdd9ed0138ab0e47dd559c1bcee",
+        "copy_sha256": "886fae35bab6bfcef57b94770773990dfedbebdd9ed0138ab0e47dd559c1bcee"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\mesh_cam.xyzC",
+        "source_sha256": "d712659c074d79b21329c4973b0d7703e9f41e8bf8729dec58b9986f2f22249d",
+        "copy_sha256": "d712659c074d79b21329c4973b0d7703e9f41e8bf8729dec58b9986f2f22249d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\P0cam.txt",
+        "source_sha256": "1b2ab64637ff1151b52fd6df295dad81d1148598f077e1ecba858fdef10575ba",
+        "copy_sha256": "1b2ab64637ff1151b52fd6df295dad81d1148598f077e1ecba858fdef10575ba"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\P1cam.txt",
+        "source_sha256": "95673c5c4798aad4b1f6bee0c52eaf6034b569d0461016331c68acdc19a5e213",
+        "copy_sha256": "95673c5c4798aad4b1f6bee0c52eaf6034b569d0461016331c68acdc19a5e213"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\plane.txt",
+        "source_sha256": "192d8dfc2dc000eb7e4239aacc7e793141d896b4dd2e149d3208cddd10c80981",
+        "copy_sha256": "192d8dfc2dc000eb7e4239aacc7e793141d896b4dd2e149d3208cddd10c80981"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\stereo_config.txt",
+        "source_sha256": "3b582a958b29a93dd5af999a3f3f5d4fafad9ce5eb53c2dcd3e15d0074f6bd5e",
+        "copy_sha256": "3b582a958b29a93dd5af999a3f3f5d4fafad9ce5eb53c2dcd3e15d0074f6bd5e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000002_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000002_wd\\wass_stereo_log.txt",
+        "source_sha256": "1538b77749a738c93cdc79c304872a8bf0283a9c73d791371ded21a505c82d92",
+        "copy_sha256": "1538b77749a738c93cdc79c304872a8bf0283a9c73d791371ded21a505c82d92"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\Cam0_poseR.txt",
+        "source_sha256": "33ef442dc108a4fae5a0fb972c03318dfb956e82863868f67b3dbebf150aaacf",
+        "copy_sha256": "33ef442dc108a4fae5a0fb972c03318dfb956e82863868f67b3dbebf150aaacf"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\Cam0_poseT.txt",
+        "source_sha256": "cfa890f0b472b81664fa270c5d53c43a0b338c08d0230c37e01f1c6d5122be9d",
+        "copy_sha256": "cfa890f0b472b81664fa270c5d53c43a0b338c08d0230c37e01f1c6d5122be9d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\ext_R.xml",
+        "source_sha256": "a4ee467108e12406b92ffce05a8a3852796095136117c56cad8ce1eeea2309ce",
+        "copy_sha256": "a4ee467108e12406b92ffce05a8a3852796095136117c56cad8ce1eeea2309ce"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\ext_T.xml",
+        "source_sha256": "b9ab3d6db3f06e26b949bd25f0bb145338313d4356dc9345115e2f3711af4af0",
+        "copy_sha256": "b9ab3d6db3f06e26b949bd25f0bb145338313d4356dc9345115e2f3711af4af0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\H0_rect.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\H0_rect.txt",
+        "source_sha256": "e4993f2d403e20f26deec3e33cd41057441f173ef7460f3631579e278503e660",
+        "copy_sha256": "e4993f2d403e20f26deec3e33cd41057441f173ef7460f3631579e278503e660"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\H1_rect.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\H1_rect.txt",
+        "source_sha256": "3a5a1b465dbdfd936215701be92d6930a24069c1fc4a15a55f643c3b949dae9a",
+        "copy_sha256": "3a5a1b465dbdfd936215701be92d6930a24069c1fc4a15a55f643c3b949dae9a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\intrinsics_00000000.xml",
+        "source_sha256": "b57cf6d5f8e94dd5b66ae7b58f8c4f53d8627deda3f63f5aba702f657565913b",
+        "copy_sha256": "b57cf6d5f8e94dd5b66ae7b58f8c4f53d8627deda3f63f5aba702f657565913b"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\intrinsics_00000001.xml",
+        "source_sha256": "a7cb5ffc9aa1717b709e01c7915f243ca7fceabc8ba574202a082c4797af798a",
+        "copy_sha256": "a7cb5ffc9aa1717b709e01c7915f243ca7fceabc8ba574202a082c4797af798a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\K0_small.txt",
+        "source_sha256": "7c28e91a373173ba14ac9fd31fccd39cff39e3fa9452c1403ec2589451c8adfc",
+        "copy_sha256": "7c28e91a373173ba14ac9fd31fccd39cff39e3fa9452c1403ec2589451c8adfc"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\K1_small.txt",
+        "source_sha256": "886fae35bab6bfcef57b94770773990dfedbebdd9ed0138ab0e47dd559c1bcee",
+        "copy_sha256": "886fae35bab6bfcef57b94770773990dfedbebdd9ed0138ab0e47dd559c1bcee"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\mesh_cam.xyzC",
+        "source_sha256": "de253db2092a880894c8f3da04727fe2399ecf25d80beb23ec0a15410d51926a",
+        "copy_sha256": "de253db2092a880894c8f3da04727fe2399ecf25d80beb23ec0a15410d51926a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\P0cam.txt",
+        "source_sha256": "1b2ab64637ff1151b52fd6df295dad81d1148598f077e1ecba858fdef10575ba",
+        "copy_sha256": "1b2ab64637ff1151b52fd6df295dad81d1148598f077e1ecba858fdef10575ba"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\P1cam.txt",
+        "source_sha256": "95673c5c4798aad4b1f6bee0c52eaf6034b569d0461016331c68acdc19a5e213",
+        "copy_sha256": "95673c5c4798aad4b1f6bee0c52eaf6034b569d0461016331c68acdc19a5e213"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\plane.txt",
+        "source_sha256": "2a4b445829bd334bd7cbb9dd1d3404412ba1233910971a3b840758c8163d61e1",
+        "copy_sha256": "2a4b445829bd334bd7cbb9dd1d3404412ba1233910971a3b840758c8163d61e1"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\stereo_config.txt",
+        "source_sha256": "3b582a958b29a93dd5af999a3f3f5d4fafad9ce5eb53c2dcd3e15d0074f6bd5e",
+        "copy_sha256": "3b582a958b29a93dd5af999a3f3f5d4fafad9ce5eb53c2dcd3e15d0074f6bd5e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\hometank004_multiframe_acceptance\\run_20260928\\science\\wass\\workspaces\\000003_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\HomeTank\\wass\\workspaces\\000003_wd\\wass_stereo_log.txt",
+        "source_sha256": "19a3831dc3c3acffad1f8c34f8aae9739b8a5b3aabb2adb1cafcbc4c54982637",
+        "copy_sha256": "19a3831dc3c3acffad1f8c34f8aae9739b8a5b3aabb2adb1cafcbc4c54982637"
+      }
+    ],
+    "observations": [
+      {
+        "frame": "000000_wd",
+        "before": {
+          "orthogonality_frobenius": 0.005643945571993244,
+          "determinant": 0.9960091278133958,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.015403186187421893,
+            "max": 0.021530181580849066
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.7311776357856259,
+                "max": 1.7322537447160704
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0010803810196151036,
+                "max": 0.0015101290892537025
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.7657267038532829,
+                "max": 3.4508741267319385
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0010803810196151234,
+                "max": 0.001510129089253695
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.5769983777539744e-16,
+          "determinant": 0.9999999999999999,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 4.965068306494546e-16,
+            "max": 1.790180836524724e-15
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 2.3437142008433856e-13,
+                "max": 7.626344918775623e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 5.5463697102950984e-17,
+                "max": 1.4033044459902308e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.2710574864626038e-13,
+                "max": 4.547473508864641e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 7.299330232573859e-17,
+                "max": 1.2766893768151988e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      },
+      {
+        "frame": "000001_wd",
+        "before": {
+          "orthogonality_frobenius": 0.005643945571993244,
+          "determinant": 0.9960091278133958,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.01522362144896153,
+            "max": 0.02445216869624389
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.7381298921939582,
+                "max": 1.8335873187667548
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0010677863309017438,
+                "max": 0.0017150775577471108
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.8312175188118278,
+                "max": 3.831936706684127
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.001067786330901733,
+                "max": 0.0017150775577471707
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.5769983777539744e-16,
+          "determinant": 0.9999999999999999,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 4.965068306494546e-16,
+            "max": 1.831026719408895e-15
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 2.3437142008433856e-13,
+                "max": 7.626344918775623e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 5.660158322991109e-17,
+                "max": 1.2981771577782765e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.2710574864626038e-13,
+                "max": 4.687428401686771e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 7.376145397762941e-17,
+                "max": 1.5515838457795457e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      },
+      {
+        "frame": "000002_wd",
+        "before": {
+          "orthogonality_frobenius": 0.005643945571993244,
+          "determinant": 0.9960091278133958,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.015096358094063837,
+            "max": 0.02457551764523423
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.7324060099361169,
+                "max": 2.5365884415568547
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0010588600664619482,
+                "max": 0.0017237292653650518
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.7312252172109182,
+                "max": 2.442092352690384
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0010588600664619674,
+                "max": 0.0017237292653651125
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.5769983777539744e-16,
+          "determinant": 0.9999999999999999,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 4.965068306494546e-16,
+            "max": 1.831026719408895e-15
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 2.3437142008433856e-13,
+                "max": 7.626344918775623e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 5.600445441545164e-17,
+                "max": 1.2432050435751766e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.2710574864626038e-13,
+                "max": 4.856703836433968e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 7.152448122690996e-17,
+                "max": 1.8631931528314482e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      },
+      {
+        "frame": "000003_wd",
+        "before": {
+          "orthogonality_frobenius": 0.005643945571993244,
+          "determinant": 0.9960091278133958,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.014854991573164365,
+            "max": 0.02254997486449863
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.6415725469431324,
+                "max": 1.9051203122538676
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0010419305945476528,
+                "max": 0.0015816574921554015
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.7010668736985225,
+                "max": 3.381073356499531
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.001041930594547684,
+                "max": 0.0015816574921554611
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.5769983777539744e-16,
+          "determinant": 0.9999999999999999,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 4.965068306494546e-16,
+            "max": 9.992007221626409e-16
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 2.3175728357975163e-13,
+                "max": 5.684341886080801e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 5.615141408278206e-17,
+                "max": 1.1607102056110446e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.2710574864626038e-13,
+                "max": 4.786020928989078e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 7.025630077706069e-17,
+                "max": 1.2698946759588672e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      }
+    ],
+    "new_identity": {
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "coordinate_system": "official_wass_grid_m",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2"
+    },
+    "new_reference": {
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_5c711263fc28beed",
+      "normal": [
+        0.03300480164215283,
+        -0.020844026460376364,
+        0.9992378143512591
+      ],
+      "d": 0.004988487897369704,
+      "mode": "designated_static_water_frame",
+      "coordinate_system": "official_wass_grid_m",
+      "equation": "H = n^T P + d; n has unit length",
+      "calibration_id": "9184852a01ab183ed9e839e92c834935503ab91e5d4cfab2c98803553a68d5c7",
+      "extrinsics_id": "91f1a9745ae307e464d048f1d5a4789ea826e12b448404589334c83139f496f8",
+      "coordinate_frame_id": "7fa9b9f2e1b9c5943dfb052ecec728fdd53a5e414a9b9d08faab595c491b6abd",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2",
+      "n": [
+        0.03300480164215283,
+        -0.020844026460376364,
+        0.9992378143512591
+      ],
+      "source": "INTERNAL_STATIC_REFERENCE"
+    },
+    "legacy_reference_rejection": "REFERENCE_FRAME_MISMATCH: legacy reference; regenerate in certified coordinate frame",
+    "input_contract": {
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2",
+      "raw_wass_observation_count": 4,
+      "raw_mean_plane": [
+        -0.0037174029363897035,
+        -0.7650852639605715,
+        0.6408118659943703,
+        -2.961151449273086
+      ],
+      "normalization_divisor": 0.9980025690414809,
+      "canonical_mean_plane": [
+        -0.00372484305321983,
+        -0.7666165275460043,
+        0.642094405237684,
+        -2.9670779826920555
+      ],
+      "official_cli_input_rows": 4,
+      "input_rows_meaning": "identical canonical mean; not independent observations",
+      "config_mat_sha256": "fe5c104cfde7b7ca2ecc471bd217795857c8cfca8308ecbfd5c2e9c827e639d2",
+      "actual_point_validation": [
+        {
+          "orthogonality_frobenius": 1.5769983777539744e-16,
+          "determinant": 0.9999999999999999,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 4.965068306494546e-16,
+            "max": 1.790180836524724e-15
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 2.3437142008433856e-13,
+                "max": 7.626344918775623e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 5.5463697102950984e-17,
+                "max": 1.4033044459902308e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.2710574864626038e-13,
+                "max": 4.547473508864641e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 7.299330232573859e-17,
+                "max": 1.2766893768151988e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        {
+          "orthogonality_frobenius": 1.5769983777539744e-16,
+          "determinant": 0.9999999999999999,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 4.965068306494546e-16,
+            "max": 1.831026719408895e-15
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 2.3437142008433856e-13,
+                "max": 7.626344918775623e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 5.660158322991109e-17,
+                "max": 1.2981771577782765e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.2710574864626038e-13,
+                "max": 4.687428401686771e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 7.376145397762941e-17,
+                "max": 1.5515838457795457e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        {
+          "orthogonality_frobenius": 1.5769983777539744e-16,
+          "determinant": 0.9999999999999999,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 4.965068306494546e-16,
+            "max": 1.831026719408895e-15
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 2.3437142008433856e-13,
+                "max": 7.626344918775623e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 5.600445441545164e-17,
+                "max": 1.2432050435751766e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.2710574864626038e-13,
+                "max": 4.856703836433968e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 7.152448122690996e-17,
+                "max": 1.8631931528314482e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        {
+          "orthogonality_frobenius": 1.5769983777539744e-16,
+          "determinant": 0.9999999999999999,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 4.965068306494546e-16,
+            "max": 9.992007221626409e-16
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 2.3175728357975163e-13,
+                "max": 5.684341886080801e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 5.615141408278206e-17,
+                "max": 1.1607102056110446e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.2710574864626038e-13,
+                "max": 4.786020928989078e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 7.025630077706069e-17,
+                "max": 1.2698946759588672e-16
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "label": "Vieira",
+    "origin": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344",
+    "new_fixture": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira",
+    "same_real_wass_input_hashes": [
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\Cam0_poseR.txt",
+        "source_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0",
+        "copy_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\Cam0_poseT.txt",
+        "source_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95",
+        "copy_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\ext_R.xml",
+        "source_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d",
+        "copy_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\ext_T.xml",
+        "source_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da",
+        "copy_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\intrinsics_00000000.xml",
+        "source_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c",
+        "copy_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\intrinsics_00000001.xml",
+        "source_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a",
+        "copy_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\K0_small.txt",
+        "source_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3",
+        "copy_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\K1_small.txt",
+        "source_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec",
+        "copy_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\mesh_cam.xyzC",
+        "source_sha256": "a3021d21560b2cb4304b9145115d8329f9dd973e1565b4f9e78a74db7abda981",
+        "copy_sha256": "a3021d21560b2cb4304b9145115d8329f9dd973e1565b4f9e78a74db7abda981"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\P0cam.txt",
+        "source_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca",
+        "copy_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\P1cam.txt",
+        "source_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76",
+        "copy_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\plane.txt",
+        "source_sha256": "b367770ebc152bb41d6ed43f6a012b0b0ddf414dbb2d5151cf2fb33b785ba7d8",
+        "copy_sha256": "b367770ebc152bb41d6ed43f6a012b0b0ddf414dbb2d5151cf2fb33b785ba7d8"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\stereo_config.txt",
+        "source_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c",
+        "copy_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000000_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000000_wd\\wass_stereo_log.txt",
+        "source_sha256": "dceeb89dda89da4828d81ca65c0639d5571a469c87745983f4172ba8aae1c0bd",
+        "copy_sha256": "dceeb89dda89da4828d81ca65c0639d5571a469c87745983f4172ba8aae1c0bd"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\Cam0_poseR.txt",
+        "source_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0",
+        "copy_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\Cam0_poseT.txt",
+        "source_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95",
+        "copy_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\ext_R.xml",
+        "source_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d",
+        "copy_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\ext_T.xml",
+        "source_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da",
+        "copy_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\intrinsics_00000000.xml",
+        "source_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c",
+        "copy_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\intrinsics_00000001.xml",
+        "source_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a",
+        "copy_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\K0_small.txt",
+        "source_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3",
+        "copy_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\K1_small.txt",
+        "source_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec",
+        "copy_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\mesh_cam.xyzC",
+        "source_sha256": "8da365e910c609d4a41c3981a975732d1f5afb9a89a7b26c139ecbcda0c19413",
+        "copy_sha256": "8da365e910c609d4a41c3981a975732d1f5afb9a89a7b26c139ecbcda0c19413"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\P0cam.txt",
+        "source_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca",
+        "copy_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\P1cam.txt",
+        "source_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76",
+        "copy_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\plane.txt",
+        "source_sha256": "3d9de50a86d576fa2231392ba56d334ef45597073d180270071c94436ee4545f",
+        "copy_sha256": "3d9de50a86d576fa2231392ba56d334ef45597073d180270071c94436ee4545f"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\stereo_config.txt",
+        "source_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c",
+        "copy_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000001_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000001_wd\\wass_stereo_log.txt",
+        "source_sha256": "8b73a6a57b631595ab8c6382340e9395d48fa289a63d154484665e458687cfbe",
+        "copy_sha256": "8b73a6a57b631595ab8c6382340e9395d48fa289a63d154484665e458687cfbe"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\Cam0_poseR.txt",
+        "source_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0",
+        "copy_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\Cam0_poseT.txt",
+        "source_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95",
+        "copy_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\ext_R.xml",
+        "source_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d",
+        "copy_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\ext_T.xml",
+        "source_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da",
+        "copy_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\intrinsics_00000000.xml",
+        "source_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c",
+        "copy_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\intrinsics_00000001.xml",
+        "source_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a",
+        "copy_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\K0_small.txt",
+        "source_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3",
+        "copy_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\K1_small.txt",
+        "source_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec",
+        "copy_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\mesh_cam.xyzC",
+        "source_sha256": "e792c2a15f6fd9b82d139d07553502c0f13e5bb2803d4d7778d2be5b7ca39c89",
+        "copy_sha256": "e792c2a15f6fd9b82d139d07553502c0f13e5bb2803d4d7778d2be5b7ca39c89"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\P0cam.txt",
+        "source_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca",
+        "copy_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\P1cam.txt",
+        "source_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76",
+        "copy_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\plane.txt",
+        "source_sha256": "68edda527be8ce438b6e0002baadb179beac4269945324b05f4564f1a7e17af3",
+        "copy_sha256": "68edda527be8ce438b6e0002baadb179beac4269945324b05f4564f1a7e17af3"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\stereo_config.txt",
+        "source_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c",
+        "copy_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000002_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000002_wd\\wass_stereo_log.txt",
+        "source_sha256": "fb280924a79b79d95c1edbaba880cbcd0adc72245f1eb341e10a0c86d2d40965",
+        "copy_sha256": "fb280924a79b79d95c1edbaba880cbcd0adc72245f1eb341e10a0c86d2d40965"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\Cam0_poseR.txt",
+        "source_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0",
+        "copy_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\Cam0_poseT.txt",
+        "source_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95",
+        "copy_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\ext_R.xml",
+        "source_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d",
+        "copy_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\ext_T.xml",
+        "source_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da",
+        "copy_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\intrinsics_00000000.xml",
+        "source_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c",
+        "copy_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\intrinsics_00000001.xml",
+        "source_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a",
+        "copy_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\K0_small.txt",
+        "source_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3",
+        "copy_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\K1_small.txt",
+        "source_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec",
+        "copy_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\mesh_cam.xyzC",
+        "source_sha256": "ad5c7f76051bf3eae88e67230cabfcee64008fff24c16fc33b263b47393fb744",
+        "copy_sha256": "ad5c7f76051bf3eae88e67230cabfcee64008fff24c16fc33b263b47393fb744"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\P0cam.txt",
+        "source_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca",
+        "copy_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\P1cam.txt",
+        "source_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76",
+        "copy_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\plane.txt",
+        "source_sha256": "b700f758d6c545c6cb5274f2844f37b83c50fbf5d0f266e79fd1b2f212242e3e",
+        "copy_sha256": "b700f758d6c545c6cb5274f2844f37b83c50fbf5d0f266e79fd1b2f212242e3e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\stereo_config.txt",
+        "source_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c",
+        "copy_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000003_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000003_wd\\wass_stereo_log.txt",
+        "source_sha256": "28cd510114cca16b7e68b54f6d792b244226734ac84b1620fb6d7da9d4651cbf",
+        "copy_sha256": "28cd510114cca16b7e68b54f6d792b244226734ac84b1620fb6d7da9d4651cbf"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\Cam0_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\Cam0_poseR.txt",
+        "source_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0",
+        "copy_sha256": "308849546b5363a7a565d65305577686ecdbf83f6de4360719f9c2fa762a41a0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\Cam0_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\Cam0_poseT.txt",
+        "source_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95",
+        "copy_sha256": "cd84271759a2d9bda0bed0ff2a71e5a55b77c6be5131edb59b33f01d5fc64b95"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\Cam1_poseR.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\Cam1_poseR.txt",
+        "source_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e",
+        "copy_sha256": "4dbf2048d88819b83b91c96ecaf678d297ad5b9765180a0d9ac48559bd18351e"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\Cam1_poseT.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\Cam1_poseT.txt",
+        "source_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6",
+        "copy_sha256": "ae5759975fd1414c92996655ad4e85f34e76638e0e768d99a875783b675d7dd6"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\ext_R.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\ext_R.xml",
+        "source_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d",
+        "copy_sha256": "5aaced3fce6f93b653f8eb9682bb1e35bde2fc6d028f8a6756f119b404d14f4d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\ext_T.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\ext_T.xml",
+        "source_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da",
+        "copy_sha256": "ab7b7c2918a106a54feb6044084e653b82d946812d7088dbce9fd951213405da"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\intrinsics_00000000.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\intrinsics_00000000.xml",
+        "source_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c",
+        "copy_sha256": "d21052fd3e87f480675ffa7626d0113419bd0954865be3561f21f3f767e6cb4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\intrinsics_00000001.xml",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\intrinsics_00000001.xml",
+        "source_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a",
+        "copy_sha256": "ab12f5b2a8e2ffee3d6b71ace086b595c1b813d1083c6c66c2a923bd5bb9b78a"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\K0_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\K0_small.txt",
+        "source_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3",
+        "copy_sha256": "93ddba4057cb44d5c3ef085db98debbd979e545989402cbcda64b4b0964cdbe3"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\K1_small.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\K1_small.txt",
+        "source_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec",
+        "copy_sha256": "7001d1b2901004b607ae8d61175b5228240b3ac9e5ba6bbfc3f7b0a1c493fbec"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\mesh_cam.xyzC",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\mesh_cam.xyzC",
+        "source_sha256": "a89ec7164aacf332eb59abc9d541a1c76e5398de8d2104bc5da8a836abc70b95",
+        "copy_sha256": "a89ec7164aacf332eb59abc9d541a1c76e5398de8d2104bc5da8a836abc70b95"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\P0cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\P0cam.txt",
+        "source_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca",
+        "copy_sha256": "d43d708e060084ee6ab761b0627beba6b767c8d72259482aeab0f7ca92bde8ca"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\P1cam.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\P1cam.txt",
+        "source_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76",
+        "copy_sha256": "dd1afdca3ff319ca399c1b8b771ed050a11e6ff4beef445c8536820c164b3a76"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\plane.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\plane.txt",
+        "source_sha256": "ac3c24ea0736ca93bce345560cf30d3fee560efbd5124d22fad2b83cdaa655f0",
+        "copy_sha256": "ac3c24ea0736ca93bce345560cf30d3fee560efbd5124d22fad2b83cdaa655f0"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\scale.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\scale.txt",
+        "source_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d",
+        "copy_sha256": "5c88905afc55961a67098adeb3a67231625144eaebd8adc62daac725d077e19d"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\stereo_config.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\stereo_config.txt",
+        "source_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c",
+        "copy_sha256": "6e5ffd449519f0d2ebfa6318df7c2a09a209c6afbe4d2816269397d11f0b4a4c"
+      },
+      {
+        "source": "D:\\stereo-wave-height-runs\\pipeline\\vieira_official\\run_20260928_113344\\wass\\workspaces\\000004_wd\\wass_stereo_log.txt",
+        "copy": "D:\\stereo-wave-height-runs\\reconstruction-quality-p0-20261001\\I12_contract_fixture\\Vieira\\wass\\workspaces\\000004_wd\\wass_stereo_log.txt",
+        "source_sha256": "9f017439fa083c78d51c4cccfd9e152cfa11ac717b84256252944197465f5345",
+        "copy_sha256": "9f017439fa083c78d51c4cccfd9e152cfa11ac717b84256252944197465f5345"
+      }
+    ],
+    "observations": [
+      {
+        "frame": "000000_wd",
+        "before": {
+          "orthogonality_frobenius": 8.54316942907167e-06,
+          "determinant": 0.9999939590669639,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.00012107671585813109,
+            "max": 0.0007022594164205395
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.002626936999267999,
+                "max": 0.005570275196114383
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0001210770815686686,
+                "max": 0.0007022615375935207
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.002469034718145695,
+                "max": 0.005598625527835216
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.00012107708156878481,
+                "max": 0.0007022615375937368
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 2.754046821136857e-15,
+            "max": 1.6280579355608324e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.7053025658242404e-13,
+                "max": 6.915300366811402e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 2.0116800053149086e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 5.084229945850415e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 2.175583928816829e-15,
+                "max": 1.5987211554602254e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      },
+      {
+        "frame": "000001_wd",
+        "before": {
+          "orthogonality_frobenius": 8.54316942907167e-06,
+          "determinant": 0.9999939590669639,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.00012785560126824994,
+            "max": 0.0010878940362221287
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.0025141886927205455,
+                "max": 0.005552433476151105
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0001278559874553876,
+                "max": 0.0010878973221998941
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.0024517909183573434,
+                "max": 0.005559743019858866
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.00012785598745539497,
+                "max": 0.00108789732219992
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 3.552713678800501e-15,
+            "max": 5.728578676879116e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 9.165725883006586e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 3.557151798805476e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 4.687428401686771e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 2.175583928816829e-15,
+                "max": 2.956780509627298e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      },
+      {
+        "frame": "000002_wd",
+        "before": {
+          "orthogonality_frobenius": 8.54316942907167e-06,
+          "determinant": 0.9999939590669639,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.0001358393057714196,
+            "max": 0.001061757212789318
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.002509695812469139,
+                "max": 0.005557026661082285
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.00013583971607503153,
+                "max": 0.0010617604198017866
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.0025737355588155136,
+                "max": 0.005687353606986479
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.00013583971607321338,
+                "max": 0.0010617604198018694
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 3.554447978966673e-15,
+            "max": 3.014577520672848e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 7.190186943645084e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 3.117493601007525e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 5.084229945850415e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 3.552713678800501e-15,
+                "max": 2.938045346038914e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      },
+      {
+        "frame": "000003_wd",
+        "before": {
+          "orthogonality_frobenius": 8.54316942907167e-06,
+          "determinant": 0.9999939590669639,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.0001321162812030303,
+            "max": 0.0011536458121684657
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.002645332780941246,
+                "max": 0.005495560365909408
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0001321166802561989,
+                "max": 0.001153649296757118
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.002611474994831012,
+                "max": 0.005601251577816932
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0001321166802579369,
+                "max": 0.0011536492967571573
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 3.552713678800501e-15,
+            "max": 5.772476473450155e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 6.915300366811402e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 5.739584601870544e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 6.844854043943255e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 2.343865931355435e-15,
+                "max": 2.95110562224397e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      },
+      {
+        "frame": "000004_wd",
+        "before": {
+          "orthogonality_frobenius": 8.54316942907167e-06,
+          "determinant": 0.9999939590669639,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 0.0001344454362414296,
+            "max": 0.0011108748890130942
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 0.0026294458223053117,
+                "max": 0.005576645320474664
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.00013444584233103583,
+                "max": 0.0011108782444160465
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 0.0027098721313986063,
+                "max": 0.005618392549856242
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 0.0001344458423310426,
+                "max": 0.0011108782444158945
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        "after": {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 3.552713678800501e-15,
+            "max": 5.728578676879116e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 9.165725883006586e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 3.0513162461257586e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 7.190186943645084e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 3.552713678800501e-15,
+                "max": 2.95110562224397e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      }
+    ],
+    "new_identity": {
+      "calibration_id": "619b378daf9def3b62ffd0fd8bd9e569257117d258ff72173aed5a1ab9b92f6d",
+      "extrinsics_id": "9d2382730730c3d0432294732f1d0a3cbc68495b06d230eaef8d9fcfa6be4f0e",
+      "coordinate_frame_id": "e41446b36e0e467e1dbd76ec6f636fe6e1949eb45324529e895d1cb72b231b6e",
+      "coordinate_system": "official_wass_grid_B",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2"
+    },
+    "new_reference": {
+      "reference_plane_id": "designated_static_water_frame_OFFICIAL_UNIT_PLANE_RIGID_GRID_V2_0a770a17cf7cfd41",
+      "normal": [
+        0.0053372205997379235,
+        -0.0038245603618330486,
+        0.9999784431748058
+      ],
+      "d": -0.09083498597705657,
+      "mode": "designated_static_water_frame",
+      "coordinate_system": "official_wass_grid_B",
+      "equation": "H = n^T P + d; n has unit length",
+      "calibration_id": "619b378daf9def3b62ffd0fd8bd9e569257117d258ff72173aed5a1ab9b92f6d",
+      "extrinsics_id": "9d2382730730c3d0432294732f1d0a3cbc68495b06d230eaef8d9fcfa6be4f0e",
+      "coordinate_frame_id": "e41446b36e0e467e1dbd76ec6f636fe6e1949eb45324529e895d1cb72b231b6e",
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2",
+      "n": [
+        0.0053372205997379235,
+        -0.0038245603618330486,
+        0.9999784431748058
+      ],
+      "source": "INTERNAL_STATIC_REFERENCE"
+    },
+    "legacy_reference_rejection": "REFERENCE_FRAME_MISMATCH: legacy reference; regenerate in certified coordinate frame",
+    "input_contract": {
+      "coordinate_contract": "OFFICIAL_UNIT_PLANE_RIGID_GRID_V2",
+      "raw_wass_observation_count": 5,
+      "raw_mean_plane": [
+        0.012077262306245324,
+        0.9685004269699317,
+        0.24870669826365774,
+        -4.9804016121213035
+      ],
+      "normalization_divisor": 0.9999969795289203,
+      "canonical_mean_plane": [
+        0.012077298785377026,
+        0.9685033523062979,
+        0.24870744947731618,
+        -4.980416655325776
+      ],
+      "official_cli_input_rows": 5,
+      "input_rows_meaning": "identical canonical mean; not independent observations",
+      "config_mat_sha256": "ad3349bed7672d3d62e067e838858198f692db5eca676114e4ceb02810780b15",
+      "actual_point_validation": [
+        {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 2.754046821136857e-15,
+            "max": 1.6280579355608324e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.7053025658242404e-13,
+                "max": 6.915300366811402e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 2.0116800053149086e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 5.084229945850415e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 2.175583928816829e-15,
+                "max": 1.5987211554602254e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 3.552713678800501e-15,
+            "max": 5.728578676879116e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 9.165725883006586e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 3.557151798805476e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 4.687428401686771e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 2.175583928816829e-15,
+                "max": 2.956780509627298e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 3.554447978966673e-15,
+            "max": 3.014577520672848e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 7.190186943645084e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 3.117493601007525e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 5.084229945850415e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 3.552713678800501e-15,
+                "max": 2.938045346038914e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 3.552713678800501e-15,
+            "max": 5.772476473450155e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 6.915300366811402e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 5.739584601870544e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 6.844854043943255e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 2.343865931355435e-15,
+                "max": 2.95110562224397e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        },
+        {
+          "orthogonality_frobenius": 1.9257273103048897e-16,
+          "determinant": 0.9999999999999998,
+          "actual_wass_point_count": 1000,
+          "camera_grid_camera_error_B": {
+            "median": 3.552713678800501e-15,
+            "max": 5.728578676879116e-14
+          },
+          "cameras": {
+            "0": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 9.165725883006586e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 1.9860273225978185e-15,
+                "max": 3.0513162461257586e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            },
+            "1": {
+              "reprojection_px": {
+                "median": 1.6077746776921858e-13,
+                "max": 7.190186943645084e-13
+              },
+              "official_forward_matrix_vs_alignment_native": {
+                "median": 3.552713678800501e-15,
+                "max": 2.95110562224397e-14
+              },
+              "projection_matrix_formula_max": 0.0
+            }
+          }
+        }
+      ]
+    }
+  }
+]

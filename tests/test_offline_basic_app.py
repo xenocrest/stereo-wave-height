@@ -68,11 +68,11 @@ class OfflineAppTests(unittest.TestCase):
         project = core.new_project("new_gopro", "D:/runs")
         self.assertEqual(project["project"], "new_gopro")
         self.assertEqual(project["calibration"]["left_video"], "")
-        project["sync"]["left_video"] = "E:/任意相机/left.mp4"
+        project["sync"]["left_video"] = "E:/浠绘剰鐩告満/left.mp4"
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "project.yaml"
             core.save_project(project, path)
-            self.assertEqual(core.read_project(path)["sync"]["left_video"], "E:/任意相机/left.mp4")
+            self.assertEqual(core.read_project(path)["sync"]["left_video"], "E:/浠绘剰鐩告満/left.mp4")
         self.assertFalse(project["wass"]["allow_extrinsic_fallback"])
         self.assertNotIn("HomeTank", json.dumps(project))
 
@@ -96,7 +96,7 @@ class OfflineAppTests(unittest.TestCase):
             window.close()
 
     def test_frozen_reference_persists_across_project_reload_if_available(self):
-        root = Path("D:/stereo-wave-height-runs/pipeline/hometank004_multiframe_acceptance/run_20260928/science")
+        root = Path("D:/stereo-wave-height-runs/reconstruction-quality-p0-20261001/I12_contract_fixture/HomeTank")
         if not root.is_dir():
             self.skipTest("Multiframe run not installed")
         from PySide6.QtWidgets import QApplication
@@ -285,7 +285,7 @@ class OfflineAppTests(unittest.TestCase):
             del os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"]
 
     def test_vieira_result_adapter_if_available(self):
-        root = Path("D:/stereo-wave-height-runs/pipeline/vieira_official/run_20260928_113344")
+        root = Path("D:/stereo-wave-height-runs/reconstruction-quality-p0-20261001/I12_contract_fixture/Vieira")
         if not root.is_dir():
             self.skipTest("Official sample run not installed")
         reference = core.reference_from_run(root)
@@ -299,7 +299,7 @@ class OfflineAppTests(unittest.TestCase):
         self.assertIsNone(item["height_mm"])
 
     def test_hometank_result_adapter_if_available(self):
-        root = Path("D:/stereo-wave-height-runs/pipeline/hometank004/run_20260928_113734")
+        root = Path("D:/stereo-wave-height-runs/reconstruction-quality-p0-20261001/I12_contract_fixture/HomeTank")
         if not root.is_dir():
             self.skipTest("HomeTank run not installed")
         reference = core.reference_from_run(root, 0)
@@ -310,7 +310,7 @@ class OfflineAppTests(unittest.TestCase):
             core.load_result(root, 1, reference, "wrong")
 
     def test_real_gui_views_with_existing_hometank_run_if_available(self):
-        root = Path("D:/stereo-wave-height-runs/pipeline/hometank004/run_20260928_113734")
+        root = Path("D:/stereo-wave-height-runs/reconstruction-quality-p0-20261001/I12_contract_fixture/HomeTank")
         if not root.is_dir():
             self.skipTest("HomeTank run not installed")
         from PySide6.QtWidgets import QApplication
