@@ -8,15 +8,16 @@ import time
 
 import cv2
 import numpy as np
-from PySide6.QtCore import QSignalBlocker, Qt, QTimer
+from PySide6.QtCore import QEventLoop, QSignalBlocker, Qt, QTimer
 from PySide6.QtWidgets import (QApplication, QDoubleSpinBox, QFileDialog, QFormLayout,
     QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox,
-    QPlainTextEdit, QPushButton, QScrollArea, QSlider, QSpinBox, QSplitter,
+    QPlainTextEdit, QProgressBar, QPushButton, QScrollArea, QSlider, QSpinBox, QSplitter,
     QTabWidget, QVBoxLayout, QWidget)
 from app import core, coordinates
 from app.main import ImageCanvas
 from minimal_app.runner import ProcessRunner
 from minimal_app.viewer import ResultView
+from minimal_app.progress import PREFIX, counts_label, fraction, stage_label
 from tools.camera_image import open_canonical_video
 
 
@@ -28,6 +29,8 @@ class MainWindow(QMainWindow):
         self.config = core.new_project("minimal_offline", "D:/stereo-wave-height-runs/minimal-offline")
         self.active_calibration = self.sync_result = self.reference = self._pending = None
         self._exit_when_done = self._populating = False
+        self._display_loading = False
+        self.log_path = None
         self.playing = False
         self.captures = []
         self.play_timer = QTimer(self)
@@ -59,6 +62,19 @@ class MainWindow(QMainWindow):
         self.task_label = QLabel("当前任务：空闲")
         self.task_label.setObjectName("current_task")
         root.addWidget(self.task_label)
+        self.stage_label = QLabel("当前步骤：尚未开始")
+        self.object_label = QLabel("处理对象：N/A")
+        self.progress_label = QLabel("阶段进度：N/A")
+        self.counts_label = QLabel("实时计数：暂无可用计数")
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setTextVisible(False)
+        self.log_label = QLabel()
+        for name, widget in (("current_stage", self.stage_label), ("progress_object", self.object_label),
+            ("stage_progress", self.progress_label), ("progress_counts", self.counts_label), ("task_log", self.log_label)):
+            widget.setObjectName(name)
+            widget.setWordWrap(True)
+            root.addWidget(widget)
+        root.addWidget(self.progress_bar)
         splitter = QSplitter()
         root.addWidget(splitter, 1)
         self.inputs = QWidget()
@@ -172,8 +188,8 @@ class MainWindow(QMainWindow):
     def append_log(self, text):
         self.log.moveCursor(self.log.textCursor().MoveOperation.End)
         self.log.insertPlainText(text)
-        if self._pending:
-            with (self._pending[1] / "console.log").open("a", encoding="utf-8") as stream:
+        if self.log_path:
+            with self.log_path.open("a", encoding="utf-8") as stream:
                 stream.write(text)
         self.log.ensureCursorVisible()
 
@@ -291,6 +307,7 @@ class MainWindow(QMainWindow):
         try:
             snapshot, target = core.stage_paths(config, action)
             self._pending = (action, target, config)
+            self.log_path = target / "console.log"
             self.runner.start(name, [config["tools"]["python"], "-u", "-m", "minimal_app.worker", action,
                 str(snapshot), str(target)], core.ROOT, gated=True)
         except Exception as error:
@@ -349,29 +366,64 @@ class MainWindow(QMainWindow):
                         raise ValueError("无法读取 P0 canonical 暂停帧")
                     canvas.set_rgb(cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB))
                 self.show_time(payload)
+                self.runner.progress = dict(stage="preview_complete", counts={
+                    "Left Actual PTS (s)": payload.get("actual_left_source_pts"),
+                    "Right Actual PTS (s)": payload.get("actual_right_source_pts"),
+                    "residual_ms": payload.get("stereo_pair_residual_ms")})
             elif action in {"reference", "reconstruct"}:
                 if action == "reference":
                     self.reference = payload["reference"]
                     self.active_calibration = Path(payload["science_run"]) / "wass" / "config"
                     self.show_reference()
-                self.viewer.load(target, payload["view"])
+                self._display_loading = True
+                self.viewer.load(target, payload["view"], self.presentation_progress)
                 self.show_time(payload["view"])
                 self.pages.setCurrentIndex(1)
             elif action == "view":
-                self.viewer.load(target, payload)
+                self._display_loading = True
+                self.viewer.load(target, payload, self.presentation_progress)
                 self.pages.setCurrentIndex(1)
         except Exception as error:
             self.viewer.clear()
+            self.runner.status = "PROCESS_FAILED"
             self.show_error(error)
+        finally:
+            self._display_loading = False
+            self.update_task()
+
+    def presentation_progress(self, event):
+        self.runner.progress = event
+        self.append_log(PREFIX + json.dumps(event, ensure_ascii=False) + "\n")
+        self.update_task()
+        QApplication.processEvents(QEventLoop.ProcessEventsFlag.ExcludeUserInputEvents)
 
     def update_task(self):
-        busy = self.runner.current_process is not None
+        busy = self.runner.current_process is not None or self._display_loading
         elapsed = time.monotonic() - self.runner.started_at if busy else self.runner.elapsed_s
-        self.task_label.setText(f"当前任务：{self.runner.current_task_name} | PROCESS_RUNNING | {elapsed:.1f}s" if busy else
-            f"当前任务：空闲 | {self.runner.last_task_name} {self.runner.status} | {elapsed:.1f}s")
+        name = self.runner.current_task_name or self.runner.last_task_name or "空闲"
+        duration = f"{int(elapsed) // 60:02d}:{int(elapsed) % 60:02d} ({elapsed:.1f}s)"
+        status = "PROCESS_RUNNING" if busy else self.runner.status
+        self.task_label.setText(f"{'当前任务' if busy else '上一任务'}：{name} | 状态：{status} | 已运行：{duration}")
+        event = self.runner.progress
+        prefix = ("当前步骤" if busy else "失败步骤" if status == "PROCESS_FAILED" else
+            "终止时步骤" if status == "USER_TERMINATED" else "最后阶段")
+        self.stage_label.setText(f"{prefix}：{stage_label(event) if event else '尚未开始'}")
+        subject = Path(event.get("object", "")).name or "N/A"
+        self.object_label.setText(f"处理对象：{subject}" + (f" | 工具：{event['tool']}" if event.get("tool") else ""))
+        ratio = fraction(event)
+        if ratio is not None:
+            self.progress_bar.setRange(0, 10000)
+            self.progress_bar.setValue(round(ratio * 10000))
+            self.progress_label.setText(f"阶段进度：{event['current']} / {event['total']} {event.get('unit', '')} | {ratio * 100:.1f}%")
+        else:
+            self.progress_bar.setRange(0, 0 if busy else 1)
+            self.progress_bar.setValue(0)
+            self.progress_label.setText("阶段进度：" + (event.get("note") or ("无法由工具确定百分比" if busy else "无可用百分比")))
+        self.counts_label.setText("实时计数：" + counts_label(event))
+        self.log_label.setText(f"日志：{self.log_path or 'N/A'}" + (f" | Exit code：{self.runner.exit_code}" if not busy and self.runner.exit_code is not None else ""))
         for widget in (self.inputs, self.play_button, self.pause_button, self.requested, self.slider):
             widget.setEnabled(not busy)
-        self.stop_button.setEnabled(busy)
+        self.stop_button.setEnabled(self.runner.current_process is not None)
 
     def offset(self):
         return float((self.sync_result or {}).get("audio_lag_right_minus_left_s", 0))

@@ -37,22 +37,29 @@ class ResultView(QWidget):
         self.summary.setText("当前暂停帧尚无结果")
         self.hover_label.setText("XYZ/H：N/A")
 
-    def load(self, directory, metadata):
+    def load(self, directory, metadata, progress=None):
+        def notify(stage, **fields):
+            if progress:
+                progress(dict(stage=stage, object=str(directory), **fields))
         self.clear()
+        notify("read_view")
         with np.load(Path(directory) / "view.npz", allow_pickle=False) as data:
             result = dict(metadata, xyz=data["xyz"].copy(), height=data["height"].copy(), source=data["source"].copy())
             self.measurement_rgb = data["measurement"].copy()
         if self.measurement_rgb.shape[:2] != result["height"].shape:
             raise ValueError("UNDISTORTED_MEASUREMENT_VIEW raster mismatch")
         self.result = result
+        notify("prepare_overlay")
         ExistingWindow._build_overlay(self)  # Existing display-only colour mapping.
         self.measurement.set_rgb(self.measurement_rgb)
         self.overlay.set_rgb(self.overlay_rgb)
+        notify("prepare_cloud", tool="既有 PLY 查看器")
         count = self.cloud.show_ply(Path(metadata["ply"]))
         self.summary.setText(f"UNDISTORTED_MEASUREMENT_VIEW | frame={result['frame_id']} t={result['timestamp_s']:.9f}s "
             f"| 单位={result['units']} | WASS PLY={count:,}\nReference: {result['reference_plane_id']}\n"
             "颜色和 hover 读取已有官方 grid map；provenance 按原输出显示。")
         self.tabs.setCurrentIndex(0)
+        notify("display_complete", counts={"WASS PLY 顶点": count}, note="已有结果显示准备完成")
 
     def hover(self, u, v):
         if self.result is None:

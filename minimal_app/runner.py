@@ -6,6 +6,7 @@ import os
 import time
 
 from PySide6.QtCore import QObject, QProcess, QProcessEnvironment, Signal
+from minimal_app.progress import ProgressReader
 
 
 class WindowsJob:
@@ -74,6 +75,8 @@ class ProcessRunner(QObject):
         self._job = None
         self._terminated = False
         self._error = False
+        self.progress = {}
+        self.exit_code = None
 
     def start(self, task_name, argv, cwd, *, gated=False):
         if self.current_process is not None:
@@ -95,6 +98,9 @@ class ProcessRunner(QObject):
         self.status = "PROCESS_RUNNING"
         self.started_at = time.monotonic()
         self._terminated = self._error = False
+        self.progress = {"stage": "starting"}
+        self.exit_code = None
+        self._progress_reader = ProgressReader()
         self._decoders = {channel: codecs.getincrementaldecoder("utf-8")("replace") for channel in ("stdout", "stderr")}
         process.readyReadStandardOutput.connect(lambda: self._read("stdout", process))
         process.readyReadStandardError.connect(lambda: self._read("stderr", process))
@@ -131,6 +137,10 @@ class ProcessRunner(QObject):
         reader = process.readAllStandardOutput if channel == "stdout" else process.readAllStandardError
         chunk = self._decoders[channel].decode(bytes(reader()))
         if chunk:
+            if channel == "stdout":
+                for event in self._progress_reader.feed(chunk):
+                    self.progress = event
+                    self.changed.emit()
             self.output.emit(f"[{channel}] {chunk}")
 
     def _failed(self, process, error):
@@ -171,6 +181,7 @@ class ProcessRunner(QObject):
         finally:
             self._job = None
             self.last_task_name = self.current_task_name
+            self.exit_code = code
             self.elapsed_s = time.monotonic() - self.started_at
             self.current_process = None
             self.current_task_name = ""

@@ -18,6 +18,7 @@ from app import core
 from minimal_app.runner import ProcessRunner
 from minimal_app.main import MainWindow
 from minimal_app.worker import official_reference
+from minimal_app.progress import PREFIX, ProgressReader, fraction
 
 
 APP = QApplication.instance() or QApplication([])
@@ -81,6 +82,21 @@ class RunnerTests(unittest.TestCase):
         self.runner.terminate()
         until(lambda: self.runner.current_process is None)
         self.assertEqual(self.runner.status, "USER_TERMINATED")
+
+    def test_fragmented_progress_preserved_on_cancel_and_reset_on_restart(self):
+        event = dict(stage="checkerboard_scan", side="left", current=3580, total=7012,
+            counts=dict(sampled=302, detections=126, target_views=50))
+        line = PREFIX + json.dumps(event, ensure_ascii=False) + "\n"
+        self.start(f"import sys,time; s={line!r}; sys.stdout.write(s[:12]); sys.stdout.flush(); time.sleep(.1); sys.stdout.write(s[12:]); sys.stdout.flush(); time.sleep(30)")
+        until(lambda: self.runner.progress.get("current") == 3580)
+        self.assertEqual(self.runner.progress, event)
+        self.assertIn(PREFIX, "".join(self.output))
+        self.runner.terminate()
+        until(lambda: self.runner.current_process is None)
+        self.assertEqual(self.runner.progress, event)
+        self.start("print('next')")
+        self.assertEqual(self.runner.progress, {"stage": "starting"})
+        until(lambda: self.runner.current_process is None)
 
     @unittest.skipUnless(os.name == "nt", "Windows process-tree contract")
     def test_cancel_kills_child_and_grandchild(self):
@@ -178,6 +194,30 @@ class WindowTests(unittest.TestCase):
         self.assertIsNone(self.window.runner.current_process)
         self.assertEqual(self.window.slider.value(), 21000)
 
+    def test_real_fraction_busy_calibration_and_final_stage_visibility(self):
+        self.window.runner.progress = dict(stage="checkerboard_scan", side="left", current=4200,
+            total=7012, unit="frames", counts=dict(sampled=354, detections=149, target_views=50))
+        self.window.update_task()
+        self.assertIn("4200 / 7012", self.window.progress_label.text())
+        self.assertIn("59.9%", self.window.progress_label.text())
+        self.assertIn("完整棋盘：149", self.window.counts_label.text())
+        self.window.runner.progress = dict(stage="calibrate_camera", side="right", counts=dict(used_views=50),
+            note="OpenCV内部计算中；无可靠百分比")
+        self.window.runner.started_at = time.monotonic()
+        self.window._display_loading = True
+        self.window.update_task()
+        self.assertEqual(self.window.progress_bar.maximum(), 0)
+        self.assertNotIn("%", self.window.progress_label.text())
+        self.window._display_loading = False
+        self.window.runner.last_task_name = "相机标定"
+        self.window.runner.status = "USER_TERMINATED"
+        self.window.runner.exit_code = -1
+        self.window.update_task()
+        self.assertIn("上一任务：相机标定", self.window.task_label.text())
+        self.assertIn("终止时步骤：右相机", self.window.stage_label.text())
+        self.assertIn("实际采用视图：50", self.window.counts_label.text())
+        self.assertIn("Exit code：-1", self.window.log_label.text())
+
     def test_reference_uses_official_setup_without_grid_fitting(self):
         run = Path("D:/stereo-wave-height-runs/reconstruction-quality-p0-20261001/final/Vieira")
         if not run.is_dir():
@@ -189,6 +229,55 @@ class WindowTests(unittest.TestCase):
         self.assertEqual(reference["d"], 0.)
         self.assertEqual(reference["coordinate_system"], "official_wass_grid_B")
         core.reference_from_metadata(reference)
+
+
+class ProgressProtocolTests(unittest.TestCase):
+    def test_unknown_invalid_or_exceeded_denominator_never_estimates_percentage(self):
+        for event in ({}, {"current": 5}, {"current": 5, "total": 0},
+                {"current": 7, "total": 6}, {"current": float("nan"), "total": 8},
+                {"current": True, "total": 8}):
+            self.assertIsNone(fraction(event))
+        self.assertEqual(fraction(dict(current=0, total=100)), 0.)
+        self.assertEqual(fraction(dict(current=100, total=100)), 1.)
+
+    def test_only_wrapper_protocol_is_parsed_with_arbitrary_chunk_boundaries(self):
+        reader = ProgressReader()
+        event = dict(stage="checkerboard_scan", side="left", current=42, total=100, counts=dict(detections=3))
+        raw = "Official output\nSTAGE: stereo_000000\n" + PREFIX + "{broken}\n" + PREFIX + json.dumps(event) + "\n"
+        observed = []
+        for character in raw:
+            observed.extend(reader.feed(character))
+        self.assertEqual(observed, [event])
+        self.assertEqual(reader.buffer, "")
+
+    def test_scientific_calibration_ast_is_frozen_except_progress_instrumentation(self):
+        import ast
+        import hashlib
+        expected = {
+            "detect": "3ca4e939ab6e34ece482b149433c449903708a3ea8b6c3725635e9dc53607a9c",
+            "descriptor": "f6da74d8ce0e8d7eb04c08b5ccf3c81162056afe547b9caa7bb40b317bc4e52d",
+            "select_diverse": "b73eb7b925b44f7933b28c36b2a9c0439e131a80b839bc3e5ddb656570d0275c",
+            "object_points": "c8bf756b2d0541a8cde3bb1c6c069d479bbc4859bd0e4ae4e3430eb2e3fea8a0",
+            "save_matrix": "7732b02406ac81064c9c4402174215fced9c504701d7bba8075ea890f88140d0",
+            "run": "1a42e39da6184304b447dbf0fc50337d8d18c9c290576a30aed25f2e70311efd",
+        }  # AST SHA256 captured from Stage1 d8fabce, not a copy of its algorithms.
+        class RemoveProgress(ast.NodeTransformer):
+            def visit_FunctionDef(self, node):
+                return None if node.name in {"progress", "scan_progress"} else self.generic_visit(node)
+            def visit_Expr(self, node):
+                if isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name) and node.value.func.id in {"progress", "scan_progress"}:
+                    return None
+                return self.generic_visit(node)
+            def visit_Assign(self, node):
+                if any(isinstance(target, ast.Name) and target.id in {"scan_started", "last_progress", "side", "save_progress_at"} for target in node.targets):
+                    return None
+                return self.generic_visit(node)
+            def visit_If(self, node):
+                return None if "save_progress_at" in ast.dump(node.test) else self.generic_visit(node)
+        tree = RemoveProgress().visit(ast.parse((core.ROOT / "tools/vieira_intrinsics_from_raw.py").read_text(encoding="utf-8")))
+        for node in tree.body:
+            if isinstance(node, ast.FunctionDef) and node.name in expected:
+                self.assertEqual(hashlib.sha256(ast.dump(node, include_attributes=False).encode()).hexdigest(), expected[node.name], node.name)
 
 
 if __name__ == "__main__":

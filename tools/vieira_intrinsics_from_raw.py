@@ -16,10 +16,13 @@ import math
 from pathlib import Path
 from typing import Any
 import sys
+import os
+import time
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.camera_image import open_canonical_video, orientation_metadata
+from minimal_app.progress import emit
 
 import cv2
 import numpy as np
@@ -120,6 +123,25 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     records: list[dict[str, Any]] = []
     sampled = 0
     index = 0
+    scan_started = time.perf_counter()
+    last_progress = 0.0
+    side = os.environ.get("MINIMAL_PROGRESS_SIDE", "")
+
+    def progress(stage, **fields):
+        emit(stage, side=side, object=str(source), tool="OpenCV",
+            counts=dict(sampled=sampled, detections=len(records), target_views=args.target_views,
+                        **fields.pop("counts", {})), **fields)
+
+    def scan_progress(force=False):
+        nonlocal last_progress
+        now = time.perf_counter()
+        if force or now - last_progress >= .75:
+            progress("checkerboard_scan", current=index, total=frame_count or None, unit="frames",
+                frame_index=index - 1 if index else None, frame_count=frame_count,
+                elapsed_s=now - scan_started, note="分母为解码器报告帧数；完整扫描，不提前停止")
+            last_progress = now
+
+    scan_progress(True)
     while True:
         ok, frame = capture.read()
         if not ok:
@@ -146,16 +168,22 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     }
                 )
         index += 1
+        scan_progress()
     capture.release()
+    scan_progress(True)
     if len(records) < args.minimum_views:
         raise RuntimeError(f"only {len(records)} complete checkerboards detected; minimum is {args.minimum_views}")
 
+    progress("view_selection", note="正在选择目标标定视图；当前阶段无可靠百分比")
     selected_indices = select_diverse(records, args.target_views)
     selected = [records[item] for item in selected_indices]
     object_template = object_points(pattern, args.square_size_m)
     objects = [object_template.copy() for _ in selected]
     images = [np.asarray(record["corners_px"], np.float32).reshape(-1, 1, 2) for record in selected]
+    progress("calibrate_camera", counts=dict(used_views=len(selected), board=f"{pattern[0]} x {pattern[1]}"),
+        note="OpenCV 内部计算中；该函数未提供可靠百分比")
     rms, camera, distortion, rvecs, tvecs = cv2.calibrateCamera(objects, images, (width, height), None, None, flags=0)
+    progress("calibration_validation", counts=dict(used_views=len(selected), rms_px=float(rms)))
     per_view = []
     for obj, image, rvec, tvec in zip(objects, images, rvecs, tvecs):
         projected, _ = cv2.projectPoints(obj, rvec, tvec, camera, distortion)
@@ -166,6 +194,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if distortion.size != 5:
         raise RuntimeError(f"WASS expects OpenCV's five-parameter distortion model, got {distortion.size}")
 
+    progress("save_calibration", current=0, total=len(selected), unit="views", counts=dict(used_views=len(selected), rms_px=float(rms)))
+    save_progress_at = time.perf_counter()
     capture = open_canonical_video(source)
     for order, record in enumerate(selected):
         capture.set(cv2.CAP_PROP_POS_FRAMES, int(record["frame_index"]))
@@ -179,8 +209,13 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         cv2.imwrite(str(output / "corner_overlays" / name), overlay)
         record["selected_order"] = order
         record["per_view_rms_px"] = per_view[order]
+        if time.perf_counter() - save_progress_at >= .75 or order + 1 == len(selected):
+            progress("save_calibration", current=order + 1, total=len(selected), unit="views",
+                counts=dict(used_views=len(selected), rms_px=float(rms)))
+            save_progress_at = time.perf_counter()
     capture.release()
 
+    progress("save_matrices", counts=dict(used_views=len(selected), rms_px=float(rms)))
     save_matrix(output / "intrinsics.xml", camera)
     save_matrix(output / "distortion.xml", distortion.reshape(5, 1))
     result = {
@@ -211,6 +246,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "stereo_extrinsics": "NOT_ESTIMATED_HERE; delegated to WASS autocalibration",
     }
     (output / "calibration.json").write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    progress("camera_complete", counts=dict(used_views=len(selected), rms_px=float(rms)),
+        note="标定结果保存完成", elapsed_s=time.perf_counter() - scan_started)
     return result
 
 
